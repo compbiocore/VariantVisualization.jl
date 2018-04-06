@@ -19,6 +19,59 @@ ARGS[11] = phenotype to sort columns by (used by ARGS[7])
 *******************
 =#
 
+
+# *** Outline of program: ***
+
+#A.) load and clean VCF
+
+             #1) determine row number of header line to avoid "##" in META intro lines, read vcf file, clean and order in ascending chr position order
+             #2) data cleaning
+
+#B) define all functions
+
+        #1) field selection
+
+              #a) FORMAT reader - get index of fields to visualize
+              #b) maf match list for maf correction of genotype
+              #c) genotype selection with maf correction of genotype
+              #d) genotype selection with no maf correction
+              #e) read depth selection maf correction
+
+        #2) variant selection
+
+              #a) siglist match filter
+              #b) match chromosome range filter
+              #c) rare variants only
+
+        #3) rearrange and select columns
+
+              #a) rearrange columns by phenotype with use input phenotype matrix
+              #b) select columns to visualize
+
+        #4) plotting functions
+
+              #a) define plotlyJS function for genotype heatmap
+              #b) define plotlyJS function for read depth heatmap
+
+#C) run functions for every possible combination of features
+
+        #1) universal filters
+
+               #a) PASS FILTER variants only
+               #b) reorder columns to match list
+               #c) select columns to visualize
+
+        #2) combinations of field selection and variant selection filters
+
+               #a) genotype / display all variants
+               #b) genotype / select variants matching significant variant location list
+               #c) genotype / select variants within chromosomal range
+               #d) read depth / display all variants
+               #e) read depth / select variants matching significant variant location list
+               #f) read depth / select variants within chromosomal range
+
+# *** End of outline ***
+
 using DataFrames #use CSV.jl ? depwarnings
 using PlotlyJS
 using Rsvg
@@ -135,7 +188,7 @@ vcf = sortrows(vcf, by=x->(x[1],x[2]))
     @time match_list = join(maf_list, vcf, on = [:x1, :x2], kind = :right)
 =#
 
-    #c) genotype selection with maf correction
+#c) genotype selection with maf correction of genotype
 
     #may need to define vcf first, or get rid of conditional eval and set 'maf_sub = maf_list_match_vcf(vcf)' inside function definition
 
@@ -437,7 +490,7 @@ end
 
 #4) plotting functions
 
-    #a) define plotlyJS function
+    #a) define plotlyJS function for genotype heatmap
 
     function genotype_heatmap2(x) #when x = array_for_plotly
 
@@ -459,6 +512,8 @@ end
         data = (trace)
         plot(data,layout) #call plot type and layout with all attributes to plot function
     end
+
+    #b) define plotlyJS function for read depth heatmap
 
     function dp_heatmap2(x) #when x = array_for_plotly
 
@@ -482,23 +537,31 @@ end
 
 #C) Run functions for every possible combination of features
 
-    #pre) universal filters
+#1) universal filters
+
+    #a) PASS FILTER variants only
 
     if ARGS[5] == "pass_only"
         vcf=vcf[(vcf[:,7].== "PASS"),:]
     end
+
+    #b) reorder columns to match list
 
     if ARGS[6] == "reorder_columns"
         #vcf = reorder_columns(ARGS[7])
         vcf = load_sort_phenotype_matrix(ARGS[7],ARGS[11])
     end
 
+    #c) select columns to visualize
+
     if ARGS[9] == "select_columns"
         vcf = select_columns(ARGS[10])
     end
 
 
-#1) genotype / display all variants
+#2) combinations of field selection and variant selection filters
+
+    #a) genotype / display all variants
 
     if ARGS[3] == "-gt" && ARGS[4] == "-a"
 
