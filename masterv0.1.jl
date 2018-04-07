@@ -1,6 +1,5 @@
 #guide for writing technical docs - https://software.broadinstitute.org/gatk/documentation/tooldocs/3.8-0/org_broadinstitute_gatk_tools_walkers_variantutils_VariantsToTable.php
 
-
 #=
 ***ARGS[#] guide***
 
@@ -10,11 +9,20 @@ ARGS[3] = field to visualize (-gt, -dp)
 ARGS[4] = variant filter to apply (-l, -r, -a)
 ARGS[5] = PASS FILTER only
 ARGS[6] = reorder_columns
-ARGS[7] = phenotype matrix filename for reordering columns
+ARGS[7] = phenotype matrix filename for reordering columns (in .csv)
 ARGS[8] = chromosome range, significant variant list filename, or nothing (.)
 ARGS[9] = select_columns
 ARGS[10] = filename of list of sample names to select
 ARGS[11] = phenotype to sort columns by (used by ARGS[7])
+
+example command line input for visualizing genotype of variants which passed QC filters within a chromosome range across a selected group of patients grouped by case_control_status:
+julia masterv0.1.jl file.vcf pdf -gt -r pass_only reorder_columns phenotype_matrix.csv chr1:10000000-15000000 select_columns sample_names.tsv case_control_status
+
+example command line input for visualizing read depth for all variants with no filters applied:
+julia masterv0.1.jl file.vcf pdf -d -a . . . . . . .
+
+example command line input for visualizing read depth for all variants with no filters applied:
+julia masterv0.1.jl file.vcf pdf -d -a . . . . . . .
 
 *******************
 =#
@@ -146,6 +154,7 @@ vcf = sortrows(vcf, by=x->(x[1],x[2]))
 
     function format_reader()
         format = vcf[1,9]
+
         s = split(format,":")
         gt_index = find(x -> x == "GT",s)
         dp_index = find(x -> x == "DP",s)
@@ -389,8 +398,6 @@ end
         global vcf
         global df_vcf
 
-        println(typeof(y))
-
         pheno = readdlm(x, ',')
 
         #get row numer of user-chosen phenotype characteristic to sort columns by
@@ -402,8 +409,6 @@ end
 
         pheno = sortcols(pheno, by = x -> x[row_to_sort_by], rev = false)
 
-        println(pheno[row_to_sort_by,:])
-
         id_list = pheno[1,:]
         vcf_header = names(df_vcf)
         vcf_info_columns = vcf_header[1:9]
@@ -413,7 +418,6 @@ end
                id_list[item] = Symbol(id_list[item])
         end
 
-        println(vcf_info_columns)
         new_order = vcat(vcf_info_columns,id_list)
 
         header_as_strings = new_order
