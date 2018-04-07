@@ -13,16 +13,16 @@ ARGS[7] = phenotype matrix filename for reordering columns (in .csv)
 ARGS[8] = chromosome range, significant variant list filename, or nothing (.)
 ARGS[9] = select_columns
 ARGS[10] = filename of list of sample names to select
-ARGS[11] = phenotype to sort columns by (used by ARGS[7])
+ARGS[11] = phenotype to sort columns by (used by ARGS[7]) (e.g. case_control_status)
 
-example command line input for visualizing genotype of variants which passed QC filters within a chromosome range across a selected group of patients grouped by case_control_status:
+example command line input for visualizing genotype of variants which passed QC filters within a chromosome range across a selected group of samples grouped by case_control_status:
 julia masterv0.1.jl file.vcf pdf -gt -r pass_only reorder_columns phenotype_matrix.csv chr1:10000000-15000000 select_columns sample_names.tsv case_control_status
 
 example command line input for visualizing read depth for all variants with no filters applied:
 julia masterv0.1.jl file.vcf pdf -d -a . . . . . . .
 
-example command line input for visualizing read depth for all variants with no filters applied:
-julia masterv0.1.jl file.vcf pdf -d -a . . . . . . .
+example command line input for visualizing read depth for all variants with sample columns grouped by case_control_status
+julia masterv0.1.jl file.vcf pdf -d -a . reorder_columns phenotype_matrix.csv . . . case_control_status
 
 *******************
 =#
@@ -43,7 +43,7 @@ julia masterv0.1.jl file.vcf pdf -d -a . . . . . . .
               #b) maf match list for maf correction of genotype
               #c) genotype selection with maf correction of genotype
               #d) genotype selection with no maf correction
-              #e) read depth selection maf correction
+              #e) read depth selection
 
         #2) variant selection
 
