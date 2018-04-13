@@ -56,6 +56,7 @@ using DataFrames #use CSV.jl ? depwarnings
 using PlotlyJS
 using Rsvg
 using Blink
+using ViVa
 
 """
     format_reader()
