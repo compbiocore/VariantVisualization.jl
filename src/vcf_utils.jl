@@ -1,7 +1,20 @@
+module vcf_utils
+
+export
+    clean_column1!,
+    genotype_cell_searcher_maf_correction,
+    genotype_cell_searcher,
+    dp_cell_searcher,
+    sig_list_vcf_filter,
+    chromosome_range_vcf_filter,
+    load_sort_phenotype_matrix,
+    reorder_columns,
+    select_columns
+
 """
     clean_column1!(x)
 Replace String "X" and "Y" from chromosome column so all elements are Int64 type
-Replaces "X" and "Y" with Int64 23 and 24, rest of chr numbers are not loaded as 
+Replaces "X" and "Y" with Int64 23 and 24, rest of chr numbers are not loaded as
 Int64 and need to be same type
 """
 function clean_column1!(x)
@@ -15,7 +28,7 @@ end
 """
     genotype_cell_searcher_maf_correction(x)
 Genotype selection with maf correction of genotype
-Note: may need to define vcf first, or get rid of conditional eval 
+Note: may need to define vcf first, or get rid of conditional eval
 and set 'maf_sub = maf_list_match_vcf(vcf)' inside function definition
 """
 function genotype_cell_searcher_maf_correction(x) #when x is output subarray of variant selection
@@ -66,7 +79,7 @@ end
     genotype_cell_searcher(x)
 Genotype selection with no maf correction
 """
-function genotype_cell_searcher(x) #when x is output subarray of variant selection
+function genotype_cell_searcher(x, index) #when x is output subarray of variant selection
 
     for row=1:size(x,1)
 
@@ -74,7 +87,7 @@ function genotype_cell_searcher(x) #when x is output subarray of variant selecti
 
             cell_to_search = x[row,col]
             S = split(cell_to_search, ":")
-            genotype = S[index[1]]
+            genotype = S[index]
 
             homo_variant = ["1/1" "1/2" "2/2" "1/3" "2/3" "3/3" "1/4" "2/4" "3/4" "4/4" "1/5" "2/5" "3/5" "4/5" "5/5" "1/6" "2/6" "3/6" "4/6" "5/6" "6/6" "1|1" "1|2" "2|2" "1|3" "2|3" "3|3" "1|4" "2|4" "3|4" "4|4" "1|5" "2|5" "3|5" "4|5" "5|5" "1|6" "2|6" "3|6" "4|6" "5|6" "6|6"]
             hetero_variant = ["0/1" "0/2" "0/3" "0/4" "0/5" "0/6" "1/0" "2/0" "3/0" "4/0" "5/0" "6/0" "0|1" "0|2" "0|3" "0|4" "0|5" "0|6" "1|0" "2|0" "3|0" "4|0" "5|0" "6|0"]
@@ -109,7 +122,7 @@ end
 Reads depth selection maf correction.
 x is output subarray of variant selection
 """
-function dp_cell_searcher(x) 
+function dp_cell_searcher(x)
 
     for row=1:size(x,1)
 
@@ -315,4 +328,6 @@ function select_columns(x) #where x = ARGS[#] which is name of list of samples t
     vcf = Matrix(vcf)
 
     return vcf
+end
+
 end

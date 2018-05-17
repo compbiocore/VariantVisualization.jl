@@ -119,7 +119,7 @@ function main()
     #df_vcf=readtable(ARGS[1], skipstart=skipstart_number, separator='\t')
 
     #2) data cleaning
-    ViVA.clean_column1!(vcf) 
+    ViVa.clean_column1!(vcf) 
 
     for n = 1:size(vcf,1)
         if vcf[n, 1] != 23
