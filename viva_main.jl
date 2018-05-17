@@ -66,7 +66,8 @@ What features to visualize from INFO field - or others - if FORMAT / genotype in
 index other data per variant for bars
 check if format col is included, if so - run function, if not are there cells for each sample? I don't think so - check this.
 """
-function format_reader()
+
+function format_reader(vcf) #when vcf_matrix is vcf
     format = vcf[1,9]
 
     s = split(format,":")
@@ -88,7 +89,10 @@ function format_reader()
             index = mq_index
         end
 
+        index = index[1]
+
     return index
+
 end
 
 
@@ -119,7 +123,7 @@ function main()
     #df_vcf=readtable(ARGS[1], skipstart=skipstart_number, separator='\t')
 
     #2) data cleaning
-    ViVA.clean_column1!(vcf) 
+    ViVa.clean_column1!(vcf)
 
     for n = 1:size(vcf,1)
         if vcf[n, 1] != 23
@@ -138,7 +142,11 @@ function main()
     #what features to visualize from INFO field - or others - if FORMAT / genotype info isn't included
     #index other data per variant for bars
     #check if format col is included, if so - run function, if not are there cells for each sample? I don't think so - check this.
-    index = format_reader(ARGS)
+    global index = format_reader(vcf)
+
+    #type_index = typeof(index)
+    #println("This is the index: $index it is $type_index type.")
+
 
     #C) Run functions for every possible combination of features
 
@@ -170,7 +178,7 @@ function main()
     if ARGS[3] == "-gt" && ARGS[4] == "-a"
 
         #replace cells of vcf file with representative values for field chosen (genotype value)
-        vcf = ViVa.genotype_cell_searcher(vcf)
+        vcf = ViVa.genotype_cell_searcher(vcf,index)
 
         #convert value overwritten vcf into subarray of just values, no annotation/meta info
         array_for_plotly=vcf[:,10:size(vcf,2)]
@@ -179,7 +187,7 @@ function main()
         title = "Genotype Data for All Variants"
 
         #plot heatmap for genotype and save as format specified by ARGS[2], defaults to pdf
-        graphic = ViVa.genotype_heatmap2(array_for_plotly)
+        graphic = ViVa.genotype_heatmap2(array_for_plotly,title)
         extension=ARGS[2] #must define this variable, if use ARGS[2] directly in savefig it is read as String[pdf] or something instead of just "pdf"
         PlotlyJS.savefig(graphic, "all_genotype.$extension")
 
@@ -211,14 +219,14 @@ function main()
         vcf = ViVa.sig_list_vcf_filter(vcf,siglist)
 
         #write over vcf to create value matrix for genotype fieldtype
-        sig_list_subarray_post=ViVa.genotype_cell_searcher(vcf)
+        sig_list_subarray_post=ViVa.genotype_cell_searcher(vcf,index)
 
         #convert value overwritten vcf into subarray of just values, no annotation/meta info
         array_for_plotly=sig_list_subarray_post[:,10:size(sig_list_subarray_post,2)]
         title = "Genotype Data for Variants of Interest"
 
         #plot heatmap for genotype and save as format specified by ARGS[2], defaults to pdf
-        graphic = ViVa.genotype_heatmap2(array_for_plotly)
+        graphic = ViVa.genotype_heatmap2(array_for_plotly,title)
         extension=ARGS[2] #must define this variable, if use ARGS[5] directly in savefig it is read as String[pdf] or something instead of just "pdf"
         PlotlyJS.savefig(graphic, "siglist_genotype.$extension")
 
@@ -228,10 +236,10 @@ function main()
         chr_range = ARGS[8]
 
         #create subarray of vcf matching range parameters
-        chr_range_subarray_pre = ViVa.chromosome_range_vcf_filter(chr_range)
+        chr_range_subarray_pre = ViVa.chromosome_range_vcf_filter(chr_range,vcf)
 
         #write over vcf to create keyed-values matrix showing genotype
-        chr_range_subarray_post = ViVa.genotype_cell_searcher(chr_range_subarray_pre)
+        chr_range_subarray_post = ViVa.genotype_cell_searcher(chr_range_subarray_pre,index)
 
         #convert value overwritten vcf into subarray of just values, no annotation/meta info
         array_for_plotly=chr_range_subarray_post[:,10:size(chr_range_subarray_post,2)]
@@ -244,23 +252,23 @@ function main()
         title = "Genotype Data for Variants within $(ARGS[8])"
 
         #plot heatmap for genotype and save as format specified by ARGS[2], defaults to pdf
-        graphic = ViVa.genotype_heatmap2(array_for_plotly)
+        graphic = ViVa.genotype_heatmap2(array_for_plotly,title)
         extension=ARGS[2] #must define this variable, if use ARGS[2] directly in savefig it is read as String[pdf] or something instead of just "pdf"
         PlotlyJS.savefig(graphic, "chr_range_genotype.$extension")
 
     elseif ARGS[3] == "-dp" && ARGS[4] == "-a"
 
         #replace cells of vcf file with representative values for field chosen (genotype value)
-        vcf = ViVa.dp_cell_searcher(vcf)
+        vcf = ViVa.dp_cell_searcher(vcf,index)
 
         #convert value overwritten vcf into subarray of just values, no annotation/meta info
         array_for_plotly=vcf[:,10:size(vcf,2)]
-
+        
         #define title for plot
         title = "Read Depth Data for All Variants"
 
         #plot heatmap for genotype and save as format specified by ARGS[2], defaults to pdf
-        graphic = ViVa.dp_heatmap2(array_for_plotly)
+        graphic = ViVa.dp_heatmap2(array_for_plotly,title)
         extension=ARGS[2] #must define this variable, if use ARGS[2] directly in savefig it is read as String[pdf] or something instead of just "pdf"
         PlotlyJS.savefig(graphic, "all_readdepth.$extension")
 
@@ -291,14 +299,14 @@ function main()
         sig_list_subarray_pre=ViVa.sig_list_vcf_filter(siglist)
 
         #write over vcf to create keyed-values matrix showing genotype
-        sig_list_subarray_post=ViVa.dp_cell_searcher(sig_list_subarray_pre)
+        sig_list_subarray_post=ViVa.dp_cell_searcher(sig_list_subarray_pre,index)
 
         #convert value overwritten vcf into subarray of just values, no annotation/meta info
         array_for_plotly=sig_list_subarray_post[:,10:size(sig_list_subarray_post,2)]
         title = "Read Depth Data for Variants of Interest"
 
         #plot heatmap for read depth and save as format specified by ARGS[2], defaults to pdf
-        graphic = ViVA.dp_heatmap2(array_for_plotly)
+        graphic = ViVa.dp_heatmap2(array_for_plotly,title)
         extension=ARGS[2] #must define this variable, if use ARGS[2] directly in savefig it is read as String[pdf] or something instead of just "pdf"
         PlotlyJS.savefig(graphic, "siglist_readdepth.$extension")
 
@@ -308,10 +316,10 @@ function main()
         chr_range = ARGS[8]
 
         #create subarray of vcf matching range parameters
-        chr_range_subarray_pre = ViVa.chromosome_range_vcf_filter(chr_range)
+        chr_range_subarray_pre = ViVa.chromosome_range_vcf_filter(chr_range,vcf)
 
         #write over vcf to create keyed-values matrix showing genotype
-        chr_range_subarray_post = ViVA.dp_cell_searcher(chr_range_subarray_pre)
+        chr_range_subarray_post = ViVa.dp_cell_searcher(chr_range_subarray_pre,index)
 
         #convert value overwritten vcf into subarray of just values, no annotation/meta info
         array_for_plotly=chr_range_subarray_post[:,10:size(chr_range_subarray_post,2)]
@@ -320,7 +328,7 @@ function main()
         title = "Read Depth Data for Variants within $(ARGS[8])"
 
         #plot heatmap for read depth and save as format specified by ARGS[2], defaults to pdf
-        graphic = ViVa.dp_heatmap2(array_for_plotly)
+        graphic = ViVa.dp_heatmap2(array_for_plotly,title)
         extension=ARGS[2] #must define this variable, if use ARGS[5] directly in savefig it is read as String[pdf] or something instead of just "pdf"
         PlotlyJS.savefig(graphic, "chr_range_readdepth.$extension")
 

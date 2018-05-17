@@ -2,7 +2,7 @@
 
 #a) define plotlyJS function for genotype heatmap
 
-function genotype_heatmap2(x) #when x = array_for_plotly
+function genotype_heatmap2(x,title) #when x = array_for_plotly
 
     trace=heatmap(
         z = x,
@@ -25,7 +25,7 @@ end
 
 #b) define plotlyJS function for read depth heatmap
 
-function dp_heatmap2(x) #when x = array_for_plotly
+function dp_heatmap2(x,title) #when x = array_for_plotly
 
     trace=heatmap(
         z = x,

@@ -1,7 +1,7 @@
 """
     clean_column1!(x)
 Replace String "X" and "Y" from chromosome column so all elements are Int64 type
-Replaces "X" and "Y" with Int64 23 and 24, rest of chr numbers are not loaded as 
+Replaces "X" and "Y" with Int64 23 and 24, rest of chr numbers are not loaded as
 Int64 and need to be same type
 """
 function clean_column1!(x)
@@ -13,12 +13,12 @@ function clean_column1!(x)
 end
 
 """
-    genotype_cell_searcher_maf_correction(x)
+    genotype_cell_searcher_maf_correction(x,index)
 Genotype selection with maf correction of genotype
-Note: may need to define vcf first, or get rid of conditional eval 
+Note: may need to define vcf first, or get rid of conditional eval
 and set 'maf_sub = maf_list_match_vcf(vcf)' inside function definition
 """
-function genotype_cell_searcher_maf_correction(x) #when x is output subarray of variant selection
+function genotype_cell_searcher_maf_correction(x,index) #when x is output subarray of variant selection
 
     for row = 1:size(x,1)
 
@@ -63,18 +63,18 @@ function genotype_cell_searcher_maf_correction(x) #when x is output subarray of 
 end
 
 """
-    genotype_cell_searcher(x)
+    genotype_cell_searcher(x,index)
 Genotype selection with no maf correction
 """
-function genotype_cell_searcher(x) #when x is output subarray of variant selection
+function genotype_cell_searcher(x,index) #when x is output subarray of variant selection
 
-    for row=1:size(x,1)
+        for row=1:size(x,1)
 
         for col = 10:size(x,2)
 
             cell_to_search = x[row,col]
             S = split(cell_to_search, ":")
-            genotype = S[index[1]]
+            genotype = S[index]
 
             homo_variant = ["1/1" "1/2" "2/2" "1/3" "2/3" "3/3" "1/4" "2/4" "3/4" "4/4" "1/5" "2/5" "3/5" "4/5" "5/5" "1/6" "2/6" "3/6" "4/6" "5/6" "6/6" "1|1" "1|2" "2|2" "1|3" "2|3" "3|3" "1|4" "2|4" "3|4" "4|4" "1|5" "2|5" "3|5" "4|5" "5|5" "1|6" "2|6" "3|6" "4|6" "5|6" "6|6"]
             hetero_variant = ["0/1" "0/2" "0/3" "0/4" "0/5" "0/6" "1/0" "2/0" "3/0" "4/0" "5/0" "6/0" "0|1" "0|2" "0|3" "0|4" "0|5" "0|6" "1|0" "2|0" "3|0" "4|0" "5|0" "6|0"]
@@ -105,11 +105,11 @@ function genotype_cell_searcher(x) #when x is output subarray of variant selecti
 end
 
 """
-    dp_cell_searcher(x)
+    dp_cell_searcher(x,index)
 Reads depth selection maf correction.
 x is output subarray of variant selection
 """
-function dp_cell_searcher(x) 
+function dp_cell_searcher(x,index)
 
     for row=1:size(x,1)
 
@@ -117,7 +117,7 @@ function dp_cell_searcher(x)
 
             dp_cell=x[row,col]
             S=split(dp_cell, ":")
-            dp=S[3]
+            dp=S[index]
 
                 if x[row,col] == x[row,col]
                     x[row,col]=dp
@@ -171,11 +171,12 @@ function sig_list_vcf_filter(y,x) #where x = significant list ordered with 23s y
 end
 
 =#
+
 """
     chromosome_range_vcf_filter(x::AbstractString)
 Match chromosome range filter
 """
-function chromosome_range_vcf_filter(x::AbstractString)
+function chromosome_range_vcf_filter(x::AbstractString, vcf)
 
     a=split(x,":")
     chrwhole=a[1]
@@ -315,4 +316,24 @@ function select_columns(x) #where x = ARGS[#] which is name of list of samples t
     vcf = Matrix(vcf)
 
     return vcf
+end
+
+
+#need to start with vcf, replace all cells with dp value as Float64 then make arrays of each col for sum
+
+function avg_dp_patients(x) #where x is dp_matrix
+
+    #array_for_averages=x[:,10:size(x,2)]
+
+    avg_dps_all = Array{Float64}(0)
+
+    for column = 1:size(x,2)
+
+        all_dps_patient = x[1:size(x,1),column]
+        avg_dp = sum(all_dps_patient)
+        push!(avg_dps_all,avg_dp)
+    end
+
+    return avg_dps_all #use this array as input for average_dp plotting function
+
 end
