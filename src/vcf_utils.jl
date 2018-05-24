@@ -18,6 +18,7 @@ Genotype selection with maf correction of genotype
 Note: may need to define vcf first, or get rid of conditional eval
 and set 'maf_sub = maf_list_match_vcf(vcf)' inside function definition
 """
+
 function genotype_cell_searcher_maf_correction(x,index) #when x is output subarray of variant selection
 
     for row = 1:size(x,1)
@@ -132,7 +133,8 @@ end
 """
     sig_list_vcf_filter(y,x)
 Siglist match filter
-x = significant list ordered with 23s y is vcf - y is vcf
+x = significant list ordered with substituted chr X/Y for 23/24
+y is vcf - y is vcf
 """
 function sig_list_vcf_filter(y,x)
 
@@ -220,10 +222,7 @@ end
 
 #phenotype matrix - format must be CSV, 0's will be sorted first
 
-function load_sort_phenotype_matrix(x,y) #when x is ARGS[6] which is phenotype_matrix which is in *CSV format! and y is pheno row to sort on
-
-    global vcf
-    global df_vcf
+function load_sort_phenotype_matrix(x,y,vcf,df_vcf) #when x is ARGS[7] which is phenotype_matrix which is in *CSV format! and y is pheno key to sort on
 
     pheno = readdlm(x, ',')
 
@@ -291,10 +290,10 @@ end
 
 #b) select columns to visualize
 
-function select_columns(x) #where x = ARGS[#] which is name of list of samples to include
+function select_columns(x, vcf, df_vcf) #where x = ARGS[#] which is name of list of samples to include
 
-    global vcf
-    global df_vcf
+    #global vcf
+    #global df_vcf
 
     selectedcolumns=readdlm(x)
 

@@ -53,6 +53,7 @@
 # *** End of outline ***
 
 using DataFrames #use CSV.jl ? depwarnings
+using CSV
 using PlotlyJS
 using Rsvg
 using Blink
@@ -95,7 +96,6 @@ function format_reader(vcf) #when vcf_matrix is vcf
 
 end
 
-
 """
     main(ARGS::Vector{String})
 """
@@ -126,14 +126,15 @@ function main()
     ViVa.clean_column1!(vcf)
 
     for n = 1:size(vcf,1)
-        if vcf[n, 1] != 23
+        #if typeof(vcf) == "String"
+        if vcf[n, 1] != 23 && vcf[n, 1] != 24
         vcf[n, 1] = parse(Int64, vcf[n, 1])
         end
+    #end
     end
 
     #sort rows by chr then chromosome position so are in order of chromosomal architecture
     vcf = sortrows(vcf, by=x->(x[1],x[2]))
-
 
     #1) field selection
 
@@ -146,7 +147,6 @@ function main()
 
     #type_index = typeof(index)
     #println("This is the index: $index it is $type_index type.")
-
 
     #C) Run functions for every possible combination of features
 
@@ -162,15 +162,14 @@ function main()
 
     if ARGS[6] == "reorder_columns"
         #vcf = reorder_columns(ARGS[7])
-        vcf = ViVa.load_sort_phenotype_matrix(ARGS[7],ARGS[11])
+        vcf = ViVa.load_sort_phenotype_matrix(ARGS[7], ARGS[11], vcf, df_vcf)
     end
 
     #c) select columns to visualize
 
     if ARGS[9] == "select_columns"
-        vcf = ViVa.select_columns(ARGS[10])
+        vcf = ViVa.select_columns(ARGS[10], vcf, df_vcf)
     end
-
 
     #2) combinations of field selection and variant selection filters
     #a) genotype / display all variants
@@ -184,7 +183,12 @@ function main()
         array_for_plotly=vcf[:,10:size(vcf,2)]
 
         #define title for plot
-        title = "Genotype Data for All Variants"
+        if ARGS[5] == "pass_only"
+            title = "Genotype Data for All Pass Variants"
+        else
+            title = "Genotype Data for All Variants"
+        end
+
 
         #plot heatmap for genotype and save as format specified by ARGS[2], defaults to pdf
         graphic = ViVa.genotype_heatmap2(array_for_plotly,title)
@@ -206,7 +210,7 @@ function main()
         ***=#
 
     elseif ARGS[3] == "-gt" && ARGS[4] == "-l"
-        df1=DataFrame(vcf)
+        #df1=DataFrame(vcf)
 
         #load siglist file
         siglist_unsorted=readdlm(ARGS[8], ',',skipstart=1)
@@ -263,9 +267,15 @@ function main()
 
         #convert value overwritten vcf into subarray of just values, no annotation/meta info
         array_for_plotly=vcf[:,10:size(vcf,2)]
-        
+
         #define title for plot
-        title = "Read Depth Data for All Variants"
+
+        if ARGS[5] == "pass_only"
+            title = "Read Depth Data for All Pass Variants"
+        else
+            title = "Read Depth Data for All Variants"
+        end
+
 
         #plot heatmap for genotype and save as format specified by ARGS[2], defaults to pdf
         graphic = ViVa.dp_heatmap2(array_for_plotly,title)
@@ -296,7 +306,7 @@ function main()
         siglist=sortrows(siglist_unsorted, by=x->(x[1],x[2]))
 
         #create subarray of vcf per siglist
-        sig_list_subarray_pre=ViVa.sig_list_vcf_filter(siglist)
+        sig_list_subarray_pre=ViVa.sig_list_vcf_filter(siglist, vcf)
 
         #write over vcf to create keyed-values matrix showing genotype
         sig_list_subarray_post=ViVa.dp_cell_searcher(sig_list_subarray_pre,index)
