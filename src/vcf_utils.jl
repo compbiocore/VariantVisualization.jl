@@ -133,10 +133,12 @@ end
 """
     sig_list_vcf_filter(y,x)
 Siglist match filter
-x = significant list ordered with substituted chr X/Y for 23/24
 y is vcf - y is vcf
+x = significant list ordered with substituted chr X/Y for 23/24
+e.g. function(vcf,siglist)
+
 """
-function sig_list_vcf_filter(y,x)
+function sig_list_vcf_filter(y, x)
 
     sig_list_subarray_pre=Array{Any}(0,(size(y,2)))
 

@@ -25,7 +25,7 @@ end
 
 #b) define plotlyJS function for read depth heatmap
 
-function dp_heatmap2(x,title) #when x = array_for_plotly
+function dp_heatmap2(x, title) #when x = array_for_plotly
 
     #max_val=findmax(x)
     #println(max_val)

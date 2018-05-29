@@ -195,19 +195,23 @@ function main()
         extension=ARGS[2] #must define this variable, if use ARGS[2] directly in savefig it is read as String[pdf] or something instead of just "pdf"
         PlotlyJS.savefig(graphic, "all_genotype.$extension")
 
-        #=***
-        activate this block if want to export labeled value matrix for internal team use
+
+        #activate this block if want to export labeled value matrix for internal team use
 
         df_withsamplenames=readtable(ARGS[1], skipstart=skipstart_number, header=false,separator='\t')
         samplenames=df_withsamplenames[1,10:size(df_withsamplenames,2)]
         samplenames=Matrix(samplenames)
+        #chr_heading = "chr"
+        #pos_heading = "position"
+        headings = hcat("chr","position")
+        samplenames = hcat(headings,samplenames)
         chrlabels=vcf[:,1:2]
 
         chr_labeled_array_for_plotly=hcat(chrlabels, array_for_plotly)
         labeled_value_matrix_withsamplenames= vcat(samplenames,chr_labeled_array_for_plotly)
 
         writedlm("labeled_value_matrix.txt", labeled_value_matrix_withsamplenames, "\t")
-        ***=#
+
 
     elseif ARGS[3] == "-gt" && ARGS[4] == "-l"
         #df1=DataFrame(vcf)
@@ -306,10 +310,10 @@ function main()
         siglist=sortrows(siglist_unsorted, by=x->(x[1],x[2]))
 
         #create subarray of vcf per siglist
-        sig_list_subarray_pre=ViVa.sig_list_vcf_filter(siglist, vcf)
+        vcf = ViVa.sig_list_vcf_filter(vcf, siglist)
 
         #write over vcf to create keyed-values matrix showing genotype
-        sig_list_subarray_post=ViVa.dp_cell_searcher(sig_list_subarray_pre,index)
+        sig_list_subarray_post=ViVa.dp_cell_searcher(vcf,index)
 
         #convert value overwritten vcf into subarray of just values, no annotation/meta info
         array_for_plotly=sig_list_subarray_post[:,10:size(sig_list_subarray_post,2)]
