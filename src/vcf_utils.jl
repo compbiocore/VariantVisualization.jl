@@ -349,3 +349,5 @@ function avg_dp_patients(x) #where x is dp_matrix
     return avg_dps_all #use this array as input for average_dp plotting function
 
 end
+
+end

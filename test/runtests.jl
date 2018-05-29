@@ -1,13 +1,14 @@
 module TestViVa
 
-using ViVa
+using ViVa.vcf_utils
+using ViVa.plot_utils
 using DataFrames
 using Base.Test
 
 
 all_tests = [
     ("vcf_utils.jl",   "       Testing: VCF Utils"),
-    ("plot_utils.jl",     "       Testing: Plot Utils")
+#    ("plot_utils.jl",     "       Testing: Plot Utils")
     ]
 
 println("Running tests:")
