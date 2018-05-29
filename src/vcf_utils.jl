@@ -1,3 +1,16 @@
+module vcf_utils
+
+export
+    clean_column1!,
+    genotype_cell_searcher_maf_correction,
+    genotype_cell_searcher,
+    dp_cell_searcher,
+    sig_list_vcf_filter,
+    chromosome_range_vcf_filter,
+    load_sort_phenotype_matrix,
+    reorder_columns,
+    select_columns
+
 """
     clean_column1!(x)
 Replace String "X" and "Y" from chromosome column so all elements are Int64 type
@@ -67,7 +80,7 @@ end
     genotype_cell_searcher(x,index)
 Genotype selection with no maf correction
 """
-function genotype_cell_searcher(x,index) #when x is output subarray of variant selection
+function genotype_cell_searcher(x, index) #when x is output subarray of variant selection
 
         for row=1:size(x,1)
 
@@ -336,5 +349,7 @@ function avg_dp_patients(x) #where x is dp_matrix
     end
 
     return avg_dps_all #use this array as input for average_dp plotting function
+
+end
 
 end
