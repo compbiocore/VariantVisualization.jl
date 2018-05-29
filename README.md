@@ -30,19 +30,19 @@ ARGS[11] = phenotype to sort columns by (used by ARGS[7]) (e.g. case_control_sta
 This is a command line example for visualizing genotype of variants which passed QC filters within a chromosome range across a selected group of samples grouped by case_control_status:
 
 ```julia
-julia masterv0.1.jl file.vcf pdf -gt -r pass_only reorder_columns phenotype_matrix.csv chr1:10000000-15000000 select_columns sample_names.tsv case_control_status
+julia viva_main.jl toyfile.vcf pdf -gt -r pass_only reorder_columns phenotype_matrix.csv chr1:10000000-15000000 select_columns sample_names.tsv case_control_status
 ```
 
-### Example 2: 
+### Example 2:
 This is a command line example for visualizing read depth for all variants with no filters applied:
 
 ```julia
-julia masterv0.1.jl file.vcf pdf -d -a . . . . . . .
+julia viva_main.jl file.vcf pdf -d -a . . . . . . .
 ```
 
-### Example 2: 
+### Example 2:
 This is a command line example for visualizing read depth for all variants with sample columns grouped by case_control_status
 
 ```julia
-julia masterv0.1.jl file.vcf pdf -d -a . reorder_columns phenotype_matrix.csv . . . case_control_status
+julia viva_main.jl file.vcf pdf -d -a . reorder_columns phenotype_matrix.csv . . . case_control_status
 ```

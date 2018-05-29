@@ -26,12 +26,13 @@ function clean_column1!(x)
 end
 
 """
-    genotype_cell_searcher_maf_correction(x)
+    genotype_cell_searcher_maf_correction(x,index)
 Genotype selection with maf correction of genotype
 Note: may need to define vcf first, or get rid of conditional eval
 and set 'maf_sub = maf_list_match_vcf(vcf)' inside function definition
 """
-function genotype_cell_searcher_maf_correction(x) #when x is output subarray of variant selection
+
+function genotype_cell_searcher_maf_correction(x,index) #when x is output subarray of variant selection
 
     for row = 1:size(x,1)
 
@@ -76,12 +77,12 @@ function genotype_cell_searcher_maf_correction(x) #when x is output subarray of 
 end
 
 """
-    genotype_cell_searcher(x)
+    genotype_cell_searcher(x,index)
 Genotype selection with no maf correction
 """
 function genotype_cell_searcher(x, index) #when x is output subarray of variant selection
 
-    for row=1:size(x,1)
+        for row=1:size(x,1)
 
         for col = 10:size(x,2)
 
@@ -118,11 +119,11 @@ function genotype_cell_searcher(x, index) #when x is output subarray of variant 
 end
 
 """
-    dp_cell_searcher(x)
+    dp_cell_searcher(x,index)
 Reads depth selection maf correction.
 x is output subarray of variant selection
 """
-function dp_cell_searcher(x)
+function dp_cell_searcher(x,index)
 
     for row=1:size(x,1)
 
@@ -130,7 +131,7 @@ function dp_cell_searcher(x)
 
             dp_cell=x[row,col]
             S=split(dp_cell, ":")
-            dp=S[3]
+            dp=S[index]
 
                 if x[row,col] == x[row,col]
                     x[row,col]=dp
@@ -145,7 +146,8 @@ end
 """
     sig_list_vcf_filter(y,x)
 Siglist match filter
-x = significant list ordered with 23s y is vcf - y is vcf
+x = significant list ordered with substituted chr X/Y for 23/24
+y is vcf - y is vcf
 """
 function sig_list_vcf_filter(y,x)
 
@@ -184,11 +186,12 @@ function sig_list_vcf_filter(y,x) #where x = significant list ordered with 23s y
 end
 
 =#
+
 """
     chromosome_range_vcf_filter(x::AbstractString)
 Match chromosome range filter
 """
-function chromosome_range_vcf_filter(x::AbstractString)
+function chromosome_range_vcf_filter(x::AbstractString, vcf)
 
     a=split(x,":")
     chrwhole=a[1]
@@ -232,10 +235,7 @@ end
 
 #phenotype matrix - format must be CSV, 0's will be sorted first
 
-function load_sort_phenotype_matrix(x,y) #when x is ARGS[6] which is phenotype_matrix which is in *CSV format! and y is pheno row to sort on
-
-    global vcf
-    global df_vcf
+function load_sort_phenotype_matrix(x,y,vcf,df_vcf) #when x is ARGS[7] which is phenotype_matrix which is in *CSV format! and y is pheno key to sort on
 
     pheno = readdlm(x, ',')
 
@@ -303,10 +303,10 @@ end
 
 #b) select columns to visualize
 
-function select_columns(x) #where x = ARGS[#] which is name of list of samples to include
+function select_columns(x, vcf, df_vcf) #where x = ARGS[#] which is name of list of samples to include
 
-    global vcf
-    global df_vcf
+    #global vcf
+    #global df_vcf
 
     selectedcolumns=readdlm(x)
 
@@ -329,5 +329,23 @@ function select_columns(x) #where x = ARGS[#] which is name of list of samples t
 
     return vcf
 end
+
+
+#need to start with vcf, replace all cells with dp value as Float64 then make arrays of each col for sum
+
+function avg_dp_patients(x) #where x is dp_matrix
+
+    #array_for_averages=x[:,10:size(x,2)]
+
+    avg_dps_all = Array{Float64}(0)
+
+    for column = 1:size(x,2)
+
+        all_dps_patient = x[1:size(x,1),column]
+        avg_dp = sum(all_dps_patient)
+        push!(avg_dps_all,avg_dp)
+    end
+
+    return avg_dps_all #use this array as input for average_dp plotting function
 
 end
