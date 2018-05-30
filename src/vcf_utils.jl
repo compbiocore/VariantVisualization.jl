@@ -17,6 +17,7 @@ Replace String "X" and "Y" from chromosome column so all elements are Int64 type
 Replaces "X" and "Y" with Int64 23 and 24, rest of chr numbers are not loaded as
 Int64 and need to be same type
 """
+
 function clean_column1!(x)
     n = size(x, 1)
     for i = 1:n
@@ -81,7 +82,7 @@ end
 Genotype selection with no maf correction
 """
 function genotype_cell_searcher(x, index) #when x is output subarray of variant selection
-
+        println(typeof(x))
         for row=1:size(x,1)
 
         for col = 10:size(x,2)

@@ -59,6 +59,11 @@ using Rsvg
 using Blink
 using ViVa
 
+const g_white = "400" #homo reference 0/0
+const g_red = "800" #homo variant 1/1 1/2 2/2 1/3 2/3 3/3 4/4 5/5 6/6 etc
+const g_pink = "600" #hetero variant 0/1 1/0 0/2 2/0 etc
+const g_blue = "0" #no call ./.
+
 """
     format_reader()
 Gets index of fields to visualize
@@ -194,7 +199,6 @@ function main()
         graphic = ViVa.genotype_heatmap2(array_for_plotly,title)
         extension=ARGS[2] #must define this variable, if use ARGS[2] directly in savefig it is read as String[pdf] or something instead of just "pdf"
         PlotlyJS.savefig(graphic, "all_genotype.$extension")
-
 
         #activate this block if want to export labeled value matrix for internal team use
 

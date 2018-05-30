@@ -1,6 +1,6 @@
 #A.) load and clean VCF
 
-function load_vcf(x) #where x is vcf file name to upload 
+function load_vcf(x) #where x is vcf file name to upload
   readvcf = readlines(x)
 
   for row = 1:size(readvcf,1)
@@ -23,7 +23,6 @@ function load_vcf(x) #where x is vcf file name to upload
 
   #2) data cleaning
   ViVa.clean_column1!(vcf)
-
 
   for n = 1:size(vcf,1)
       #if typeof(vcf) == "String"
