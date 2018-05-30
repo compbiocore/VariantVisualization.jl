@@ -1,7 +1,7 @@
 module TestViVa
 
-using ViVa.vcf_utils
-using ViVa.plot_utils
+using ViVa
+
 using DataFrames
 using Base.Test
 

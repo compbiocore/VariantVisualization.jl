@@ -1,10 +1,6 @@
 #4) plotting functions
 
 #a) define plotlyJS function for genotype heatmap
-module plot_utils
-
-export genotype_heatmap2,
-       dp_heatmap2
 
 function genotype_heatmap2(x,title) #when x = array_for_plotly
 
@@ -56,7 +52,4 @@ function dp_heatmap2(x,title) #when x = array_for_plotly
 
     data = (trace)
     plot(data,layout) #call plot type and layout with all attributes to plot function
-end
-
-
 end
