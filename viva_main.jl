@@ -83,9 +83,9 @@ function format_reader(vcf) #when vcf_matrix is vcf
     pl_index = find(x -> x == "PL",s)
     mq_index = find(x -> x == "MQ",s)
 
-        if ARGS[3] == "-gt"
+        if ARGS[3] == "genotype"
             index = gt_index
-        elseif ARGS[3] == "-dp"
+        elseif ARGS[3] == "read_depth"
             index = dp_index
         elseif ARGS[3] == "-gq"
             index = gq_index
@@ -179,7 +179,7 @@ function main()
     #2) combinations of field selection and variant selection filters
     #a) genotype / display all variants
 
-    if ARGS[3] == "-gt" && ARGS[4] == "-a"
+    if ARGS[3] == "genotype" && ARGS[4] == "all"
 
         #replace cells of vcf file with representative values for field chosen (genotype value)
         vcf = ViVa.genotype_cell_searcher(vcf,index)
@@ -217,7 +217,7 @@ function main()
         writedlm("labeled_value_matrix.txt", labeled_value_matrix_withsamplenames, "\t")
 
 
-    elseif ARGS[3] == "-gt" && ARGS[4] == "-l"
+    elseif ARGS[3] == "genotype" && ARGS[4] == "list"
         #df1=DataFrame(vcf)
 
         #load siglist file
@@ -242,7 +242,7 @@ function main()
         extension=ARGS[2] #must define this variable, if use ARGS[5] directly in savefig it is read as String[pdf] or something instead of just "pdf"
         PlotlyJS.savefig(graphic, "siglist_genotype.$extension")
 
-    elseif ARGS[3] == "-gt" && ARGS[4] == "-r"
+    elseif ARGS[3] == "genotype" && ARGS[4] == "range"
 
         #define range of variants to visualize
         chr_range = ARGS[8]
@@ -268,7 +268,7 @@ function main()
         extension=ARGS[2] #must define this variable, if use ARGS[2] directly in savefig it is read as String[pdf] or something instead of just "pdf"
         PlotlyJS.savefig(graphic, "chr_range_genotype.$extension")
 
-    elseif ARGS[3] == "-dp" && ARGS[4] == "-a"
+    elseif ARGS[3] == "read_depth" && ARGS[4] == "all"
 
         #replace cells of vcf file with representative values for field chosen (genotype value)
         vcf = ViVa.dp_cell_searcher(vcf,index)
@@ -304,7 +304,7 @@ function main()
         writedlm("labeled_value_matrix.txt", labeled_value_matrix_withsamplenames, "\t")
         ***=#
 
-    elseif ARGS[3] == "-dp" && ARGS[4] == "-l"
+    elseif ARGS[3] == "read_depth" && ARGS[4] == "list"
 
         #load siglist file
         siglist_unsorted=readdlm(ARGS[8], ',',skipstart=1)
@@ -328,7 +328,7 @@ function main()
         extension=ARGS[2] #must define this variable, if use ARGS[2] directly in savefig it is read as String[pdf] or something instead of just "pdf"
         PlotlyJS.savefig(graphic, "siglist_readdepth.$extension")
 
-    elseif ARGS[3] == "-dp" && ARGS[4] == "-r"
+    elseif ARGS[3] == "read_depth" && ARGS[4] == "range"
 
         #define range of variants to visualize
         chr_range = ARGS[8]

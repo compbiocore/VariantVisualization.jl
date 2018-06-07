@@ -18,6 +18,8 @@ const g_blue = "0" #no call ./.
 
 
 export
+    format_reader,
+    load_vcf,
     clean_column1!,
     genotype_cell_searcher_maf_correction,
     genotype_cell_searcher,
@@ -30,9 +32,8 @@ export
     genotype_heatmap2,
     dp_heatmap2
 
-
 include("vcf_utils.jl")
 include("plot_utils.jl")
-
+include("notebook_utils.jl")
 
 end # module

@@ -1,3 +1,98 @@
+"""
+    format_reader(x)
+find index of chosen field to visualize
+genotype is always index split(cell)[1]
+
+"""
+
+function format_reader(vcf,element) #when vcf_matrix is vcf
+    format = vcf[1,9]
+
+    s = split(format,":")
+    gt_index = find(x -> x == "GT",s)
+    dp_index = find(x -> x == "DP",s)
+    gq_index = find(x -> x == "GQ",s) #genotype quality - look at annotated pdf to determine how to interpret
+    pl_index = find(x -> x == "PL",s)
+    mq_index = find(x -> x == "MQ",s)
+
+        if element == "genotype"
+            index = gt_index
+        elseif element == "read_depth"
+            index = dp_index
+        elseif element == "-gq"
+            index = gq_index
+        elseif element == "-pl"
+            index = pl_index
+        elseif element == "-mq"
+            index = mq_index
+        end
+
+        index = index[1]
+
+    return index
+
+end
+
+"""
+    load_vcf(x)
+Load vcf file, clean and sort by chromosome position.
+Where x is vcf file name to upload.
+
+returns matrix and dataframe - vcf,df_vcf = load_vcf(x)
+
+element = load_vcf(x)
+df_vcf = element[2]
+vcf = element[1]
+
+"""
+
+function load_vcf(x)
+  readvcf = readlines(x)
+
+  for row = 1:size(readvcf,1)
+
+      if contains(readvcf[row], "#CHROM")
+          header_col = row
+          global header_col
+          header_string = readvcf[row]
+      end
+  end
+
+  skipstart_number=header_col-1 #this allows vcf to be loaded by readtable, the META lines at beginning of file start with "##" and interfere with readtable function - need readtable vs readdlm for reorder columns
+  df_vcf=readtable(x, skipstart=skipstart_number, separator='\t')
+
+  vcf=Matrix(df_vcf)
+
+  #load vcf as dataframe twice: once to use for matrix and other to pull header info from
+  #df_vcf=readtable(x, skipstart=skipstart_number, separator='\t')
+
+  #2) data cleaning
+  ViVa.clean_column1!(vcf)
+
+
+  for n = 1:size(vcf,1)
+      #if typeof(vcf) == "String"
+      if vcf[n, 1] != 23 && vcf[n, 1] != 24
+      vcf[n, 1] = parse(Int64, vcf[n, 1])
+      end
+  #end
+  end
+
+  #sort rows by chr then chromosome position so are in order of chromosomal architecture
+  vcf = sortrows(vcf, by=x->(x[1],x[2]))
+
+  #1) field selection
+
+  #a) FORMAT reader - get index of fields to visualize
+
+    #***once genotype is selected, run format_reader on vcf to get field index
+    #global index = format_reader(vcf)
+    #return index
+
+return vcf,df_vcf
+#return df_vcf #QUESTION for THURSDAY - how to return two variables and define df_vcf when call load_vcf function for use in reorder_columns function
+
+end
 
 """
     clean_column1!(x)
