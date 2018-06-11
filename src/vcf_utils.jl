@@ -68,7 +68,7 @@ function load_vcf(x)
 
   #2) data cleaning
   ViVa.clean_column1!(vcf)
-
+  
 
   for n = 1:size(vcf,1)
       #if typeof(vcf) == "String"

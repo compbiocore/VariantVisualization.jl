@@ -7,16 +7,26 @@ const g_red = "800" #homo variant 1/1 1/2 2/2 1/3 2/3 3/3 4/4 5/5 6/6 etc
 const g_pink = "600" #hetero variant 0/1 1/0 0/2 2/0 etc
 const g_blue = "0" #no call ./.
 
+#red [1, "rgb(255,9,9)"]],
+# yellow [1, "rgb(255,244,32)"]],
+
 function genotype_heatmap2(x,title) #when x = array_for_plotly
 
     trace=heatmap(
         z = x,
         transpose=true,
-        #colorscale = "Picnic",
-        colorscale = "Rainbow",
+        colorscale = "readdepth_colors",
+        colorscale = [[0, "rgb(255,255,255)"], #choose colors and run all 6 graphics in am - replace in presentation
+                     [0.5, "rgb(160,227,250)"],
+                     [0.75, "rgb(52,36,242)"],
+                     [1, "rgb(255,9,249)"]],
         gridcolor = "#E2E2E2",
         showscale = true
         );
+#0 = 0
+#400 = 0.5
+#600 = 0.75
+#800 = 1
 
     layout = Layout(
                     title = "$title",#defines title of plot

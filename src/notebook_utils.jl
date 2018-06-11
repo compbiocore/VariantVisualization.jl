@@ -1,3 +1,23 @@
+
+function variant_filter!(variant_filter::String, vcf::Matrix, list="", chr_range="")
+    if variant_filter == "pass_only"
+        vcf=vcf[(vcf[:,7].== "PASS"),:]
+    elseif variant_filter == "list"
+        #function to filter vcf with list
+    elseif variant_filter == "range"
+        if chr_range == ""
+            println("Enter a chromosome range")
+        else
+            chr_range = range
+            println("selecting variants within $chr_range")
+            vcf = ViVa.chromosome_range_vcf_filter(chr_range,vcf)
+        end
+
+    end
+    return vcf
+end
+
+
 """
 jupyter_main(vcf_filename,field_to_visualize,variant_filter,sample_filter,save_format,plot_title)
 
@@ -20,7 +40,13 @@ vcf = original_vcf
 #B)Apply filters # issue - if vector need to use in, if string need to use contains() / sample_filters may be both - how to conditionally use correct function
 
 #1)Variant filters
+
 for i = 1:size(variant_filter,1)
+    vcf = filter(variant_filter[i], vcf)
+end
+
+for i = 1:size(variant_filter,1)
+
     if variant_filter[i] == "pass_only"
         println("selecting pass_only variants")
         vcf=vcf[(vcf[:,7].== "PASS"),:]
