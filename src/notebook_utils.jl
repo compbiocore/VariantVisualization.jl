@@ -8,7 +8,7 @@ function variant_filter!(variant_filter::String, vcf::Matrix, list="", chr_range
         if chr_range == ""
             println("Enter a chromosome range")
         else
-            chr_range = range
+            chr_range = #regex to confirm ch1:20000000-30000000
             println("selecting variants within $chr_range")
             vcf = ViVa.chromosome_range_vcf_filter(chr_range,vcf)
         end
@@ -25,6 +25,7 @@ filters, plots visualization, and saves as figure.
 utilizes all global variables set in first cell of jupyter notebook
 
 """
+
 function jupyter_main(vcf_filename,field_to_visualize,variant_filter,sample_filter,save_format,plot_title)
 
 #A)Load vcf and identify field index
@@ -41,9 +42,13 @@ vcf = original_vcf
 
 #1)Variant filters
 
+#=
 for i = 1:size(variant_filter,1)
     vcf = filter(variant_filter[i], vcf)
 end
+=#
+
+if typeof(variant_filter) != "String"
 
 for i = 1:size(variant_filter,1)
 
@@ -66,11 +71,25 @@ for i = 1:size(variant_filter,1)
         siglist = sortrows(siglist_unsorted, by=x->(x[1],x[2]))
 
         return siglist
-        end
+    end
 
-        siglist = (load_siglist(siglist_file))
+    siglist = (load_siglist(siglist_file))
 
-        vcf = ViVa.sig_list_vcf_filter(vcf,siglist)
+    vcf = ViVa.sig_list_vcf_filter(vcf,siglist)
+
+end
+end
+
+else 
+    if variant_filter == "pass_only"
+        println("selecting pass_only variants")
+        vcf=vcf[(vcf[:,7].== "PASS"),:]
+
+    elseif variant_filter == "range"
+        println("you must enter a chromosome range in format chr1:20000000-30000000")
+
+    elseif variant_filter[i] == "list"
+        println("you must enter a list filename in tab delimited format")
 
     end
 end

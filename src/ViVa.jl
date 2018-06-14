@@ -4,6 +4,7 @@ using DataFrames #use CSV.jl ? depwarnings
 using PlotlyJS
 using Rsvg
 using Blink
+using CSV
 
 #include("vcf_utils.jl")
 #include("plot_utils.jl")

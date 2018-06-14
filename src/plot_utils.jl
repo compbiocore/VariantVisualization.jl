@@ -23,10 +23,6 @@ function genotype_heatmap2(x,title) #when x = array_for_plotly
         gridcolor = "#E2E2E2",
         showscale = true
         );
-#0 = 0
-#400 = 0.5
-#600 = 0.75
-#800 = 1
 
     layout = Layout(
                     title = "$title",#defines title of plot

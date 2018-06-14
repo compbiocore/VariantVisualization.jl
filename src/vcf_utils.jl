@@ -59,8 +59,13 @@ function load_vcf(x)
   end
 
   skipstart_number=header_col-1 #this allows vcf to be loaded by readtable, the META lines at beginning of file start with "##" and interfere with readtable function - need readtable vs readdlm for reorder columns
-  df_vcf=readtable(x, skipstart=skipstart_number, separator='\t')
 
+  #df_vcf=readtable(x, skipstart=skipstart_number, separator='\t')
+
+  #can remove Base redefine methods for promote rule once fix is in place
+  df_vcf = CSV.read(x, delim="\t", datarow = header_col+1, header = header_col, types=Dict(1=>String))
+  Base.promote_rule(::Type{C}, ::Type{Any}) where {C <: CategoricalArrays.CatValue} = Any #remove this eventually
+  println(df_vcf)
   vcf=Matrix(df_vcf)
 
   #load vcf as dataframe twice: once to use for matrix and other to pull header info from
@@ -68,7 +73,6 @@ function load_vcf(x)
 
   #2) data cleaning
   ViVa.clean_column1!(vcf)
-  
 
   for n = 1:size(vcf,1)
       #if typeof(vcf) == "String"
@@ -216,14 +220,18 @@ function dp_cell_searcher(x,index)
             dp_cell=x[row,col]
             S=split(dp_cell, ":")
             dp=S[index]
-
-                if x[row,col] == x[row,col]
+            if x[row,col] == x[row,col]
+                x[row,col]=dp
+            end
+#= set max dp value - need to fix type issue first - categoricalarray of categorical strings cant be used in isless function  - how to set type in CSV>read function for ALL columns
+                if x[row,col] > 200
+                    x[row,col] = 200
+                elseif x[row,col] == x[row,col]
                     x[row,col]=dp
                 end
-
+=#
         end
     end
-
     return x
 end
 

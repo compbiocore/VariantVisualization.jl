@@ -119,9 +119,21 @@ function main()
     end
 
     skipstart_number=header_col-1 #this allows vcf to be loaded by readtable, the META lines at beginning of file start with "##" and interfere with readtable function - need readtable vs readdlm for reorder columns
-    df_vcf=readtable(ARGS[1], skipstart=skipstart_number, separator='\t')
+    #df_vcf=readtable(ARGS[1], skipstart=skipstart_number, separator='\t')
+
+    #create dataframe with CSV.jl
+    df_vcf = CSV.read(ARGS[1], delim="\t", datarow = header_col+1, header = header_col, types=Dict(1=>String))
+
+    #convert dataframe to matrix - must modify promote_rule to fix ambiguity in Missings in CategoricalArrays
+    function tryeval1()
+               @eval newfun2() = Base.promote_rule(::Type{C}, ::Type{Any}) where {C <: CategoricalArrays.CatValue} = Any
+               Base.invokelatest(newfun2)
+           end
+           tryeval1()
 
     vcf=Matrix(df_vcf)
+
+    #cf=Matrix(df_vcf)
 
     #load vcf as dataframe twice: once to use for matrix and other to pull header info from
 
@@ -200,9 +212,14 @@ function main()
         extension=ARGS[2] #must define this variable, if use ARGS[2] directly in savefig it is read as String[pdf] or something instead of just "pdf"
         PlotlyJS.savefig(graphic, "all_genotype.$extension")
 
-        #activate this block if want to export labeled value matrix for internal team use
+        #=activate this block if want to export labeled value matrix for internal team use
 
-        df_withsamplenames=readtable(ARGS[1], skipstart=skipstart_number, header=false,separator='\t')
+        #df_withsamplenames=readtable(ARGS[1], skipstart=skipstart_number, header=false,separator='\t')
+        df_withsamplenames = CSV.read(vcf_filename, delim="\t", datarow = header_col+1, header = false, types=Dict(1=>String))
+
+        Base.promote_rule(::Type{C}, ::Type{Any}) where {C <: CategoricalArrays.CatValue} = Any
+        vcf=Matrix(df_withsamplenames)
+
         samplenames=df_withsamplenames[1,10:size(df_withsamplenames,2)]
         samplenames=Matrix(samplenames)
         #chr_heading = "chr"
@@ -215,7 +232,7 @@ function main()
         labeled_value_matrix_withsamplenames= vcat(samplenames,chr_labeled_array_for_plotly)
 
         writedlm("labeled_value_matrix.txt", labeled_value_matrix_withsamplenames, "\t")
-
+=#
 
     elseif ARGS[3] == "genotype" && ARGS[4] == "list"
         #df1=DataFrame(vcf)
