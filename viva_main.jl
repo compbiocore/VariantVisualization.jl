@@ -122,16 +122,17 @@ function main()
     #df_vcf=readtable(ARGS[1], skipstart=skipstart_number, separator='\t')
 
     #create dataframe with CSV.jl
-    df_vcf = CSV.read(ARGS[1], delim="\t", datarow = header_col+1, header = header_col, types=Dict(1=>String))
+    df_vcf = CSV.read(ARGS[1], delim="\t", datarow = header_col+1, categorical=false, header = header_col, types=Dict(1=>String))
 
-    #convert dataframe to matrix - must modify promote_rule to fix ambiguity in Missings in CategoricalArrays
+    #=convert dataframe to matrix - must modify promote_rule to fix ambiguity in Missings in CategoricalArrays
     function tryeval1()
                @eval newfun2() = Base.promote_rule(::Type{C}, ::Type{Any}) where {C <: CategoricalArrays.CatValue} = Any
                Base.invokelatest(newfun2)
            end
            tryeval1()
-
+=#
     vcf=Matrix(df_vcf)
+    println(vcf[1,:])
 
     #cf=Matrix(df_vcf)
 

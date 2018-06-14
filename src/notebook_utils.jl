@@ -80,7 +80,7 @@ for i = 1:size(variant_filter,1)
 end
 end
 
-else 
+else
     if variant_filter == "pass_only"
         println("selecting pass_only variants")
         vcf=vcf[(vcf[:,7].== "PASS"),:]
