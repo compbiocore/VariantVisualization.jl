@@ -65,47 +65,11 @@ const g_pink = "600" #hetero variant 0/1 1/0 0/2 2/0 etc
 const g_blue = "0" #no call ./.
 
 """
-    format_reader()
-Gets index of fields to visualize
-
-What features to visualize from INFO field - or others - if FORMAT / genotype info isn't included
-index other data per variant for bars
-check if format col is included, if so - run function, if not are there cells for each sample? I don't think so - check this.
-"""
-
-function format_reader(vcf) #when vcf_matrix is vcf
-    format = vcf[1,9]
-
-    s = split(format,":")
-    gt_index = find(x -> x == "GT",s)
-    dp_index = find(x -> x == "DP",s)
-    gq_index = find(x -> x == "GQ",s) #genotype quality - look at annotated pdf to determine how to interpret
-    pl_index = find(x -> x == "PL",s)
-    mq_index = find(x -> x == "MQ",s)
-
-        if ARGS[3] == "genotype"
-            index = gt_index
-        elseif ARGS[3] == "read_depth"
-            index = dp_index
-        elseif ARGS[3] == "-gq"
-            index = gq_index
-        elseif ARGS[3] == "-pl"
-            index = pl_index
-        elseif ARGS[3] == "-mq"
-            index = mq_index
-        end
-
-        index = index[1]
-
-    return index
-
-end
-
-"""
     main(ARGS::Vector{String})
 """
 function main()
 
+#=
     #A.) load and clean VCF
     readvcf = readlines(ARGS[1])
 
@@ -124,15 +88,7 @@ function main()
     #create dataframe with CSV.jl
     df_vcf = CSV.read(ARGS[1], delim="\t", datarow = header_col+1, categorical=false, header = header_col, types=Dict(1=>String))
 
-    #=convert dataframe to matrix - must modify promote_rule to fix ambiguity in Missings in CategoricalArrays
-    function tryeval1()
-               @eval newfun2() = Base.promote_rule(::Type{C}, ::Type{Any}) where {C <: CategoricalArrays.CatValue} = Any
-               Base.invokelatest(newfun2)
-           end
-           tryeval1()
-=#
     vcf=Matrix(df_vcf)
-    println(vcf[1,:])
 
     #cf=Matrix(df_vcf)
 
@@ -154,6 +110,29 @@ function main()
     #sort rows by chr then chromosome position so are in order of chromosomal architecture
     vcf = sortrows(vcf, by=x->(x[1],x[2]))
 
+    vcf = load_vcf(ARGS[1])
+
+
+=#
+    #=convert dataframe to matrix - must modify promote_rule to fix ambiguity in Missings in CategoricalArrays
+    function tryeval1()
+               @eval newfun2() = Base.promote_rule(::Type{C}, ::Type{Any}) where {C <: CategoricalArrays.CatValue} = Any
+               Base.invokelatest(newfun2)
+           end
+           tryeval1()
+=#
+
+vcf_tuple = ViVa.load_vcf(ARGS[1])
+original_vcf = vcf_tuple[1]
+df_vcf = vcf_tuple[2]
+
+vcf = original_vcf
+
+index = ViVa.format_reader(vcf, ARGS[3])
+
+#retain original version of vcf for second run
+
+
     #1) field selection
 
     #a) FORMAT reader - get index of fields to visualize
@@ -161,7 +140,7 @@ function main()
     #what features to visualize from INFO field - or others - if FORMAT / genotype info isn't included
     #index other data per variant for bars
     #check if format col is included, if so - run function, if not are there cells for each sample? I don't think so - check this.
-    global index = format_reader(vcf)
+    global index = format_reader(vcf,ARGS[3])
 
     #type_index = typeof(index)
     #println("This is the index: $index it is $type_index type.")
