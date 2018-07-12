@@ -33,10 +33,10 @@ vcf_tuple = ViVa.load_vcf(vcf_filename)
 original_vcf = vcf_tuple[1]
 df_vcf = vcf_tuple[2]
 
-index = ViVa.format_reader(original_vcf, field_to_visualize)
-
-#retain original version of vcf for second run
+#redefine origincal vcf as vcf to retain original version of vcf for multiple runs
 vcf = original_vcf
+
+index = ViVa.format_reader(vcf, field_to_visualize)
 
 #B)Apply filters # issue - if vector need to use in, if string need to use contains() / sample_filters may be both - how to conditionally use correct function
 

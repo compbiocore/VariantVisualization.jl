@@ -58,12 +58,12 @@ using PlotlyJS
 using Rsvg
 using Blink
 using ViVa
-
-const g_white = "400" #homo reference 0/0
-const g_red = "800" #homo variant 1/1 1/2 2/2 1/3 2/3 3/3 4/4 5/5 6/6 etc
-const g_pink = "600" #hetero variant 0/1 1/0 0/2 2/0 etc
-const g_blue = "0" #no call ./.
-
+#=
+const g_white = 400 #homo reference 0/0
+const g_red = 800 #homo variant 1/1 1/2 2/2 1/3 2/3 3/3 4/4 5/5 6/6 etc
+const g_pink = 600 #hetero variant 0/1 1/0 0/2 2/0 etc
+const g_blue = 0 #no call ./.
+=#
 """
     main(ARGS::Vector{String})
 """
@@ -175,6 +175,8 @@ index = ViVa.format_reader(vcf, ARGS[3])
 
         #replace cells of vcf file with representative values for field chosen (genotype value)
         vcf = ViVa.genotype_cell_searcher(vcf,index)
+
+        println(typeof(vcf[2,40]))
 
         #convert value overwritten vcf into subarray of just values, no annotation/meta info
         array_for_plotly=vcf[:,10:size(vcf,2)]

@@ -62,10 +62,9 @@ function load_vcf(x)
 
   #df_vcf=readtable(x, skipstart=skipstart_number, separator='\t')
 
-#can remove Base redefine methods for promote rule once fix is in place
+  #can remove Base redefine methods for promote rule once fix is in place
   df_vcf = CSV.read(x, delim="\t", datarow = header_col+1, header = header_col, categorical=false, types=Dict(1=>String))
- # Base.promote_rule(::Type{C}, ::Type{Any}) where {C <: CategoricalArrays.CatValue} = Any #remove this eventually
-
+  # Base.promote_rule(::Type{C}, ::Type{Any}) where {C <: CategoricalArrays.CatValue} = Any #remove this eventually
 
   vcf=Matrix(df_vcf)
 

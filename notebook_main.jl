@@ -44,15 +44,6 @@ for i = 1:size(variant_filter,1)
     elseif variant_filter[i] == "list"
         siglist_file = variant_filter[i+1]
 
-        function load_siglist(x)
-
-        siglist_unsorted = readdlm(siglist_file, ',', skipstart=1)
-        ViVa.clean_column1!(siglist_unsorted)
-        siglist = sortrows(siglist_unsorted, by=x->(x[1],x[2]))
-
-        return siglist
-        end
-
         siglist = (load_siglist(siglist_file))
 
         vcf = ViVa.sig_list_vcf_filter(vcf,siglist)

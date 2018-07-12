@@ -2,10 +2,10 @@
 
 #a) define plotlyJS function for genotype heatmap
 #call these constant variables in from module - how?
-const g_white = "400" #homo reference 0/0
-const g_red = "800" #homo variant 1/1 1/2 2/2 1/3 2/3 3/3 4/4 5/5 6/6 etc
-const g_pink = "600" #hetero variant 0/1 1/0 0/2 2/0 etc
-const g_blue = "0" #no call ./.
+g_white = 400 #homo reference 0/0
+g_red = 800 #homo variant 1/1 1/2 2/2 1/3 2/3 3/3 4/4 5/5 6/6 etc
+g_pink = 600 #hetero variant 0/1 1/0 0/2 2/0 etc
+g_blue = 0 #no call ./.
 
 #red [1, "rgb(255,9,9)"]],
 # yellow [1, "rgb(255,244,32)"]],
@@ -32,7 +32,7 @@ function genotype_heatmap2(x,title) #when x = array_for_plotly
     )
 
     data = (trace)
-    plot(data,layout) #call plot type and layout with all attributes to plot function
+        plot(data,layout) #call plot type and layout with all attributes to plot function
 end
 
 #b) define plotlyJS function for read depth heatmap

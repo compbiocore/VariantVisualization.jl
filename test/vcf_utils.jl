@@ -69,40 +69,40 @@ vcf_filename = "variants.filtered.191_joint.vcf"
 
         vcf = vcf_tuple[1]
 
-        #=not working - but works in command line - try making sure all items in col_new_order are Symbols
+        #not working - but works in command line - try making sure all items in col_new_order are Symbols
         @testset "load_sort_phenotype_matrix(x::AbstractString, y::AbstractString,vcf::Array,df_vcf::DataFrame)" begin
             pheno_matrix = "sample_phenotype_matrix.csv"
             vcf = load_sort_phenotype_matrix(pheno_matrix, "case_control_status", vcf, vcf_df)
-            #@test vcf[1,10] =  "./.:0,0:0"
+            @test vcf[1,10] ==  "./.:0,0:0"
             cell_contents = split(vcf[1,10],":")
-            #@test cell_contents[1] == "./."
-            #@test vcf[1,2] == 11994687
+            @test cell_contents[1] == "./."
+            @test vcf[1,2] == 11994687
         end
 
 
         @testset "select_columns(x::AbstractString, vcf::Array, df_vcf::DataFrame)" begin
 
         vcf = select_columns("select_column_list.txt", vcf, vcf_df)
-
         @test vcf[1,14] == "0/0:1,0:1:3:0,3,27"
         #println(typeof(vcf[2,10]))
         end
-        =#
+
+        vcf = vcf_tuple[1]
 
         @testset "genotype_cell_searcher(x::Array{Any,2}, index::Int64)" begin
 
-        value_matrix = genotype_cell_searcher(vcf, 1)
+        vcf_copy_gt = copy(vcf)
+        value_matrix = genotype_cell_searcher(vcf_copy_gt, 1)
         @test value_matrix[1,10] == 400
         @test size(value_matrix) == (24146, 200)
         end
 
         @testset "dp_cell_searcher(x::Matrix{Any}, index::Int64)" begin
 
-        value_matrix = dp_cell_searcher(vcf, 3)
-        println(value_matrix[1,10])
-        println(size(value_matrix))
-        #@test value_matrix[1,10] == 400
-        #@test size(value_matrix) == (24146, 14)
+        vcf_copy_dp = copy(vcf)
+        value_matrix_dp = dp_cell_searcher(vcf_copy_dp, 3)
+        @test value_matrix_dp[1,10] == "4" #does this plot***
+        @test size(value_matrix_dp) == (24146, 200)
         end
 
     end

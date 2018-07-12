@@ -11,12 +11,12 @@ using CSV
 
 #end #module
 
-
+#=
 const g_white = "400" #homo reference 0/0
 const g_red = "800" #homo variant 1/1 1/2 2/2 1/3 2/3 3/3 4/4 5/5 6/6 etc
 const g_pink = "600" #hetero variant 0/1 1/0 0/2 2/0 etc
 const g_blue = "0" #no call ./.
-
+=#
 
 export
     format_reader,
@@ -33,7 +33,8 @@ export
     genotype_heatmap2,
     dp_heatmap2
 
-include("vcf_utils.jl")
+#include("vcf_utils.jl")
+include("type_defined_vcf_utils.jl")
 include("plot_utils.jl")
 include("notebook_utils.jl")
 
