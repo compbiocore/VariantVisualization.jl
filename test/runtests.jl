@@ -7,7 +7,7 @@ using Base.Test
 
 
 all_tests = [
-    ("vcf_utils.jl",   "       Testing: VCF Utils"),
+    ("vcf_utils.jl",   "           Testing: VCF Utils"),
 #    ("plot_utils.jl",     "       Testing: Plot Utils")
     ]
 
