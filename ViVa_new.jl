@@ -1,5 +1,5 @@
 
-vcf_filename = "variants.filtered.191_joint.vcf"
+vcf_file_name = "variants.filtered.191_joint.vcf"
 field_to_visualize = "read_depth" 
 variant_filter = "all"
 sample_filter = "select_columns", "select_column_list.txt"
@@ -15,14 +15,6 @@ plot_title = "Example_2"
 
 
 
-
-#=
-using DataFrames #use CSV.jl ? depwarnings
-using CSV
-using PlotlyJS
-using Rsvg
-using Blink 
-=#
 
 using ViVa
 

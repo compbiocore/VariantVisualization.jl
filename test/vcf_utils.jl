@@ -13,7 +13,7 @@ reorder_columns,
 select_columns
 =#
 
-vcf_filename = "variants.filtered.191_joint.vcf"
+vcf_filename = "test_4X_191.vcf"
 
     @testset "clean_column1!" begin
 
@@ -32,12 +32,12 @@ vcf_filename = "variants.filtered.191_joint.vcf"
 
         @test typeof(vcf_df) == DataFrames.DataFrame
         @test typeof(vcf) == Array{Any,2}
-        @test vcf[1,2] == 11994687
-        @test vcf_df[1,2] == 11994687
+        @test vcf[1,2] == 3076150
+        @test vcf_df[1,2] == 3076150
         @test (names(vcf_df))[1] == :_CHROM
         @test (names(vcf_df))[9] == :FORMAT
-        @test size(vcf,1) == 24146
-        @test size(vcf_df,1) == 24146
+        @test size(vcf,1) == 1485
+        @test size(vcf_df,1) == 1485
 
         @testset "format_reader" begin
 
@@ -48,10 +48,10 @@ vcf_filename = "variants.filtered.191_joint.vcf"
         end
 
         @testset "chromosome_range_vcf_filter(x::AbstractString, vcf::Array)" begin
-            chr_range = "chr1:20000000-30000000"
+            chr_range = "chr4:20000000-30000000"
             vcf = chromosome_range_vcf_filter(chr_range,vcf)
-            @test vcf[1,1] == 1
-            @test vcf[1,2] == 20246762
+            @test vcf[1,1] == 4
+            @test vcf[1,2] == 25378769
 
         end
 
@@ -62,8 +62,8 @@ vcf_filename = "variants.filtered.191_joint.vcf"
             sig_list_file = "significantList_for_proteinstructures.csv"
             sig_list = ViVa.load_siglist(sig_list_file)
             vcf = sig_list_vcf_filter(sig_list,vcf)
-            @test vcf[1,1] == 1
-            @test vcf[1,2] == 12012777
+            @test vcf[1,1] == 4
+            @test vcf[1,2] == 3109095
 
         end
 
@@ -73,17 +73,17 @@ vcf_filename = "variants.filtered.191_joint.vcf"
         @testset "load_sort_phenotype_matrix(x::AbstractString, y::AbstractString,vcf::Array,df_vcf::DataFrame)" begin
             pheno_matrix = "sample_phenotype_matrix.csv"
             vcf = load_sort_phenotype_matrix(pheno_matrix, "case_control_status", vcf, vcf_df)
-            @test vcf[1,10] ==  "./.:0,0:0"
+            @test vcf[1,10] ==  "./.:0,0:0:.:."
             cell_contents = split(vcf[1,10],":")
             @test cell_contents[1] == "./."
-            @test vcf[1,2] == 11994687
+            @test vcf[1,2] == 3076150
         end
 
 
         @testset "select_columns(x::AbstractString, vcf::Array, df_vcf::DataFrame)" begin
 
         vcf = select_columns("select_column_list.txt", vcf, vcf_df)
-        @test vcf[1,14] == "0/0:1,0:1:3:0,3,27"
+        @test vcf[1,14] == "./.:0,0:0:.:."
         #println(typeof(vcf[2,10]))
         end
 
@@ -93,16 +93,16 @@ vcf_filename = "variants.filtered.191_joint.vcf"
 
         vcf_copy_gt = copy(vcf)
         value_matrix = genotype_cell_searcher(vcf_copy_gt, 1)
-        @test value_matrix[1,10] == 400
-        @test size(value_matrix) == (24146, 200)
+        @test value_matrix[1,10] == 0
+        @test size(value_matrix) == (1485, 200)
         end
 
         @testset "dp_cell_searcher(x::Matrix{Any}, index::Int64)" begin
 
         vcf_copy_dp = copy(vcf)
         value_matrix_dp = dp_cell_searcher(vcf_copy_dp, 3)
-        @test value_matrix_dp[1,10] == "4" #does this plot***
-        @test size(value_matrix_dp) == (24146, 200)
+        @test value_matrix_dp[1,10] == "0" #does this plot***
+        @test size(value_matrix_dp) == (1485, 200)
         end
 
     end

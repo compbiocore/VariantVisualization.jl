@@ -122,6 +122,10 @@ function main()
            tryeval1()
 =#
 
+records = nrecords(vcf_file)
+samples = nsamples(vcf_file)
+println("VCF file contains $records variant records across $samples samples")
+
 vcf_tuple = ViVa.load_vcf(ARGS[1])
 original_vcf = vcf_tuple[1]
 df_vcf = vcf_tuple[2]

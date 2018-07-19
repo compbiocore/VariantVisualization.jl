@@ -5,6 +5,7 @@ using PlotlyJS
 using Rsvg
 using Blink
 using CSV
+using VCFTools
 
 #include("vcf_utils.jl")
 #include("plot_utils.jl")

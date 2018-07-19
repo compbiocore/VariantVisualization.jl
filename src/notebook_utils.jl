@@ -29,6 +29,9 @@ utilizes all global variables set in first cell of jupyter notebook
 function jupyter_main(vcf_filename,field_to_visualize,variant_filter,sample_filter,save_format,plot_title)
 
 #A)Load vcf and identify field index
+records = nrecords(vcf_filename)
+samples = nsamples(vcf_filename)
+println("VCF file contains $records variant records across $samples samples")
 vcf_tuple = ViVa.load_vcf(vcf_filename)
 original_vcf = vcf_tuple[1]
 df_vcf = vcf_tuple[2]
