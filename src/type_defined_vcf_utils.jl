@@ -72,7 +72,6 @@ function load_vcf(x::AbstractString)
 
  # Base.promote_rule(::Type{C}, ::Type{Any}) where {C <: CategoricalArrays.CatValue} = Any #remove this eventually
 
-
   vcf=Matrix(df_vcf)
 
   #load vcf as dataframe twice: once to use for matrix and other to pull header info from
@@ -106,14 +105,15 @@ return vcf,df_vcf
 end
 
 """
-    clean_column1!(x::Matrix{Any})
+    clean_column1!(x)
 Replace String "X" and "Y" from chromosome column so all elements are Int64 type
 Replaces "X" and "Y" with Int64 23 and 24, rest of chr numbers are not loaded as
 Int64 and need to be same type
 """
 
-function clean_column1!(x::Matrix{Any})
+function clean_column1!(x) #::Matrix{Any}
     n = size(x, 1)
+
     for i = 1:n
         x[i, 1] = x[i, 1] == "X" ? 23 : x[i, 1]
         x[i, 1] = x[i, 1] == "Y" ? 24 : x[i, 1]
@@ -259,6 +259,11 @@ siglist_unsorted = readdlm(x, ',', skipstart=1)
 ViVa.clean_column1!(siglist_unsorted)
 siglist = sortrows(siglist_unsorted, by=x->(x[1],x[2]))
 
+if typeof(siglist) == Array{Float64,2}
+    siglist = trunc.(Int,siglist)
+    return siglist
+end
+
 return siglist
 end
 
@@ -311,7 +316,7 @@ end
 
 """
     chromosome_range_vcf_filter(x::AbstractString,vcf::Matrix{Any})
-Match chromosome range filter
+filter vcf to include only variants within a chromosome range
 """
 function chromosome_range_vcf_filter(x::AbstractString, vcf::Matrix{Any})
 
@@ -446,5 +451,30 @@ function avg_dp_patients(x::Matrix{Any}) #where x is dp_matrix
     end
 
     return avg_dps_all #use this array as input for average_dp plotting function
+
+end
+
+"""
+save_numerical_array(x::Matrix{Any},y::String)
+save labelel numerical array to working directory
+where x is numerical array for plotly
+where y is vcf_filename
+where z is vcf
+
+"""
+
+function save_numerical_array(x,y,z)
+
+    df_withsamplenames = CSV.read(y, delim="\t", datarow = header_col+1, header = false, types=Dict(1=>String))
+    samplenames=df_withsamplenames[1,10:size(df_withsamplenames,2)]
+      samplenames=Matrix(samplenames)
+      headings = hcat("chr","position")
+      samplenames = hcat(headings,samplenames)
+      chrlabels=z[:,1:2]
+
+      chr_labeled_array_for_plotly=hcat(chrlabels, array_for_plotly)
+      labeled_value_matrix_withsamplenames= vcat(samplenames,chr_labeled_array_for_plotly)
+
+      writedlm("AC_gatk406_eh_PASS_withheader_value_matrix_.txt", labeled_value_matrix_withsamplenames, "\t")
 
 end

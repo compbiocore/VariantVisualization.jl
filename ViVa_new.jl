@@ -1,10 +1,10 @@
 
-vcf_file_name = "variants.filtered.191_joint.vcf"
-field_to_visualize = "read_depth" 
+vcf_filename = "AC_gatk406_eh_PASS_withheader.vcf"
+field_to_visualize = "genotype" 
 variant_filter = "all"
-sample_filter = "select_columns", "select_column_list.txt"
-save_format = "png"
-plot_title = "Example_1"
+sample_filter = "none" #"select_columns", "select_column_list.txt"
+save_format = "pdf"
+plot_title = "Jess_matrix"
 
 vcf_filename = "variants.filtered.191_joint.vcf"
 field_to_visualize = "genotype" # field(s) = "read_depth", *etc.
@@ -21,21 +21,32 @@ using ViVa
 ViVa.jupyter_main(vcf_filename,field_to_visualize,variant_filter,sample_filter,save_format,plot_title)
 
 
-readvcf = readlines(vcf_filename)
+using ViVa
 
-for row = 1:size(readvcf,1)
 
-      if contains(readvcf[row], "#CHROM")
-          header_col = row
-          global header_col
-          header_string = readvcf[row]
-      end
+vcf_tuple = ViVa.load_vcf(vcf_filename)
+original_vcf = vcf_tuple[1]
+df_vcf = vcf_tuple[2]
+vcf = copy(original_vcf)
+index = ViVa.format_reader(vcf, field_to_visualize)
+
+
+function save_numerical_array1(x,y,z)
+
+    df_withsamplenames = CSV.read(y, delim="\t", datarow = header_col+1, header = false, types=Dict(1=>String))
+    samplenames=df_withsamplenames[1,10:size(df_withsamplenames,2)]
+      samplenames=Matrix(samplenames)
+      headings = hcat("chr","position")
+      samplenames = hcat(headings,samplenames)
+      chrlabels=z[:,1:2]
+
+      chr_labeled_array_for_plotly=hcat(chrlabels, array_for_plotly)
+      labeled_value_matrix_withsamplenames= vcat(samplenames,chr_labeled_array_for_plotly)
+
+      writedlm("AC_gatk406_eh_PASS_withheader_value_matrix_.txt", labeled_value_matrix_withsamplenames, "\t")
+
 end
 
-df_withsamplenames = CSV.read(vcf_filename, delim="\t", datarow = header_col+1, header = false, types=Dict(1=>String))
-Base.promote_rule(::Type{C}, ::Type{Any}) where {C <: CategoricalArrays.CatValue} = Any
-matr=Matrix(df_withsamplenames)
-
-#vcf_csv=CSV.read(vcf_filename, delim="\t", datarow = header_col+1, header = header_col, types=Dict(1=>String))
-
-matr
+value_matrix = ViVa.genotype_cell_searcher(vcf,index)
+    array_for_plotly=value_matrix[:,10:size(value_matrix,2)]
+    save_numerical_array1(array_for_plotly,vcf_filename,vcf)

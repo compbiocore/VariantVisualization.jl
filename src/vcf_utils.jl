@@ -108,6 +108,10 @@ Int64 and need to be same type
 
 function clean_column1!(x)
     n = size(x, 1)
+    if typeof(vcf[n,1]) == "Float64"
+        println("Float!")
+        vcf[:,:] = Int(vcf[:,:])
+    end
     for i = 1:n
         x[i, 1] = x[i, 1] == "X" ? 23 : x[i, 1]
         x[i, 1] = x[i, 1] == "Y" ? 24 : x[i, 1]
@@ -236,13 +240,36 @@ function dp_cell_searcher(x,index)
     return x
 end
 
+
+"""
+function load_siglist(x)
+
+load and sort list of significant variant positions
+for use in sig_list_vcf_filter(y,x)
+where x is siglist_file
+
+"""
+function load_siglist(x)
+
+siglist_unsorted = readdlm(x, ',', skipstart=1)
+ViVa.clean_column1!(siglist_unsorted)
+siglist = sortrows(siglist_unsorted, by=x->(x[1],x[2]))
+
+if typeof(siglist) == Array{Float64,2}
+    siglist = trunc.(Int,siglist)
+    return siglist
+end
+
+return siglist
+end
+
+
 """
     sig_list_vcf_filter(y,x)
 Siglist match filter
-y is vcf - y is vcf
+y is vcf
 x = significant list ordered with substituted chr X/Y for 23/24
 e.g. function(vcf,siglist)
-
 """
 function sig_list_vcf_filter(y, x)
 

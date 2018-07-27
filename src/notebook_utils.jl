@@ -29,9 +29,12 @@ utilizes all global variables set in first cell of jupyter notebook
 function jupyter_main(vcf_filename,field_to_visualize,variant_filter,sample_filter,save_format,plot_title)
 
 #A)Load vcf and identify field index
+
+#= *** fix this - provide vcf stats - also check size of vcf file and available ram before loading and if larger than available give error message explaining need to use io filters
 records = nrecords(vcf_filename)
 samples = nsamples(vcf_filename)
 println("VCF file contains $records variant records across $samples samples")
+=#
 vcf_tuple = ViVa.load_vcf(vcf_filename)
 original_vcf = vcf_tuple[1]
 df_vcf = vcf_tuple[2]
@@ -51,39 +54,43 @@ for i = 1:size(variant_filter,1)
 end
 =#
 
-if typeof(variant_filter) != "String"
+println(typeof(variant_filter))
 
-for i = 1:size(variant_filter,1)
+if typeof(variant_filter) != String
 
-    if variant_filter[i] == "pass_only"
-        println("selecting pass_only variants")
-        vcf=vcf[(vcf[:,7].== "PASS"),:]
+    for i = 1:size(variant_filter,1)
 
-    elseif variant_filter[i] == "range"
-        chr_range = variant_filter[i+1]
-        println("selecting variants within $chr_range")
-        vcf = ViVa.chromosome_range_vcf_filter(chr_range,vcf)
+        if variant_filter[i] == "pass_only"
+            println("selecting pass_only variants")
+            vcf=vcf[(vcf[:,7].== "PASS"),:]
 
-    elseif variant_filter[i] == "list"
-        siglist_file = variant_filter[i+1]
 
-        function load_siglist(x)
+        elseif variant_filter[i] == "range"
+            chr_range = variant_filter[i+1]
+            println("selecting variants within $chr_range")
+            vcf = ViVa.chromosome_range_vcf_filter(chr_range,vcf)
 
-        siglist_unsorted = readdlm(siglist_file, ',', skipstart=1)
-        ViVa.clean_column1!(siglist_unsorted)
-        siglist = sortrows(siglist_unsorted, by=x->(x[1],x[2]))
+        elseif variant_filter[i] == "list"
+            siglist_file = variant_filter[i+1]
 
-        return siglist
+            siglist_unsorted = load_siglist(siglist_file)
+
+            siglist_unsorted = readdlm(x, ',', skipstart=1)
+            ViVa.clean_column1!(siglist_unsorted)
+            siglist = sortrows(siglist_unsorted, by=x->(x[1],x[2]))
+            siglist = (load_siglist(siglist_file))
+            vcf = ViVa.sig_list_vcf_filter(vcf,siglist)
+            #return siglist
+
+        end
+
     end
+        #siglist = (load_siglist(siglist_file))
+        #vcf = ViVa.sig_list_vcf_filter(vcf,siglist)
 
-    siglist = (load_siglist(siglist_file))
-
-    vcf = ViVa.sig_list_vcf_filter(vcf,siglist)
-
-end
-end
 
 else
+
     if variant_filter == "pass_only"
         println("selecting pass_only variants")
         vcf=vcf[(vcf[:,7].== "PASS"),:]
@@ -91,32 +98,51 @@ else
     elseif variant_filter == "range"
         println("you must enter a chromosome range in format chr1:20000000-30000000")
 
-    elseif variant_filter[i] == "list"
+    elseif variant_filter == "list"
         println("you must enter a list filename in tab delimited format")
 
     end
 end
 
 #2) Sample Filters
-for i = 1:size(sample_filter,1)
-    if sample_filter[i] == "reorder_columns"
-        list =sample_filter[i+1]
-        key = sample_filter[i+2]
-        println("sorting columns by $key in $list")
-        vcf = load_sort_phenotype_matrix(list, key, vcf, df_vcf)
+if typeof(variant_filter) != String
 
-    elseif sample_filter[i] == "select_columns"
-        id_list = sample_filter[i+1]
-        println("selecting columns to match $id_list")
-        vcf = ViVa.select_columns(id_list, vcf, df_vcf)
+    for i = 1:size(sample_filter,1)
+        if sample_filter[i] == "reorder_columns"
+            list =sample_filter[i+1]
+            key = sample_filter[i+2]
+            println("sorting columns by $key in $list")
+            vcf = load_sort_phenotype_matrix(list, key, vcf, df_vcf)
+
+        elseif sample_filter[i] == "select_columns"
+            id_list = sample_filter[i+1]
+            println("selecting columns to match $id_list")
+            vcf = ViVa.select_columns(id_list, vcf, df_vcf)
+        end
     end
+
+else
+
+        if sample_filter == "reorder_columns"
+            list =sample_filter[i+1]
+            key = sample_filter[i+2]
+            println("sorting columns by $key in $list")
+            vcf = load_sort_phenotype_matrix(list, key, vcf, df_vcf)
+
+        elseif sample_filter == "select_columns"
+            id_list = sample_filter[i+1]
+            println("selecting columns to match $id_list")
+            vcf = ViVa.select_columns(id_list, vcf, df_vcf)
+        end
 end
+
 
 #C) Convert filtered vcf to value matrix then plot and save
 if field_to_visualize == "genotype"
 
     value_matrix = ViVa.genotype_cell_searcher(vcf,index)
     array_for_plotly=value_matrix[:,10:size(value_matrix,2)]
+    save_numerical_array(array_for_plotly,vcf_filename)
     graphic = ViVa.genotype_heatmap2(array_for_plotly,plot_title)
     PlotlyJS.savefig(graphic, "$plot_title.$save_format")
 
@@ -124,6 +150,7 @@ elseif field_to_visualize == "read_depth"
 
     value_matrix=ViVa.dp_cell_searcher(vcf,index)
     array_for_plotly=value_matrix[:,10:size(value_matrix,2)]
+    save_numerical_array(array_for_plotly,vcf_filename)
     graphic = ViVa.dp_heatmap2(array_for_plotly,plot_title)
     PlotlyJS.savefig(graphic, "$plot_title.$save_format")
 

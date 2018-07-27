@@ -26,13 +26,16 @@ export
     genotype_cell_searcher_maf_correction,
     genotype_cell_searcher,
     dp_cell_searcher,
+    load_siglist,
     sig_list_vcf_filter,
     chromosome_range_vcf_filter,
     load_sort_phenotype_matrix,
     reorder_columns,
     select_columns,
     genotype_heatmap2,
-    dp_heatmap2
+    dp_heatmap2,
+    jupyter_main,
+    save_numerical_array
 
 #include("vcf_utils.jl")
 include("type_defined_vcf_utils.jl")
