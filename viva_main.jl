@@ -122,10 +122,11 @@ function main()
            tryeval1()
 =#
 
+#=
 records = nrecords(vcf_file)
 samples = nsamples(vcf_file)
 println("VCF file contains $records variant records across $samples samples")
-
+=#
 vcf_tuple = ViVa.load_vcf(ARGS[1])
 original_vcf = vcf_tuple[1]
 df_vcf = vcf_tuple[2]
@@ -185,6 +186,9 @@ index = ViVa.format_reader(vcf, ARGS[3])
         #convert value overwritten vcf into subarray of just values, no annotation/meta info
         array_for_plotly=vcf[:,10:size(vcf,2)]
 
+
+        save_numerical_array(array_for_plotly,ARGS[1],vcf)
+
         #define title for plot
         if ARGS[5] == "pass_only"
             title = "Genotype Data for All Pass Variants"
@@ -195,7 +199,9 @@ index = ViVa.format_reader(vcf, ARGS[3])
 
         #plot heatmap for genotype and save as format specified by ARGS[2], defaults to pdf
         graphic = ViVa.genotype_heatmap2(array_for_plotly,title)
-        extension=ARGS[2] #must define this variable, if use ARGS[2] directly in savefig it is read as String[pdf] or something instead of just "pdf"
+        extension=ARGS[2]#must define this variable, if use ARGS[2] directly in savefig it is read as String[pdf] or something instead of just "pdf"
+        extension="html"#must define this variable, if use ARGS[2] directly in savefig it is read as String[pdf] or something instead of just "pdf"
+
         PlotlyJS.savefig(graphic, "all_genotype.$extension")
 
         #=activate this block if want to export labeled value matrix for internal team use
@@ -358,7 +364,6 @@ index = ViVa.format_reader(vcf, ARGS[3])
         #Phred-scaled genotype likelihood (PL) ex. 79
 
         #RMS mapping quality (MQ)
-
 
     end
 end

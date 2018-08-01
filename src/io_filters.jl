@@ -1,6 +1,9 @@
 using GeneticVariation
 
 reader = VCF.Reader(open("test_4X_191.vcf", "r"))
+reader = VCF.Reader(open("combine_haplo-exo_AC_gatk406.vcf", "r"))
+
+
 
 """
 io_chromosome_range_vcf_filter(x::AbstractString, y::GeneticVariation.VCF.Reader)
@@ -116,26 +119,108 @@ for record in reader
        if VCF.filter(record) == String["PASS"]
               #println(record)
               push!(vcf_subarray,record)
+
        end
 end
 
 return vcf_subarray
 end
 
-n = 0
-for record in sub
-       n = n+1
-       println(VCF.genotype(record, 1:1, "GT"))
-       println(n)
+#start of numerical array function
+#use @time to see differences between reshape, hcat into matrix vs push! into dataframe
+"""
+generate_genotype_array(x)(x::Array{Any,1})
+create subarray of vcf only including row with FILTER status = PASS
+where x is array of reader objects
+"""
+
+function generate_genotype_array(x::Array{Any,1})
+
+       num_samples = length(VCF.genotype(x[1]))
+
+       df = DataFrame(String, 0, num_samples+2)
+
+       for record in x
+
+              genotype_data_per_variant = VCF.genotype(record, 1:num_samples, "GT")
+              vcf_chrom = VCF.chrom(record)
+              vcf_pos = string(VCF.pos(record))
+              genotype_data_per_variant = vcat(vcf_pos,genotype_data_per_variant)
+              genotype_data_per_variant = vcat(vcf_chrom,genotype_data_per_variant)
+              push!(df, genotype_data_per_variant)
+
+       end
+
+       num_array = Matrix(df)
+
+       return num_array
 end
 
-#start of numerical array function
-num_samples = length(VCF.genotype(sub[1]))
+"""
+function to create dictionary of values return dict
+replace_genotype_with_vals(x::Array)
+where x is num_array
+"""
+function define_geno_dict()
+geno_dict = Dict()
 
-numerical_array = Array{Any}(0)
+homo_variant = ["1/1" "1/2" "2/2" "1/3" "2/3" "3/3" "1/4" "2/4" "3/4" "4/4" "1/5" "2/5" "3/5" "4/5" "5/5" "1/6" "2/6" "3/6" "4/6" "5/6" "6/6" "1|1" "1|2" "2|2" "1|3" "2|3" "3|3" "1|4" "2|4" "3|4" "4|4" "1|5" "2|5" "3|5" "4|5" "5|5" "1|6" "2|6" "3|6" "4|6" "5|6" "6|6"]
+
+hetero_variant = ["0/1" "0/2" "0/3" "0/4" "0/5" "0/6" "1/0" "2/0" "3/0" "4/0" "5/0" "6/0" "0|1" "0|2" "0|3" "0|4" "0|5" "0|6" "1|0" "2|0" "3|0" "4|0" "5|0" "6|0"]
+
+no_data = ["./." ".|."]
+
+ref = ["0/0" "0|0"]
+
+for item in homo_variant
+       geno_dict[item] = 800
+end
+for item in hetero_variant
+       geno_dict[item] = 600
+end
+for item in no_data
+       geno_dict[item] = 0
+end
+for item in ref
+       geno_dict[item] = 400
+end
+
+return geno_dict
+end
+
+"""
+function translate_genotype_to_num_array(x::,y::)
+function to translate array of genotype to numerical array using dict and genotype array
+where x is genotype_array
+where y is geno_dict
+returns a tuple of num_array for plotting, and chromosome labels for plotting as label bar
+"""
+function translate_genotype_to_num_array(x,y)
+
+array_for_plotly = x[:,10:size(x,2)]
+chromosome_labels = x[:,1:2]
+
+function translate(c)
+       y[c]
+end
+
+num_array = map(translate, array_for_plotly)
+
+return num_array,chromosome_labels
+end
+
+#= make numerical array by pushing into matrix - so doesn't need to be converted from df - doesnt work because becomes array of strings per row
+num_array = Array{Any}(0)
 
 for record in sub
 
        genotype_data_per_variant = VCF.genotype(record, 1:num_samples, "GT")
-       vcat(numerical_array,genotype_data_per_variant)
+       println(typeof(genotype_data_per_variant))
+       genotype_data_per_variant = reshape(genotype_data_per_variant,1,num_samples)
+       println(typeof(genotype_data_per_variant))
+       push!(num_array, genotype_data_per_variant)
+
 end
+
+println(typeof(num_array[1]))
+=#

@@ -110,13 +110,12 @@ Replace String "X" and "Y" from chromosome column so all elements are Int64 type
 Replaces "X" and "Y" with Int64 23 and 24, rest of chr numbers are not loaded as
 Int64 and need to be same type
 """
-
 function clean_column1!(x) #::Matrix{Any}
     n = size(x, 1)
 
     for i = 1:n
-        x[i, 1] = x[i, 1] == "X" ? 23 : x[i, 1]
-        x[i, 1] = x[i, 1] == "Y" ? 24 : x[i, 1]
+        x[i, 1] = x[i, 1] == "X" ? "23" : x[i, 1]
+        x[i, 1] = x[i, 1] == "Y" ? "24" : x[i, 1]
     end
 end
 
@@ -465,14 +464,15 @@ where z is vcf
 
 function save_numerical_array(x,y,z)
 
-    df_withsamplenames = CSV.read(y, delim="\t", datarow = header_col+1, header = false, types=Dict(1=>String))
+    df_withsamplenames = CSV.read(y, delim="\t", datarow = header_col, header = false, types=Dict(1=>String))
     samplenames=df_withsamplenames[1,10:size(df_withsamplenames,2)]
+
       samplenames=Matrix(samplenames)
       headings = hcat("chr","position")
       samplenames = hcat(headings,samplenames)
       chrlabels=z[:,1:2]
 
-      chr_labeled_array_for_plotly=hcat(chrlabels, array_for_plotly)
+      chr_labeled_array_for_plotly=hcat(chrlabels, x)
       labeled_value_matrix_withsamplenames= vcat(samplenames,chr_labeled_array_for_plotly)
 
       writedlm("AC_gatk406_eh_PASS_withheader_value_matrix_.txt", labeled_value_matrix_withsamplenames, "\t")

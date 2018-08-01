@@ -15,7 +15,7 @@ function genotype_heatmap2(x,title) #when x = array_for_plotly
     trace=heatmap(
         z = x,
         transpose=true,
-        colorscale = "readdepth_colors",
+        #colorscale = "readdepth_colors",
         colorscale = [[0, "rgb(255,255,255)"], #choose colors and run all 6 graphics in am - replace in presentation
                      [0.5, "rgb(160,227,250)"],
                      [0.75, "rgb(52,36,242)"],
