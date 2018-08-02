@@ -1,18 +1,11 @@
 using GeneticVariation
 
-reader = VCF.Reader(open("test_4X_191.vcf", "r"))
-reader = VCF.Reader(open("combine_haplo-exo_AC_gatk406.vcf", "r"))
-reader = VCF.Reader(open("test_4X_191.vcf", "r"))
-
-
-
 """
 io_chromosome_range_vcf_filter(x::AbstractString, y::GeneticVariation.VCF.Reader)
 create subarray of vcf matching input chromosome range
 where x is chromosome range in form chr4:1-3241842
 where y is the reader object
 """
-
 function io_chromosome_range_vcf_filter(x::AbstractString, y::GeneticVariation.VCF.Reader)
        a=split(x,":")
        chrwhole=a[1]
@@ -51,7 +44,6 @@ x is vcf_reader object
 y is significant list ordered with substituted chr X/Y for 23/24 from load_siglist()
 e.g. function(vcf,siglist)
 """
-
 function io_sig_list_vcf_filter(x::GeneticVariation.VCF.Reader, y)
 
        vcf_subarray = Array{Any}(0)
@@ -117,7 +109,7 @@ function io_pass_filter(x::GeneticVariation.VCF.Reader)
 
               #println(VCF.filter(record))
 
-              if VCF.filter(record) == String["PASS"]
+              if VCF.hasfilter(record) && VCF.filter(record) == String["PASS"]
                      #println(record)
                      push!(vcf_subarray,record)
 
@@ -206,19 +198,3 @@ function translate_genotype_to_num_array(x,y)
 
     return num_array,chromosome_labels
 end
-
-#= make numerical array by pushing into matrix - so doesn't need to be converted from df - doesnt work because becomes array of strings per row
-num_array = Array{Any}(0)
-
-for record in sub
-
-       genotype_data_per_variant = VCF.genotype(record, 1:num_samples, "GT")
-       println(typeof(genotype_data_per_variant))
-       genotype_data_per_variant = reshape(genotype_data_per_variant,1,num_samples)
-       println(typeof(genotype_data_per_variant))
-       push!(num_array, genotype_data_per_variant)
-
-end
-
-println(typeof(num_array[1]))
-=#

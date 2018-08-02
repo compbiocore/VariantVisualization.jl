@@ -1,5 +1,6 @@
 all_examples = [
-    ("literate_src/1_viva.jl",    " Running Example 1")
+    ("literate_src/1_viva.jl",    " Running Example 1"),
+    ("literate_src/2_viva.jl",    " Running Example 2")
     ]
 
 println("Running examples:")
