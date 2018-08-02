@@ -3,4 +3,5 @@
 *.jl.mem
 *.pdf
 *.html
-*.vcf
+.DS_Store
+.ipynb_checkpoints/

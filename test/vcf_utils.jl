@@ -13,7 +13,7 @@ reorder_columns,
 select_columns
 =#
 
-vcf_filename = "test_4X_191.vcf"
+vcf_filename = "test_files/test_4X_191.vcf"
 
     @testset "clean_column1!" begin
 

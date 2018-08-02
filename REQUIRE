@@ -1,6 +1,5 @@
-julia 0.6
-
 DataFrames
 PlotlyJS
 Rsvg
 Blink
+GeneticVariation

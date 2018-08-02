@@ -111,20 +111,20 @@ where x is reader object
 
 function io_pass_filter(x::GeneticVariation.VCF.Reader)
 
-vcf_subarray = Array{Any}(0)
+       vcf_subarray = Array{Any}(0)
 
-for record in reader
+       for record in reader
 
-       #println(VCF.filter(record))
+              #println(VCF.filter(record))
 
-       if VCF.filter(record) == String["PASS"]
-              #println(record)
-              push!(vcf_subarray,record)
+              if VCF.filter(record) == String["PASS"]
+                     #println(record)
+                     push!(vcf_subarray,record)
 
+              end
        end
-end
 
-return vcf_subarray
+       return vcf_subarray
 end
 
 #start of numerical array function
@@ -163,30 +163,30 @@ replace_genotype_with_vals(x::Array)
 where x is num_array
 """
 function define_geno_dict()
-geno_dict = Dict()
+    geno_dict = Dict()
 
-homo_variant = ["1/1" "1/2" "2/2" "1/3" "2/3" "3/3" "1/4" "2/4" "3/4" "4/4" "1/5" "2/5" "3/5" "4/5" "5/5" "1/6" "2/6" "3/6" "4/6" "5/6" "6/6" "1|1" "1|2" "2|2" "1|3" "2|3" "3|3" "1|4" "2|4" "3|4" "4|4" "1|5" "2|5" "3|5" "4|5" "5|5" "1|6" "2|6" "3|6" "4|6" "5|6" "6|6"]
+    homo_variant = ["1/1" "1/2" "2/2" "1/3" "2/3" "3/3" "1/4" "2/4" "3/4" "4/4" "1/5" "2/5" "3/5" "4/5" "5/5" "1/6" "2/6" "3/6" "4/6" "5/6" "6/6" "1|1" "1|2" "2|2" "1|3" "2|3" "3|3" "1|4" "2|4" "3|4" "4|4" "1|5" "2|5" "3|5" "4|5" "5|5" "1|6" "2|6" "3|6" "4|6" "5|6" "6|6"]
 
-hetero_variant = ["0/1" "0/2" "0/3" "0/4" "0/5" "0/6" "1/0" "2/0" "3/0" "4/0" "5/0" "6/0" "0|1" "0|2" "0|3" "0|4" "0|5" "0|6" "1|0" "2|0" "3|0" "4|0" "5|0" "6|0"]
+    hetero_variant = ["0/1" "0/2" "0/3" "0/4" "0/5" "0/6" "1/0" "2/0" "3/0" "4/0" "5/0" "6/0" "0|1" "0|2" "0|3" "0|4" "0|5" "0|6" "1|0" "2|0" "3|0" "4|0" "5|0" "6|0"]
 
-no_data = ["./." ".|."]
+    no_data = ["./." ".|."]
 
-ref = ["0/0" "0|0"]
+    ref = ["0/0" "0|0"]
 
-for item in homo_variant
-       geno_dict[item] = 800
-end
-for item in hetero_variant
-       geno_dict[item] = 600
-end
-for item in no_data
-       geno_dict[item] = 0
-end
-for item in ref
-       geno_dict[item] = 400
-end
+    for item in homo_variant
+        geno_dict[item] = 800
+    end
+    for item in hetero_variant
+        geno_dict[item] = 600
+    end
+    for item in no_data
+        geno_dict[item] = 0
+    end
+    for item in ref
+        geno_dict[item] = 400
+    end
 
-return geno_dict
+    return geno_dict
 end
 
 """
@@ -198,16 +198,13 @@ returns a tuple of num_array for plotting, and chromosome labels for plotting as
 """
 function translate_genotype_to_num_array(x,y)
 
-array_for_plotly = x[:,10:size(x,2)]
-chromosome_labels = x[:,1:2]
+    array_for_plotly = x[:,10:size(x,2)]
+    chromosome_labels = x[:,1:2]
 
-function translate(c)
-       y[c]
-end
 
-num_array = map(translate, array_for_plotly)
+    num_array = map(c -> y[c], array_for_plotly)
 
-return num_array,chromosome_labels
+    return num_array,chromosome_labels
 end
 
 #= make numerical array by pushing into matrix - so doesn't need to be converted from df - doesnt work because becomes array of strings per row
