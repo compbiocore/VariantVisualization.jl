@@ -1,48 +1,62 @@
-# ViVa
-
-[![Build Status](https://travis-ci.org/compbiocore/ViVa.jl.svg?branch=master)](https://travis-ci.org/compbiocore/ViVa.jl)
-
-[![Coverage Status](https://coveralls.io/repos/compbiocore/ViVa.jl/badge.svg?branch=master&service=github)](https://coveralls.io/github/compbiocore/ViVa.jl?branch=master)
-
-[![codecov.io](http://codecov.io/github/compbiocore/ViVa.jl/coverage.svg?branch=master)](http://codecov.io/github/compbiocore/ViVa.jl?branch=master)
+# Viva - Visualization of Variants
 
 
-ViVa.jl is a package for parsing and visualizing field information contained within VCF files. Users may apply filters to variant rows and sample columns of the VCF file before visualizing data from a chosen vcf data field.
+[![Travis](https://img.shields.io/travis/compbiocore/ViVa.jl.svg?style=flat-square)](https://travis-ci.org/compbiocore/ViVa.jl)
+ [![Docs](https://img.shields.io/badge/docs-stable-blue.svg?style=flat-square)](https://compbiocore.github.io/ViVa.jl)
+[![License](https://img.shields.io/badge/license-MIT-orange.svg?style=flat-square)](https://raw.githubusercontent.com/compbiocore/ViVa.jl/master/LICENSE.md)  
 
-## Command line usage
 
-### ARGUMENTS Guide
+## Overview
+One paragraph project description goes here.
 
-ARGS[1] = VCF file
-ARGS[2] = format to save graphic as (pdf, svg, etc.)
-ARGS[3] = field to visualize (-gt, -dp)
-ARGS[4] = variant filter to apply (-l, -r, -a)
-ARGS[5] = PASS FILTER only
-ARGS[6] = reorder_columns
-ARGS[7] = phenotype matrix filename for reordering columns (in .csv)
-ARGS[8] = chromosome range, significant variant list filename, or nothing (.)
-ARGS[9] = select_columns
-ARGS[10] = filename of list of sample names to select
-ARGS[11] = phenotype to sort columns by (used by ARGS[7]) (e.g. case_control_status)
+## Getting Started
 
-#### Example 1:  
+These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
 
-This is a command line example for visualizing genotype of variants which passed QC filters within a chromosome range across a selected group of samples grouped by case_control_status:
+### Requirements
 
-```julia
-julia viva_main.jl toyfile.vcf pdf -gt -r pass_only reorder_columns phenotype_matrix.csv chr1:10000000-15000000 select_columns sample_names.tsv case_control_status
+What things you need to install the software and how to install them
+Give a list with links and how to install using code snippets.
+
 ```
 
-### Example 2:
-This is a command line example for visualizing read depth for all variants with no filters applied:
-
-```julia
-julia viva_main.jl file.vcf pdf -d -a . . . . . . .
 ```
 
-### Example 2:
-This is a command line example for visualizing read depth for all variants with sample columns grouped by case_control_status
+### Installing
+
+A step by step on how to install the package.
+
+Say what the step will be
 
 ```julia
-julia viva_main.jl file.vcf pdf -d -a . reorder_columns phenotype_matrix.csv . . . case_control_status
+Pkg.clone("https://github.com/compbiocore/ViVa.jl.git")
 ```
+
+And repeat
+
+```
+until finished
+```
+
+End with an example of getting some data out of the system or using it for a little demo
+
+## Tests
+
+Explain how to run the automated tests for this system
+
+
+## Contributing
+
+Please read [CONTRIBUTING.md](https://gist.github.com/PurpleBooth/b24679402957c63ec426) for details on our code of conduct, and the process for submitting pull requests to us.
+
+## Release History
+- 0.4
+  - CHANGES:  
+
+- 0.3
+  - CHANGES:
+
+
+## Authors
+
+List authors and affiliation.
