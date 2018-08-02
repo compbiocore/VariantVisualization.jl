@@ -114,8 +114,8 @@ function clean_column1!(x) #::Matrix{Any}
     n = size(x, 1)
 
     for i = 1:n
-        x[i, 1] = x[i, 1] == "X" ? "23" : x[i, 1]
-        x[i, 1] = x[i, 1] == "Y" ? "24" : x[i, 1]
+        x[i, 1] = x[i, 1] == "X" ? 23 : x[i, 1]
+        x[i, 1] = x[i, 1] == "Y" ? 24 : x[i, 1]
     end
 end
 
@@ -231,7 +231,6 @@ function dp_cell_searcher(x::Matrix{Any}, index::Int64)
             dp=S[index]
             vcf_copy[row,col] = dp
 
-
 #= set max dp value - need to fix type issue first - categoricalarray of categorical strings cant be used in isless function  - how to set type in CSV>read function for ALL columns
                 if x[row,col] > 200
                     x[row,col] = 200
@@ -256,6 +255,7 @@ function load_siglist(x::AbstractString)
 
 siglist_unsorted = readdlm(x, ',', skipstart=1)
 ViVa.clean_column1!(siglist_unsorted)
+println(siglist_unsorted)
 siglist = sortrows(siglist_unsorted, by=x->(x[1],x[2]))
 
 if typeof(siglist) == Array{Float64,2}
@@ -265,7 +265,6 @@ end
 
 return siglist
 end
-
 
 """
     sig_list_vcf_filter(y::Matrix{Any},x::Matrix{Any})

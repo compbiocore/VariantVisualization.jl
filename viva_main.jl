@@ -52,12 +52,14 @@
 
 # *** End of outline ***
 
-using DataFrames #use CSV.jl ? depwarnings
-using CSV
-using PlotlyJS
-using Rsvg
-using Blink
+#using DataFrames #use CSV.jl ? depwarnings
+#using CSV
+#using PlotlyJS
+#using Rsvg
+#using Blink
 using ViVa
+using VCFTools
+
 #=
 const g_white = 400 #homo reference 0/0
 const g_red = 800 #homo variant 1/1 1/2 2/2 1/3 2/3 3/3 4/4 5/5 6/6 etc
@@ -122,11 +124,11 @@ function main()
            tryeval1()
 =#
 
-#=
-records = nrecords(vcf_file)
-samples = nsamples(vcf_file)
+
+records = nrecords(ARGS[1])
+samples = nsamples(ARGS[1])
 println("VCF file contains $records variant records across $samples samples")
-=#
+
 vcf_tuple = ViVa.load_vcf(ARGS[1])
 original_vcf = vcf_tuple[1]
 df_vcf = vcf_tuple[2]

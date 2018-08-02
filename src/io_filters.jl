@@ -2,6 +2,7 @@ using GeneticVariation
 
 reader = VCF.Reader(open("test_4X_191.vcf", "r"))
 reader = VCF.Reader(open("combine_haplo-exo_AC_gatk406.vcf", "r"))
+reader = VCF.Reader(open("test_4X_191.vcf", "r"))
 
 
 
@@ -57,7 +58,7 @@ function io_sig_list_vcf_filter(x::GeneticVariation.VCF.Reader, y)
 
        for row= 1:size(y,1)
               dimension = size(y,1)
-              println("dimension is $dimension")
+              #println("dimension is $dimension")
 
               chr=(y[row,1])
               pos=(y[row,2])
@@ -84,7 +85,7 @@ function io_sig_list_vcf_filter(x::GeneticVariation.VCF.Reader, y)
                      if (VCF.chrom(record) == chr) && (VCF.pos(record) == pos)
                             #println(record)
                             push!(vcf_subarray,record)
-                            println("match!")
+                            #println("match!")
                      end
 
               else
@@ -92,7 +93,7 @@ function io_sig_list_vcf_filter(x::GeneticVariation.VCF.Reader, y)
                      if (VCF.chrom(record) == chr) && (VCF.pos(record) == pos)
                             #println(record)
                             push!(vcf_subarray,record)
-                            println("match!")
+                            #println("match!")
 
               end
               end
