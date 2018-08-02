@@ -59,7 +59,7 @@ vcf_filename = "test_files/test_4X_191.vcf"
 
         @testset "sig_list_vcf_filter(y::Array,x::Array)" begin
 
-            sig_list_file = "significantList_for_proteinstructures.csv"
+            sig_list_file = "test_files/significantList_for_proteinstructures.csv"
             sig_list = ViVa.load_siglist(sig_list_file)
             vcf = sig_list_vcf_filter(sig_list,vcf)
             @test vcf[1,1] == 4
@@ -71,7 +71,7 @@ vcf_filename = "test_files/test_4X_191.vcf"
 
         #not working - but works in command line - try making sure all items in col_new_order are Symbols
         @testset "load_sort_phenotype_matrix(x::AbstractString, y::AbstractString,vcf::Array,df_vcf::DataFrame)" begin
-            pheno_matrix = "sample_phenotype_matrix.csv"
+            pheno_matrix = "test_files/sample_phenotype_matrix.csv"
             vcf = load_sort_phenotype_matrix(pheno_matrix, "case_control_status", vcf, vcf_df)
             @test vcf[1,10] ==  "./.:0,0:0:.:."
             cell_contents = split(vcf[1,10],":")
@@ -82,7 +82,7 @@ vcf_filename = "test_files/test_4X_191.vcf"
 
         @testset "select_columns(x::AbstractString, vcf::Array, df_vcf::DataFrame)" begin
 
-        vcf = select_columns("select_column_list.txt", vcf, vcf_df)
+        vcf = select_columns("test_files/select_column_list.txt", vcf, vcf_df)
         @test vcf[1,14] == "./.:0,0:0:.:."
         #println(typeof(vcf[2,10]))
         end

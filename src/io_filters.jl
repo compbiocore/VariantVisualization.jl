@@ -115,19 +115,19 @@ function io_pass_filter(x::GeneticVariation.VCF.Reader)
 
               end
        end
-
        return vcf_subarray
 end
 
 #start of numerical array function
 #use @time to see differences between reshape, hcat into matrix vs push! into dataframe
 """
-generate_genotype_array(x)(x::Array{Any,1})
+generate_genotype_array(x::Array{Any,1},y::String)
 create subarray of vcf only including row with FILTER status = PASS
 where x is array of reader objects
+where y is genotype field to visualize ex. GT, DP
 """
 
-function generate_genotype_array(x::Array{Any,1})
+function generate_genotype_array(x::Array{Any,1},y)
 
        num_samples = length(VCF.genotype(x[1]))
 
@@ -135,7 +135,7 @@ function generate_genotype_array(x::Array{Any,1})
 
        for record in x
 
-              genotype_data_per_variant = VCF.genotype(record, 1:num_samples, "GT")
+              genotype_data_per_variant = VCF.genotype(record, 1:num_samples, y)
               vcf_chrom = VCF.chrom(record)
               vcf_pos = string(VCF.pos(record))
               genotype_data_per_variant = vcat(vcf_pos,genotype_data_per_variant)
@@ -145,6 +145,7 @@ function generate_genotype_array(x::Array{Any,1})
        end
 
        num_array = Matrix(df)
+       #ViVa.clean_column1!(num_array)
 
        return num_array
 end
@@ -188,11 +189,11 @@ where x is genotype_array
 where y is geno_dict
 returns a tuple of num_array for plotting, and chromosome labels for plotting as label bar
 """
+
 function translate_genotype_to_num_array(x,y)
 
     array_for_plotly = x[:,10:size(x,2)]
     chromosome_labels = x[:,1:2]
-
 
     num_array = map(c -> y[c], array_for_plotly)
 
