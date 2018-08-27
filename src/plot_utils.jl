@@ -1,5 +1,12 @@
 #4) plotting functions
 
+#=**modify colors in arguments***
+sortby A then by B
+fix dp parsing with threshhold
+open notebook() from CLI
+phenomatrix sort by name case:control
+=#
+
 #a) define plotlyJS function for genotype heatmap
 #call these constant variables in from module - how?
 g_white = 400 #homo reference 0/0
@@ -7,33 +14,70 @@ g_red = 800 #homo variant 1/1 1/2 2/2 1/3 2/3 3/3 4/4 5/5 6/6 etc
 g_pink = 600 #hetero variant 0/1 1/0 0/2 2/0 etc
 g_blue = 0 #no call ./.
 
-#red [1, "rgb(255,9,9)"]],
-# yellow [1, "rgb(255,244,32)"]],
+function genotype_heatmap2(_in,title,chrom_label_info)
 
-function genotype_heatmap2(x,title) #when x = array_for_plotly
+            chrom_labels = chrom_label_info[1]
+            returnXY_column1!(chrom_labels)
 
-    trace=heatmap(
-        z = x,
-        transpose=true,
-        #colorscale = "readdepth_colors",
-        colorscale = [[0, "rgb(255,255,255)"], #choose colors and run all 6 graphics in am - replace in presentation
-                     [0.5, "rgb(160,227,250)"],
-                     [0.75, "rgb(52,36,242)"],
-                     [1, "rgb(255,9,249)"]],
-        gridcolor = "#E2E2E2",
-        showscale = true
-        );
+            chrom_label_indices = chrom_label_info[2]
 
-    layout = Layout(
-                    title = "$title",#defines title of plot
-                    xaxis=attr(title="Sample Number", showgrid=false, zeroline=false),
-                    yaxis=attr(title="Chromosomal Location", zeroline=false),
-                    hovermode = false
-    )
+            font_size = chrom_label_info[3]
 
-    data = (trace)
-        plot(data,layout) #call plot type and layout with all attributes to plot function
-end
+           trace=heatmap(
+               z = _in, x=1:size(_in, 2),y=1:size(_in, 1),
+               transpose=true,
+               #colorscale = "readdepth_colors",
+               colorscale = [[0, "rgb(255,255,255)"], #choose colors and run all 6 graphics in am - replace in presentation
+                            [0.5, "rgb(160,227,250)"],
+                            [0.75, "rgb(52,36,242)"],
+                            [1, "rgb(255,9,249)"]],
+               gridcolor = "#E2E2E2",
+               showscale = true,
+               colorbar = attr(tickvals = [0, 400, 600, 800],
+               ticktext = ["No Call", "Homozygous Reference", "Heterozygous Variant", "Homozygous Variant"])
+               );
+
+               #trace2=scatter(shapes = line(x0=100 ,y0=0, x1=100, y1=size(_in,1))# color="rgb(55, 128, 191)", width=3))
+
+           layout = Layout(
+                           title = "$title",#defines title of plot
+                           xaxis=attr(title="Sample Number", showgrid=false, zeroline=false),
+                           yaxis=attr(title="Chromosomal Location", zeroline=false, tickvals=chrom_label_indices,
+                           ticktext=chrom_labels,size=font_size)
+
+           )
+           data = (trace)
+               plot(data,layout) #call plot type and layout with all attributes to plot function
+       end
+
+function genotype_heatmap_with_groups(_in,title,group1_index,group2_index,group_dividing_line,group1_label,group2_label) #when x = array_for_plotly #add input variables for tickvals and ticktext from optional arguments or as options from column sorting functions
+                  trace=heatmap(
+                      z = _in, x=1:size(_in, 2),
+
+                      transpose=true,
+                      #colorscale = "readdepth_colors",
+                      colorscale = [[0, "rgb(255,255,255)"], #choose colors and run all 6 graphics in am - replace in presentation
+                                   [0.5, "rgb(160,227,250)"],
+                                   [0.75, "rgb(52,36,242)"],
+                                   [1, "rgb(255,9,249)"]],
+                      gridcolor = "#E2E2E2",
+                      showscale = true,
+                      colorbar = attr(tickvals = [0, 400, 600, 800],
+                      ticktext = ["No Call", "Homozygous Reference", "Heterozygous Variant", "Homozygous Variant"])
+                      );
+                      shapes = [vline(group_dividing_line)]
+
+                  layout = Layout(
+                                  title = "$title",#defines title of plot
+                                  xaxis=attr(title="Sample Number", showgrid=false, zeroline=false, tickvals=[group1_index, group2_index],
+                                  ticktext=[group1_label, group2_label]),
+                                  yaxis=attr(title="Chromosomal Location", zeroline=false, showticklabels=false, tickvals=[]),
+                                   shapes=shapes, yaxis_range = [1:size(_in,1)], xaxis_range = [1:size(_in,2)]
+
+                  )
+                  data = (trace)
+                      plot(data,layout) #call plot type and layout with all attributes to plot function
+              end
 
 #b) define plotlyJS function for read depth heatmap
 
@@ -50,19 +94,70 @@ function dp_heatmap2(x, title) #when x = array_for_plotly
                      [0.025, "rgb(79,146,255)"],
                      [0.05, "rgb(43,124,255)"],
                      #[0.2, "rgb(0,56,147)"],
-                     [1, "rgb(0,64,168)"]], #"YIGnBu","rgb(0,56,147)"
+                     [1, "rgb(0,64,168)"]], #"YIGnBu","rgbrgb(0,56,147)"
+        colorbar = attr(title="Read Depth"),
 
         gridcolor = "#E2E2E2",
-        showscale = true
+        showscale = true,
         );
 
     layout = Layout(
                     title = "$title",#defines title of plot
                     xaxis=attr(title="Sample Number", showgrid=false, zeroline=false),
-                    yaxis=attr(title="Chromosomal Location", zeroline=false,
-                    hovermode = false)
-    )
+                    yaxis=attr(title="Chromosomal Location", zeroline=false)
+                    )
 
     data = (trace)
     plot(data,layout) #call plot type and layout with all attributes to plot function
+end
+
+function dp_heatmap2_with_groups(x, title,group1_index,group2_index,group_dividing_line,group1_label,group2_label) #when x = array_for_plotly
+
+    #max_val=findmax(x)
+    #println(max_val)
+
+    trace=heatmap(
+        z = x,
+
+        transpose=true,
+        colorscale = [[0, "rgb(153,231,255)"],
+                     [0.025, "rgb(79,146,255)"],
+                     [0.05, "rgb(43,124,255)"],
+                     #[0.2, "rgb(0,56,147)"],
+                     [1, "rgb(0,64,168)"]], #"YIGnBu","rgbrgb(0,56,147)"
+        colorbar = attr(title="Read Depth"),
+
+        gridcolor = "#E2E2E2",
+        showscale = true,
+        );
+
+    shapes = [vline(group_dividing_line)]
+
+    layout = Layout(
+                    title = "$title",#defines title of plot
+                    xaxis=attr(title="Sample Number", showgrid=false, zeroline=false),
+                    yaxis=attr(title="Chromosomal Location", zeroline=false, showticklabels=false, tickvals=[]),
+                     shapes=shapes, yaxis_range = [1:size(_in,1)], xaxis_range = [1:size(_in,2)], hovermode = true
+                    )
+
+    data = (trace)
+    plot(data,layout) #call plot type and layout with all attributes to plot function
+end
+
+#c) define avg_sample_dp_line_chart()
+
+function avg_sample_dp_line_chart(sample_avg_list)
+
+    trace = scatter(;x=1:size(sample_avg_list,1), y=sample_avg_list, mode="lines")
+    layout = Layout(title="Average Sample Read Depth",xaxis=attr(title="Samples"),yaxis=attr(title="Average Read Depth"))
+    plot(trace,layout)
+end
+
+#d define avg_variant_dp_line_chart()
+
+function avg_variant_dp_line_chart(variant_avg_list)
+
+    trace = scatter(;x=1:size(variant_avg_list,1), y=variant_avg_list, mode="lines+text") #,text="test_text"
+    layout = Layout(title="Average Variant Read Depth",xaxis=attr(title="Variant Positions"),yaxis=attr(title="Average Read Depth"))
+    plot(trace,layout)
 end

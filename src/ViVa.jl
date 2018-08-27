@@ -5,7 +5,10 @@ using PlotlyJS
 using Rsvg
 using Blink
 using CSV
-using VCFTools
+using GeneticVariation
+using ArgParse
+
+
 
 #include("vcf_utils.jl")
 #include("plot_utils.jl")
@@ -34,12 +37,33 @@ export
     select_columns,
     genotype_heatmap2,
     dp_heatmap2,
+    avg_sample_dp_line_chart,
+    avg_variant_dp_line_chart,
+    read_depth_threshhold,
+    list_variant_positions_low_dp,
+    list_sample_positions_low_dp,
+    avg_dp_variant,
+    avg_dp_patients,
     jupyter_main,
-    save_numerical_array
+    save_numerical_array,
+    io_pass_filter,
+    io_sig_list_vcf_filter,
+    io_chromosome_range_vcf_filter,
+    generate_genotype_array,
+    define_geno_dict,
+    translate_genotype_to_num_array,
+    translate_readdepth_strings_to_num_array,
+    genotype_heatmap_with_groups,
+    jupyter_main_new,
+    returnXY_column1!
+
 
 #include("vcf_utils.jl")
 include("type_defined_vcf_utils.jl")
 include("plot_utils.jl")
 include("notebook_utils.jl")
+include("new_notebook_utils.jl")
+
+include("io_filters.jl")
 
 end # module

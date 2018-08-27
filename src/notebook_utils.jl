@@ -105,7 +105,7 @@ else
 end
 
 #2) Sample Filters
-if typeof(variant_filter) != String
+if typeof(sample_filter) != String
 
     for i = 1:size(sample_filter,1)
         if sample_filter[i] == "reorder_columns"

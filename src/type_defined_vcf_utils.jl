@@ -1,7 +1,6 @@
 #=questions for team
 when use ::Matrix{Any} vs ::Array{Any,2}
 =#
-
 """
     format_reader(vcf::Matrix{Any}, element::AbstractString)
 find index of chosen field to visualize
@@ -81,11 +80,11 @@ function load_vcf(x::AbstractString)
   ViVa.clean_column1!(vcf)
 
   for n = 1:size(vcf,1)
-      #if typeof(vcf) == "String"
+
       if vcf[n, 1] != 23 && vcf[n, 1] != 24
       vcf[n, 1] = parse(Int64, vcf[n, 1])
       end
-  #end
+
   end
 
   #sort rows by chr then chromosome position so are in order of chromosomal architecture
@@ -111,12 +110,72 @@ Replaces "X" and "Y" with Int64 23 and 24, rest of chr numbers are not loaded as
 Int64 and need to be same type
 """
 function clean_column1!(x) #::Matrix{Any}
-    n = size(x, 1)
 
-    for i = 1:n
+    for i = 1:(size(x, 1))
+        x[i, 1] = x[i, 1] == "X" ? "23" : x[i, 1]
+        x[i, 1] = x[i, 1] == "Y" ? "24" : x[i, 1]
+        x[i, 1] = x[i, 1] == "M" ? "25" : x[i, 1]
+    end
+
+
+end
+
+"""
+    returnXY_column1!(x)
+Replace String "23" and "24" with "X" and "Y" in chromosome column for plot labels
+"""
+function returnXY_column1!(x) #::Matrix{Any}
+
+    for i = 1:(size(x, 1))
+        x[i, 1] = x[i, 1] == "23" ? "X" : x[i, 1]
+        x[i, 1] = x[i, 1] == "24" ? "Y" : x[i, 1]
+        x[i, 1] = x[i, 1] == "25" ? "M" : x[i, 1]
+    end
+
+end
+
+"""
+    sort_genotype_array(x)
+sorts genotype array for GT or DP by chromosomal location
+
+"""
+
+function sort_genotype_array(x)
+
+    data=x[:,3:size(x,2)]
+    chrom_positions = [parse(Int, i) for i in x[:,1:2]]
+    genotype_array = hcat(chrom_positions,data)
+
+    genotype_array = sortrows(genotype_array, by=x->(x[1],x[2]))
+
+return genotype_array
+end
+
+"""
+    clean_column1_siglist!(x)
+use in load_siglist() because X and Y need to be replaced with Int
+Replace String "X" and "Y" from chromosome column so all elements are Int64 type
+Replaces "X" and "Y" with Int64 23 and 24, rest of chr numbers are not loaded as
+Int64 and need to be same type
+"""
+function clean_column1_siglist!(x) #::Matrix{Any}
+
+    #n = size(x, 1)
+    for i = 1:(size(x, 1))
         x[i, 1] = x[i, 1] == "X" ? 23 : x[i, 1]
         x[i, 1] = x[i, 1] == "Y" ? 24 : x[i, 1]
     end
+
+#=
+    for i in x
+        if typeof(i) == "String"
+            i = parse(Int,i)
+        end
+    end
+    =#
+
+    #x = [parse(Int, i) for i in x]
+
 end
 
 """
@@ -138,8 +197,9 @@ function genotype_cell_searcher_maf_correction(x::Matrix{Any}, index::Int64) #wh
                 S = split(cell_to_search, ":")
                 genotype = S[index]
 
-                homo_variant = ["1/1" "1/2" "2/2" "1/3" "2/3" "3/3" "1/4" "2/4" "3/4" "4/4" "1/5" "2/5" "3/5" "4/5" "5/5" "1/6" "2/6" "3/6" "4/6" "5/6" "6/6" "1|1" "1|2" "2|2" "1|3" "2|3" "3|3" "1|4" "2|4" "3|4" "4|4" "1|5" "2|5" "3|5" "4|5" "5|5" "1|6" "2|6" "3|6" "4|6" "5|6" "6|6"]
-                hetero_variant = ["0/1" "0/2" "0/3" "0/4" "0/5" "0/6" "1/0" "2/0" "3/0" "4/0" "5/0" "6/0" "0|1" "0|2" "0|3" "0|4" "0|5" "0|6" "1|0" "2|0" "3|0" "4|0" "5|0" "6|0"]
+                homo_variant = ["1/1" "1/2" "2/2" "1/3" "2/3" "3/3" "1/4" "2/4" "3/4" "4/4" "1/5" "2/5" "3/5" "4/5" "5/5" "1/6" "2/6" "3/6" "4/6" "5/6" "6/6" "1|1" "1|2" "2|2" "1|3" "2|3" "3|3" "1|4" "2|4" "3|4" "4|4" "1|5" "2|5" "3|5" "4|5" "5|5" "1|6" "2|6" "3|6" "4|6" "5|6" "6|6" "2/1" "3/2" "4/2" "5/2" "6/2" "4/3" "5/3" "6/3" "5/4" "6/4" "6/5" "2|1" "3|2" "4|2" "5|2" "6|2" "4|3" "5|3" "6|3" "5|4" "6|4" "6|5"]
+
+                hetero_variant = ["0/1" "0/2" "0/3" "0/4" "0/5" "0/6" "1/0" "2/0" "3/0" "4/0" "5/0" "6/0" "0|1" "0|2" "0|3" "0|4" "0|5" "0|6" "1|0" "2|0" "3|0" "4|0" "5|0" "6|0" "1/0" "2/0" "3/0" "4/0" "5/0" "6/0" "1|0" "2|0" "3|0" "4|0" "5|0" "6|0"]
 
                 if genotype == "./." || ".|."
                     x[row,col] = g_blue
@@ -254,8 +314,7 @@ end
 function load_siglist(x::AbstractString)
 
 siglist_unsorted = readdlm(x, ',', skipstart=1)
-ViVa.clean_column1!(siglist_unsorted)
-println(siglist_unsorted)
+ViVa.clean_column1_siglist!(siglist_unsorted)
 siglist = sortrows(siglist_unsorted, by=x->(x[1],x[2]))
 
 if typeof(siglist) == Array{Float64,2}
@@ -395,7 +454,6 @@ function load_sort_phenotype_matrix(x::AbstractString, y::AbstractString, vcf::A
     #println(typeof(names(df1_vcf))) #Array{Symbol,1} | same in test
     #println(typeof(col_new_order)) #Array{Any,1} | same in test
 
-
     vcf = df1_vcf[:, col_new_order]
 
     vcf = Matrix(vcf)
@@ -434,8 +492,14 @@ end
 
 
 #need to start with vcf, replace all cells with dp value as Float64 then make arrays of each col for sum
+"""
+avg_dp_samples(x::Array{Int64,2})
+create sample_avg_list array with averages of read depth for each sample
+for input into avg_sample_dp_line_chart(sample_avg_list)
+where x is dp_matrix (dp's as Int64 without chromosome position columns)
 
-function avg_dp_patients(x::Matrix{Any}) #where x is dp_matrix
+"""
+function avg_dp_samples(x::Array{Int64,2})
 
     #array_for_averages=x[:,10:size(x,2)]
 
@@ -444,11 +508,100 @@ function avg_dp_patients(x::Matrix{Any}) #where x is dp_matrix
     for column = 1:size(x,2)
 
         all_dps_patient = x[1:size(x,1),column]
-        avg_dp = sum(all_dps_patient)
+        sum_dp = sum(all_dps_patient)
+        avg_dp = sum_dp/(size(x,1))
         push!(avg_dps_all,avg_dp)
     end
 
-    return avg_dps_all #use this array as input for average_dp plotting function
+    return avg_dps_all
+
+end
+
+"""
+avg_dp_variant(x::Array{Int64,2})
+create variant_avg_list array with averages of read depth for each sample
+for input into avg_variant_dp_line_chart(variant_avg_list)
+where x is dp_matrix (dp's as Int64 without chromosome position columns)
+
+"""
+function avg_dp_variant(x::Array{Int64,2})
+
+    avg_dps_all = Array{Float64}(0)
+
+    for row = 1:size(x,1)
+
+        all_dps_variant = x[row,1:size(x,2)]
+        sum_dp = sum(all_dps_variant)
+        avg_dp = sum_dp/(size(x,2))
+        push!(avg_dps_all,avg_dp)
+    end
+
+    return avg_dps_all
+
+end
+
+
+"""
+list_sample_names_low_dp(variant_avg_list::Array{Float64,2},chrom_labels)
+finds variant positions that have an average read depth of under 15 across all patients
+
+"""
+function list_sample_positions_low_dp(sample_avg_list::Array{Float64,1},chrom_labels)
+
+    low_dp_index_list = Array{Int64}(0)
+
+        for item = 1:length(sample_avg_list)
+            if sample_avg_list[item] < 15
+                push!(low_dp_index_list,item)
+            end
+        end
+
+    low_dp_positions = Array{Tuple{Int64,Int64}}(0)
+
+        for i in low_dp_index_list
+            chrom_position = chrom_labels[i,1],chrom_labels[i,2]
+            push!(low_dp_positions,chrom_position)
+        end
+
+        return low_dp_positions
+end
+
+
+"""
+list_variant_positions_low_dp(variant_avg_list::Array{Float64,2},chrom_labels)
+finds variant positions that have an average read depth of under 15 across all patients
+
+"""
+function list_variant_positions_low_dp(variant_avg_list::Array{Float64,1},chrom_labels)
+
+    low_dp_index_list = Array{Int64}(0)
+
+        for item = 1:length(variant_avg_list)
+            if variant_avg_list[item] < 15
+                push!(low_dp_index_list,item)
+            end
+        end
+
+    low_dp_positions = Array{Tuple{Int64,Int64}}(0)
+
+        for i in low_dp_index_list
+            chrom_position = chrom_labels[i,1],chrom_labels[i,2]
+            push!(low_dp_positions,chrom_position)
+        end
+
+        return low_dp_positions
+end
+
+"""
+read_depth_threshhold(dp_array::Array{Int64,2})
+sets ceiling for read depth values at dp = 100. All dp over 100 are set to 100 to visualize read depths between 0 < dp > 100 in better definition.
+"""
+
+function read_depth_threshhold(dp_array::Array{Int64,2})
+
+dp_array[dp_array[:,:].>100].=100
+
+return dp_array
 
 end
 
@@ -476,4 +629,86 @@ function save_numerical_array(x,y,z)
 
       writedlm("AC_gatk406_eh_PASS_withheader_value_matrix_.txt", labeled_value_matrix_withsamplenames, "\t")
 
+end
+
+"""
+chromosome_label_generator(chromosome_labels::Array{String,2})
+find chromosome label indices and create labels
+find index of first instance of element in array
+save indexes in vector to pass to ticvals as well as chrom labels as vector for tictext
+
+input these into plot functions for chrom tick labels on y axis
+"""
+
+function chromosome_label_generator(chromosome_labels::Array{Any,1})
+    chrom_label_indices = findfirst.(map(a -> (y -> isequal(a, y)), unique(chromosome_labels)), [chromosome_labels])
+    chrom_labels = unique(chromosome_labels)
+    chrom_labels = [string(i) for i in chrom_labels]
+
+    for item=2:(length(chrom_labels))
+
+        ratio=((chrom_label_indices[item])-(chrom_label_indices[item-1]))/(length(chromosome_labels))
+
+        if ratio < 0.1
+            font_size = "8"
+            return chrom_labels,chrom_label_indices,font_size
+        else
+            font_size = "18"
+            return chrom_labels,chrom_label_indices,font_size
+        end
+        #return font_size
+    end
+
+    #return chrom_labels,chrom_label_indices,font_size
+end
+
+
+"""
+new_sort_by_pheno_matrix()
+where x is pheno_matrix
+where y is trait to sort by
+
+"""
+
+function load_sort_phenotype_matrix(x::AbstractString, y::AbstractString, vcf::Array{Any,2}, df_vcf::DataFrames.DataFrame) #when x is ARGS[7] which is phenotype_matrix which is in *CSV format! and y is pheno key to sort on
+
+    pheno = readdlm(x, ',')
+
+    #get row numer of user-chosen phenotype characteristic to sort columns by
+    row_to_sort_by = find(x -> x == y, pheno)
+    row_to_sort_by = row_to_sort_by[1]
+
+    #remove phenotype_row_labels used to identify row to sort by, so row can be sorted without strings causing issues
+    pheno = pheno[:,2:size(pheno,2)]
+
+    pheno = sortcols(pheno, by = x -> x[row_to_sort_by], rev = false)
+
+    id_list = pheno[1,:]
+    vcf_header = names(df_vcf)
+    vcf_info_columns = vcf_header[1:9]
+
+    for item = 1:size(id_list,2) #names in sample list dont match vcf so have to clean
+           id_list[item] = replace(id_list[item],".","_")
+           id_list[item] = Symbol(id_list[item])
+    end
+
+    new_order = vcat(vcf_info_columns,id_list)
+
+    header_as_strings = new_order
+
+    col_new_order=vec(new_order)
+
+    df1_vcf = DataFrame(vcf)
+
+    rename!(df1_vcf, f => t for (f, t) = zip(names(df1_vcf), names(df_vcf)))
+
+    #println(typeof(names(df1_vcf))) #Array{Symbol,1} | same in test
+    #println(typeof(col_new_order)) #Array{Any,1} | same in test
+
+
+    vcf = df1_vcf[:, col_new_order]
+
+    vcf = Matrix(vcf)
+
+    return vcf
 end
