@@ -4,7 +4,6 @@ create subarray of vcf matching input chromosome range
 where x is chromosome range in form chr4:1-3241842
 where y is the reader object
 """
-
 function io_chromosome_range_vcf_filter(y::GeneticVariation.VCF.Reader, x::AbstractString)
        a=split(x,":")
        chrwhole=a[1]
@@ -123,9 +122,8 @@ function generate_genotype_array(x::Array{Any,1},y)
 end
 
 """
-function to create dictionary of values return dict
-replace_genotype_with_vals(x::Array)
-where x is num_array
+       define_geno_dict()
+function to create dictionary of values return dict for use in replace_genotype_with_vals())
 """
 function define_geno_dict()
 geno_dict = Dict()

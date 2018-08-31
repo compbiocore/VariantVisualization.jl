@@ -1,11 +1,8 @@
-#=questions for team
-when use ::Matrix{Any} vs ::Array{Any,2}
-=#
+
 """
     format_reader(vcf::Matrix{Any}, element::AbstractString)
 find index of chosen field to visualize
 genotype is always index split(cell)[1]
-
 """
 #function format_reader(vcf::Matrix{Any}, element::{T}) where {T<:AbstractString} #when vcf_matrix is vcf
 function format_reader(vcf::Matrix{Any}, element::AbstractString) #when vcf_matrix is vcf
@@ -662,6 +659,20 @@ function chromosome_label_generator(chromosome_labels::Array{Any,1})
     #return chrom_labels,chrom_label_indices,font_size
 end
 
+"""
+get_sample_names(reader)
+produces vector of sample names with row dimension = 1
+
+"""
+
+function get_sample_names(reader)
+    hdr=VCF.header(reader)
+    sample_names=hdr.sampleID
+    sample_names=reshape(sample_names,1,length(sample_names))
+    sample_names=convert(Array{Symbol}, sample_names)
+return sample_names
+end
+
 
 """
 new_sort_by_pheno_matrix()
@@ -670,7 +681,7 @@ where y is trait to sort by
 
 """
 
-function load_sort_phenotype_matrix(x::AbstractString, y::AbstractString, vcf::Array{Any,2}, df_vcf::DataFrames.DataFrame) #when x is ARGS[7] which is phenotype_matrix which is in *CSV format! and y is pheno key to sort on
+function new_sort_by_pheno_matrix(x::AbstractString, y::AbstractString, genotype_array, sample_names) #when x is ARGS[7] which is phenotype_matrix which is in *CSV format! and y is pheno key to sort on
 
     pheno = readdlm(x, ',')
 
@@ -684,11 +695,10 @@ function load_sort_phenotype_matrix(x::AbstractString, y::AbstractString, vcf::A
     pheno = sortcols(pheno, by = x -> x[row_to_sort_by], rev = false)
 
     id_list = pheno[1,:]
-    vcf_header = names(df_vcf)
-    vcf_info_columns = vcf_header[1:9]
+    vcf_header = sample_names
 
-    for item = 1:size(id_list,2) #names in sample list dont match vcf so have to clean
-           id_list[item] = replace(id_list[item],".","_")
+    for item = 1:size(id_list,2)
+           #id_list[item] = replace(id_list[item],".","_") #if names in sample list dont match vcf, have to clean
            id_list[item] = Symbol(id_list[item])
     end
 
@@ -701,10 +711,6 @@ function load_sort_phenotype_matrix(x::AbstractString, y::AbstractString, vcf::A
     df1_vcf = DataFrame(vcf)
 
     rename!(df1_vcf, f => t for (f, t) = zip(names(df1_vcf), names(df_vcf)))
-
-    #println(typeof(names(df1_vcf))) #Array{Symbol,1} | same in test
-    #println(typeof(col_new_order)) #Array{Any,1} | same in test
-
 
     vcf = df1_vcf[:, col_new_order]
 
