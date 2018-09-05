@@ -1,4 +1,5 @@
 #functions for loading vcf, vcf stats, clean vcf, load siglist
+
 """
     clean_column1!(matrix_with_chr_column)
 Replace String "X","Y","M" from chromosome column with 23,24,25 respectively so variants can be sorted by descending chr position for plotting
@@ -143,7 +144,7 @@ function io_sig_list_vcf_filter(sig_list,reader::GeneticVariation.VCF.Reader)
 end
 
 """
-    io_pass_filter(x::GeneticVariation.VCF.Reader)
+    io_pass_filter(reader::GeneticVariation.VCF.Reader)
 returns subarray of vcf including only rows with FILTER status = PASS
 """
 function io_pass_filter(reader::GeneticVariation.VCF.Reader)
