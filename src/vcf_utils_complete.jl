@@ -126,17 +126,17 @@ function io_sig_list_vcf_filter(sig_list,reader::GeneticVariation.VCF.Reader)
                      if typeof(VCF.chrom(record)) == String
                             chr = string(chr)
 
-                     if (VCF.chrom(record) == chr) && (VCF.pos(record) == pos)
-                            push!(vcf_subarray,record)
-                     end
+                            if (VCF.chrom(record) == chr) && (VCF.pos(record) == pos)
+                                push!(vcf_subarray,record)
+                            end
 
-              else
+                    else
 
-                     if (VCF.chrom(record) == chr) && (VCF.pos(record) == pos)
-                            push!(vcf_subarray,record)
+                            if (VCF.chrom(record) == chr) && (VCF.pos(record) == pos)
+                                push!(vcf_subarray,record)
 
-              end
-              end
+                            end
+                    end
               end
        end
 
@@ -160,6 +160,55 @@ end
 
 return vcf_subarray
 end
+
+"""
+    pass_chrrange_siglist_filter(reader::GeneticVariation.VCF.Reader,sig_list,chr_range::AbstractString)
+returns subarray of vcf with io_pass_filter, io_sig_list_vcf_filter, and io_chromosome_range_vcf_filter applied.
+"""
+function pass_chrrange_list_filter(reader::GeneticVariation.VCF.Reader,sig_list,chr_range::AbstractString)
+
+    a=split(chr_range,":")
+    chrwhole=a[1]
+    chrnumber=split(chrwhole,"r")
+    string_chr=chrnumber[2]
+    chr=String(string_chr)
+    range=a[2]
+    splitrange=split(range, "-")
+    lower_limit=splitrange[1]
+    chr_range_low=parse(lower_limit)
+    upper_limit=splitrange[2]
+    chr_range_high=parse(upper_limit)
+
+    vcf_subarray = Array{Any}(0)
+
+    for row= 1:size(sig_list,1)
+           dimension = size(sig_list,1)
+
+           chr=(sig_list[row,1])
+           pos=(sig_list[row,2])
+
+           for record in reader
+
+                  if typeof(VCF.chrom(record)) == String
+                         chr = string(chr)
+
+                         if (VCF.chrom(record) == chr) && (VCF.pos(record) == pos) && (VCF.hasfilter(record)) && (VCF.filter(record) == String["PASS"]) && ((VCF.chrom(record) == chr)) && ((chr_range_high > VCF.pos(record) > chr_range_low))
+                             push!(vcf_subarray,record)
+                         end
+
+                 else
+
+                         if (VCF.chrom(record) == chr) && (VCF.pos(record) == pos) && (VCF.hasfilter(record)) && (VCF.filter(record) == String["PASS"]) && ((VCF.chrom(record) == chr)) && ((chr_range_high > VCF.pos(record) > chr_range_low))
+                             push!(vcf_subarray,record)
+
+                         end
+                 end
+           end
+    end
+
+    return vcf_subarray
+    end
+
 
 #functions for converting vcf record array to numerical array
 
