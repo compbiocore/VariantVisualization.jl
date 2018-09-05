@@ -1,0 +1,2 @@
+using IJulia
+notebook()
