@@ -34,9 +34,9 @@ function genotype_heatmap2(input,title,chrom_label_info)
                transpose=true,
                #colorscale = "readdepth_colors",
                colorscale = [[0, "rgb(255,255,255)"], #choose colors and run all 6 graphics in am - replace in presentation
-                            [0.5, "rgb(160,227,250)"],
-                            [0.75, "rgb(52,36,242)"],
-                            [1, "rgb(255,9,249)"]],
+                            [0.5, "rgb(102,212,255)"],  #"rgb(160,227,250)" original blue
+                            [0.75, "rgb(61,14,105)"],
+                            [1, "rgb(236,63,69)"]],   #[1, "rgb(255,9,249)"]] original pink
                gridcolor = "#E2E2E2",
                showscale = true,
                colorbar = attr(tickvals = [0, 400, 600, 800],

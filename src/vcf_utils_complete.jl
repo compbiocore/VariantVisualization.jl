@@ -21,10 +21,10 @@ use in load_siglist() because X and Y need to be replaced with Int
 """
 function clean_column1_siglist!(siglist)
 
-    for i = 1:(size(x, 1))
-        x[i, 1] = x[i, 1] == "X" ? 23 : x[i, 1]
-        x[i, 1] = x[i, 1] == "Y" ? 24 : x[i, 1]
-        x[i, 1] = x[i, 1] == "M" ? 25 : x[i, 1]
+    for i = 1:(size(siglist, 1))
+        siglist[i, 1] = siglist[i, 1] == "X" ? 23 : siglist[i, 1]
+        siglist[i, 1] = siglist[i, 1] == "Y" ? 24 : siglist[i, 1]
+        siglist[i, 1] = siglist[i, 1] == "M" ? 25 : siglist[i, 1]
     end
 end
 
@@ -246,7 +246,6 @@ returns subarray of vcf with io_pass_filter and io_chromosome_range_vcf_filter a
                              end
                      end
                end
-        end
 
         return vcf_subarray
     end
@@ -344,7 +343,7 @@ Where genotype_field is either GT or DP to visualize genotype or read_depth
 """
 function generate_genotype_array(record_sub::Array{Any,1},y)
 
-       num_samples = length(VCF.genotype(x[1]))
+       num_samples = length(VCF.genotype(record_sub[1]))
 
        df = DataFrame(String, 0, num_samples+2)
 
@@ -458,12 +457,12 @@ function get_sample_names(reader)
 end
 
 """
-    sortcols_by_phenotype_matrix(pheno_matrix_filename::AbstractString,trait_to_group_by::AbstractString,num_array::Array{Any,2}, sample_names)
+    sortcols_by_phenotype_matrix(pheno_matrix_filename::String,trait_to_group_by::String,num_array::Array{Int64,2}, sample_names::Array{Symbol,2})
 group samples by a common trait using a user generated key matrix ("phenotype matrix")
 """
-function sortcols_by_phenotype_matrix(pheno_matrix_filename::AbstractString,trait_to_group_by::AbstractString, num_array::Array{Any,2}, sample_names)
+function sortcols_by_phenotype_matrix(pheno_matrix_filename::String,trait_to_group_by::String, num_array::Array{Int64,2}, sample_names::Array{Symbol,2})
 
-    pheno = readdlm(x, ',')
+    pheno = readdlm(pheno_matrix_filename, ',')
 
     #get row numer of user-chosen phenotype characteristic to sort columns by
     row_to_sort_by = find(x -> x == trait_to_group_by, pheno)
@@ -472,7 +471,7 @@ function sortcols_by_phenotype_matrix(pheno_matrix_filename::AbstractString,trai
     #remove phenotype_row_labels used to identify row to sort by, so row can be sorted without strings causing issues
     pheno = pheno[:,2:size(pheno,2)]
 
-    pheno = sortcols(pheno, by = x -> x[row_to_sort_by], rev = false)
+    pheno = sortcols(pheno, by = x -> pheno[row_to_sort_by], rev = false)  #here pheno used to be x
 
     id_list = pheno[1,:]
 
@@ -480,7 +479,6 @@ function sortcols_by_phenotype_matrix(pheno_matrix_filename::AbstractString,trai
     #vcf_info_columns = vcf_header[1:9]
 
     sample_ids=sample_names
-
 
     col_new_order=vec(sample_ids)
 
@@ -499,10 +497,10 @@ function sortcols_by_phenotype_matrix(pheno_matrix_filename::AbstractString,trai
 end
 
 """
-    select_columns(filename_sample_list::AbstractString, num_array::Array{Any,2}, sample_names)
+    select_columns(filename_sample_list::AbstractString, num_array::Array{Int64,2}, sample_names::Array{Symbol,2})
 returns num_array with columns matching user generated list of sample ids to select for analysis. num_array now has sample ids in first row.
 """
-function select_columns(filename_sample_list::AbstractString, num_array::Array{Any,2}, sample_names)
+function select_columns(filename_sample_list::AbstractString, num_array::Array{Int64,2}, sample_names::Array{Symbol,2})
 
     selectedcolumns=readdlm(filename_sample_list)
 
@@ -658,17 +656,24 @@ function chromosome_label_generator(chromosome_labels::Array{Any,1})
     chrom_label_indices = findfirst.(map(a -> (y -> isequal(a, y)), unique(chromosome_labels)), [chromosome_labels])
     chrom_labels = unique(chromosome_labels)
     chrom_labels = [string(i) for i in chrom_labels]
+    println(chrom_labels)
+    println(chrom_label_indices)
 
-    for item=2:(length(chrom_labels))
+    if length(chrom_labels) > 1
+        for item=2:(length(chrom_labels))
 
-        ratio=((chrom_label_indices[item])-(chrom_label_indices[item-1]))/(length(chromosome_labels))
+            ratio=((chrom_label_indices[item])-(chrom_label_indices[item-1]))/(length(chromosome_labels))
 
-        if ratio < 0.1
-            font_size = "8"
-            return chrom_labels,chrom_label_indices,font_size
-        else
-            font_size = "18"
-            return chrom_labels,chrom_label_indices,font_size
+            if ratio < 0.1
+                font_size = "8"
+                return chrom_labels,chrom_label_indices,font_size
+            else
+                font_size = "18"
+                return chrom_labels,chrom_label_indices,font_size
+            end
         end
+    else
+        font_size = "18"
+        return chrom_labels,chrom_label_indices,font_size
     end
 end

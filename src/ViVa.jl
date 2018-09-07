@@ -55,15 +55,19 @@ export
     translate_readdepth_strings_to_num_array,
     genotype_heatmap_with_groups,
     jupyter_main_new,
-    returnXY_column1!
-
+    returnXY_column1!,
+    pass_chrrange_siglist_filter,
+    pass_chrrange_filter,
+    pass_siglist_filter,
+    chrrange_siglist_filter,
+    get_sample_names,
+    sortcols_by_phenotype_matrix
 
 #include("vcf_utils.jl")
-include("type_defined_vcf_utils.jl")
+include("vcf_utils_complete.jl")
 include("plot_utils.jl")
-include("notebook_utils.jl")
+#include("notebook_utils.jl")
 include("new_notebook_utils.jl")
-
-include("io_filters.jl")
+#include("io_filters.jl")
 
 end # module
