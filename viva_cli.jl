@@ -118,10 +118,10 @@ function test_parse_main(ARGS::Vector{String})
     end
 
     parsed_args = parse_args(s)# can turn off printing parsed args after development
-    #println("Parsed args:")
+    println("Parsed args:")
 
     for (key,val) in parsed_args
-        #println("  $key  =>  $(repr(val))")
+        println("  $key  =>  $(repr(val))")
     end
 
     return parsed_args
@@ -232,42 +232,54 @@ if parsed_args["heatmap"] == "genotype"
                 geno_dict = define_geno_dict()
                 gt_num_array,gt_chromosome_labels = translate_genotype_to_num_array(genotype_array, geno_dict)
 
-                if parsed_args["heatmap_title"] != nothing
-                    title = parsed_args["heatmap_title"]
-                else
-                    title = "Genotype_$(parsed_args["vcf_file"])"
-                end
+                        if parsed_args["heatmap_title"] != nothing
+                            title = parsed_args["heatmap_title"]
+                        else
+                            title = "Genotype_$(parsed_args["vcf_file"])"
+                        end
 
                 graphic = ViVa.genotype_heatmap_with_groups(gt_num_array,title,group1_index,group2_index,group_dividing_line,group1_label,group2_label) #when x = array_for_plotly #add input variables for tickvals and ticktext from optional arguments
                 PlotlyJS.savefig(graphic, "$title.$(parsed_args["save_format"])")
         else
 
+                genotype_array = generate_genotype_array(sub,"GT")
 
-                    genotype_array = generate_genotype_array(sub,"GT")
+                clean_column1!(genotype_array)
+                genotype_array=ViVa.sort_genotype_array(genotype_array)
 
-                    clean_column1!(genotype_array)
-                    genotype_array=ViVa.sort_genotype_array(genotype_array)
+                geno_dict = define_geno_dict()
+                gt_num_array,gt_chromosome_labels = translate_genotype_to_num_array(genotype_array, geno_dict)
 
-                    geno_dict = define_geno_dict()
-                    gt_num_array,gt_chromosome_labels = translate_genotype_to_num_array(genotype_array, geno_dict)
+                        if typeof(parsed_args["group_samples"]) == Array{String,1}
 
-                    if parsed_args["group_samples"] != nothing
-                            group_trait_matrix_filename=((parsed_args["group_samples"])[1])
-                            trait_to_group_by = ((parsed_args["group_samples"])[2])
-                            gt_num_array = sortcols_by_phenotype_matrix(group_trait_matrix_filename, trait_to_group_by, gt_num_array, sample_names)
-                    end
+                                group_trait_matrix_filename=((parsed_args["group_samples"])[1])
+                                trait_to_group_by = ((parsed_args["group_samples"])[2])
+                                println("grouping samples by $trait_to_group_by")
+                                gt_num_array,group_label_pack = sortcols_by_phenotype_matrix(group_trait_matrix_filename, trait_to_group_by, gt_num_array, sample_names)
 
-                    if parsed_args["heatmap_title"] != nothing
-                        title = parsed_args["heatmap_title"]
-                    else
-                        title = "Genotype_$(parsed_args["vcf_file"])"
-                    end
+                                        if parsed_args["heatmap_title"] != nothing
+                                                title = parsed_args["heatmap_title"]
+                                        else
+                                                title = "Genotype_$(parsed_args["vcf_file"])"
+                                        end
 
-                    chrom_label_info = ViVa.chromosome_label_generator(gt_chromosome_labels[:,1])
-                    println(chrom_label_info)
+                                chrom_label_info = ViVa.chromosome_label_generator(gt_chromosome_labels[:,1])
+                                #insert group_label_pack into heapmap functions in group_sampels loops
+                                graphic = ViVa.genotype_heatmap2(gt_num_array,title,chrom_label_info)
+                                PlotlyJS.savefig(graphic, "$title.$(parsed_args["save_format"])")
 
-                    graphic = ViVa.genotype_heatmap2(gt_num_array,title,chrom_label_info)
-                    PlotlyJS.savefig(graphic, "$title.$(parsed_args["save_format"])")
+                        else
+                                        if parsed_args["heatmap_title"] != nothing
+                                                title = parsed_args["heatmap_title"]
+                                        else
+                                                title = "Genotype_$(parsed_args["vcf_file"])"
+                                        end
+
+                                chrom_label_info = ViVa.chromosome_label_generator(gt_chromosome_labels[:,1])
+
+                                graphic = ViVa.genotype_heatmap2(gt_num_array,title,chrom_label_info)
+                                PlotlyJS.savefig(graphic, "$title.$(parsed_args["save_format"])")
+                        end
 
         end
 
@@ -280,23 +292,43 @@ elseif parsed_args["heatmap"] == "read_depth"
 
     dp_num_array,dp_chromosome_labels = translate_readdepth_strings_to_num_array(read_depth_array)
 
-    if parsed_args["group_samples"] != nothing
-            group_trait_matrix_filename=((parsed_args["group_samples"])[1])
-            trait_to_group_by = ((parsed_args["group_samples"])[2])
-            dp_num_array = sortcols_by_phenotype_matrix(group_trait_matrix_filename, trait_to_group_by, dp_num_array, sample_names)
-    end
+    if typeof(parsed_args["group_samples"]) == Array{String,1}
 
-    if parsed_args["heatmap_title"] != nothing
-        title = parsed_args["heatmap_title"]
+
+                group_trait_matrix_filename=((parsed_args["group_samples"])[1])
+                trait_to_group_by = ((parsed_args["group_samples"])[2])
+                println("grouping samples by $trait_to_group_by")
+                dp_num_array = sortcols_by_phenotype_matrix(group_trait_matrix_filename, trait_to_group_by, dp_num_array, sample_names)
+                dp_num_array_limited=read_depth_threshhold(dp_num_array)
+
+                        if parsed_args["heatmap_title"] != nothing
+                            title = parsed_args["heatmap_title"]
+                        else
+                            title = "Genotype_$(parsed_args["vcf_file"])"
+                        end
+
+                chrom_label_info = ViVa.chromosome_label_generator(dp_chromosome_labels[:,1])
+                
+                #insert group_label_pack into heapmap functions in group_sampels loops
+                graphic = ViVa.dp_heatmap2(dp_num_array_limited,title,chrom_label_info)
+                PlotlyJS.savefig(graphic, "$title.$(parsed_args["save_format"])")
+
     else
-        title = "Read_depth_$(parsed_args["vcf_file"])"
+                        if parsed_args["heatmap_title"] != nothing
+                                title = parsed_args["heatmap_title"]
+                        else
+                                title = "Read_depth_$(parsed_args["vcf_file"])"
+                        end
+
+                dp_num_array_limited=read_depth_threshhold(dp_num_array) #add option for this, default is true, option to turn off
+                chrom_label_info = ViVa.chromosome_label_generator(dp_chromosome_labels[:,1])
+                graphic = ViVa.dp_heatmap2(dp_num_array_limited,title,chrom_label_info)
+                PlotlyJS.savefig(graphic, "$title.$(parsed_args["save_format"])")
+
     end
-
-    dp_num_array_limited=read_depth_threshhold(dp_num_array) #add option for this, default is true, option to turn off
-    graphic = ViVa.dp_heatmap2(dp_num_array_limited,title)
-    PlotlyJS.savefig(graphic, "$title.$(parsed_args["save_format"])")
-
 end
+
+
 
 #=
 elseif parsed_args["heatmap"] == "genotype,read_depth" || "read_depth,genotype"

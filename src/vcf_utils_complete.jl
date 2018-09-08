@@ -471,16 +471,19 @@ function sortcols_by_phenotype_matrix(pheno_matrix_filename::String,trait_to_gro
     #remove phenotype_row_labels used to identify row to sort by, so row can be sorted without strings causing issues
     pheno = pheno[:,2:size(pheno,2)]
 
-    pheno = sortcols(pheno, by = x -> pheno[row_to_sort_by], rev = false)  #here pheno used to be x
+    pheno = sortcols(pheno, by = x -> x[row_to_sort_by], rev = false)
 
     id_list = pheno[1,:]
 
     #vcf_header = names(df_vcf)
     #vcf_info_columns = vcf_header[1:9]
 
+
     sample_ids=sample_names
 
-    col_new_order=vec(sample_ids)
+    col_new_order=vec(id_list)
+
+    col_new_order = [Symbol(i) for i in col_new_order]
 
     df1_vcf = DataFrame(num_array)
 
@@ -493,7 +496,21 @@ function sortcols_by_phenotype_matrix(pheno_matrix_filename::String,trait_to_gro
 
     vcf = Matrix(vcf)
 
-    return vcf
+    function find_group_label_indices(pheno)
+
+        pheno
+
+        group1_index =
+        group2_index =
+        group_dividing_line =
+        group1_label =
+        group2_label =
+        group_label_pack = group1_index,group2_index,group_dividing_line,group1_label,group2_label
+
+        return group_label_pack
+    end
+
+    return vcf,group_label_pack
 end
 
 """

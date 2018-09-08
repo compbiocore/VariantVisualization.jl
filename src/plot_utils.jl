@@ -70,7 +70,7 @@ function genotype_heatmap_with_groups(input::Array{Any,2},title::AbstractString,
     font_size = chrom_label_info[3]
 
                   trace=heatmap(
-                      z = input, x=1:size(input, 2),
+                       z = input, x=1:size(input, 2),y=1:size(input, 1),
 
                       transpose=true,
                       #colorscale = "readdepth_colors",
@@ -101,13 +101,18 @@ function genotype_heatmap_with_groups(input::Array{Any,2},title::AbstractString,
     dp_heatmap2(input, title)
 generate heatmap of read depth data.
 """
-function dp_heatmap2(input, title) #when x = array_for_plotly
+function dp_heatmap2(input, title, chrom_label_info)
 
-    #max_val=findmax(input)
-    #println(max_val)
+    chrom_labels = chrom_label_info[1]
+    returnXY_column1!(chrom_labels)
+
+    chrom_label_indices = chrom_label_info[2]
+
+    font_size = chrom_label_info[3]
+
 
     trace=heatmap(
-        z = input,
+        z = input, x=1:size(input, 2),y=1:size(input, 1),
 
         transpose=true,
         colorscale = [[0, "rgb(153,231,255)"],
@@ -124,7 +129,8 @@ function dp_heatmap2(input, title) #when x = array_for_plotly
     layout = Layout(
                     title = "$title",#defines title of plot
                     xaxis=attr(title="Sample Number", showgrid=false, zeroline=false),
-                    yaxis=attr(title="Chromosomal Location", zeroline=false)
+                    yaxis=attr(title="Chromosomal Location", zeroline=false, tickvals=chrom_label_indices,
+                    ticktext=chrom_labels,size=font_size)
                     )
 
     data = (trace)
@@ -136,9 +142,6 @@ end
 generate heatmap of read depth data with grouped samples.
 """
 function dp_heatmap2_with_groups(input::Array{Any,2},title::AbstractString,chrom_label_info,group1_index,group2_index,group_dividing_line,group1_label,group2_label)
-
-    #max_val=findmax(input)
-    #println(max_val)
 
     trace=heatmap(
         z = input,
