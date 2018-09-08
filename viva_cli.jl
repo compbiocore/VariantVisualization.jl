@@ -1,3 +1,18 @@
+println("loading packages:")
+println("ViVa")
+using ViVa
+
+println("GeneticVariation")
+using GeneticVariation
+
+println("ArgParse")
+using ArgParse
+
+println("VCFTools")
+using VCFTools
+
+
+#=
 tic()
 println("loading packages:")
 println("ViVa")
@@ -15,6 +30,7 @@ tic()
 println("VCFTools")
 using VCFTools
 toc()
+=#
 
 tic()
 
@@ -265,7 +281,7 @@ if parsed_args["heatmap"] == "genotype"
 
                                 chrom_label_info = ViVa.chromosome_label_generator(gt_chromosome_labels[:,1])
                                 #insert group_label_pack into heapmap functions in group_sampels loops
-                                graphic = ViVa.genotype_heatmap2(gt_num_array,title,chrom_label_info)
+                                graphic = ViVa.genotype_heatmap_with_groups(gt_num_array,title,chrom_label_info,group_label_pack)
                                 PlotlyJS.savefig(graphic, "$title.$(parsed_args["save_format"])")
 
                         else
@@ -298,19 +314,20 @@ elseif parsed_args["heatmap"] == "read_depth"
                 group_trait_matrix_filename=((parsed_args["group_samples"])[1])
                 trait_to_group_by = ((parsed_args["group_samples"])[2])
                 println("grouping samples by $trait_to_group_by")
-                dp_num_array = sortcols_by_phenotype_matrix(group_trait_matrix_filename, trait_to_group_by, dp_num_array, sample_names)
+                dp_num_array,group_label_pack = sortcols_by_phenotype_matrix(group_trait_matrix_filename, trait_to_group_by, dp_num_array, sample_names)
                 dp_num_array_limited=read_depth_threshhold(dp_num_array)
 
                         if parsed_args["heatmap_title"] != nothing
                             title = parsed_args["heatmap_title"]
                         else
-                            title = "Genotype_$(parsed_args["vcf_file"])"
+                            title = "Read_Depth_$(parsed_args["vcf_file"])"
                         end
 
                 chrom_label_info = ViVa.chromosome_label_generator(dp_chromosome_labels[:,1])
-                
+                println(chrom_label_info)
+
                 #insert group_label_pack into heapmap functions in group_sampels loops
-                graphic = ViVa.dp_heatmap2(dp_num_array_limited,title,chrom_label_info)
+                graphic = ViVa.dp_heatmap2_with_groups(dp_num_array_limited,title,chrom_label_info,group_label_pack)
                 PlotlyJS.savefig(graphic, "$title.$(parsed_args["save_format"])")
 
     else

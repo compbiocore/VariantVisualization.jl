@@ -20,13 +20,9 @@ generate heatmap of genotype data.
 """
 function genotype_heatmap2(input,title,chrom_label_info)
 
-            println(typeof(chrom_label_info))
-
             chrom_labels = chrom_label_info[1]
             returnXY_column1!(chrom_labels)
-
             chrom_label_indices = chrom_label_info[2]
-
             font_size = chrom_label_info[3]
 
            trace=heatmap(
@@ -57,17 +53,21 @@ function genotype_heatmap2(input,title,chrom_label_info)
        end
 
 """
-           genotype_heatmap_with_groups(input::Array{Any,2},title::AbstractString,chrom_label_info,group1_index,group2_index,group_dividing_line,group1_label,group2_label)
+           genotype_heatmap_with_groups(input::Array{Int64,2},title::String,chrom_label_info::Tuple{Array{String,1},Array{Int64,1},String},group_label_pack::Array{Any,1})
        generate heatmap of genotype data.
 """
-function genotype_heatmap_with_groups(input::Array{Any,2},title::AbstractString,chrom_label_info,group1_index,group2_index,group_dividing_line,group1_label,group2_label)
+function genotype_heatmap_with_groups(input::Array{Int64,2},title::String,chrom_label_info::Tuple{Array{String,1},Array{Int64,1},String},group_label_pack::Array{Any,1})
 
     chrom_labels = chrom_label_info[1]
     returnXY_column1!(chrom_labels)
-
     chrom_label_indices = chrom_label_info[2]
-
     font_size = chrom_label_info[3]
+
+    group1_index=group_label_pack[1]
+    group2_index=group_label_pack[2]
+    group_dividing_line=group_label_pack[3]
+    group1_label=group_label_pack[4]
+    group2_label=group_label_pack[5]
 
                   trace=heatmap(
                        z = input, x=1:size(input, 2),y=1:size(input, 1),
@@ -77,7 +77,7 @@ function genotype_heatmap_with_groups(input::Array{Any,2},title::AbstractString,
                       colorscale = [[0, "rgb(255,255,255)"], #choose colors and run all 6 graphics in am - replace in presentation
                                    [0.5, "rgb(160,227,250)"],
                                    [0.75, "rgb(52,36,242)"],
-                                   [1, "rgb(255,9,249)"]],
+                                   [1, "rgb(236,63,69)"]],
                       gridcolor = "#E2E2E2",
                       showscale = true,
                       colorbar = attr(tickvals = [0, 400, 600, 800],
@@ -87,29 +87,30 @@ function genotype_heatmap_with_groups(input::Array{Any,2},title::AbstractString,
 
                   layout = Layout(
                                   title = "$title",#defines title of plot
+
                                   xaxis=attr(title="Sample Number", showgrid=false, zeroline=false, tickvals=[group1_index, group2_index],
                                   ticktext=[group1_label, group2_label]),
-                                  yaxis=attr(title="Chromosomal Location", zeroline=false, showticklabels=false, tickvals=[]),
-                                   shapes=shapes, yaxis_range = [1:size(input,1)], xaxis_range = [1:size(input,2)]
 
-                  )
+                                  yaxis=attr(title="Chromosomal Location", zeroline=false, tickvals=chrom_label_indices,
+                                  ticktext=chrom_labels, size=font_size),
+                                  shapes=shapes, yaxis_range = [1:size(input,1)], xaxis_range = [1:size(input,2)]
+
+                                   )
                   data = (trace)
                       plot(data,layout) #call plot type and layout with all attributes to plot function
               end
 
+
 """
-    dp_heatmap2(input, title)
+    dp_heatmap2(input, title,)
 generate heatmap of read depth data.
 """
 function dp_heatmap2(input, title, chrom_label_info)
 
     chrom_labels = chrom_label_info[1]
     returnXY_column1!(chrom_labels)
-
     chrom_label_indices = chrom_label_info[2]
-
     font_size = chrom_label_info[3]
-
 
     trace=heatmap(
         z = input, x=1:size(input, 2),y=1:size(input, 1),
@@ -138,13 +139,24 @@ function dp_heatmap2(input, title, chrom_label_info)
 end
 
 """
-           dp_heatmap2_with_groups(input::Array{Any,2},title::AbstractString,chrom_label_info,group1_index,group2_index,group_dividing_line,group1_label,group2_label)
+           dp_heatmap2_with_groups(input::Array{Int64,2},title::String,chrom_label_info::Tuple{Array{String,1},Array{Int64,1},String},group_label_pack::Array{Any,1})
 generate heatmap of read depth data with grouped samples.
 """
-function dp_heatmap2_with_groups(input::Array{Any,2},title::AbstractString,chrom_label_info,group1_index,group2_index,group_dividing_line,group1_label,group2_label)
+function dp_heatmap2_with_groups(input::Array{Int64,2},title::String,chrom_label_info::Tuple{Array{String,1},Array{Int64,1},String},group_label_pack::Array{Any,1})
+
+    chrom_labels = chrom_label_info[1]
+    returnXY_column1!(chrom_labels)
+    chrom_label_indices = chrom_label_info[2]
+    font_size = chrom_label_info[3]
+
+    group1_index=group_label_pack[1]
+    group2_index=group_label_pack[2]
+    group_dividing_line=group_label_pack[3]
+    group1_label=group_label_pack[4]
+    group2_label=group_label_pack[5]
 
     trace=heatmap(
-        z = input,
+        z = input, x=1:size(input, 2),y=1:size(input, 1),
 
         transpose=true,
         colorscale = [[0, "rgb(153,231,255)"],
@@ -157,19 +169,23 @@ function dp_heatmap2_with_groups(input::Array{Any,2},title::AbstractString,chrom
         gridcolor = "#E2E2E2",
         showscale = true,
         );
-
     shapes = [vline(group_dividing_line)]
 
     layout = Layout(
                     title = "$title",#defines title of plot
-                    xaxis=attr(title="Sample Number", showgrid=false, zeroline=false),
-                    yaxis=attr(title="Chromosomal Location", zeroline=false, showticklabels=false, tickvals=[]),
-                     shapes=shapes, yaxis_range = [1:size(input,1)], xaxis_range = [1:size(input,2)], hovermode = true
+
+                    xaxis=attr(title="Sample Number", showgrid=false, zeroline=false, tickvals=[group1_index, group2_index],
+                    ticktext=[group1_label, group2_label]),
+
+                    yaxis=attr(title="Chromosomal Location", zeroline=false, tickvals=chrom_label_indices,
+                    ticktext=chrom_labels, size=font_size),
+                    shapes=shapes, yaxis_range = [1:size(input,1)], xaxis_range = [1:size(input,2)]
                     )
 
     data = (trace)
-    plot(data,layout) #call plot type and layout with all attributes to plot function
+    plot(data,layout)
 end
+
 
 """
            avg_sample_dp_line_chart(sample_avg_list::Array{Int,1})

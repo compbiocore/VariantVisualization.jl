@@ -61,7 +61,8 @@ export
     pass_siglist_filter,
     chrrange_siglist_filter,
     get_sample_names,
-    sortcols_by_phenotype_matrix
+    sortcols_by_phenotype_matrix,
+    find_group_label_indices
 
 #include("vcf_utils.jl")
 include("vcf_utils_complete.jl")

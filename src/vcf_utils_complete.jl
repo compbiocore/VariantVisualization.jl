@@ -457,6 +457,23 @@ function get_sample_names(reader)
 end
 
 """
+    find_group_label_indices(pheno)
+find indices and determines names for group 1 and group 2 labels on plots. finds index of center of each sample group to place tick mark and label.
+"""
+function find_group_label_indices(pheno,trait_to_group_by,row_to_sort_by)
+    
+    group1_label=split(trait_to_group_by,",")[1]
+    group2_label=split(trait_to_group_by,",")[2]
+    group1_index = ((findlast(pheno[row_to_sort_by,:],1)) - (findfirst(pheno[row_to_sort_by,:],1)))/2
+    group2_index = ((findlast(pheno[row_to_sort_by,:],2) - (findfirst(pheno[row_to_sort_by,:],2)))/2) + (findlast(pheno[row_to_sort_by,:],1)) + 0.5
+    group_dividing_line = findfirst(pheno[row_to_sort_by,:],2) - (0.5)
+
+    group_label_pack = [group1_index, group2_index, group_dividing_line, group1_label, group2_label]
+
+    return group_label_pack
+end
+
+"""
     sortcols_by_phenotype_matrix(pheno_matrix_filename::String,trait_to_group_by::String,num_array::Array{Int64,2}, sample_names::Array{Symbol,2})
 group samples by a common trait using a user generated key matrix ("phenotype matrix")
 """
@@ -478,7 +495,6 @@ function sortcols_by_phenotype_matrix(pheno_matrix_filename::String,trait_to_gro
     #vcf_header = names(df_vcf)
     #vcf_info_columns = vcf_header[1:9]
 
-
     sample_ids=sample_names
 
     col_new_order=vec(id_list)
@@ -496,19 +512,7 @@ function sortcols_by_phenotype_matrix(pheno_matrix_filename::String,trait_to_gro
 
     vcf = Matrix(vcf)
 
-    function find_group_label_indices(pheno)
-
-        pheno
-
-        group1_index =
-        group2_index =
-        group_dividing_line =
-        group1_label =
-        group2_label =
-        group_label_pack = group1_index,group2_index,group_dividing_line,group1_label,group2_label
-
-        return group_label_pack
-    end
+    group_label_pack = find_group_label_indices(pheno,trait_to_group_by,row_to_sort_by)
 
     return vcf,group_label_pack
 end
@@ -673,8 +677,6 @@ function chromosome_label_generator(chromosome_labels::Array{Any,1})
     chrom_label_indices = findfirst.(map(a -> (y -> isequal(a, y)), unique(chromosome_labels)), [chromosome_labels])
     chrom_labels = unique(chromosome_labels)
     chrom_labels = [string(i) for i in chrom_labels]
-    println(chrom_labels)
-    println(chrom_label_indices)
 
     if length(chrom_labels) > 1
         for item=2:(length(chrom_labels))
