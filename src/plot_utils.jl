@@ -13,12 +13,11 @@ g_red = 800 #homo variant 1/1 1/2 2/2 1/3 2/3 3/3 4/4 5/5 6/6 etc
 g_pink = 600 #hetero variant 0/1 1/0 0/2 2/0 etc
 g_blue = 0 #no call ./.
 
-
 """
-    genotype_heatmap2(input::Array{Any,2},title::AbstractString,chrom_label_info)
+    genotype_heatmap2(input::Array{Any,2},title::AbstractString,chrom_label_info,sample_names)
 generate heatmap of genotype data.
 """
-function genotype_heatmap2(input,title,chrom_label_info)
+function genotype_heatmap2(input,title,chrom_label_info,sample_names)
 
             chrom_labels = chrom_label_info[1]
             returnXY_column1!(chrom_labels)
@@ -27,6 +26,8 @@ function genotype_heatmap2(input,title,chrom_label_info)
 
            trace=heatmap(
                z = input, x=1:size(input, 2),y=1:size(input, 1),
+              # text = sample_names,
+               #hoverinfo = "text",
                transpose=true,
                #colorscale = "readdepth_colors",
                colorscale = [[0, "rgb(255,255,255)"], #choose colors and run all 6 graphics in am - replace in presentation
@@ -45,7 +46,7 @@ function genotype_heatmap2(input,title,chrom_label_info)
                            title = "$title",#defines title of plot
                            xaxis=attr(title="Sample Number", showgrid=false, zeroline=false),
                            yaxis=attr(title="Chromosomal Location", zeroline=false, tickvals=chrom_label_indices,
-                           ticktext=chrom_labels,size=font_size)
+                           ticktext=chrom_labels,size=font_size,hovermode=true)
 
            )
            data = (trace)
@@ -53,10 +54,10 @@ function genotype_heatmap2(input,title,chrom_label_info)
        end
 
 """
-           genotype_heatmap_with_groups(input::Array{Int64,2},title::String,chrom_label_info::Tuple{Array{String,1},Array{Int64,1},String},group_label_pack::Array{Any,1})
+           genotype_heatmap_with_groups(input::Array{Int64,2},title::String,chrom_label_info::Tuple{Array{String,1},Array{Int64,1},String},group_label_pack::Array{Any,1},sample_names)
        generate heatmap of genotype data.
 """
-function genotype_heatmap_with_groups(input::Array{Int64,2},title::String,chrom_label_info::Tuple{Array{String,1},Array{Int64,1},String},group_label_pack::Array{Any,1})
+function genotype_heatmap_with_groups(input::Array{Int64,2},title::String,chrom_label_info::Tuple{Array{String,1},Array{Int64,1},String},group_label_pack::Array{Any,1},sample_names)
 
     chrom_labels = chrom_label_info[1]
     returnXY_column1!(chrom_labels)
@@ -188,10 +189,10 @@ end
 
 
 """
-           avg_sample_dp_line_chart(sample_avg_list::Array{Int,1})
+           avg_sample_dp_line_chart(sample_avg_list::Array{Float64,1})
 generate line chart of average read depths of each sample.
 """
-function avg_sample_dp_line_chart(sample_avg_list::Array{Int,1})
+function avg_sample_dp_line_chart(sample_avg_list::Array{Float64,1})
 
     trace = scatter(;x=1:size(sample_avg_list,1), y=sample_avg_list, mode="lines")
     layout = Layout(title="Average Sample Read Depth",xaxis=attr(title="Samples"),yaxis=attr(title="Average Read Depth"))
@@ -199,10 +200,10 @@ function avg_sample_dp_line_chart(sample_avg_list::Array{Int,1})
 end
 
 """
-           avg_variant_dp_line_chart(variant_avg_list::Array{Int,1})
+           avg_variant_dp_line_chart(variant_avg_list::Array{Float64,1})
 generate line chart of average read depths of each variant.
 """
-function avg_variant_dp_line_chart(variant_avg_list::Array{Int,1})
+function avg_variant_dp_line_chart(variant_avg_list::Array{Float64,1})
 
     trace = scatter(;x=1:size(variant_avg_list,1), y=variant_avg_list, mode="lines+text") #,text="test_text"
     layout = Layout(title="Average Variant Read Depth",xaxis=attr(title="Variant Positions"),yaxis=attr(title="Average Read Depth"))

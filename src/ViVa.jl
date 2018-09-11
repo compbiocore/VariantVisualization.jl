@@ -7,6 +7,7 @@ using Blink
 using CSV
 using GeneticVariation
 using ArgParse
+using VCFTools
 
 
 
@@ -62,7 +63,8 @@ export
     chrrange_siglist_filter,
     get_sample_names,
     sortcols_by_phenotype_matrix,
-    find_group_label_indices
+    find_group_label_indices,
+    checkfor_outputdirectory
 
 #include("vcf_utils.jl")
 include("vcf_utils_complete.jl")

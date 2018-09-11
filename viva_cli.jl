@@ -1,3 +1,8 @@
+#=
+read_depth heatmap up to 15 white, up to 30 light blue,
+don't output files in same folder
+=#
+
 println("loading packages:")
 println("ViVa")
 using ViVa
@@ -54,6 +59,11 @@ function test_parse_main(ARGS::Vector{String})
         "--show_stats"
         help = "show number of records, number samples, etc. in vcf file"
         action = :store_true
+
+        "--output_directory"
+        help =" function checks if directory exists and saves there, if not creates and saves here"
+        arg_type = String
+        required = true
 
         "--save_format", "-s"               # format to save graphics in
         help = "file format you wish to save graphics as (eg. pdf, html, png)"
@@ -157,6 +167,8 @@ println()
 reader = VCF.Reader(open(vcf_filename, "r"))
 sample_names = get_sample_names(reader)
 
+ViVa.checkfor_outputdirectory(parsed_args["output_directory"])
+
 if parsed_args["show_stats"] == true
 
     #number_records = nrecords(vcf_filename)
@@ -255,7 +267,7 @@ if parsed_args["heatmap"] == "genotype"
                         end
 
                 graphic = ViVa.genotype_heatmap_with_groups(gt_num_array,title,group1_index,group2_index,group_dividing_line,group1_label,group2_label) #when x = array_for_plotly #add input variables for tickvals and ticktext from optional arguments
-                PlotlyJS.savefig(graphic, "$title.$(parsed_args["save_format"])")
+                PlotlyJS.savefig(graphic, joinpath("$(parsed_args["output_directory"])" ,"$title.$(parsed_args["save_format"])"))
         else
 
                 genotype_array = generate_genotype_array(sub,"GT")
@@ -266,7 +278,7 @@ if parsed_args["heatmap"] == "genotype"
                 geno_dict = define_geno_dict()
                 gt_num_array,gt_chromosome_labels = translate_genotype_to_num_array(genotype_array, geno_dict)
 
-                        if typeof(parsed_args["group_samples"]) == Array{String,1}
+                        if length(parsed_args["group_samples"]) == 2
 
                                 group_trait_matrix_filename=((parsed_args["group_samples"])[1])
                                 trait_to_group_by = ((parsed_args["group_samples"])[2])
@@ -281,8 +293,9 @@ if parsed_args["heatmap"] == "genotype"
 
                                 chrom_label_info = ViVa.chromosome_label_generator(gt_chromosome_labels[:,1])
                                 #insert group_label_pack into heapmap functions in group_sampels loops
-                                graphic = ViVa.genotype_heatmap_with_groups(gt_num_array,title,chrom_label_info,group_label_pack)
-                                PlotlyJS.savefig(graphic, "$title.$(parsed_args["save_format"])")
+                                graphic = ViVa.genotype_heatmap_with_groups(gt_num_array,title,chrom_label_info,group_label_pack,sample_names)
+                                #PlotlyJS.savefig(graphic, "$title.$(parsed_args["save_format"])")
+                                PlotlyJS.savefig(graphic, joinpath("$(parsed_args["output_directory"])" ,"$title.$(parsed_args["save_format"])"))
 
                         else
                                         if parsed_args["heatmap_title"] != nothing
@@ -293,8 +306,9 @@ if parsed_args["heatmap"] == "genotype"
 
                                 chrom_label_info = ViVa.chromosome_label_generator(gt_chromosome_labels[:,1])
 
-                                graphic = ViVa.genotype_heatmap2(gt_num_array,title,chrom_label_info)
-                                PlotlyJS.savefig(graphic, "$title.$(parsed_args["save_format"])")
+                                graphic = ViVa.genotype_heatmap2(gt_num_array,title,chrom_label_info,sample_names)
+                                #PlotlyJS.savefig(graphic, "$title.$(parsed_args["save_format"])")
+                                PlotlyJS.savefig(graphic, joinpath("$(parsed_args["output_directory"])" ,"$title.$(parsed_args["save_format"])"))
                         end
 
         end
@@ -308,7 +322,7 @@ elseif parsed_args["heatmap"] == "read_depth"
 
     dp_num_array,dp_chromosome_labels = translate_readdepth_strings_to_num_array(read_depth_array)
 
-    if typeof(parsed_args["group_samples"]) == Array{String,1}
+    if length(parsed_args["group_samples"]) == 2
 
 
                 group_trait_matrix_filename=((parsed_args["group_samples"])[1])

@@ -461,7 +461,7 @@ end
 find indices and determines names for group 1 and group 2 labels on plots. finds index of center of each sample group to place tick mark and label.
 """
 function find_group_label_indices(pheno,trait_to_group_by,row_to_sort_by)
-    
+
     group1_label=split(trait_to_group_by,",")[1]
     group2_label=split(trait_to_group_by,",")[2]
     group1_index = ((findlast(pheno[row_to_sort_by,:],1)) - (findfirst(pheno[row_to_sort_by,:],1)))/2
@@ -694,5 +694,15 @@ function chromosome_label_generator(chromosome_labels::Array{Any,1})
     else
         font_size = "18"
         return chrom_labels,chrom_label_indices,font_size
+    end
+end
+
+"""
+
+"""
+function checkfor_outputdirectory(path::String)
+    if isdir(path) == true
+    else
+            mkdir(path)
     end
 end
