@@ -337,6 +337,34 @@ returns subarray of vcf with io_pass_filter, io_sig_list_vcf_filter, and io_chro
 #functions for converting vcf record array to numerical array
 
 """
+    combined_all_genotype_array_functions(sub)
+convert sub from variant filters to gt_num_array and gt_chromosome_labels for plot functions.
+"""
+function combined_all_genotype_array_functions(sub)
+    genotype_array = generate_genotype_array(sub,"GT")
+    clean_column1!(genotype_array)
+    genotype_array=ViVa.sort_genotype_array(genotype_array)
+    geno_dict = define_geno_dict()
+    gt_num_array,gt_chromosome_labels = translate_genotype_to_num_array(genotype_array, geno_dict)
+
+    return gt_num_array,gt_chromosome_labels
+end
+
+"""
+    combined_all_read_depth_array_functions(sub)
+convert sub from variant filters to dp_num_array and dp_chromosome_labels for plot functions.
+"""
+function combined_all_read_depth_array_functions(sub)
+
+    read_depth_array = ViVa.generate_genotype_array(sub,"DP")
+    clean_column1!(read_depth_array)
+    read_depth_array=ViVa.sort_genotype_array(read_depth_array)
+    dp_num_array,dp_chromosome_labels = translate_readdepth_strings_to_num_array(read_depth_array)
+
+    return dp_num_array,dp_chromosome_labels
+end
+
+"""
     generate_genotype_array(record_sub::Array{Any,1},genotype_field::String)
 Returns numerical array of genotype values (either genotype or read_depth values) which are translated by another function into num_array
 Where genotype_field is either GT or DP to visualize genotype or read_depth

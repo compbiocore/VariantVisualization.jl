@@ -64,7 +64,9 @@ export
     get_sample_names,
     sortcols_by_phenotype_matrix,
     find_group_label_indices,
-    checkfor_outputdirectory
+    checkfor_outputdirectory,
+    combined_all_genotype_array_functions,
+    combined_all_read_depth_array_functions
 
 #include("vcf_utils.jl")
 include("vcf_utils_complete.jl")
