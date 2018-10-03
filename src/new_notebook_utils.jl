@@ -55,14 +55,14 @@ if typeof(variant_filter) != String
 
              chr_range = variant_filter[i+1]
              println(chr_range)
-             sub = ViVa.io_chromosome_range_vcf_filter(reader, chr_range)
+             sub = ViVa.io_chromosome_range_vcf_filter(chr_range,reader)
              number_rows = size(sub,1)
              println("selected $number_rows variants within chromosome range: $chr_range)")
              heatmap_input = "range_filtered"
 
         elseif variant_filter[i] == "list"
             siglist_file = variant_filter[i+1]
-            sub = ViVa.io_sig_list_vcf_filter(reader, siglist_file)
+            sub = ViVa.io_sig_list_vcf_filter(siglist_file,reader)
             number_rows = size(sub,1)
             println("selected $number_rows variants that match list of chromosome positions of interest")
             heatmap_input = "positions_filtered"
@@ -80,14 +80,14 @@ else
 
     elseif variant_filter == "range"
         chr_range = variant_filter[i+1]
-        sub = ViVa.io_chromosome_range_vcf_filter(reader, chr_range)
+        sub = ViVa.io_chromosome_range_vcf_filter(chr_range,reader)
         number_rows = size(sub,1)
         println("selected $number_rows variants within chromosome range: $chr_range)")
         heatmap_input = "range_filtered"
 
     elseif variant_filter == "list"
         siglist_file = variant_filter[i+1]
-        sub = ViVa.io_sig_list_vcf_filter(reader, siglist_file)
+        sub = ViVa.io_sig_list_vcf_filter(siglist_file,reader)
         number_rows = size(sub,1)
         println("selected $number_rows variants that match list of chromosome positions of interest")
         heatmap_input = "positions_filtered"

@@ -60,10 +60,10 @@ function test_parse_main(ARGS::Vector{String})
         help = "show number of records, number samples, etc. in vcf file"
         action = :store_true
 
-        "--output_directory"
+        "--output_directory", "-o"
         help =" function checks if directory exists and saves there, if not creates and saves here"
         arg_type = String
-        required = true
+        default = "output"
 
         "--save_format", "-s"               # format to save graphics in
         help = "file format you wish to save graphics as (eg. pdf, html, png)"
@@ -138,9 +138,12 @@ function test_parse_main(ARGS::Vector{String})
     parsed_args = parse_args(s)# can turn off printing parsed args after development
     println("Parsed args:")
 
+#activate block to show all argument keys
+#=
     for (key,val) in parsed_args
         println("  $key  =>  $(repr(val))")
     end
+=#
 
     return parsed_args
 
@@ -177,6 +180,8 @@ if parsed_args["show_stats"] == true
 
 end
 
+tic()
+
 if parsed_args["pass_filter"] == true && parsed_args["chromosome_range"] == nothing && parsed_args["positions_list"] == nothing
     sub = ViVa.io_pass_filter(reader)
     number_rows = size(sub,1)
@@ -186,7 +191,7 @@ if parsed_args["pass_filter"] == true && parsed_args["chromosome_range"] == noth
 end
 
 if parsed_args["chromosome_range"] != nothing && parsed_args["pass_filter"] == false && parsed_args["positions_list"] == nothing
-    sub = ViVa.io_chromosome_range_vcf_filter(reader, parsed_args["chromosome_range"])
+    sub = ViVa.io_chromosome_range_vcf_filter(parsed_args["chromosome_range"],reader)
     number_rows = size(sub,1)
     println("selected $number_rows variants within chromosome range: $(parsed_args["chromosome_range"])")
     heatmap_input = "range_filtered"
@@ -195,7 +200,7 @@ end
 
 if parsed_args["positions_list"] != nothing && parsed_args["chromosome_range"] == nothing && parsed_args["pass_filter"] == nothing
     sig_list =  load_siglist(parsed_args["positions_list"])
-    sub = ViVa.io_sig_list_vcf_filter(reader,sig_list)
+    sub = ViVa.io_sig_list_vcf_filter(sig_list,reader)
     number_rows = size(sub,1)
     println("selected $number_rows variants that match list of chromosome positions of interest")
     heatmap_input = "positions_filtered"
@@ -223,7 +228,7 @@ end
 
 if parsed_args["pass_filter"] == false && parsed_args["chromosome_range"] == nothing && parsed_args["positions_list"] == nothing
 
-    println("no filters applied. Large vcf files will take a long time to process and heatmap visualizations will not be useful at this scale.")
+    println("no filters applied. Large vcf files will take a long time to process and heatmap visualizations will lose resolution at this scale.")
     println()
     println("Loading VCF file into memory for visualization")
 
@@ -314,6 +319,13 @@ if parsed_args["heatmap"] == "read_depth"
     PlotlyJS.savefig(graphic, joinpath("$(parsed_args["output_directory"])" ,"$title.$(parsed_args["save_format"])"))
 
 end
+
+#println("_______________________________________________")
+println()
+println("Finished Filtering. Total time to filter:")
+toc()
+println("_______________________________________________")
+#println()
 
 
 #=
@@ -480,7 +492,8 @@ end
 =#
 
 if parsed_args["line_chart"] == "sample"
-    if dp_num_array == nothing
+
+    if isdefined(:dp_num_array) == false
         read_depth_array = ViVa.generate_genotype_array(sub,"DP")
         clean_column1!(read_depth_array)
         read_depth_array=ViVa.sort_genotype_array(read_depth_array)
@@ -488,13 +501,15 @@ if parsed_args["line_chart"] == "sample"
     end
 
     avg_list = ViVa.avg_dp_samples(dp_num_array)
-    list = list_sample_positions_low_dp(avg_list, dp_chromosome_labels) #make this work for sample list instead of chr list - get sample list
+    list = ViVa.list_sample_names_low_dp(avg_list, sample_names) #make this work for sample list instead of chr list - get sample list
+    writedlm(joinpath("$(parsed_args["output_directory"])","Samples_with_low_dp.txt"),list, ",")
     #println("The following samples have read depth of under 15: $list")
     graphic = avg_sample_dp_line_chart(avg_list)
     #PlotlyJS.savefig(graphic, "Average Sample Read Depth.$(parsed_args["save_format"])") #make unique save format - default to pdf but on my computer html
     PlotlyJS.savefig(graphic, joinpath("$(parsed_args["output_directory"])" ,"Average Sample Read Depth.$(parsed_args["save_format"])"))
+
 elseif parsed_args["line_chart"] == "variant"
-    if dp_num_array == nothing
+    if isdefined(:dp_num_array) == false
         read_depth_array = ViVa.generate_genotype_array(sub,"DP")
         clean_column1!(read_depth_array)
         read_depth_array=ViVa.sort_genotype_array(read_depth_array)
@@ -502,7 +517,8 @@ elseif parsed_args["line_chart"] == "variant"
     end
 
     avg_list = ViVa.avg_dp_variant(dp_num_array)
-    list = list_variant_positions_low_dp(avg_list, dp_chromosome_labels)
+    list = ViVa.list_variant_positions_low_dp(avg_list, dp_chromosome_labels)
+    writedlm(joinpath("$(parsed_args["output_directory"])","Variant_positions_with_low_dp.txt"),list,",")
     #println("The following samples have read depth of less than 15: $list")
     graphic = avg_variant_dp_line_chart(avg_list)
     #PlotlyJS.savefig(graphic, "Average Variant Read Depth.$(parsed_args["save_format"])") #make unique save format - default to pdf but on my computer html
@@ -511,7 +527,24 @@ end
 
 close(reader)
 
+
+#println("_______________________________________________")
+println()
+println("Finished plotting. Total time to run:")
 toc()
+#println("_______________________________________________")
+println()
+
+#=
+println("_______________________________________________")
+println()
+println("Finished plotting. Total time to run: $(toc()) seconds")
+println("_______________________________________________")
+println()
+
+=#
+
+
 
 #in the morning - write function to convert number array matrix to dataframe for input into column filter functions, get all sample names from io for use here
 #add positional argument to save list of positions and samples with dp under 15 as file instead of printint

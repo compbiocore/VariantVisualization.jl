@@ -79,10 +79,10 @@ end
 
 #functions for variant filters
 """
-io_chromosome_range_vcf_filter(chr_range::AbstractString, reader::GeneticVariation.VCF.Reader)
+io_chromosome_range_vcf_filter(chr_range::String, reader::GeneticVariation.VCF.Reader)
 create subarray of vcf variant records matching user specified chromosome range in format: (e.g. chr1:0-30000000)
 """
-function io_chromosome_range_vcf_filter(chr_range::AbstractString,reader::GeneticVariation.VCF.Reader, )
+function io_chromosome_range_vcf_filter(chr_range::String,reader::GeneticVariation.VCF.Reader, )
        a=split(chr_range,":")
        chrwhole=a[1]
        chrnumber=split(chrwhole,"r")
@@ -616,10 +616,10 @@ function avg_dp_variant(dp_num_array::Array{Int64,2})
 end
 
 """
-    list_sample_names_low_dp(variant_avg_list::Array{Float64,2},chrom_labels)
+    list_sample_names_low_dp(sample_avg_list::Array{Float64,2},sample_names)
 returns list of sample ids that have an average read depth of under 15 across all variant positions
 """
-function list_sample_positions_low_dp(sample_avg_list::Array{Float64,1},chrom_labels)
+function list_sample_names_low_dp(sample_avg_list::Array{Float64,1},sample_names)
 
     low_dp_index_list = Array{Int64}(0)
 
@@ -629,14 +629,15 @@ function list_sample_positions_low_dp(sample_avg_list::Array{Float64,1},chrom_la
             end
         end
 
-    low_dp_positions = Array{Tuple{Int64,Int64}}(0)
+    low_dp_sample_names = Array{String}(0)
 
         for i in low_dp_index_list
-            chrom_position = chrom_labels[i,1],chrom_labels[i,2]
-            push!(low_dp_positions,chrom_position)
+            sample_name = sample_names[i]
+            string_sample_name=string(sample_name)
+            push!(low_dp_sample_names,string_sample_name)
         end
 
-        return low_dp_positions
+        return low_dp_sample_names
 end
 
 """
