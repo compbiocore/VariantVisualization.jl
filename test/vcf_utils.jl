@@ -24,7 +24,7 @@ vcf_filename = "test_files/test_4X_191.vcf"
         @test df[3,1] == 2
     end
 
-    @testset "sig_list_vcf_filter(y::Array,x::Array)" begin
+    @testset "sig_list_vcf_filter(y::Array, x::Array)" begin
 
         sig_list_file = "test_files/significantList_for_proteinstructures.csv"
         sig_list = ViVa.load_siglist(sig_list_file)

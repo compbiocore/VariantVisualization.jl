@@ -1,62 +1,24 @@
-# Viva - Visualization of Variants
+# ViVa.jl
+
+#### Visualization of Variants
 
 
-[![Travis](https://img.shields.io/travis/compbiocore/ViVa.jl.svg?style=flat-square)](https://travis-ci.org/compbiocore/ViVa.jl)
- [![Docs](https://img.shields.io/badge/docs-stable-blue.svg?style=flat-square)](https://compbiocore.github.io/ViVa.jl)
-[![License](https://img.shields.io/badge/license-MIT-orange.svg?style=flat-square)](https://raw.githubusercontent.com/compbiocore/ViVa.jl/master/LICENSE.md)  
+| MacOS / Linux | License | Test Coverage | Documentation | Lifecycle |
+| --- | ---- | ------ | ------ | ---- |
+|[![Travis](https://img.shields.io/travis/bcbi/ViVa.jl/master.svg?style=flat-square)](https://travis-ci.org/bcbi/ViVa.jl)| [![License](https://img.shields.io/badge/license-MIT-orange.svg?style=flat-square)](https://github.com/compbiocore/ViVa.jl/blob/clean-up/LICENSE.md)| [![Codecov](https://img.shields.io/codecov/c/github/bcbi/ViVa.jl.svg?style=flat-square)](https://codecov.io/gh/bcbi/ViVa.jl/branch/master) | [![Docs](https://img.shields.io/badge/docs-stable-blue.svg?style=flat-square)](https://bcbi.github.io/ViVa.jl/stable) [![Docs](https://img.shields.io/badge/docs-latest-blue.svg?style=flat-square)](https://bcbi.github.io/ViVa.jl/latest) | ![Lifecycle](https://img.shields.io/badge/lifecycle-experimental-orange.svg?style=flat-square) |
 
+## Installation
 
-## Overview
-One paragraph project description goes here.
-
-## Getting Started
-
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
-
-### Requirements
-
-What things you need to install the software and how to install them
-Give a list with links and how to install using code snippets.
-
-```
-
-```
-
-### Installing
-
-A step by step on how to install the package.
-
-Say what the step will be
+Instal ViVa.jl
 
 ```julia
-Pkg.clone("https://github.com/compbiocore/ViVa.jl.git")
+using Pkg
+Pkg.clone("https://github.com/compbiocore/ViVa.jl")
 ```
 
-And repeat
+## Contributing and Questions
 
-```
-until finished
-```
+Contributions are very welcome, as are feature requests and suggestions. Please open an
+[issue][issues-url] if you encounter any problems or would just like to ask a question.
 
-End with an example of getting some data out of the system or using it for a little demo
-
-## Tests
-
-Explain how to run the automated tests for this system
-
-
-## Contributing
-
-Please read [CONTRIBUTING.md](https://gist.github.com/PurpleBooth/b24679402957c63ec426) for details on our code of conduct, and the process for submitting pull requests to us.
-
-## Release History
-- 0.4
-  - CHANGES:  
-
-- 0.3
-  - CHANGES:
-
-
-## Authors
-
-List authors and affiliation.
+[issues-url]: https://github.com/compbiocore/CAOS/issues
