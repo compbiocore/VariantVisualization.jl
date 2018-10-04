@@ -27,4 +27,4 @@ jobs:
       os: linux
       julia: 0.6
       script:
-        - julia -e 'import Pkg; Pkg.instantiate(); Pkg.add("Documenter"); include(joinpath("docs", "make.jl"))'
+        - julia -e 'Pkg.add("Documenter"); include(joinpath("docs", "make.jl"))'
