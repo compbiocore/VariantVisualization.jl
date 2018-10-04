@@ -68,11 +68,8 @@ export
     combined_all_genotype_array_functions,
     combined_all_read_depth_array_functions
 
-#include("vcf_utils.jl")
-include("vcf_utils_complete.jl")
+include("vcf_utils.jl")
 include("plot_utils.jl")
-#include("notebook_utils.jl")
-include("new_notebook_utils.jl")
-#include("io_filters.jl")
+include("notebook_utils.jl")
 
 end # module
