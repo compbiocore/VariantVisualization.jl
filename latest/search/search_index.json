@@ -1,0 +1,34 @@
+{
+    "docs": [
+        {
+            "location": "/", 
+            "text": "Viva - Visualization of Variants", 
+            "title": "Home"
+        }, 
+        {
+            "location": "/#viva-visualization-of-variants", 
+            "text": "", 
+            "title": "Viva - Visualization of Variants"
+        }, 
+        {
+            "location": "/read/", 
+            "text": "Read and filter VCF", 
+            "title": "Read and Filter VCF"
+        }, 
+        {
+            "location": "/read/#read-and-filter-vcf", 
+            "text": "", 
+            "title": "Read and filter VCF"
+        }, 
+        {
+            "location": "/heatmap/", 
+            "text": "Heatmap functions documentation", 
+            "title": "Heatmaps"
+        }, 
+        {
+            "location": "/heatmap/#heatmap-functions-documentation", 
+            "text": "", 
+            "title": "Heatmap functions documentation"
+        }
+    ]
+}
