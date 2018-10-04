@@ -5,10 +5,16 @@ site_description: Visualization of Variants
 site_author:      compbiocore
 
 theme:
-  name: 'material'
+  name: material
+  feature:
+    tabs: true
+  palette:
+    primary: 'blue grey'
+    accent: 'indigo'
+  logo: cbc-logo.svg
 
 extra_css:
-  - assets/Documenter.css
+  - dark_mode.css
 
 markdown_extensions:
   - extra
