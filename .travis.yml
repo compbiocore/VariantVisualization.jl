@@ -25,6 +25,6 @@ jobs:
     - stage: deploy docs
       language: julia
       os: linux
-      julia: 0.7
+      julia: 0.6
       script:
         - julia -e 'import Pkg; Pkg.instantiate(); Pkg.add("Documenter"); include(joinpath("docs", "make.jl"))'
