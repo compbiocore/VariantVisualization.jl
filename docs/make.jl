@@ -1,4 +1,4 @@
-using Documenter, ViVa
+using Documenter
 
 makedocs()
 
