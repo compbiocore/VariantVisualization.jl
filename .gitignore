@@ -1,4 +1,7 @@
 *.jl.cov
 *.jl.*.cov
 *.jl.mem
-*.vcf
+*.pdf
+*.html
+.DS_Store
+.ipynb_checkpoints/
