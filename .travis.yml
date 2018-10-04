@@ -1,21 +1,21 @@
 ## Documentation: http://docs.travis-ci.com/user/languages/julia/
 language: julia
 
-os:
-  - linux
-  - osx
-
-julia:
-  - 0.6
-
-notifications:
-  email: false
-
-git:
-  depth: 99999999
-
-before_script:
-  - export PATH=$HOME/.local/bin:$PATH
+# os:
+#   - linux
+#   - osx
+#
+# julia:
+#   - 0.6
+#
+# notifications:
+#   email: false
+#
+# git:
+#   depth: 99999999
+#
+# before_script:
+#   - export PATH=$HOME/.local/bin:$PATH
 
 # after_success:
 #   - julia -e 'import Pkg; Pkg.add("Coverage"); using Coverage; Codecov.submit(Codecov.process_folder())'
