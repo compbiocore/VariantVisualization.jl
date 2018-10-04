@@ -26,8 +26,6 @@ docs_dir: 'build'
 
 pages:
 - Home: index.md
-- Examples:
-  - Overview: examples.md
 - Manual:
   - Read and Filter VCF: read.md
   - Heatmaps: heatmap.md
