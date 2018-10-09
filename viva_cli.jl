@@ -51,7 +51,7 @@ function test_parse_main(ARGS::Vector{String})
     )
 
     @add_arg_table s begin
-        "--vcf_file", "-v"             # vcf filename
+        "--vcf_file", "-f"             # vcf filename
         help = "vcf filename in format: file.vcf"
         arg_type = String
         required = true
@@ -83,7 +83,7 @@ function test_parse_main(ARGS::Vector{String})
         help = "select variants matching list of chromosomal positions. Provide filename of text file formatted with two columns in csv format: 1,2000345."
         arg_type = String
 
-        "--group_samples"
+        "--group_samples", "-g"
         help = "group samples by common trait using user generated matrix key of traits and sample names following format guidelines in documentation. Provide file name of .csv file"
         nargs = 2
         arg_type = String
@@ -92,11 +92,11 @@ function test_parse_main(ARGS::Vector{String})
         help = "Provide name of trait to gorup by"
         arg_type = String
 
-        "--select_samples"
+        "--select_samples", "-x"
         help = "select samples to include in visualization by providing tab delimited list of sample names (eg. samplenames.txt)"
         arg_type = String
 
-        "--heatmap"
+        "--heatmap", "-m"
         help = "genotype field to visualize (eg. genotype, read_depth, or 'genotype,read_depth' to visualize each separately)"
         arg_type = String
         default = "genotype"
@@ -105,30 +105,6 @@ function test_parse_main(ARGS::Vector{String})
         help = "positional argument. Specify filename for heatmap"
         arg_type = String
 
-        "--sort_by_key_matrix"
-        help = "sort sample columns by common characteristics contained in table. Provide name of sort_by_key_matrix.csv and trait to sort by (eg filename.csv,trait) Further detail on formatting this table can be found in the docs under sort_by_key_matrix."
-        arg_type = String
-
-        "--group1_index"
-        help = "set x_axis coordinate to label group 1. Should be in center of group 1 indices, not first group 1 index.  When sort columns by sortbykey_matrix, defaults to chosen identifier status marked with 0 in sortbykey_matrix"
-        arg_type = Int64
-
-        "--group1_label"
-        help="choose name of group 1 label"
-        arg_type = String
-
-        "--group2_index"
-        help = "set x_axis coordinate to label group 2. Should be in center of group 2 indices, not first group 2 index. When sort columns by sortbykey_matrix, defaults to chosen identifier status marked with 0 in sortbykey_matrix"
-        arg_type = Int64
-
-        "--group2_label"
-        help="choose name of group 2 label"
-        arg_type = String
-
-        "--group_dividing_line"
-        help = "insert vertical line to to divide groups 1 and 2. Define x_axis coordinate. Defaults to first index of group 2 if group1_index and group2_index are manually defined or when columns are sorted by sortbykey_matrix. eg. =112"
-        arg_type = Int64
-
         "--line_chart"
         help = "visualize average read depths as line chart. Options: average sample read depth, average variant read depth, or both. eg. =sample, =variant, =sample,variant"
         arg_type = String
@@ -136,7 +112,7 @@ function test_parse_main(ARGS::Vector{String})
     end
 
     parsed_args = parse_args(s)# can turn off printing parsed args after development
-    println("Parsed args:")
+    #println("Parsed args:")
 
 #activate block to show all argument keys
 #=
@@ -198,7 +174,7 @@ if parsed_args["chromosome_range"] != nothing && parsed_args["pass_filter"] == f
 
 end
 
-if parsed_args["positions_list"] != nothing && parsed_args["chromosome_range"] == nothing && parsed_args["pass_filter"] == nothing
+if parsed_args["positions_list"] != nothing && parsed_args["chromosome_range"] == nothing && parsed_args["pass_filter"] == false
     sig_list =  load_siglist(parsed_args["positions_list"])
     sub = ViVa.io_sig_list_vcf_filter(sig_list,reader)
     number_rows = size(sub,1)
@@ -206,20 +182,20 @@ if parsed_args["positions_list"] != nothing && parsed_args["chromosome_range"] =
     heatmap_input = "positions_filtered"
 end
 
-if parsed_args["pass_filter"] != nothing && parsed_args["chromosome_range"] != nothing && parsed_args["positions_list"] != nothing
+if parsed_args["pass_filter"] == true && parsed_args["chromosome_range"] != nothing && parsed_args["positions_list"] != nothing
     sig_list =  load_siglist(parsed_args["positions_list"])
     sub = ViVa.pass_chrrange_siglist_filter(reader, sig_list, parsed_args["chromosome_range"])
     number_rows = size(sub,1)
     println("selected $number_rows variants with Filter status: PASS, that match list of chromosome positions of interest, and are within chromosome range: $(parsed_args["chromosome_range"])")
 end
 
-if parsed_args["pass_filter"] != nothing && parsed_args["chromosome_range"] != nothing && parsed_args["positions_list"] == nothing
+if parsed_args["pass_filter"] == true && parsed_args["chromosome_range"] != nothing && parsed_args["positions_list"] == nothing
     sub = ViVa.pass_chrrange_filter(reader, parsed_args["chromosome_range"])
     number_rows = size(sub,1)
     println("selected $number_rows variants with Filter status: PASS and are within chromosome range: $(parsed_args["chromosome_range"])")
 end
 
-if parsed_args["pass_filter"] != nothing && parsed_args["chromosome_range"] == nothing && parsed_args["positions_list"] != nothing
+if parsed_args["pass_filter"] == true && parsed_args["chromosome_range"] == nothing && parsed_args["positions_list"] != nothing
     sig_list =  load_siglist(parsed_args["positions_list"])
     sub = ViVa.pass_siglist_filter(reader, sig_list)
     number_rows = size(sub,1)
@@ -239,6 +215,8 @@ if parsed_args["pass_filter"] == false && parsed_args["chromosome_range"] == not
 
 end
 
+#sub = clean_column1_chr(sub)
+
 if parsed_args["heatmap"] == "genotype"
     gt_num_array,gt_chromosome_labels = combined_all_genotype_array_functions(sub)
 
@@ -247,6 +225,8 @@ if parsed_args["heatmap"] == "genotype"
     else
         title = "Genotype_$(parsed_args["vcf_file"])"
     end
+
+    chr_pos_tuple_list = generate_chromosome_positions_for_hover_labels(gt_chromosome_labels)
 
     chrom_label_info = ViVa.chromosome_label_generator(gt_chromosome_labels[:,1])
 
@@ -313,7 +293,7 @@ if parsed_args["heatmap"] == "read_depth"
 
         dp_num_array_limited=read_depth_threshhold(dp_num_array)
 
-        graphic = ViVa.dp_heatmap2(dp_num_array_limited,title,chrom_label_info)
+        graphic = ViVa.dp_heatmap2(dp_num_array_limited, title, chrom_label_info, sample_names)
     end
 
     PlotlyJS.savefig(graphic, joinpath("$(parsed_args["output_directory"])" ,"$title.$(parsed_args["save_format"])"))
@@ -501,11 +481,10 @@ if parsed_args["line_chart"] == "sample"
     end
 
     avg_list = ViVa.avg_dp_samples(dp_num_array)
-    list = ViVa.list_sample_names_low_dp(avg_list, sample_names) #make this work for sample list instead of chr list - get sample list
+    list = ViVa.list_sample_names_low_dp(avg_list, sample_names)
     writedlm(joinpath("$(parsed_args["output_directory"])","Samples_with_low_dp.txt"),list, ",")
     #println("The following samples have read depth of under 15: $list")
-    graphic = avg_sample_dp_line_chart(avg_list)
-    #PlotlyJS.savefig(graphic, "Average Sample Read Depth.$(parsed_args["save_format"])") #make unique save format - default to pdf but on my computer html
+    graphic = avg_sample_dp_line_chart(avg_list,sample_names)
     PlotlyJS.savefig(graphic, joinpath("$(parsed_args["output_directory"])" ,"Average Sample Read Depth.$(parsed_args["save_format"])"))
 
 elseif parsed_args["line_chart"] == "variant"

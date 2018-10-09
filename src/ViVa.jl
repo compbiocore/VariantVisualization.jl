@@ -66,10 +66,15 @@ export
     find_group_label_indices,
     checkfor_outputdirectory,
     combined_all_genotype_array_functions,
-    combined_all_read_depth_array_functions
+    combined_all_read_depth_array_functions,
+    generate_chromosome_positions_for_hover_labels,
+    clean_column1_chr
 
-include("vcf_utils.jl")
+#include("vcf_utils.jl")
+include("vcf_utils_complete.jl")
 include("plot_utils.jl")
-include("notebook_utils.jl")
+#include("notebook_utils.jl")
+include("new_notebook_utils.jl")
+#include("io_filters.jl")
 
 end # module

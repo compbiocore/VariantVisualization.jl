@@ -15,6 +15,18 @@ function clean_column1!(matrix_with_chr_column)
 end
 
 """
+    clean_column1_chr(matrix_with_chr_column)
+Replace String "chr" from chromosome column with "" so chr position is loaded as int and variants can be sorted by descending chr position for plotting
+"""
+function clean_column1_chr(matrix_with_chr_column)
+
+    for i = 1:(size(matrix_with_chr_column, 1))
+        replace(matrix_with_chr_column[i, 1],"chr","")
+    end
+
+end
+
+"""
     clean_column1_siglist!(siglist)
     replaces "X","Y","M" with 23,24,25 {Int}
 use in load_siglist() because X and Y need to be replaced with Int
@@ -460,7 +472,7 @@ function translate_readdepth_strings_to_num_array(read_depth_array::Array{Any,2}
 
        for i in dp_array_for_plotly
               if i == "."
-                     println(".")
+                     #println(".")
               end
        end
 
@@ -569,7 +581,7 @@ function select_columns(filename_sample_list::AbstractString, num_array::Array{I
     df_selected_samples_num_array = df_num_array[:, col_selectedcolumns]
 
     selected_samples_num_array = Matrix(df_selected_samples_num_array)
-
+    println(filename_sample_list)
     return selected_samples_num_array
 end
 
@@ -711,27 +723,55 @@ function chromosome_label_generator(chromosome_labels::Array{Any,1})
         for item=2:(length(chrom_labels))
 
             ratio=((chrom_label_indices[item])-(chrom_label_indices[item-1]))/(length(chromosome_labels))
+            println(ratio)
 
-            if ratio < 0.1
+            if ratio < 0.2
                 font_size = "8"
+                println("font size is $font_size")
                 return chrom_labels,chrom_label_indices,font_size
             else
-                font_size = "18"
+                font_size = "10"
+                println("font size is $font_size")
+
                 return chrom_labels,chrom_label_indices,font_size
             end
         end
     else
-        font_size = "18"
+
+        font_size = "10"
         return chrom_labels,chrom_label_indices,font_size
     end
 end
 
 """
-
+    checkfor_outputdirectory(path::String)
+Checks to see if output directory exists already. If it doesn't, it creates the new directory to write output files to.
 """
 function checkfor_outputdirectory(path::String)
     if isdir(path) == true
     else
             mkdir(path)
     end
+end
+
+"""
+    generate_chromosome_positions_for_hover_labels(chr_labels::Array{Any,1})
+creates tuple of genomic locations to set as tick labels. This is automatically store chromosome positions in hover labels. However tick labels are set to hidden with showticklabels=false so they will not crowd the y axis.
+"""
+function generate_chromosome_positions_for_hover_labels(chr_labels::Array{Any,2})
+
+returnXY_column1!(chr_labels) #not working yet
+#println(chr_labels)
+
+chr_pos_tuple_list=Array{Tuple}(0)
+
+    for row = 1:size(chr_labels,1)
+
+        chr=chr_labels[row,1]
+        pos=chr_labels[row,2]
+        chr_pos_tuple=chr,pos
+        push!(chr_pos_tuple_list,chr_pos_tuple)
+    end
+
+    return chr_pos_tuple_list
 end
