@@ -88,10 +88,6 @@ function test_parse_main(ARGS::Vector{String})
         nargs = 2
         arg_type = String
 
-        "--trait_to_group_by"
-        help = "Provide name of trait to gorup by"
-        arg_type = String
-
         "--select_samples", "-x"
         help = "select samples to include in visualization by providing tab delimited list of sample names (eg. samplenames.txt)"
         arg_type = String
