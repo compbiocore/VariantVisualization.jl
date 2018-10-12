@@ -200,7 +200,7 @@ end
 
 if parsed_args["pass_filter"] == false && parsed_args["chromosome_range"] == nothing && parsed_args["positions_list"] == nothing
 
-    println("no filters applied. Large vcf files will take a long time to process and heatmap visualizations will lose resolution at this scale.")
+    println("no filters applied. Large vcf files will take a long time to process and heatmap visualizations will lose resolution at this scale unless viewed in interactive html for zooming.")
     println()
     println("Loading VCF file into memory for visualization")
 
@@ -314,6 +314,8 @@ if parsed_args["avg_dp"] == "sample"
         dp_num_array,dp_chromosome_labels = translate_readdepth_strings_to_num_array(read_depth_array)
     end
 
+    chr_pos_tuple_list = generate_chromosome_positions_for_hover_labels(dp_chromosome_labels)
+
     avg_list = ViVa.avg_dp_samples(dp_num_array)
     list = ViVa.list_sample_names_low_dp(avg_list, sample_names)
     writedlm(joinpath("$(parsed_args["output_directory"])","Samples_with_low_dp.txt"),list, ",")
@@ -329,11 +331,13 @@ elseif parsed_args["avg_dp"] == "variant"
         dp_num_array,dp_chromosome_labels = translate_readdepth_strings_to_num_array(read_depth_array)
     end
 
+    chr_pos_tuple_list = generate_chromosome_positions_for_hover_labels(dp_chromosome_labels)
+
     avg_list = ViVa.avg_dp_variant(dp_num_array)
     list = ViVa.list_variant_positions_low_dp(avg_list, dp_chromosome_labels)
     writedlm(joinpath("$(parsed_args["output_directory"])","Variant_positions_with_low_dp.txt"),list,",")
     #println("The following samples have read depth of less than 15: $list")
-    graphic = avg_variant_dp_line_chart(avg_list,sample_names)
+    graphic = avg_variant_dp_line_chart(avg_list,chr_pos_tuple_list)
     #PlotlyJS.savefig(graphic, "Average Variant Read Depth.$(parsed_args["save_format"])") #make unique save format - default to pdf but on my computer html
     PlotlyJS.savefig(graphic, joinpath("$(parsed_args["output_directory"])" ,"Average Variant Read Depth.$(parsed_args["save_format"])"))
 end

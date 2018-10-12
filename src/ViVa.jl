@@ -38,7 +38,7 @@ export
     select_columns,
     genotype_heatmap2,
     dp_heatmap2,
-    avg_sample_dp_line_chart,
+    avg_sample_dp_scatter,
     avg_variant_dp_line_chart,
     read_depth_threshhold,
     list_variant_positions_low_dp,
