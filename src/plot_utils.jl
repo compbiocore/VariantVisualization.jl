@@ -58,7 +58,7 @@ function genotype_heatmap2(input,title,chrom_label_info,sample_names)
                            xaxis=attr(title="Sample Number", showgrid=false, zeroline=false, tickvals=sample_name_indices,
                            ticktext=sample_names, tickfont_size=5, tickangle=45),
                            yaxis=attr(title="Chromosomal Location", zeroline=false, tickvals=chrom_label_indices,
-                           ticktext=chrom_labels,tickfont_size=font_size,hovermode=true,tickangle=45)
+                           ticktext=chrom_labels,tickfont_size=font_size,hovermode=true)
 
            )
            data = (trace)
@@ -202,10 +202,10 @@ function dp_heatmap2_with_groups(input::Array{Int64,2},title::String,chrom_label
 end
 
 """
-           avg_sample_dp_line_chart(sample_avg_list::Array{Float64,1},sample_names)
+           avg_sample_dp_scatter(sample_avg_list::Array{Float64,1},sample_names)
 generate line chart of average read depths of each sample.
 """
-function avg_sample_dp_line_chart(sample_avg_list::Array{Float64,1},sample_names)
+function avg_sample_dp_scatter(sample_avg_list::Array{Float64,1},sample_names)
 
     sample_name_indices = collect(1:1:size(sample_names,2))
 
@@ -222,7 +222,7 @@ function avg_variant_dp_line_chart(variant_avg_list::Array{Float64,1},sample_nam
 
     sample_name_indices = collect(1:1:size(sample_names,2))
 
-    trace = scatter(;x=1:size(variant_avg_list,1), y=variant_avg_list,mode="markers") #,text="test_text" , mode="lines+text"
-    layout = Layout(title="Average Variant Read Depth",xaxis=attr(title="Variant Positions"),yaxis=attr(title="Average Read Depth"),showticklabels=false)
+    trace = scatter(;x=1:size(variant_avg_list,1), y=variant_avg_list,mode="lines") #,text="test_text" , mode="lines+text"
+    layout = Layout(title="Average Variant Read Depth",xaxis=attr(title="Variant Positions"),yaxis=attr(title="Average Read Depth"),tickangle=45,tickfont_size=5)
     plot(trace,layout)
 end
