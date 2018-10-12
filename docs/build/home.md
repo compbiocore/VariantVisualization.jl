@@ -1,4 +1,7 @@
+
 #Description
+
+
 ```
 ViVa.jl is a user-friendly command line tool for creating publication quality graphics from Variant Call Format (VCF) files. ViVa.jl provides tools to quickly select variant records and samples to include in visualization.
 
@@ -14,14 +17,22 @@ Example:
 julia viva_cli.jl -v example.vcf -r chr1:20000-30000000 -s html --heatmap read_depth --line_chart samples
 ```
 
+
 #Installation
->>>>>>> e6804e0d0fe65a23bcac9cfccb1395101d283ed2
+
+
+> > > > > > > e6804e0d0fe65a23bcac9cfccb1395101d283ed2
+
+
 
 Install ViVa.jl
 
+
 To stay up to date with new features before release, please check out the master branch.
+
 
 ```julia
 using Pkg
 Pkg.clone("https://github.com/compbiocore/ViVa.jl")
 ```
+

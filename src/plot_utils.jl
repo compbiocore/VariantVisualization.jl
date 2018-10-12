@@ -132,8 +132,8 @@ function dp_heatmap2(input, title, chrom_label_info, sample_names)
 
         transpose=true,
         colorscale = [[0, "rgb(153,231,255)"],
-                     [0.025, "rgb(79,146,255)"],
-                     [0.05, "rgb(43,124,255)"],
+                     [0.1, "rgb(79,146,255)"],
+                     [0.2, "rgb(43,124,255)"],#0.05
                      #[0.2, "rgb(0,56,147)"],
                      [1, "rgb(0,64,168)"]], #"YIGnBu","rgbrgb(0,56,147)"
         colorbar = attr(title="Read Depth"),
@@ -175,8 +175,8 @@ function dp_heatmap2_with_groups(input::Array{Int64,2},title::String,chrom_label
 
         transpose=true,
         colorscale = [[0, "rgb(153,231,255)"],
-                     [0.025, "rgb(79,146,255)"],
-                     [0.05, "rgb(43,124,255)"],
+                     [0.1, "rgb(79,146,255)"],
+                     [0.2, "rgb(43,124,255)"],
                      #[0.2, "rgb(0,56,147)"],
                      [1, "rgb(0,64,168)"]], #"YIGnBu","rgbrgb(0,56,147)"
         colorbar = attr(title="Read Depth"),
@@ -209,8 +209,8 @@ function avg_sample_dp_line_chart(sample_avg_list::Array{Float64,1},sample_names
 
     sample_name_indices = collect(1:1:size(sample_names,2))
 
-    trace = scatter(;x=1:size(sample_avg_list,1), y=sample_avg_list, mode="lines")
-    layout = Layout(title="Average Sample Read Depth",xaxis=attr(title="Samples",ticktext=sample_names,tickvals=sample_name_indices,tickangle=45,tickfont_size=5),yaxis=attr(title="Average Read Depth"))
+    trace = scatter(;x=1:size(sample_avg_list,1), y=sample_avg_list,mode="markers") #, mode="lines"
+    layout = Layout(title="Average Sample Read Depth",xaxis=attr(title="Samples",ticktext=sample_names,tickvals=sample_name_indices,tickangle=45,tickfont_size=5),yaxis=attr(title="Average Read Depth"),showticklabels=false)
     plot(trace,layout)
 end
 
@@ -222,7 +222,7 @@ function avg_variant_dp_line_chart(variant_avg_list::Array{Float64,1},sample_nam
 
     sample_name_indices = collect(1:1:size(sample_names,2))
 
-    trace = scatter(;x=1:size(variant_avg_list,1), y=variant_avg_list, mode="lines+text") #,text="test_text"
-    layout = Layout(title="Average Variant Read Depth",xaxis=attr(title="Variant Positions"),yaxis=attr(title="Average Read Depth"))
+    trace = scatter(;x=1:size(variant_avg_list,1), y=variant_avg_list,mode="markers") #,text="test_text" , mode="lines+text"
+    layout = Layout(title="Average Variant Read Depth",xaxis=attr(title="Variant Positions"),yaxis=attr(title="Average Read Depth"),showticklabels=false)
     plot(trace,layout)
 end

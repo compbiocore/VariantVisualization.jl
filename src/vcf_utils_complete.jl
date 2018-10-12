@@ -157,7 +157,7 @@ end
 
 """
     io_pass_filter(reader::GeneticVariation.VCF.Reader)
-returns subarray of vcf including only rows with FILTER status = PASS
+returns subarray of vcf records including only records with FILTER status = PASS
 """
 function io_pass_filter(reader::GeneticVariation.VCF.Reader)
 
@@ -175,7 +175,7 @@ end
 
 """
     pass_chrrange_siglist_filter(reader::GeneticVariation.VCF.Reader,sig_list,chr_range::AbstractString)
-returns subarray of vcf with io_pass_filter, io_sig_list_vcf_filter, and io_chromosome_range_vcf_filter applied.
+returns subarray of vcf records with io_pass_filter, io_sig_list_vcf_filter, and io_chromosome_range_vcf_filter applied.
 """
 function pass_chrrange_siglist_filter(reader::GeneticVariation.VCF.Reader,sig_list,chr_range::AbstractString)
 
@@ -223,7 +223,7 @@ function pass_chrrange_siglist_filter(reader::GeneticVariation.VCF.Reader,sig_li
 
 """
     pass_chrrange_filter(reader::GeneticVariation.VCF.Reader,sig_list,chr_range::AbstractString)
-returns subarray of vcf with io_pass_filter and io_chromosome_range_vcf_filter applied.
+returns subarray of vcf records with io_pass_filter and io_chromosome_range_vcf_filter applied.
 """
     function pass_chrrange_filter(reader::GeneticVariation.VCF.Reader,chr_range::AbstractString)
 
@@ -264,7 +264,7 @@ returns subarray of vcf with io_pass_filter and io_chromosome_range_vcf_filter a
 
 """
         pass_siglist_filter(reader::GeneticVariation.VCF.Reader,sig_list,chr_range::AbstractString)
-    returns subarray of vcf with io_pass_filter, io_sig_list_vcf_filter, and io_chromosome_range_vcf_filter applied.
+    returns subarray of vcf records with io_pass_filter, io_sig_list_vcf_filter, and io_chromosome_range_vcf_filter applied.
 """
     function pass_siglist_filter(reader::GeneticVariation.VCF.Reader,sig_list)
 
@@ -300,7 +300,7 @@ returns subarray of vcf with io_pass_filter and io_chromosome_range_vcf_filter a
 
 """
     chrrange_siglist_filter(reader::GeneticVariation.VCF.Reader,sig_list,chr_range::AbstractString)
-returns subarray of vcf with io_pass_filter, io_sig_list_vcf_filter, and io_chromosome_range_vcf_filter applied.
+returns subarray of vcf records with io_pass_filter, io_sig_list_vcf_filter, and io_chromosome_range_vcf_filter applied.
 """
         function chrrange_siglist_filter(reader::GeneticVariation.VCF.Reader,sig_list,chr_range::AbstractString)
 
