@@ -32,7 +32,7 @@ function genotype_heatmap2(input,title,chrom_label_info,sample_names)
            layout = Layout(
                            title = "$title",
                            xaxis=attr(title="Sample Number", showgrid=false, zeroline=false, tickvals=sample_name_indices,
-                           ticktext=sample_names, tickfont_size=5, tickangle=45,showticklabels=true),
+                           ticktext=sample_names, tickfont_size=5, tickangle=45,showticklabels=false),
                            yaxis=attr(title="Chromosomal Location", zeroline=false, tickvals=chrom_label_indices,
                            ticktext=chrom_labels,tickfont_size=font_size,hovermode=true)
 
@@ -88,7 +88,6 @@ function genotype_heatmap_with_groups(input::Array{Int64,2},title::String,chrom_
                       plot(data,layout)
               end
 
-
 """
     dp_heatmap2(input, title, chrom_label_info, sample_names)
 generate heatmap of read depth data.
@@ -118,7 +117,7 @@ function dp_heatmap2(input, title, chrom_label_info, sample_names)
 
     layout = Layout(
                     title = "$title",
-                    xaxis=attr(title="Sample Number", showgrid=false, zeroline=false, tickvals=sample_name_indices, ticktext=sample_names,tickfont_size=5, tickangle=45), #,showticklabels=false
+                    xaxis=attr(title="Sample Number", showgrid=false, zeroline=false, tickvals=sample_name_indices, ticktext=sample_names,tickfont_size=5, tickangle=45,showticklabels=false), #,showticklabels=false
                     yaxis=attr(title="Chromosomal Location", zeroline=false, tickvals=chrom_label_indices,
                     ticktext=chrom_labels,size=font_size)
                     )

@@ -68,7 +68,7 @@ export
     combined_all_genotype_array_functions,
     combined_all_read_depth_array_functions,
     generate_chromosome_positions_for_hover_labels,
-    clean_column1_chr
+    create_chr_dict
 
 #include("vcf_utils.jl")
 include("vcf_utils_complete.jl")

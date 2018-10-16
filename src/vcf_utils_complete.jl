@@ -135,6 +135,9 @@ function io_sig_list_vcf_filter(sig_list,reader::GeneticVariation.VCF.Reader)
 
               for record in reader
 
+                  println(VCF.chrom(record))
+                  println(VCF.pos(record))
+
                      if typeof(VCF.chrom(record)) == String
                             chr = string(chr)
 
@@ -349,11 +352,60 @@ returns subarray of vcf records with io_pass_filter, io_sig_list_vcf_filter, and
 #functions for converting vcf record array to numerical array
 
 """
+    create_chr_dict()
+creates dict for use in combined_all_genotype_array_functions() for removing 'chr' from chromosome labels to allow sorting variant records by chromosome position.
+"""
+function create_chr_dict()
+
+    chr_dict = Dict()
+
+    labels_with_chr = ["chr1" "chr2" "chr3" "chr4" "chr5" "chr6" "chr7" "chr8" "chr9" "chr10" "chr11" "chr12" "chr13" "chr14" "chr15" "chr16" "chr17" "chr18" "chr19" "chr20" "chr21" "chr22" "chrX" "chrY" "chrM"]
+
+    for item in labels_with_chr
+           chr_dict[item] = 800
+    end
+
+    return chr_dict
+end
+
+    #=
+    replace_chr_dict = Dict(r"(chr)" => "")
+    join([replace_chr_dict[c] for c in genotype_array[:,1]])
+    =#
+
+"""
     combined_all_genotype_array_functions(sub)
 convert sub from variant filters to gt_num_array and gt_chromosome_labels for plot functions.
 """
 function combined_all_genotype_array_functions(sub)
     genotype_array = generate_genotype_array(sub,"GT")
+
+    map!(s->replace(s, "chr", ""), genotype_array, genotype_array)
+
+    #insert remove_chr_col1_of_genotype_array - no need to clean siglist - only support human v0.1
+    #insert function to replace chr here
+
+#=
+
+chr_dict = create_chr_dict()
+
+function translate(c)
+       chr_dict[c]
+end
+
+no_chr_genotype_array = map(translate, genotype_array)
+
+    if ismatch(r"^chr",genotype_array[1])
+        println("replacing chr in chr_labels")
+
+        for i in genotype_array[:,1]
+            println(i)
+            n=replace(i, "chr" => "")
+            println("$n")
+        end
+    end
+=#
+
     clean_column1!(genotype_array)
     genotype_array=ViVa.sort_genotype_array(genotype_array)
     geno_dict = define_geno_dict()
@@ -369,6 +421,7 @@ convert sub from variant filters to dp_num_array and dp_chromosome_labels for pl
 function combined_all_read_depth_array_functions(sub)
 
     read_depth_array = ViVa.generate_genotype_array(sub,"DP")
+    map!(s->replace(s, "chr", ""), read_depth_array, read_depth_array)
     clean_column1!(read_depth_array)
     read_depth_array=ViVa.sort_genotype_array(read_depth_array)
     dp_num_array,dp_chromosome_labels = translate_readdepth_strings_to_num_array(read_depth_array)
@@ -755,7 +808,7 @@ function checkfor_outputdirectory(path::String)
 end
 
 """
-    generate_chromosome_positions_for_hover_labels(chr_labels::Array{Any,1})
+    generate_chromosome_positions_for_hover_labels(chr_labels::Array{Any,2})
 creates tuple of genomic locations to set as tick labels. This is automatically store chromosome positions in hover labels. However tick labels are set to hidden with showticklabels=false so they will not crowd the y axis.
 """
 function generate_chromosome_positions_for_hover_labels(chr_labels::Array{Any,2})

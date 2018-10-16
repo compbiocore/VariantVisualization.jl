@@ -3,8 +3,11 @@ read_depth heatmap up to 15 white, up to 30 light blue,
 don't output files in same folder
 =#
 
-println("loading packages:")
+println("Welcome to ViVa.")
+println()
+println("Loading packages:")
 println("ViVa")
+println("While using ViVa for Julia <v0.7 ignore 'WARNING: Method definition' when loading packages.")
 using ViVa
 
 println("GeneticVariation")
@@ -15,7 +18,10 @@ using ArgParse
 
 println("VCFTools")
 using VCFTools
+println()
 
+println("Finished loading packages")
+println()
 
 #=
 tic()
@@ -66,9 +72,9 @@ function test_parse_main(ARGS::Vector{String})
         default = "output"
 
         "--save_format", "-s"               # format to save graphics in
-        help = "file format you wish to save graphics as (eg. pdf, html, png)"
+        help = "file format you wish to save graphics as (eg. pdf, html, png). Defaults to html"
         arg_type = String
-        required = true
+        default = "html"
 
         "--chromosome_range", "-r"
         help = "select rows within a given chromosome range. Provide chromosome range after this flag."
@@ -95,7 +101,6 @@ function test_parse_main(ARGS::Vector{String})
         "--heatmap", "-m"
         help = "genotype field to visualize (eg. genotype, read_depth, or 'genotype,read_depth' to visualize each separately)"
         arg_type = String
-        default = "genotype"
 
         "heatmap_title"
         help = "positional argument. Specify filename for heatmap"
@@ -107,7 +112,7 @@ function test_parse_main(ARGS::Vector{String})
 
     end
 
-    parsed_args = parse_args(s)# can turn off printing parsed args after development
+    parsed_args = parse_args(s)# can turn off printing parsed args after development"
     #println("Parsed args:")
 
 #activate block to show all argument keys
@@ -128,13 +133,29 @@ parsed_args = test_parse_main(ARGS)
 #filter vcf and load matrix
 
 vcf_filename = (parsed_args["vcf_file"])
-println("Reading $vcf_filename")
+println("Reading $vcf_filename ...")
 println()
 
 reader = VCF.Reader(open(vcf_filename, "r"))
 sample_names = get_sample_names(reader)
 
 ViVa.checkfor_outputdirectory(parsed_args["output_directory"])
+
+if parsed_args["avg_dp"] == nothing && parsed_args["heatmap"] == nothing
+    number_records = nrecords((parsed_args["vcf_file"]))
+    number_samples = nsamples((parsed_args["vcf_file"]))
+
+    println("_______________________________________________")
+    println()
+    println("Summary Statistics of $(parsed_args["vcf_file"])")
+    println()
+    println("number of records: $number_records")
+    println("number of samples: $number_samples")
+    println("_______________________________________________")
+    println()
+    println("No plotting options specified. Plot data with --heatmap or --avg_dp_plot options")
+    println()
+end
 
 if parsed_args["show_stats"] == true
 
@@ -172,6 +193,7 @@ end
 
 if parsed_args["positions_list"] != nothing && parsed_args["chromosome_range"] == nothing && parsed_args["pass_filter"] == false
     sig_list =  load_siglist(parsed_args["positions_list"])
+    println(sig_list)
     sub = ViVa.io_sig_list_vcf_filter(sig_list,reader)
     number_rows = size(sub,1)
     println("selected $number_rows variants that match list of chromosome positions of interest")
@@ -249,7 +271,7 @@ if parsed_args["heatmap"] == "genotype"
         graphic = ViVa.genotype_heatmap2(gt_num_array,title,chrom_label_info,sample_names)
     end
 
-    PlotlyJS.savefig(graphic, joinpath("$(parsed_args["output_directory"])" ,"$title.$(parsed_args["save_format"])"))
+    PlotlyJS.savefig(graphic, joinpath("$(parsed_args["output_directory"])" ,"$title.$(parsed_args["save_format"])"), js=:remote)
 
 end
 
@@ -294,7 +316,7 @@ if parsed_args["heatmap"] == "read_depth"
         graphic = ViVa.dp_heatmap2(dp_num_array_limited, title, chrom_label_info, sample_names)
     end
 
-    PlotlyJS.savefig(graphic, joinpath("$(parsed_args["output_directory"])" ,"$title.$(parsed_args["save_format"])"))
+    PlotlyJS.savefig(graphic, joinpath("$(parsed_args["output_directory"])" ,"$title.$(parsed_args["save_format"])"), js=:remote) # on Julia v0.7+ use  PlotlyJS.savehtml(p, "file/name.html", :remote)
 
 end
 
@@ -321,7 +343,7 @@ if parsed_args["avg_dp"] == "sample"
     writedlm(joinpath("$(parsed_args["output_directory"])","Samples_with_low_dp.txt"),list, ",")
     #println("The following samples have read depth of under 15: $list")
     graphic = avg_sample_dp_scatter(avg_list,sample_names)
-    PlotlyJS.savefig(graphic, joinpath("$(parsed_args["output_directory"])" ,"Average Sample Read Depth.$(parsed_args["save_format"])"))
+    PlotlyJS.savefig(graphic, joinpath("$(parsed_args["output_directory"])" ,"Average Sample Read Depth.$(parsed_args["save_format"])"), js=:remote)
 
 elseif parsed_args["avg_dp"] == "variant"
     if isdefined(:dp_num_array) == false
@@ -339,7 +361,7 @@ elseif parsed_args["avg_dp"] == "variant"
     #println("The following samples have read depth of less than 15: $list")
     graphic = avg_variant_dp_line_chart(avg_list,chr_pos_tuple_list)
     #PlotlyJS.savefig(graphic, "Average Variant Read Depth.$(parsed_args["save_format"])") #make unique save format - default to pdf but on my computer html
-    PlotlyJS.savefig(graphic, joinpath("$(parsed_args["output_directory"])" ,"Average Variant Read Depth.$(parsed_args["save_format"])"))
+    PlotlyJS.savefig(graphic, joinpath("$(parsed_args["output_directory"])" ,"Average Variant Read Depth.$(parsed_args["save_format"])"), js=:remote)
 end
 
 close(reader)
@@ -362,7 +384,6 @@ println()
 =#
 
 
-
 #in the morning - write function to convert number array matrix to dataframe for input into column filter functions, get all sample names from io for use here
 #add positional argument to save list of positions and samples with dp under 15 as file instead of printint
 #add positional arguments to save any num array with labels
@@ -383,7 +404,6 @@ We don't believe there is a reason to visualize genotype or read depth data at t
 
 
 3) Convert array of records to genotype field numerical array
-
 
 
 4) Sample Selection and Ordering
