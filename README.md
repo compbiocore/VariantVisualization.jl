@@ -7,15 +7,12 @@
 | --- | ---- | ------ | ------ | ---- |
 |[![Travis](https://img.shields.io/travis/bcbi/ViVa.jl/master.svg?style=flat-square)](https://travis-ci.org/bcbi/ViVa.jl)| [![License](https://img.shields.io/badge/license-MIT-orange.svg?style=flat-square)](https://github.com/compbiocore/ViVa.jl/blob/clean-up/LICENSE.md)| [![Codecov](https://img.shields.io/codecov/c/github/bcbi/ViVa.jl.svg?style=flat-square)](https://codecov.io/gh/bcbi/ViVa.jl/branch/master) | [![Docs](https://img.shields.io/badge/docs-stable-blue.svg?style=flat-square)](https://bcbi.github.io/ViVa.jl/stable) [![Docs](https://img.shields.io/badge/docs-latest-blue.svg?style=flat-square)](https://bcbi.github.io/ViVa.jl/latest) | ![Lifecycle](https://img.shields.io/badge/lifecycle-experimental-orange.svg?style=flat-square) |
 
-<<<<<<< HEAD
 ## Overview
 
 ViVa.jl is a user-friendly command line tool for creating publication quality graphics from Variant Call Format (VCF) files and has been designed for clinicians and bioinformaticians to explore their VCF files visually. Users can quickly extract genotype or read depth information and plot trends in interactive categorical heatmaps and scatter plots of average read depth values. ViVa.jl offers a robust set of filters to select variants and samples of interest for analysis. ViVa.jl is especially useful in early data exploration for identifying batch effect and sources of poor read depth, as well as identifying distribution of disease causing variants in a set of clinical samples.
 
 
-=======
 ## Installation
->>>>>>> e6804e0d0fe65a23bcac9cfccb1395101d283ed2
 
 Install ViVa.jl
 

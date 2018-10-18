@@ -27,5 +27,5 @@ docs_dir: 'build'
 pages:
 - Home: index.md
 - Manual:
-  - Read and Filter VCF: read.md
-  - Heatmaps: heatmap.md
+  - Read and Filter VCF: filtering_vcf.md
+  - Heatmaps: plotting.md
