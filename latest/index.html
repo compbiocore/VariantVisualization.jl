@@ -104,7 +104,7 @@
     <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
     <label class="md-overlay" data-md-component="overlay" for="__drawer"></label>
     
-      <a href="#viva-visualization-of-variants" tabindex="1" class="md-skip">
+      <a href="#description" tabindex="1" class="md-skip">
         Skip to content
       </a>
     
@@ -221,7 +221,7 @@
   
     <li class="md-tabs__item">
       
-        <a href="read/" title="Manual" class="md-tabs__link">
+        <a href="filtering_vcf/" title="Manual" class="md-tabs__link">
           Manual
         </a>
       
@@ -320,7 +320,7 @@
 
 
   <li class="md-nav__item">
-    <a href="read/" title="Read and Filter VCF" class="md-nav__link">
+    <a href="filtering_vcf/" title="Read and Filter VCF" class="md-nav__link">
       Read and Filter VCF
     </a>
   </li>
@@ -332,7 +332,7 @@
 
 
   <li class="md-nav__item">
-    <a href="heatmap/" title="Heatmaps" class="md-nav__link">
+    <a href="plotting/" title="Heatmaps" class="md-nav__link">
       Heatmaps
     </a>
   </li>
@@ -373,8 +373,43 @@
                   <a href="https://github.com/compbiocore/ViVa.jl/edit/master/docs/index.md" title="Edit this page" class="md-icon md-content__icon">&#xE3C9;</a>
                 
                 
-                <p><a id='Viva-Visualization-of-Variants-1'></a></p>
-<h1 id="viva-visualization-of-variants">Viva - Visualization of Variants</h1>
+                <h1 id="description">Description</h1>
+<div class="codehilite"><pre><span></span>ViVa.jl is a user-friendly command line tool for creating publication quality graphics from Variant Call Format (VCF) files. ViVa.jl provides tools to quickly select variant records and samples to include in visualization.
+
+ViVa.jl utilizes ArgParse.jl to parse command line arguments and GeneticVariation.jl to create a memory-efficient VCF Reader object which ViVa.jl utilizes to quickly extract variants of interest.
+
+This documentation details each [REQUIRED] and optional argument, as well as necessary specific structure for user-generated input files for manipulating records and samples. Clearly named examples of all user-generated input files can be found in the /tests/ directory of the ViVa.jl repository.
+
+ViVa.jl can be run through the command line with the following structure:
+
+julia viva_cli.jl [--help] [COMMAND] [OPTIONS]
+
+Example:
+julia viva_cli.jl -v example.vcf -r chr1:20000-30000000 -s html --heatmap read_depth --line_chart samples
+</pre></div>
+
+
+<h1 id="installation">Installation</h1>
+<blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<p>e6804e0d0fe65a23bcac9cfccb1395101d283ed2</p>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+<p>Install ViVa.jl</p>
+<p>To stay up to date with new features before release, please check out the master branch.</p>
+<div class="codehilite"><pre><span></span><span class="k">using</span> <span class="n">Pkg</span>
+<span class="n">Pkg</span><span class="o">.</span><span class="n">clone</span><span class="p">(</span><span class="s">&quot;https://github.com/compbiocore/ViVa.jl&quot;</span><span class="p">)</span>
+</pre></div>
                 
                   
                 
@@ -396,7 +431,7 @@
       <nav class="md-footer-nav__inner md-grid">
         
         
-          <a href="read/" title="Read and Filter VCF" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
+          <a href="filtering_vcf/" title="Read and Filter VCF" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
             <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
               <span class="md-flex__ellipsis">
                 <span class="md-footer-nav__direction">
