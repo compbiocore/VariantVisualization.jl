@@ -94,7 +94,7 @@ end
 io_chromosome_range_vcf_filter(chr_range::String, reader::GeneticVariation.VCF.Reader)
 create subarray of vcf variant records matching user specified chromosome range in format: (e.g. chr1:0-30000000)
 """
-function io_chromosome_range_vcf_filter(chr_range::String,reader::GeneticVariation.VCF.Reader, )
+function io_chromosome_range_vcf_filter(chr_range::String,reader::GeneticVariation.VCF.Reader)
        a=split(chr_range,":")
        chrwhole=a[1]
        chrnumber=split(chrwhole,"r")
@@ -120,10 +120,10 @@ function io_chromosome_range_vcf_filter(chr_range::String,reader::GeneticVariati
 end
 
 """
-    io_sig_list_vcf_filter(sig_list,reader::GeneticVariation.VCF.Reader)
+    io_sig_list_vcf_filter(sig_list,vcf_filename)
 returns subarray of variant records matching a list of variant positions returned from load_siglist()
 """
-function io_sig_list_vcf_filter(sig_list,reader::GeneticVariation.VCF.Reader)
+function io_sig_list_vcf_filter(sig_list,vcf_filename)
 
        vcf_subarray = Array{Any}(0)
 
@@ -133,10 +133,9 @@ function io_sig_list_vcf_filter(sig_list,reader::GeneticVariation.VCF.Reader)
               chr=(sig_list[row,1])
               pos=(sig_list[row,2])
 
-              for record in reader
+              reader = VCF.Reader(open(vcf_filename, "r"))
 
-                  println(VCF.chrom(record))
-                  println(VCF.pos(record))
+              for record in reader
 
                      if typeof(VCF.chrom(record)) == String
                             chr = string(chr)
@@ -158,6 +157,66 @@ function io_sig_list_vcf_filter(sig_list,reader::GeneticVariation.VCF.Reader)
        return vcf_subarray
 end
 
+#=
+function io_sig_list_vcf_filter(sig_list,reader::GeneticVariation.VCF.Reader)
+
+       vcf_subarray = Array{Any}(0)
+       println(sig_list)
+
+       for row= 1:size(sig_list,1)
+              dimension = size(sig_list,1)
+
+              chr=(sig_list[row,1])
+              pos=(sig_list[row,2])
+
+              println("siglist iteration shows chromosome $chr")
+              println("siglist iteration shows position $pos")
+
+
+              for record in reader
+
+#reader = VCF.Reader(open("test_with_chr.vcf", "r"))
+
+                 # println(VCF.chrom(record))
+                  println("record iteration shows chromosome $chr")
+                  #println(VCF.pos(record))
+                  println("record iteration shows pos $pos")
+
+                  println()
+
+                    if typeof(VCF.chrom(record)) == String
+                        if typeof(chr) == String
+                            chr = String(chr)
+
+                            if (VCF.chrom(record) == chr) && (VCF.pos(record) == pos)
+                                println("match!")
+                                push!(vcf_subarray,record)
+                            end
+
+                        elseif typeof(chr) == Int64
+                            chr = string(chr)
+
+                            if (VCF.chrom(record) == chr) && (VCF.pos(record) == pos)
+                                    println("match!")
+                                    push!(vcf_subarray,record)
+                            end
+                        end
+
+                    else
+
+                            if (VCF.chrom(record) == chr) && (VCF.pos(record) == pos)
+                                println(VCF.chrom(record))
+                                println(VCF.pos(record))
+                                push!(vcf_subarray,record)
+
+                            end
+                    end
+              end
+       end
+
+       return vcf_subarray
+end
+=#
 """
     io_pass_filter(reader::GeneticVariation.VCF.Reader)
 returns subarray of vcf records including only records with FILTER status = PASS
@@ -177,10 +236,10 @@ return vcf_subarray
 end
 
 """
-    pass_chrrange_siglist_filter(reader::GeneticVariation.VCF.Reader,sig_list,chr_range::AbstractString)
+    pass_chrrange_siglist_filter(vcf_filename,sig_list,chr_range::AbstractString)
 returns subarray of vcf records with io_pass_filter, io_sig_list_vcf_filter, and io_chromosome_range_vcf_filter applied.
 """
-function pass_chrrange_siglist_filter(reader::GeneticVariation.VCF.Reader,sig_list,chr_range::AbstractString)
+function pass_chrrange_siglist_filter(vcf_filename,sig_list,chr_range::AbstractString)
 
     a=split(chr_range,":")
     chrwhole=a[1]
@@ -201,6 +260,8 @@ function pass_chrrange_siglist_filter(reader::GeneticVariation.VCF.Reader,sig_li
 
            chr=(sig_list[row,1])
            pos=(sig_list[row,2])
+
+           reader = VCF.Reader(open(vcf_filename, "r"))
 
            for record in reader
 
@@ -266,10 +327,10 @@ returns subarray of vcf records with io_pass_filter and io_chromosome_range_vcf_
     end
 
 """
-        pass_siglist_filter(reader::GeneticVariation.VCF.Reader,sig_list,chr_range::AbstractString)
+        pass_siglist_filter(vcf_filename,sig_list,chr_range::AbstractString)
     returns subarray of vcf records with io_pass_filter, io_sig_list_vcf_filter, and io_chromosome_range_vcf_filter applied.
 """
-    function pass_siglist_filter(reader::GeneticVariation.VCF.Reader,sig_list)
+    function pass_siglist_filter(vcf_filename,sig_list)
 
         vcf_subarray = Array{Any}(0)
 
@@ -278,6 +339,8 @@ returns subarray of vcf records with io_pass_filter and io_chromosome_range_vcf_
 
                chr=(sig_list[row,1])
                pos=(sig_list[row,2])
+
+               reader = VCF.Reader(open(vcf_filename, "r"))
 
                for record in reader
 
@@ -302,10 +365,10 @@ returns subarray of vcf records with io_pass_filter and io_chromosome_range_vcf_
         end
 
 """
-    chrrange_siglist_filter(reader::GeneticVariation.VCF.Reader,sig_list,chr_range::AbstractString)
+    chrrange_siglist_filter(vcf_filename,sig_list,chr_range::AbstractString)
 returns subarray of vcf records with io_pass_filter, io_sig_list_vcf_filter, and io_chromosome_range_vcf_filter applied.
 """
-        function chrrange_siglist_filter(reader::GeneticVariation.VCF.Reader,sig_list,chr_range::AbstractString)
+        function chrrange_siglist_filter(vcf_filename,sig_list,chr_range::AbstractString)
 
             a=split(chr_range,":")
             chrwhole=a[1]
@@ -326,6 +389,8 @@ returns subarray of vcf records with io_pass_filter, io_sig_list_vcf_filter, and
 
                    chr=(sig_list[row,1])
                    pos=(sig_list[row,2])
+
+                   reader = VCF.Reader(open(vcf_filename, "r"))
 
                    for record in reader
 

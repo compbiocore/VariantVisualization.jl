@@ -19,6 +19,12 @@ ViVa.jl is a user-friendly command line tool for creating publication quality gr
 
 Install ViVa.jl
 
+```
+git clone https://github.com/compbiocore/ViVa.jl
+```
+
+or
+
 ```julia
 using Pkg
 Pkg.clone("https://github.com/compbiocore/ViVa.jl")
