@@ -3,11 +3,12 @@ module TestViVa
 using ViVa
 
 using DataFrames
+using GeneticVariation
 using Base.Test
 
 
 all_tests = [
-    ("vcf_utils.jl",   "           Testing: VCF Utils"),
+    ("new_vcf_utils.jl",   "           Testing: New VCF Utils"),
 #    ("plot_utils.jl",     "       Testing: Plot Utils")
     ]
 

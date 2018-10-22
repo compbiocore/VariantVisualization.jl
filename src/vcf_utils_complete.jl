@@ -15,18 +15,6 @@ function clean_column1!(matrix_with_chr_column)
 end
 
 """
-    clean_column1_chr(matrix_with_chr_column)
-Replace String "chr" from chromosome column with "" so chr position is loaded as int and variants can be sorted by descending chr position for plotting
-"""
-function clean_column1_chr(matrix_with_chr_column)
-
-    for i = 1:(size(matrix_with_chr_column, 1))
-        replace(matrix_with_chr_column[i, 1],"chr","")
-    end
-
-end
-
-"""
     clean_column1_siglist!(siglist)
     replaces "X","Y","M" with 23,24,25 {Int}
 use in load_siglist() because X and Y need to be replaced with Int

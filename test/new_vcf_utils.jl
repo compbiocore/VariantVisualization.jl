@@ -8,115 +8,81 @@ WARNING: Method definition ==(Base.Nullable{S}, Base.Nullable{T}) in module Base
 julia> Pkg.test(pkg_for"ViVa")
 
 =#
-"""
-    clean_column1!(matrix_with_chr_column)
-Replace String "X","Y","M" from chromosome column with 23,24,25 respectively so variants can be sorted by descending chr position for plotting
-"""
-@testset clean_column1!(matrix_with_chr_column) begin
 
+@testset "VCFUtils" begin
+
+vcf_filename = "test_files/test_4X_191.vcf"
+vcf_filename_with_chr = "test_files/test_with_chr.vcf"
+
+reader = VCF.Reader(open(vcf_filename, "r"))
+reader_with_chr = VCF.Reader(open(vcf_filename_with_chr, "r"))
+sample_names = get_sample_names(reader)
+
+@testset "clean_column1!" begin
+    df = Matrix(["X" 1 2; "Y" 2 3; 2 4 1])
+    clean_column1!(df)
+    @test df[1,1] == "23"
+    @test df[2,1] == "24"
+    @test df[3,1] == 2
+end
+
+@testset "io_chromosome_range_vcf_filter" begin
+sub = io_chromosome_range_vcf_filter("chr4:0-400000000",reader)
+println(sub[1:2])
+println(size(sub,2))
+end
+
+@testset "io_sig_list_vcf_filter" begin
+
+    @testset "load_siglist" begin
+        sig_list=load_siglist("test_files/significantList_for_proteinstructures.csv")
+        println(sig_list[2:1])
+        println(size(sig_list,1))
+
+            @testset "clean_column1_siglist!" begin
+            clean_column1_siglist!(sig_list)
+            println(sig_list[1,2])
+            println(size(sig_list,1))
+            end
+
+        sub=io_sig_list_vcf_filter(sig_list,vcf_filename)
+        println(sub[1,5])
+
+        @testset "pass_chrrange_siglist_filter" begin
+        sub = pass_chrrange_siglist_filter(vcf_filename,sig_list,"chr4:0-400000000")
+        println(sub[1,5])
+
+        @testset pass_siglist_filter begin
+        sub = pass_siglist_filter(vcf_filename,sig_list)
+        end
+
+        @testset "chrrange_siglist_filter" begin
+        sub = chrrange_siglist_filter(vcf_filename,sig_list,"chr4:0-400000000")
+        end
+
+
+        end
+
+    end
+end
+
+@testset "io_pass_filter" begin
+    sub = io_pass_filter(reader)
+    println(sub[2,1])
+end
+
+@testset "pass_chrrange_filter" begin
+    sub = pass_chrrange_filter(reader,"chr4:0-400000000")
 end
 
 
-"""
-    clean_column1_chr(matrix_with_chr_column)
-Replace String "chr" from chromosome column with "" so chr position is loaded as int and variants can be sorted by descending chr position for plotting
-"""
-@testset clean_column1_chr(matrix_with_chr_column) begin
-
-
-end
-
-"""
-    clean_column1_siglist!(siglist)
-    replaces "X","Y","M" with 23,24,25 {Int}
-use in load_siglist() because X and Y need to be replaced with Int
-"""
-@testset clean_column1_siglist!(siglist) begin
-
-end
-
-"""
-    returnXY_column1!(chr_label_vector)
-Replace String "23","24","25" with "X","Y","M" in chromosome label vector used for plot labels
-"""
-@testset returnXY_column1!(chr_label_vector) begin
-
-end
-
-"""
-    sort_genotype_array(genotype_array)
-sorts genotype array for GT or DP by chromosomal location
-"""
-@testset sort_genotype_array(genotype_array) begin
-
-end
-
-"""
-    load_siglist(filename::AbstractString)
-where x = filename of significant SNP variant location list in comma delimited format (saved as .csv)
-"""
-@testset load_siglist(filename::AbstractString) begin
-
-end
 
 
 
+
+#=
 #functions for variant filters
-"""
-io_chromosome_range_vcf_filter(chr_range::String, reader::GeneticVariation.VCF.Reader)
-create subarray of vcf variant records matching user specified chromosome range in format: (e.g. chr1:0-30000000)
-"""
-@testset io_chromosome_range_vcf_filter(chr_range::String,reader::GeneticVariation.VCF.Reader) begin
 
-end
-
-"""
-    io_sig_list_vcf_filter(sig_list,vcf_filename)
-returns subarray of variant records matching a list of variant positions returned from load_siglist()
-"""
-@testset io_sig_list_vcf_filter(sig_list,vcf_filename) begin
-
-end
-
-"""
-    io_pass_filter(reader::GeneticVariation.VCF.Reader)
-returns subarray of vcf records including only records with FILTER status = PASS
-"""
-@testset io_pass_filter(reader::GeneticVariation.VCF.Reader) begin
-
-end
-
-"""
-    pass_chrrange_siglist_filter(vcf_filename,sig_list,chr_range::AbstractString)
-returns subarray of vcf records with io_pass_filter, io_sig_list_vcf_filter, and io_chromosome_range_vcf_filter applied.
-"""
-@testset pass_chrrange_siglist_filter(vcf_filename,sig_list,chr_range::AbstractString) begin
-
-end
-
-"""
-    pass_chrrange_filter(reader::GeneticVariation.VCF.Reader,sig_list,chr_range::AbstractString)
-returns subarray of vcf records with io_pass_filter and io_chromosome_range_vcf_filter applied.
-"""
-@testset pass_chrrange_filter(reader::GeneticVariation.VCF.Reader,chr_range::AbstractString) begin
-
-end
-
-"""
-        pass_siglist_filter(vcf_filename,sig_list,chr_range::AbstractString)
-    returns subarray of vcf records with io_pass_filter, io_sig_list_vcf_filter, and io_chromosome_range_vcf_filter applied.
-"""
-@testset pass_siglist_filter(vcf_filename,sig_list) begin
-
-end
-
-"""
-    chrrange_siglist_filter(vcf_filename,sig_list,chr_range::AbstractString)
-returns subarray of vcf records with io_pass_filter, io_sig_list_vcf_filter, and io_chromosome_range_vcf_filter applied.
-"""
-@testset chrrange_siglist_filter(vcf_filename,sig_list,chr_range::AbstractString) begin
-
-end
 
 #functions for converting vcf record array to numerical array
 
@@ -367,4 +333,24 @@ chr_pos_tuple_list=Array{Tuple}(0)
     end
 
     return chr_pos_tuple_list
+end
+
+"""
+    returnXY_column1!(chr_label_vector)
+Replace String "23","24","25" with "X","Y","M" in chromosome label vector used for plot labels
+"""
+@testset "returnXY_column1!" begin
+
+end
+
+"""
+    sort_genotype_array(genotype_array)
+sorts genotype array for GT or DP by chromosomal location
+"""
+@testset sort_genotype_array(genotype_array) begin
+
+end
+
+
+=#
 end

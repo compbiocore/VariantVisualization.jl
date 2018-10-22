@@ -232,8 +232,6 @@ if parsed_args["pass_filter"] == false && parsed_args["chromosome_range"] == not
 
 end
 
-#sub = clean_column1_chr(sub)
-
 if parsed_args["heatmap"] == "genotype"
     gt_num_array,gt_chromosome_labels = combined_all_genotype_array_functions(sub)
 
