@@ -145,66 +145,6 @@ function io_sig_list_vcf_filter(sig_list,vcf_filename)
        return vcf_subarray
 end
 
-#=
-function io_sig_list_vcf_filter(sig_list,reader::GeneticVariation.VCF.Reader)
-
-       vcf_subarray = Array{Any}(0)
-       println(sig_list)
-
-       for row= 1:size(sig_list,1)
-              dimension = size(sig_list,1)
-
-              chr=(sig_list[row,1])
-              pos=(sig_list[row,2])
-
-              println("siglist iteration shows chromosome $chr")
-              println("siglist iteration shows position $pos")
-
-
-              for record in reader
-
-#reader = VCF.Reader(open("test_with_chr.vcf", "r"))
-
-                 # println(VCF.chrom(record))
-                  println("record iteration shows chromosome $chr")
-                  #println(VCF.pos(record))
-                  println("record iteration shows pos $pos")
-
-                  println()
-
-                    if typeof(VCF.chrom(record)) == String
-                        if typeof(chr) == String
-                            chr = String(chr)
-
-                            if (VCF.chrom(record) == chr) && (VCF.pos(record) == pos)
-                                println("match!")
-                                push!(vcf_subarray,record)
-                            end
-
-                        elseif typeof(chr) == Int64
-                            chr = string(chr)
-
-                            if (VCF.chrom(record) == chr) && (VCF.pos(record) == pos)
-                                    println("match!")
-                                    push!(vcf_subarray,record)
-                            end
-                        end
-
-                    else
-
-                            if (VCF.chrom(record) == chr) && (VCF.pos(record) == pos)
-                                println(VCF.chrom(record))
-                                println(VCF.pos(record))
-                                push!(vcf_subarray,record)
-
-                            end
-                    end
-              end
-       end
-
-       return vcf_subarray
-end
-=#
 """
     io_pass_filter(reader::GeneticVariation.VCF.Reader)
 returns subarray of vcf records including only records with FILTER status = PASS
@@ -421,11 +361,6 @@ function create_chr_dict()
     return chr_dict
 end
 
-    #=
-    replace_chr_dict = Dict(r"(chr)" => "")
-    join([replace_chr_dict[c] for c in genotype_array[:,1]])
-    =#
-
 """
     combined_all_genotype_array_functions(sub)
 convert sub from variant filters to gt_num_array and gt_chromosome_labels for plot functions.
@@ -434,30 +369,6 @@ function combined_all_genotype_array_functions(sub)
     genotype_array = generate_genotype_array(sub,"GT")
 
     map!(s->replace(s, "chr", ""), genotype_array, genotype_array)
-
-    #insert remove_chr_col1_of_genotype_array - no need to clean siglist - only support human v0.1
-    #insert function to replace chr here
-
-#=
-
-chr_dict = create_chr_dict()
-
-function translate(c)
-       chr_dict[c]
-end
-
-no_chr_genotype_array = map(translate, genotype_array)
-
-    if ismatch(r"^chr",genotype_array[1])
-        println("replacing chr in chr_labels")
-
-        for i in genotype_array[:,1]
-            println(i)
-            n=replace(i, "chr" => "")
-            println("$n")
-        end
-    end
-=#
 
     clean_column1!(genotype_array)
     genotype_array=ViVa.sort_genotype_array(genotype_array)
@@ -576,12 +487,6 @@ function translate_readdepth_strings_to_num_array(read_depth_array::Array{Any,2}
 
        dp_array_for_plotly = [parse(Int, i) for i in dp_array_for_plotly]
 
-       for i in dp_array_for_plotly
-              if i == "."
-                     #println(".")
-              end
-       end
-
        return dp_array_for_plotly, chromosome_labels
 end
 
@@ -638,9 +543,6 @@ function sortcols_by_phenotype_matrix(pheno_matrix_filename::String,trait_to_gro
 
     id_list = pheno[1,:]
 
-    #vcf_header = names(df_vcf)
-    #vcf_info_columns = vcf_header[1:9]
-
     sample_ids=sample_names
 
     col_new_order=vec(id_list)
@@ -650,9 +552,6 @@ function sortcols_by_phenotype_matrix(pheno_matrix_filename::String,trait_to_gro
     df1_vcf = DataFrame(num_array)
 
     rename!(df1_vcf, f => t for (f, t) = zip(names(df1_vcf), sample_ids))
-
-    #println(typeof(names(df1_vcf))) #Array{Symbol,1} | same in test
-    #println(typeof(col_new_order)) #Array{Any,1} | same in test
 
     vcf = df1_vcf[:, col_new_order]
 
@@ -674,7 +573,6 @@ function select_columns(filename_sample_list::AbstractString, num_array::Array{I
     header_as_strings = selectedcolumns
 
     for item = 1:size(selectedcolumns,2)
-        #selectedcolumns[item] = replace(selectedcolumns[item],".","_")  #names in sample list dont match vcf so have to clean
         selectedcolumns[item] = Symbol(selectedcolumns[item])
     end
 
@@ -801,9 +699,6 @@ save numerical array with chr labels and sample ids to working directory
 """
 function save_numerical_array(num_array,sample_names,chr_labels)
 
-      #samplenames=sample_names
-      #samplenames=Matrix(samplenames)
-
       headings = hcat("chr","position")
       sample_names = hcat(headings,sample_names)
 
@@ -866,8 +761,7 @@ creates tuple of genomic locations to set as tick labels. This is automatically 
 """
 function generate_chromosome_positions_for_hover_labels(chr_labels::Array{Any,2})
 
-returnXY_column1!(chr_labels) #not working yet
-#println(chr_labels)
+returnXY_column1!(chr_labels)
 
 chr_pos_tuple_list=Array{Tuple}(0)
 
