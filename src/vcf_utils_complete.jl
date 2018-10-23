@@ -15,18 +15,6 @@ function clean_column1!(matrix_with_chr_column)
 end
 
 """
-    clean_column1_chr(matrix_with_chr_column)
-Replace String "chr" from chromosome column with "" so chr position is loaded as int and variants can be sorted by descending chr position for plotting
-"""
-function clean_column1_chr(matrix_with_chr_column)
-
-    for i = 1:(size(matrix_with_chr_column, 1))
-        replace(matrix_with_chr_column[i, 1],"chr","")
-    end
-
-end
-
-"""
     clean_column1_siglist!(siglist)
     replaces "X","Y","M" with 23,24,25 {Int}
 use in load_siglist() because X and Y need to be replaced with Int
@@ -94,7 +82,7 @@ end
 io_chromosome_range_vcf_filter(chr_range::String, reader::GeneticVariation.VCF.Reader)
 create subarray of vcf variant records matching user specified chromosome range in format: (e.g. chr1:0-30000000)
 """
-function io_chromosome_range_vcf_filter(chr_range::String,reader::GeneticVariation.VCF.Reader, )
+function io_chromosome_range_vcf_filter(chr_range::String,reader::GeneticVariation.VCF.Reader)
        a=split(chr_range,":")
        chrwhole=a[1]
        chrnumber=split(chrwhole,"r")
@@ -120,10 +108,10 @@ function io_chromosome_range_vcf_filter(chr_range::String,reader::GeneticVariati
 end
 
 """
-    io_sig_list_vcf_filter(sig_list,reader::GeneticVariation.VCF.Reader)
+    io_sig_list_vcf_filter(sig_list,vcf_filename)
 returns subarray of variant records matching a list of variant positions returned from load_siglist()
 """
-function io_sig_list_vcf_filter(sig_list,reader::GeneticVariation.VCF.Reader)
+function io_sig_list_vcf_filter(sig_list,vcf_filename)
 
        vcf_subarray = Array{Any}(0)
 
@@ -133,10 +121,9 @@ function io_sig_list_vcf_filter(sig_list,reader::GeneticVariation.VCF.Reader)
               chr=(sig_list[row,1])
               pos=(sig_list[row,2])
 
-              for record in reader
+              reader = VCF.Reader(open(vcf_filename, "r"))
 
-                  println(VCF.chrom(record))
-                  println(VCF.pos(record))
+              for record in reader
 
                      if typeof(VCF.chrom(record)) == String
                             chr = string(chr)
@@ -177,10 +164,10 @@ return vcf_subarray
 end
 
 """
-    pass_chrrange_siglist_filter(reader::GeneticVariation.VCF.Reader,sig_list,chr_range::AbstractString)
+    pass_chrrange_siglist_filter(vcf_filename,sig_list,chr_range::AbstractString)
 returns subarray of vcf records with io_pass_filter, io_sig_list_vcf_filter, and io_chromosome_range_vcf_filter applied.
 """
-function pass_chrrange_siglist_filter(reader::GeneticVariation.VCF.Reader,sig_list,chr_range::AbstractString)
+function pass_chrrange_siglist_filter(vcf_filename,sig_list,chr_range::AbstractString)
 
     a=split(chr_range,":")
     chrwhole=a[1]
@@ -201,6 +188,8 @@ function pass_chrrange_siglist_filter(reader::GeneticVariation.VCF.Reader,sig_li
 
            chr=(sig_list[row,1])
            pos=(sig_list[row,2])
+
+           reader = VCF.Reader(open(vcf_filename, "r"))
 
            for record in reader
 
@@ -266,10 +255,10 @@ returns subarray of vcf records with io_pass_filter and io_chromosome_range_vcf_
     end
 
 """
-        pass_siglist_filter(reader::GeneticVariation.VCF.Reader,sig_list,chr_range::AbstractString)
+        pass_siglist_filter(vcf_filename,sig_list,chr_range::AbstractString)
     returns subarray of vcf records with io_pass_filter, io_sig_list_vcf_filter, and io_chromosome_range_vcf_filter applied.
 """
-    function pass_siglist_filter(reader::GeneticVariation.VCF.Reader,sig_list)
+    function pass_siglist_filter(vcf_filename,sig_list)
 
         vcf_subarray = Array{Any}(0)
 
@@ -278,6 +267,8 @@ returns subarray of vcf records with io_pass_filter and io_chromosome_range_vcf_
 
                chr=(sig_list[row,1])
                pos=(sig_list[row,2])
+
+               reader = VCF.Reader(open(vcf_filename, "r"))
 
                for record in reader
 
@@ -302,10 +293,10 @@ returns subarray of vcf records with io_pass_filter and io_chromosome_range_vcf_
         end
 
 """
-    chrrange_siglist_filter(reader::GeneticVariation.VCF.Reader,sig_list,chr_range::AbstractString)
+    chrrange_siglist_filter(vcf_filename,sig_list,chr_range::AbstractString)
 returns subarray of vcf records with io_pass_filter, io_sig_list_vcf_filter, and io_chromosome_range_vcf_filter applied.
 """
-        function chrrange_siglist_filter(reader::GeneticVariation.VCF.Reader,sig_list,chr_range::AbstractString)
+        function chrrange_siglist_filter(vcf_filename,sig_list,chr_range::AbstractString)
 
             a=split(chr_range,":")
             chrwhole=a[1]
@@ -326,6 +317,8 @@ returns subarray of vcf records with io_pass_filter, io_sig_list_vcf_filter, and
 
                    chr=(sig_list[row,1])
                    pos=(sig_list[row,2])
+
+                   reader = VCF.Reader(open(vcf_filename, "r"))
 
                    for record in reader
 
@@ -368,11 +361,6 @@ function create_chr_dict()
     return chr_dict
 end
 
-    #=
-    replace_chr_dict = Dict(r"(chr)" => "")
-    join([replace_chr_dict[c] for c in genotype_array[:,1]])
-    =#
-
 """
     combined_all_genotype_array_functions(sub)
 convert sub from variant filters to gt_num_array and gt_chromosome_labels for plot functions.
@@ -381,30 +369,6 @@ function combined_all_genotype_array_functions(sub)
     genotype_array = generate_genotype_array(sub,"GT")
 
     map!(s->replace(s, "chr", ""), genotype_array, genotype_array)
-
-    #insert remove_chr_col1_of_genotype_array - no need to clean siglist - only support human v0.1
-    #insert function to replace chr here
-
-#=
-
-chr_dict = create_chr_dict()
-
-function translate(c)
-       chr_dict[c]
-end
-
-no_chr_genotype_array = map(translate, genotype_array)
-
-    if ismatch(r"^chr",genotype_array[1])
-        println("replacing chr in chr_labels")
-
-        for i in genotype_array[:,1]
-            println(i)
-            n=replace(i, "chr" => "")
-            println("$n")
-        end
-    end
-=#
 
     clean_column1!(genotype_array)
     genotype_array=ViVa.sort_genotype_array(genotype_array)
@@ -523,12 +487,6 @@ function translate_readdepth_strings_to_num_array(read_depth_array::Array{Any,2}
 
        dp_array_for_plotly = [parse(Int, i) for i in dp_array_for_plotly]
 
-       for i in dp_array_for_plotly
-              if i == "."
-                     #println(".")
-              end
-       end
-
        return dp_array_for_plotly, chromosome_labels
 end
 
@@ -585,9 +543,6 @@ function sortcols_by_phenotype_matrix(pheno_matrix_filename::String,trait_to_gro
 
     id_list = pheno[1,:]
 
-    #vcf_header = names(df_vcf)
-    #vcf_info_columns = vcf_header[1:9]
-
     sample_ids=sample_names
 
     col_new_order=vec(id_list)
@@ -597,9 +552,6 @@ function sortcols_by_phenotype_matrix(pheno_matrix_filename::String,trait_to_gro
     df1_vcf = DataFrame(num_array)
 
     rename!(df1_vcf, f => t for (f, t) = zip(names(df1_vcf), sample_ids))
-
-    #println(typeof(names(df1_vcf))) #Array{Symbol,1} | same in test
-    #println(typeof(col_new_order)) #Array{Any,1} | same in test
 
     vcf = df1_vcf[:, col_new_order]
 
@@ -621,7 +573,6 @@ function select_columns(filename_sample_list::AbstractString, num_array::Array{I
     header_as_strings = selectedcolumns
 
     for item = 1:size(selectedcolumns,2)
-        #selectedcolumns[item] = replace(selectedcolumns[item],".","_")  #names in sample list dont match vcf so have to clean
         selectedcolumns[item] = Symbol(selectedcolumns[item])
     end
 
@@ -748,9 +699,6 @@ save numerical array with chr labels and sample ids to working directory
 """
 function save_numerical_array(num_array,sample_names,chr_labels)
 
-      #samplenames=sample_names
-      #samplenames=Matrix(samplenames)
-
       headings = hcat("chr","position")
       sample_names = hcat(headings,sample_names)
 
@@ -813,8 +761,7 @@ creates tuple of genomic locations to set as tick labels. This is automatically 
 """
 function generate_chromosome_positions_for_hover_labels(chr_labels::Array{Any,2})
 
-returnXY_column1!(chr_labels) #not working yet
-#println(chr_labels)
+returnXY_column1!(chr_labels)
 
 chr_pos_tuple_list=Array{Tuple}(0)
 
