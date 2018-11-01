@@ -268,6 +268,8 @@ if parsed_args["heatmap"] == "genotype"
         graphic = ViVa.genotype_heatmap2(gt_num_array,title,chrom_label_info,sample_names)
     end
 
+    println("saving now")
+
     PlotlyJS.savefig(graphic, joinpath("$(parsed_args["output_directory"])" ,"$title.$(parsed_args["save_format"])"), js=:remote)
 
 end
@@ -327,10 +329,7 @@ println("_______________________________________________")
 if parsed_args["avg_dp"] == "sample"
 
     if isdefined(:dp_num_array) == false
-        read_depth_array = ViVa.generate_genotype_array(sub,"DP")
-        clean_column1!(read_depth_array)
-        read_depth_array=ViVa.sort_genotype_array(read_depth_array)
-        dp_num_array,dp_chromosome_labels = translate_readdepth_strings_to_num_array(read_depth_array)
+        dp_num_array,dp_chromosome_labels=combined_all_read_depth_array_functions(sub)
     end
 
     chr_pos_tuple_list = generate_chromosome_positions_for_hover_labels(dp_chromosome_labels)
@@ -343,11 +342,9 @@ if parsed_args["avg_dp"] == "sample"
     PlotlyJS.savefig(graphic, joinpath("$(parsed_args["output_directory"])" ,"Average Sample Read Depth.$(parsed_args["save_format"])"), js=:remote)
 
 elseif parsed_args["avg_dp"] == "variant"
+    
     if isdefined(:dp_num_array) == false
-        read_depth_array = ViVa.generate_genotype_array(sub,"DP")
-        clean_column1!(read_depth_array)
-        read_depth_array=ViVa.sort_genotype_array(read_depth_array)
-        dp_num_array,dp_chromosome_labels = translate_readdepth_strings_to_num_array(read_depth_array)
+        dp_num_array,dp_chromosome_labels=combined_all_read_depth_array_functions(sub)
     end
 
     chr_pos_tuple_list = generate_chromosome_positions_for_hover_labels(dp_chromosome_labels)

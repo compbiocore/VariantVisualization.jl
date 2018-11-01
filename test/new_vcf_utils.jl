@@ -26,18 +26,21 @@ sample_names = get_sample_names(reader)
     @test df[3,1] == 2
 end
 
+#functions for variant filters
+
 @testset "io_chromosome_range_vcf_filter" begin
 sub = io_chromosome_range_vcf_filter("chr4:0-400000000",reader)
 println(sub[1:2])
 println(size(sub,2))
 end
 
-@testset "io_sig_list_vcf_filter" begin
+#=
+@testset "filters_with_siglist" begin
 
     @testset "load_siglist" begin
-        sig_list=load_siglist("test_files/significantList_for_proteinstructures.csv")
-        println(sig_list[2:1])
-        println(size(sig_list,1))
+    sig_list=load_siglist("test_files/significantList_for_proteinstructures.csv")
+    println(sig_list[2:1])
+    println(size(sig_list,1))
 
             @testset "clean_column1_siglist!" begin
             clean_column1_siglist!(sig_list)
@@ -45,170 +48,145 @@ end
             println(size(sig_list,1))
             end
 
-        sub=io_sig_list_vcf_filter(sig_list,vcf_filename)
-        println(sub[1,5])
+            @testset "io_sig_list_vcf_filter" begin
+            sub=io_sig_list_vcf_filter(sig_list,vcf_filename)
+            @test (typeof(sub[1])) == GeneticVariation.VCF.Record
+            @test (length(sub)) ==  13
+            end
 
-        @testset "pass_chrrange_siglist_filter" begin
-        sub = pass_chrrange_siglist_filter(vcf_filename,sig_list,"chr4:0-400000000")
-        println(sub[1,5])
+            @testset "pass_chrrange_siglist_filter" begin
+            sub = pass_chrrange_siglist_filter(vcf_filename,sig_list,"chr4:0-400000000")
+            @test (typeof(sub[1])) == GeneticVariation.VCF.Record
+            @test (length(sub)) ==  12
+            end
 
-        @testset pass_siglist_filter begin
-        sub = pass_siglist_filter(vcf_filename,sig_list)
-        end
+            @testset "pass_siglist_filter" begin
+            sub = pass_siglist_filter(vcf_filename, sig_list)
+            @test (typeof(sub[1])) == GeneticVariation.VCF.Record
+            @test (length(sub)) ==  12
+            end
 
-        @testset "chrrange_siglist_filter" begin
-        sub = chrrange_siglist_filter(vcf_filename,sig_list,"chr4:0-400000000")
-        end
-
-
-        end
+            @testset "chrrange_siglist_filter" begin
+            sub = chrrange_siglist_filter(vcf_filename,sig_list,"chr4:0-400000000")
+            @test (typeof(sub[1])) == GeneticVariation.VCF.Record
+            @test (length(sub)) ==  13
+            end
 
     end
-end
+
+    end
+=#
 
 @testset "io_pass_filter" begin
+    reader = VCF.Reader(open(vcf_filename, "r"))
     sub = io_pass_filter(reader)
-    println(sub[2,1])
+    @test (typeof(sub[1])) == GeneticVariation.VCF.Record
+    @test (length(sub)) ==  1164
 end
 
 @testset "pass_chrrange_filter" begin
+    reader = VCF.Reader(open(vcf_filename, "r"))
     sub = pass_chrrange_filter(reader,"chr4:0-400000000")
+    @test (typeof(sub[1])) == GeneticVariation.VCF.Record
+    @test (length(sub)) ==  856
 end
-
-
-
-
-
-
-#=
-#functions for variant filters
-
 
 #functions for converting vcf record array to numerical array
+@testset "combined_all_genotype_array_functions" begin
 
-"""
-    create_chr_dict()
-creates dict for use in combined_all_genotype_array_functions() for removing 'chr' from chromosome labels to allow sorting variant records by chromosome position.
-"""
-@testset create_chr_dict() begin
+reader = VCF.Reader(open(vcf_filename, "r"))
+sub = io_pass_filter(reader)
 
-end
+gt_num_array,gt_chromosome_labels=combined_all_genotype_array_functions(sub)
+println(typeof(gt_num_array))
+println(length(gt_num_array))
+println(typeof(gt_chromosome_labels))
+println(length(gt_chromosome_labels))
 
-"""
-    combined_all_genotype_array_functions(sub)
-convert sub from variant filters to gt_num_array and gt_chromosome_labels for plot functions.
-"""
-@testset combined_all_genotype_array_functions(sub) begin
+    @testset "generate_genotype_array" begin
+    reader = VCF.Reader(open(vcf_filename, "r"))
+    sub = io_pass_filter(reader)
+    genotype_array=generate_genotype_array(sub,"GT")
+    println(typeof(genotype_array))
+    println(length(genotype_array))
+    println(genotype_array[3:5])
 
-end
+    @testset "define_geno_dict" begin
+    geno_dict = define_geno_dict()
+    println(typeof(geno_dict))
+    println(length(geno_dict))
 
-"""
-    combined_all_read_depth_array_functions(sub)
-convert sub from variant filters to dp_num_array and dp_chromosome_labels for plot functions.
-"""
-@testset combined_all_read_depth_array_functions(sub) begin
-
-end
-
-"""
-    generate_genotype_array(record_sub::Array{Any,1},genotype_field::String)
-Returns numerical array of genotype values (either genotype or read_depth values) which are translated by another function into num_array
-Where genotype_field is either GT or DP to visualize genotype or read_depth
-"""
-@testset generate_genotype_array(record_sub::Array{Any,1},y) begin
-
-end
-
-"""
-    define_geno_dict()
-returns dictionary of values for use in replace_genotype_with_vals()
-"""
-@testset define_geno_dict() begin
+    @testset "translate_genotype_to_num_array" begin
+    gt_num_array,gt_chromosome_labels=translate_genotype_to_num_array(genotype_array,geno_dict)
+    println(typeof(gt_num_array))
+    println(length(gt_num_array))
+    println(typeof(gt_chromosome_labels))
+    println(length(gt_chromosome_labels))
+    end
+    end
+    end
 
 end
 
-"""
-    translate_genotype_to_num_array(genotype_array,geno_dict)
-returns a tuple of num_array for plotting, and chromosome labels for plotting as label bar.
-Translates array of genotype values to numerical array of categorical values.
-Genotype values are converted to categorical values. No_call=0, 0/0=400, heterozygous_variant=600, homozygous_variant=800
-"""
-@testset translate_genotype_to_num_array(genotype_array,geno_dict) begin
+@testset "combined_all_read_depth_array_functions" begin #inside functions same used in combined_all_genotype_array_functions
 
+reader = VCF.Reader(open(vcf_filename, "r"))
+sub = io_pass_filter(reader)
+dp_num_array,dp_chromosome_labels=combined_all_read_depth_array_functions(sub)
+println(typeof(dp_num_array))
+println(length(dp_num_array))
+println(typeof(dp_chromosome_labels))
+println(length(dp_chromosome_labels))
+
+@testset "get_sample_names" begin
+reader = VCF.Reader(open(vcf_filename, "r"))
+sample_names=get_sample_names(reader)
+println("get_sample_names")
+println(typeof(sample_names))
+println(length(sample_names))
+
+@testset "avg_dp_samples" begin
+avg_sample_list=avg_dp_samples(dp_num_array)
+println("avg_sample_list is $avg_sample_list")
+
+@testset "list_sample_names_low_dp" begin
+list=list_sample_names_low_dp(avg_sample_list,sample_names)
+println(list)
 end
-
-"""
-    translate_readdepth_strings_to_num_array(read_depth_array::Array{Any,2})
-Returns array of read_depth as int for plotting and average calculation.
-By default, read depth values over 100 are replaced with 100 to improve heatmap visualization (see read_depth_threshhold() ).
-Where read_depth_array is output of generate_genotype_array() for DP option
-returns a tuple of num_array type Int for average calculation and plotting, and chromosome labels for plotting as label bar
-"""
-@testset translate_readdepth_strings_to_num_array(read_depth_array::Array{Any,2}) begin
-
-end
-
-
-#functions for sample filters
-
-"""
-    get_sample_names(reader)
-returns sample ids of vcf file as a vector of symbols for naming columns of num_array dataframe object for column filter functions
-"""
-@testset get_sample_names(reader) begin
-
-end
-
-"""
-    find_group_label_indices(pheno)
-find indices and determines names for group 1 and group 2 labels on plots. finds index of center of each sample group to place tick mark and label.
-"""
-@testset find_group_label_indices(pheno,trait_to_group_by,row_to_sort_by) begin
-
-end
-
-"""
-    sortcols_by_phenotype_matrix(pheno_matrix_filename::String,trait_to_group_by::String,num_array::Array{Int64,2}, sample_names::Array{Symbol,2})
-group samples by a common trait using a user generated key matrix ("phenotype matrix")
-"""
-@testset sortcols_by_phenotype_matrix(pheno_matrix_filename::String,trait_to_group_by::String, num_array::Array{Int64,2}, sample_names::Array{Symbol,2}) begin
-
-end
-
-"""
-    select_columns(filename_sample_list::AbstractString, num_array::Array{Int64,2}, sample_names::Array{Symbol,2})
-returns num_array with columns matching user generated list of sample ids to select for analysis. num_array now has sample ids in first row.
-"""
-@testset select_columns(filename_sample_list::AbstractString, num_array::Array{Int64,2}, sample_names::Array{Symbol,2}) begin
 
 end
 
 
-#functions for mathematic analysis
-"""
-    avg_dp_samples(dp_num_array::Array{Int64,2})
-create sample_avg_list vector that lists averages of read depth for each sample for input into avg_sample_dp_line_chart(sample_avg_list)
-dp_num_array must contain dp values as Int64 and be without chromosome position columns
-"""
-@testset avg_dp_samples(dp_num_array::Array{Int64,2}) begin
 
+@testset "avg_dp_variant" begin
+avg_variant_list=avg_dp_variant(dp_num_array)
+println("avg_dp_variant is $avg_variant_list")
 end
 
+@testset "sortcols_by_phenotype_matrix" begin
+vcf,group_label_pack=sortcols_by_phenotype_matrix("test_files/sample_phenotype_matrix.csv","control,case", dp_num_array, sample_names)
+println(typeof(vcf))
+println(size(vcf,1))
+println(typeof(group_label_pack))
+println(length(group_label_pack))
 
-"""
-    avg_dp_variant(dp_num_array::Array{Int64,2})
-create variant_avg_list vector that lists averages of read depth for each variant for input into avg_variant_dp_line_chart(variant_avg_list)
-"""
-@testset avg_dp_variant(dp_num_array::Array{Int64,2}) begin
+    @testset "find_group_label_indices" begin
+    pheno = readdlm("test_files/sample_phenotype_matrix.csv", ',')
+    row_to_sort_by = find(x -> x == "control,case", pheno)
+    row_to_sort_by = row_to_sort_by[1]
+    group_label_pack=find_group_label_indices(pheno,"control,case",row_to_sort_by)
+    println(typeof(group_label_pack))
+    println(length(group_label_pack))
+    end
+
+    @testset "select_columns" begin
+    dp_num_array=select_columns("test_files/select_samples_list.txt", dp_num_array, sample_names)
+    println(typeof(dp_num_array))
+    println(length(dp_num_array))
+    end
 
 end
-
-"""
-    list_sample_names_low_dp(sample_avg_list::Array{Float64,2},sample_names)
-returns list of sample ids that have an average read depth of under 15 across all variant positions
-"""
-@testset list_sample_names_low_dp(sample_avg_list::Array{Float64,1},sample_names) begin
-
+end
 end
 
 """

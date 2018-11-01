@@ -4,7 +4,7 @@ using DataFrames #use CSV.jl ? depwarnings
 using PlotlyJS
 using Rsvg
 using Blink
-using CSV
+#using CSV
 using GeneticVariation
 using ArgParse
 using VCFTools
