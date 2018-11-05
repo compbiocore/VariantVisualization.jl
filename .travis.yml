@@ -15,6 +15,7 @@ git:
 
 before_script:
   - export PATH=$HOME/.local/bin:$PATH
+  - julia -e 'Pkg.pin("Blink", v"0.6.2"); Pkg.pin("PlotlyJS", v"0.10.2"); Pkg.build("Blink")'
   
 script:
   - if [[ -a .git/shallow ]]; then git fetch --unshallow; fi		   
