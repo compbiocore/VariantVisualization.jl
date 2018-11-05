@@ -15,11 +15,10 @@ git:
 
 before_script:
   - export PATH=$HOME/.local/bin:$PATH
-  - julia -e 'Pkg.pin("Blink", v"0.6.2"); Pkg.pin("PlotlyJS", v"0.10.2"); Pkg.build("Blink")'
   
 script:
   - if [[ -a .git/shallow ]]; then git fetch --unshallow; fi		   
-  - julia --check-bounds=yes -e 'Pkg.clone(pwd()); Pkg.build("ViVa"); Pkg.test("ViVa"; coverage=true)'
+  - julia --check-bounds=yes -e 'Pkg.clone(pwd()); Pkg.pin("Blink", v"0.6.2"); Pkg.pin("PlotlyJS", v"0.10.2"); Pkg.build("Blink"); Pkg.build("ViVa"); Pkg.test("ViVa"; coverage=true)'
    
 after_success:
   - julia -e 'Pkg.add("Coverage"); using Coverage; Coveralls.submit(Coveralls.process_folder())'
