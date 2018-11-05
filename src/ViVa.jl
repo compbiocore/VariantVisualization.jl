@@ -6,7 +6,7 @@ using Rsvg
 using Blink
 using GeneticVariation
 using ArgParse
-using VCFTools
+#using VCFTools
 #using Base.Filesystem
 
 
