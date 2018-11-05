@@ -42,8 +42,8 @@ function genotype_heatmap2(input,title,chrom_label_info,sample_names)
        end
 
 """
-           genotype_heatmap_with_groups(input::Array{Int64,2},title::String,chrom_label_info::Tuple{Array{String,1},Array{Int64,1},String},group_label_pack::Array{Any,1},sample_names)
-       generate heatmap of genotype data.
+   genotype_heatmap_with_groups(input::Array{Int64,2},title::String,chrom_label_info::Tuple{Array{String,1},Array{Int64,1},String},group_label_pack::Array{Any,1},sample_names)
+generate heatmap of genotype data.
 """
 function genotype_heatmap_with_groups(input::Array{Int64,2},title::String,chrom_label_info::Tuple{Array{String,1},Array{Int64,1},String},group_label_pack::Array{Any,1},sample_names)
 
@@ -127,7 +127,7 @@ function dp_heatmap2(input, title, chrom_label_info, sample_names)
 end
 
 """
-           dp_heatmap2_with_groups(input::Array{Int64,2},title::String,chrom_label_info::Tuple{Array{String,1},Array{Int64,1},String},group_label_pack::Array{Any,1})
+    dp_heatmap2_with_groups(input::Array{Int64,2},title::String,chrom_label_info::Tuple{Array{String,1},Array{Int64,1},String},group_label_pack::Array{Any,1})
 generate heatmap of read depth data with grouped samples.
 """
 function dp_heatmap2_with_groups(input::Array{Int64,2},title::String,chrom_label_info::Tuple{Array{String,1},Array{Int64,1},String},group_label_pack::Array{Any,1})
@@ -174,7 +174,7 @@ function dp_heatmap2_with_groups(input::Array{Int64,2},title::String,chrom_label
 end
 
 """
-           avg_sample_dp_scatter(sample_avg_list::Array{Float64,1},sample_names)
+    avg_sample_dp_scatter(sample_avg_list::Array{Float64,1},sample_names)
 generate line chart of average read depths of each sample.
 """
 function avg_sample_dp_scatter(sample_avg_list::Array{Float64,1},sample_names)

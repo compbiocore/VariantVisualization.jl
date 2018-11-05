@@ -1,8 +1,3 @@
-#=
-read_depth heatmap up to 15 white, up to 30 light blue,
-don't output files in same folder
-=#
-
 println("Welcome to ViVa.")
 println()
 println("Loading packages:")
@@ -59,7 +54,7 @@ function test_parse_main(ARGS::Vector{String})
     )
 
     @add_arg_table s begin
-        "--vcf_file", "-f"             # vcf filename
+        "--vcf_file", "-f"
         help = "vcf filename in format: file.vcf"
         arg_type = String
         required = true
@@ -73,7 +68,7 @@ function test_parse_main(ARGS::Vector{String})
         arg_type = String
         default = "output"
 
-        "--save_format", "-s"               # format to save graphics in
+        "--save_format", "-s"
         help = "file format you wish to save graphics as (eg. pdf, html, png). Defaults to html"
         arg_type = String
         default = "html"
@@ -129,9 +124,7 @@ end
 
 parsed_args = test_parse_main(ARGS)
 
-#begin main program
-
-#filter vcf and load matrix
+#filter vcf and load matrix of filtered vcf records
 
 vcf_filename = (parsed_args["vcf_file"])
 println("Reading $vcf_filename ...")
@@ -175,7 +168,7 @@ if parsed_args["show_stats"] == true
 end
 
 tic()
-
+#pass_filter
 if parsed_args["pass_filter"] == true && parsed_args["chromosome_range"] == nothing && parsed_args["positions_list"] == nothing
     sub = ViVa.io_pass_filter(reader)
     number_rows = size(sub,1)
@@ -183,6 +176,7 @@ if parsed_args["pass_filter"] == true && parsed_args["chromosome_range"] == noth
     heatmap_input = "pass_filtered"
 end
 
+#chr_range
 if parsed_args["chromosome_range"] != nothing && parsed_args["pass_filter"] == false && parsed_args["positions_list"] == nothing
     sub = ViVa.io_chromosome_range_vcf_filter(parsed_args["chromosome_range"],reader)
     number_rows = size(sub,1)
@@ -190,6 +184,7 @@ if parsed_args["chromosome_range"] != nothing && parsed_args["pass_filter"] == f
     heatmap_input = "range_filtered"
 end
 
+#list
 if parsed_args["positions_list"] != nothing && parsed_args["chromosome_range"] == nothing && parsed_args["pass_filter"] == false
     sig_list =  load_siglist(parsed_args["positions_list"])
     sub = ViVa.io_sig_list_vcf_filter(sig_list,vcf_filename)
@@ -198,6 +193,7 @@ if parsed_args["positions_list"] != nothing && parsed_args["chromosome_range"] =
     heatmap_input = "positions_filtered"
 end
 
+#pass_filter and chr_range and list
 if parsed_args["pass_filter"] == true && parsed_args["chromosome_range"] != nothing && parsed_args["positions_list"] != nothing
     sig_list =  load_siglist(parsed_args["positions_list"])
     sub = ViVa.pass_chrrange_siglist_filter(vcf_filename, sig_list, parsed_args["chromosome_range"])
@@ -205,12 +201,14 @@ if parsed_args["pass_filter"] == true && parsed_args["chromosome_range"] != noth
     println("selected $number_rows variants with Filter status: PASS, that match list of chromosome positions of interest, and are within chromosome range: $(parsed_args["chromosome_range"])")
 end
 
+#pass_filter and chr_range
 if parsed_args["pass_filter"] == true && parsed_args["chromosome_range"] != nothing && parsed_args["positions_list"] == nothing
     sub = ViVa.pass_chrrange_filter(reader, parsed_args["chromosome_range"])
     number_rows = size(sub,1)
     println("selected $number_rows variants with Filter status: PASS and are within chromosome range: $(parsed_args["chromosome_range"])")
 end
 
+#pass_filter and list
 if parsed_args["pass_filter"] == true && parsed_args["chromosome_range"] == nothing && parsed_args["positions_list"] != nothing
     sig_list =  load_siglist(parsed_args["positions_list"])
     sub = ViVa.pass_siglist_filter(vcf_filename, sig_list)
@@ -218,6 +216,15 @@ if parsed_args["pass_filter"] == true && parsed_args["chromosome_range"] == noth
     println("selected $number_rows variants with Filter status: PASS and that match list of chromosome positions of interest")
 end
 
+#chr_range and list
+if parsed_args["pass_filter"] == false && parsed_args["chromosome_range"] != nothing && parsed_args["positions_list"] != nothing
+    sig_list =  load_siglist(parsed_args["positions_list"])
+    sub = ViVa.chrrange_siglist_filter(vcf_filename, sig_list, parsed_args["chromosome_range"])
+    number_rows = size(sub,1)
+    println("selected $number_rows variants that are within chromosome range: $(parsed_args["chromosome_range"]) and that match list of chromosome positions of interest")
+end
+
+#no filters
 if parsed_args["pass_filter"] == false && parsed_args["chromosome_range"] == nothing && parsed_args["positions_list"] == nothing
 
     println("no filters applied. Large vcf files will take a long time to process and heatmap visualizations will lose resolution at this scale unless viewed in interactive html for zooming.")
@@ -232,13 +239,22 @@ if parsed_args["pass_filter"] == false && parsed_args["chromosome_range"] == not
 
 end
 
+println()
+println("Finished Filtering. Total time to filter:")
+toc()
+println("_______________________________________________")
+
+#convert to numeric array for plotting and generate/save heatmaps and scatter plots
+
 if parsed_args["heatmap"] == "genotype"
     gt_num_array,gt_chromosome_labels = combined_all_genotype_array_functions(sub)
 
     if parsed_args["heatmap_title"] != nothing
         title = parsed_args["heatmap_title"]
     else
-        title = "Genotype_$(parsed_args["vcf_file"])"
+        bn = Base.Filesystem.basename(parsed_args["vcf_file"])
+        title = "Genotype_$bn"
+        println(title)
     end
 
     chr_pos_tuple_list = generate_chromosome_positions_for_hover_labels(gt_chromosome_labels)
@@ -249,7 +265,9 @@ if parsed_args["heatmap"] == "genotype"
 
         if parsed_args["select_samples"] != nothing
             println("selecting samples listed in $(parsed_args["select_samples"])")
-            gt_num_array = select_columns(parsed_args["select_samples"], gt_num_array, sample_names)
+            gt_num_array = select_columns(parsed_args["select_samples"],
+                                          gt_num_array,
+                                          sample_names)
         end
 
         group_trait_matrix_filename=((parsed_args["group_samples"])[1])
@@ -267,6 +285,8 @@ if parsed_args["heatmap"] == "genotype"
 
         graphic = ViVa.genotype_heatmap2(gt_num_array,title,chrom_label_info,sample_names)
     end
+
+    println("saving now")
 
     PlotlyJS.savefig(graphic, joinpath("$(parsed_args["output_directory"])" ,"$title.$(parsed_args["save_format"])"), js=:remote)
 
@@ -317,20 +337,10 @@ if parsed_args["heatmap"] == "read_depth"
 
 end
 
-#println("_______________________________________________")
-println()
-println("Finished Filtering. Total time to filter:")
-toc()
-println("_______________________________________________")
-#println()
-
 if parsed_args["avg_dp"] == "sample"
 
     if isdefined(:dp_num_array) == false
-        read_depth_array = ViVa.generate_genotype_array(sub,"DP")
-        clean_column1!(read_depth_array)
-        read_depth_array=ViVa.sort_genotype_array(read_depth_array)
-        dp_num_array,dp_chromosome_labels = translate_readdepth_strings_to_num_array(read_depth_array)
+        dp_num_array,dp_chromosome_labels=combined_all_read_depth_array_functions(sub)
     end
 
     chr_pos_tuple_list = generate_chromosome_positions_for_hover_labels(dp_chromosome_labels)
@@ -343,11 +353,9 @@ if parsed_args["avg_dp"] == "sample"
     PlotlyJS.savefig(graphic, joinpath("$(parsed_args["output_directory"])" ,"Average Sample Read Depth.$(parsed_args["save_format"])"), js=:remote)
 
 elseif parsed_args["avg_dp"] == "variant"
+
     if isdefined(:dp_num_array) == false
-        read_depth_array = ViVa.generate_genotype_array(sub,"DP")
-        clean_column1!(read_depth_array)
-        read_depth_array=ViVa.sort_genotype_array(read_depth_array)
-        dp_num_array,dp_chromosome_labels = translate_readdepth_strings_to_num_array(read_depth_array)
+        dp_num_array,dp_chromosome_labels=combined_all_read_depth_array_functions(sub)
     end
 
     chr_pos_tuple_list = generate_chromosome_positions_for_hover_labels(dp_chromosome_labels)
