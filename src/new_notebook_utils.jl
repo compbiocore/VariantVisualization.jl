@@ -1,5 +1,5 @@
 """
-jupyter_main(vcf_filename,field_to_visualize,variant_filter,sample_filter,plot_types,save_format,plot_title,plot_labels)
+jupyter_main(vcf_filename,field_to_visualize,variant_filter,sample_filter,plot_types,save_format,plot_title,plot_labels,output_directory::String)
 
 filters, plots visualization, and saves as figure.
 utilizes all global variables set in first cell of jupyter notebook
@@ -255,8 +255,8 @@ elseif field_to_visualize == "read_depth"
        list = ViVa.list_sample_names_low_dp(avg_list, sample_names)
        writedlm(joinpath("$output_directory","Samples_with_low_dp.txt"),list, ",")
        #println("The following samples have read depth of under 15: $list")
-       avg_sample_dp_line_chart(avg_list)
-       graphic = avg_sample_dp_line_chart(avg_list)
+       avg_sample_dp_scatter(avg_list)
+       graphic = avg_sample_dp_scatter(avg_list)
        PlotlyJS.savefig(graphic, joinpath("$output_directory" ,"Average Sample Read Depth.$save_format"))
        return graphic
 

@@ -1,13 +1,13 @@
 module ViVa
 
-using DataFrames #use CSV.jl ? depwarnings
+using DataFrames
 using PlotlyJS
 using Rsvg
 using Blink
-using CSV
 using GeneticVariation
 using ArgParse
 using VCFTools
+#using Base.Filesystem
 
 
 
@@ -42,9 +42,9 @@ export
     avg_variant_dp_line_chart,
     read_depth_threshhold,
     list_variant_positions_low_dp,
-    list_sample_positions_low_dp,
+    list_sample_names_low_dp,
     avg_dp_variant,
-    avg_dp_patients,
+    avg_dp_samples,
     jupyter_main,
     save_numerical_array,
     io_pass_filter,
@@ -69,7 +69,9 @@ export
     combined_all_read_depth_array_functions,
     generate_chromosome_positions_for_hover_labels,
     clean_column1_chr,
-    clean_column1_siglist!
+    clean_column1_siglist!,
+    process_plot_inputs,
+    process_plot_inputs_for_grouped_data
 
 #include("vcf_utils.jl")
 include("vcf_utils_complete.jl")
