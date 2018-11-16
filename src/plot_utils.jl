@@ -52,7 +52,6 @@ function genotype_heatmap2(input,title,chrom_label_info,sample_names,chr_pos_tup
 
                elseif y_axis_label_option == "hover_positions"
 
-
                    layout = Layout(
                                    title = "$title",
                                    xaxis=attr(title="Sample ID", showgrid=false, zeroline=false, tickvals=sample_name_indices,
@@ -259,7 +258,7 @@ function dp_heatmap2(input, title, chrom_label_info, sample_names,chr_pos_tuple_
     trace=heatmap(
         z = input, x=1:size(input, 2),y=1:size(input, 1),
 
-        zauto=false,zmax=3,zmin=0,
+        zauto=false,zmax=100,zmin=0,
 
         transpose=true,
         colorscale = [[0, "rgb(153,231,255)"],
@@ -368,7 +367,7 @@ function dp_heatmap2_with_groups(input::Array{Int64,2},title::String,chrom_label
     trace=heatmap(
         z = input, x=1:size(input, 2),y=1:size(input, 1),
 
-        zauto=false,zmax=3,zmin=0,
+        zauto=false,zmax=100,zmin=0,
 
         transpose=true,
         colorscale = [[0, "rgb(153,231,255)"],
