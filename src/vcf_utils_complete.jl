@@ -1,6 +1,5 @@
 #functions for loading vcf, vcf stats, clean vcf, load siglist
 
-
 """
     clean_column1!(matrix_with_chr_column)
 Replace String "X","Y","M" from chromosome column with 23,24,25 respectively so variants can be sorted by descending chr position for plotting
@@ -36,9 +35,23 @@ Replace String "23","24","25" with "X","Y","M" in chromosome label vector used f
 function returnXY_column1!(chr_label_vector)
 
     for i = 1:(size(chr_label_vector, 1))
-        chr_label_vector[i, 1] = chr_label_vector[i, 1] == "23" ? "X" : chr_label_vector[i, 1]
-        chr_label_vector[i, 1] = chr_label_vector[i, 1] == "24" ? "Y" : chr_label_vector[i, 1]
-        chr_label_vector[i, 1] = chr_label_vector[i, 1] == "25" ? "M" : chr_label_vector[i, 1]
+        chr_label_vector[i, 1] = chr_label_vector[i, 1] == 23 ? "X" : chr_label_vector[i, 1]
+        chr_label_vector[i, 1] = chr_label_vector[i, 1] == 24 ? "Y" : chr_label_vector[i, 1]
+        chr_label_vector[i, 1] = chr_label_vector[i, 1] == 25 ? "M" : chr_label_vector[i, 1]
+    end
+
+end
+
+"""
+    returnXY_column1_siglist!(siglist_sorted)
+Replace String "23","24","25" with "X","Y","M" in siglist for filtering
+"""
+function returnXY_column1_siglist!(siglist_sorted)
+
+    for i = 1:(size(siglist_sorted, 1))
+        siglist_sorted[i, 1] = siglist_sorted[i, 1] == 23 ? "X" : siglist_sorted[i, 1]
+        siglist_sorted[i, 1] = siglist_sorted[i, 1] == 24 ? "Y" : siglist_sorted[i, 1]
+        siglist_sorted[i, 1] = siglist_sorted[i, 1] == 25 ? "M" : siglist_sorted[i, 1]
     end
 
 end
@@ -64,9 +77,10 @@ where x = filename of significant SNP variant location list in comma delimited f
 function load_siglist(filename::AbstractString)
 
 siglist_unsorted = readdlm(filename, ',', skipstart=1)
+
 ViVa.clean_column1_siglist!(siglist_unsorted)
 siglist = sortrows(siglist_unsorted, by=x->(x[1],x[2]))
-returnXY_column1!(siglist)
+returnXY_column1_siglist!(siglist)
 
 if typeof(siglist) == Array{Float64,2}
     siglist = trunc.(Int,siglist)
@@ -74,16 +88,76 @@ if typeof(siglist) == Array{Float64,2}
 end
 
 return siglist
+
 end
 
+"""
+    build_set_from_list(sig_list::Array{Any,2})
+build set of tuples of chrom and pos of each record in vcf for use in sig_list_filters.
+"""
+function build_set_from_list(sig_list::Array{Any,2})
+    position_set = Set{Tuple{Any,Int}}()  # For now, assumes all chr names are Int...
 
+    for row in 1:size(sig_list,1)
+        chr = sig_list[row,1]
+        pos = sig_list[row,2]
+        push!(position_set, (string(chr), Int(pos)))
+    end
+
+    return position_set
+end
 
 #functions for variant filters
 """
-io_chromosome_range_vcf_filter(chr_range::String, reader::GeneticVariation.VCF.Reader)
+io_chromosome_range_vcf_filter(chr_range::String, vcf_filename::AbstractString)
 create subarray of vcf variant records matching user specified chromosome range in format: (e.g. chr1:0-30000000)
 """
-function io_chromosome_range_vcf_filter(chr_range::String,reader::GeneticVariation.VCF.Reader)
+function io_chromosome_range_vcf_filter(chr_range::String,vcf_filename::AbstractString)
+    a=split(chr_range,":")
+    chrwhole=a[1]
+    chrnumber=split(chrwhole,"r")
+    string_chr=chrnumber[2]
+    chr=String(string_chr)
+    range=a[2]
+    splitrange=split(range, "-")
+    lower_limit=splitrange[1]
+    chr_range_low=parse(lower_limit)
+    upper_limit=splitrange[2]
+    chr_range_high=parse(upper_limit)
+
+    reader = VCF.Reader(open(vcf_filename, "r"))
+    record1=VCF.read(reader)
+
+    open(VCF.Reader, vcf_filename) do reader
+
+    vcf_record = VCF.Record()
+    vcf_subarray = Array{Any}(0)
+
+    if contains(VCF.chrom(record1),"chr")
+
+        while !eof(reader)
+            read!(reader, vcf_record)
+
+               if (VCF.chrom(vcf_record) == chrwhole) && (chr_range_high > VCF.pos(vcf_record) > chr_range_low)
+                      push!(vcf_subarray,copy(vcf_record))
+               end
+        end
+
+    else
+        while !eof(reader)
+            read!(reader, vcf_record)
+
+               if (VCF.chrom(vcf_record) == chr) && (chr_range_high > VCF.pos(vcf_record) > chr_range_low)
+                      push!(vcf_subarray,copy(vcf_record))
+               end
+        end
+    end
+    return vcf_subarray
+end
+end
+
+#=
+function io_chromosome_range_vcf_filter(chr_range::String,vcf_filename::AbstractString)
 
        a=split(chr_range,":")
        chrwhole=a[1]
@@ -99,6 +173,7 @@ function io_chromosome_range_vcf_filter(chr_range::String,reader::GeneticVariati
 
        vcf_subarray = Array{Any}(0)
 
+       reader = VCF.Reader(open(vcf_filename, "r"))
        record1=VCF.read(reader)
 
        if contains(VCF.chrom(record1),"chr")
@@ -121,66 +196,56 @@ function io_chromosome_range_vcf_filter(chr_range::String,reader::GeneticVariati
 
        return vcf_subarray
 end
+=#
 
 """
     io_sig_list_vcf_filter(sig_list,vcf_filename)
 returns subarray of variant records matching a list of variant positions returned from load_siglist()
 """
-function io_sig_list_vcf_filter(sig_list,vcf_filename)
+function io_sig_list_vcf_filter(sig_list, vcf_filename)
+        open(VCF.Reader, vcf_filename) do reader
 
-    reader = VCF.Reader(open(vcf_filename, "r"))
+        vcf_subarray = Array{Any}(0)
+
+        posset = build_set_from_list(sig_list)
+        vcf_record = VCF.Record()
+
+        while !eof(reader)
+            read!(reader, vcf_record)
+            chr = VCF.chrom(vcf_record)
+            pos = VCF.pos(vcf_record)
+
+            if (chr, pos) in posset
+                push!(vcf_subarray, copy(vcf_record))
+            end
+        end
+
+        return vcf_subarray
+    end
+end
+
+"""
+    io_pass_filter(vcf_filename)
+returns subarray of vcf records including only records with FILTER status = PASS
+"""
+function io_pass_filter(vcf_filename)
+
+    open(VCF.Reader, vcf_filename) do reader
 
     vcf_subarray = Array{Any}(0)
 
-    for record in reader
+    vcf_record = VCF.Record()
 
-        if size(vcf_subarray,1) == size(sig_list,1)
-                       break
-        end
+    while !eof(reader)
+        read!(reader, vcf_record)
 
-        for row= 1:size(sig_list,1)
-            dimension = size(sig_list,1)
-
-            chr=(sig_list[row,1])
-            pos=(sig_list[row,2])
-
-            if typeof(VCF.chrom(record)) == String
-                   chr = string(chr)
-                      if (VCF.chrom(record) == chr) && (VCF.pos(record) == pos)
-                          push!(vcf_subarray,record)
-
-                         break
-                      end
-
-            else
-
-                      if (VCF.chrom(record) == chr) && (VCF.pos(record) == pos)
-                          push!(vcf_subarray,record)
-                        break
-                      end
-              end
-        end
-end
-
-    return vcf_subarray
-end
-
-"""
-    io_pass_filter(reader::GeneticVariation.VCF.Reader)
-returns subarray of vcf records including only records with FILTER status = PASS
-"""
-function io_pass_filter(reader::GeneticVariation.VCF.Reader)
-
-vcf_subarray = Array{Any}(0)
-
-for record in reader
-
-       if VCF.hasfilter(record) && VCF.filter(record) == String["PASS"]
-              push!(vcf_subarray,record)
+       if VCF.hasfilter(vcf_record) && VCF.filter(vcf_record) == String["PASS"]
+              push!(vcf_subarray,copy(vcf_record))
        end
 end
 
 return vcf_subarray
+end
 end
 
 """
@@ -188,6 +253,8 @@ end
 returns subarray of vcf records with io_pass_filter, io_sig_list_vcf_filter, and io_chromosome_range_vcf_filter applied.
 """
 function pass_chrrange_siglist_filter(vcf_filename,sig_list,chr_range::AbstractString)
+
+    println(sig_list)
 
     a=split(chr_range,":")
     chrwhole=a[1]
@@ -201,11 +268,18 @@ function pass_chrrange_siglist_filter(vcf_filename,sig_list,chr_range::AbstractS
     upper_limit=splitrange[2]
     chr_range_high=parse(upper_limit)
 
+    posset = build_set_from_list(sig_list)
+
     vcf_subarray = Array{Any}(0)
+    vcf_record = VCF.Record()
 
     reader = VCF.Reader(open(vcf_filename, "r"))
     record1=VCF.read(reader)
-    for record in reader
+
+    open(VCF.Reader, vcf_filename) do reader
+
+    while !eof(reader)
+        read!(reader, vcf_record)
 
         if size(vcf_subarray,1) == size(sig_list,1)
                        break
@@ -217,20 +291,40 @@ function pass_chrrange_siglist_filter(vcf_filename,sig_list,chr_range::AbstractS
            chr_sig=(sig_list[row,1])
            pos_sig=(sig_list[row,2])
 
-                  if typeof(VCF.chrom(record)) == String
+                  if typeof(VCF.chrom(vcf_record)) == String
 
                       chr_sig = string(chr_sig)
 
                          if contains(VCF.chrom(record1),"chr")
 
-                             if (VCF.chrom(record) == chr_sig) && (VCF.pos(record) == pos_sig) && (VCF.hasfilter(record)) && (VCF.filter(record) == String["PASS"]) && ((VCF.chrom(record) == chrwhole)) && ((chr_range_high > VCF.pos(record) > chr_range_low))
-                                 push!(vcf_subarray,record)
+                             if (VCF.chrom(vcf_record) == chr_sig) && (VCF.pos(vcf_record) == pos_sig) && (VCF.hasfilter(vcf_record)) && (VCF.filter(vcf_record) == String["PASS"]) && ((VCF.chrom(vcf_record) == chrwhole)) && ((chr_range_high > VCF.pos(vcf_record) > chr_range_low))
+                                 push!(vcf_subarray,copy(vcf_record))
                                  break
                              end
 
                         else
-                            if (VCF.chrom(record) == chr_sig) && (VCF.pos(record) == pos_sig) && (VCF.hasfilter(record)) && (VCF.filter(record) == String["PASS"]) && ((VCF.chrom(record) == chr)) && ((chr_range_high > VCF.pos(record) > chr_range_low))
-                                push!(vcf_subarray,record)
+#=
+                            println("test555")
+
+                            println(VCF.chrom(vcf_record))
+                            println(chr_sig)
+
+                            println(VCF.pos(vcf_record))
+                            println(pos_sig)
+
+                            println(VCF.hasfilter(vcf_record))
+                            println(VCF.filter(vcf_record))
+
+                            println(VCF.chrom(vcf_record))
+                            println(chr)
+                            println(VCF.pos(vcf_record))
+                            println((chr_range_high))
+                            println((chr_range_low))
+
+                            =#
+
+                            if (VCF.chrom(vcf_record) == chr_sig) && (VCF.pos(vcf_record) == pos_sig) && (VCF.hasfilter(vcf_record)) && (VCF.filter(vcf_record) == String["PASS"]) && ((VCF.chrom(vcf_record) == chr)) && ((chr_range_high > VCF.pos(vcf_record) > chr_range_low))
+                                push!(vcf_subarray,copy(vcf_record))
                                 break
                             end
                         end
@@ -238,19 +332,21 @@ function pass_chrrange_siglist_filter(vcf_filename,sig_list,chr_range::AbstractS
                  else
 
                      if contains(VCF.chrom(record1),"chr")
-                         if (VCF.chrom(record) == chr_sig) && (VCF.pos(record) == pos_sig) && (VCF.hasfilter(record)) && (VCF.filter(record) == String["PASS"]) && ((VCF.chrom(record) == chrwhole)) && ((chr_range_high > VCF.pos(record) > chr_range_low))
-                             push!(vcf_subarray,record)
+
+                         if (VCF.chrom(vcf_record) == chr_sig) && (VCF.pos(vcf_record) == pos_sig) && (VCF.hasfilter(vcf_record)) && (VCF.filter(vcf_record) == String["PASS"]) && ((VCF.chrom(vcf_record) == chrwhole)) && ((chr_range_high > VCF.pos(vcf_record) > chr_range_low))
+                             push!(vcf_subarray,copy(vcf_record))
                              break
                          end
 
                      else
-                        if (VCF.chrom(record) == chr_sig) && (VCF.pos(record) == pos_sig) && (VCF.hasfilter(record)) && (VCF.filter(record) == String["PASS"]) && ((VCF.chrom(record) == chr)) && ((chr_range_high > VCF.pos(record) > chr_range_low))
-                            push!(vcf_subarray,record)
+                        if (VCF.chrom(vcf_record) == chr_sig) && (VCF.pos(vcf_record) == pos_sig) && (VCF.hasfilter(vcf_record)) && (VCF.filter(vcf_record) == String["PASS"]) && ((VCF.chrom(vcf_record) == chr)) && ((chr_range_high > VCF.pos(vcf_record) > chr_range_low))
+                            push!(vcf_subarray,copy(vcf_record))
                             break
                         end
                      end
 
                  end
+             end
            end
     end
 
@@ -258,10 +354,10 @@ function pass_chrrange_siglist_filter(vcf_filename,sig_list,chr_range::AbstractS
     end
 
 """
-    pass_chrrange_filter(reader::GeneticVariation.VCF.Reader,sig_list,chr_range::AbstractString)
+    pass_chrrange_filter(reader::GeneticVariation.VCF.Reader,chr_range::AbstractString,vcf_filename)
 returns subarray of vcf records with io_pass_filter and io_chromosome_range_vcf_filter applied.
 """
-    function pass_chrrange_filter(reader::GeneticVariation.VCF.Reader,chr_range::AbstractString)
+    function pass_chrrange_filter(reader::GeneticVariation.VCF.Reader,chr_range::AbstractString,vcf_filename)
 
         a=split(chr_range,":")
         chrwhole=a[1]
@@ -276,48 +372,56 @@ returns subarray of vcf records with io_pass_filter and io_chromosome_range_vcf_
         chr_range_high=parse(upper_limit)
 
         vcf_subarray = Array{Any}(0)
+
+        reader = VCF.Reader(open(vcf_filename, "r"))
         record1=VCF.read(reader)
 
-               for record in reader
+        vcf_record = VCF.Record()
+
+        open(VCF.Reader, vcf_filename) do reader
+
+            while !eof(reader)
+                read!(reader, vcf_record)
 
                  if contains(VCF.chrom(record1),"chr")
 
-                      if typeof(VCF.chrom(record)) == String
+                      if typeof(VCF.chrom(vcf_record)) == String
 
                              chr = string(chr)
 
-                             if (VCF.hasfilter(record)) && (VCF.filter(record) == String["PASS"]) && ((VCF.chrom(record) == chrwhole)) && ((chr_range_high > VCF.pos(record) > chr_range_low))
-                                 push!(vcf_subarray,record)
+                             if (VCF.hasfilter(vcf_record)) && (VCF.filter(vcf_record) == String["PASS"]) && ((VCF.chrom(vcf_record) == chrwhole)) && ((chr_range_high > VCF.pos(vcf_record) > chr_range_low))
+                                 push!(vcf_subarray,copy(vcf_record))
 
                              end
 
                      else
 
-                             if (VCF.hasfilter(record)) && (VCF.filter(record) == String["PASS"]) && ((VCF.chrom(record) == chrwhole)) && ((chr_range_high > VCF.pos(record) > chr_range_low))
-                                 push!(vcf_subarray,record)
+                             if (VCF.hasfilter(vcf_record)) && (VCF.filter(vcf_record) == String["PASS"]) && ((VCF.chrom(vcf_record) == chrwhole)) && ((chr_range_high > VCF.pos(vcf_record) > chr_range_low))
+                                 push!(vcf_subarray,copy(vcf_record))
                              end
                      end
 
 
                  else
 
-                     if typeof(VCF.chrom(record)) == String
+                     if typeof(VCF.chrom(vcf_record)) == String
                             chr = string(chr)
 
-                            if (VCF.hasfilter(record)) && (VCF.filter(record) == String["PASS"]) && ((VCF.chrom(record) == chr)) && ((chr_range_high > VCF.pos(record) > chr_range_low))
-                                push!(vcf_subarray,record)
+                            if (VCF.hasfilter(vcf_record)) && (VCF.filter(vcf_record) == String["PASS"]) && ((VCF.chrom(vcf_record) == chr)) && ((chr_range_high > VCF.pos(vcf_record) > chr_range_low))
+                                push!(vcf_subarray,copy(vcf_record))
                             end
 
                     else
 
-                            if (VCF.hasfilter(record)) && (VCF.filter(record) == String["PASS"]) && ((VCF.chrom(record) == chr)) && ((chr_range_high > VCF.pos(record) > chr_range_low))
-                                push!(vcf_subarray,record)
+                            if (VCF.hasfilter(vcf_record)) && (VCF.filter(vcf_record) == String["PASS"]) && ((VCF.chrom(vcf_record) == chr)) && ((chr_range_high > VCF.pos(vcf_record) > chr_range_low))
+                                push!(vcf_subarray,copy(vcf_record))
 
                             end
                     end
 
                end
            end
+       end
 
         return vcf_subarray
     end
@@ -329,10 +433,13 @@ returns subarray of vcf records with io_pass_filter, io_sig_list_vcf_filter, and
 function pass_siglist_filter(vcf_filename,sig_list)
 
     vcf_subarray = Array{Any}(0)
+    open(VCF.Reader, vcf_filename) do reader
 
-    reader = VCF.Reader(open(vcf_filename, "r"))
+    posset = build_set_from_list(sig_list)
+    vcf_record = VCF.Record()
 
-    for record in reader
+    while !eof(reader)
+        read!(reader, vcf_record)
 
         if size(vcf_subarray,1) == size(sig_list,1)
                        break
@@ -344,23 +451,24 @@ function pass_siglist_filter(vcf_filename,sig_list)
                chr=(sig_list[row,1])
                pos=(sig_list[row,2])
 
-                      if typeof(VCF.chrom(record)) == String
+                      if typeof(VCF.chrom(vcf_record)) == String
                              chr = string(chr)
 
-                             if (VCF.chrom(record) == chr) && (VCF.pos(record) == pos) && (VCF.hasfilter(record)) && (VCF.filter(record) == String["PASS"])
-                                 push!(vcf_subarray,record)
+                             if (VCF.chrom(vcf_record) == chr) && (VCF.pos(vcf_record) == pos) && (VCF.hasfilter(vcf_record)) && (VCF.filter(vcf_record) == String["PASS"])
+                                push!(vcf_subarray, copy(vcf_record))
                                  break
                              end
 
                      else
 
-                             if (VCF.chrom(record) == chr) && (VCF.pos(record) == pos) && (VCF.hasfilter(record)) && (VCF.filter(record) == String["PASS"])
-                                 push!(vcf_subarray,record)
+                             if (VCF.chrom(vcf_record) == chr) && (VCF.pos(vcf_record) == pos) && (VCF.hasfilter(vcf_record)) && (VCF.filter(vcf_record) == String["PASS"])
+                                push!(vcf_subarray, copy(vcf_record))
                                  break
                              end
                      end
         end
     end
+end
 
     return vcf_subarray
 end
@@ -388,7 +496,12 @@ function chrrange_siglist_filter(vcf_filename,sig_list,chr_range::AbstractString
     reader = VCF.Reader(open(vcf_filename, "r"))
     record1=VCF.read(reader)
 
-    for record in reader
+    open(VCF.Reader, vcf_filename) do reader
+
+    vcf_record = VCF.Record()
+
+    while !eof(reader)
+        read!(reader, vcf_record)
 
         if size(vcf_subarray,1) == size(sig_list,1)
                        break
@@ -402,41 +515,42 @@ function chrrange_siglist_filter(vcf_filename,sig_list,chr_range::AbstractString
 
             if contains(VCF.chrom(record1),"chr")
 
-                    if typeof(VCF.chrom(record)) == String
+                    if typeof(VCF.chrom(vcf_record)) == String
                              chr_sig = string(chr_sig)
 
-                             if (VCF.chrom(record) == chr_sig) && (VCF.pos(record) == pos_sig) && ((VCF.chrom(record) == chrwhole)) && ((chr_range_high > VCF.pos(record) > chr_range_low))
-                                 push!(vcf_subarray,record)
+                             if (VCF.chrom(vcf_record) == chr_sig) && (VCF.pos(vcf_record) == pos_sig) && ((VCF.chrom(vcf_record) == chrwhole)) && ((chr_range_high > VCF.pos(vcf_record) > chr_range_low))
+                                 push!(vcf_subarray,copy(vcf_record))
                                  break
                              end
 
                      else
 
-                             if (VCF.chrom(record) == chr_sig) && (VCF.pos(record) == pos_sig) && ((VCF.chrom(record) == chrwhole)) && ((chr_range_high > VCF.pos(record) > chr_range_low))
-                                 push!(vcf_subarray,record)
+                             if (VCF.chrom(vcf_record) == chr_sig) && (VCF.pos(vcf_record) == pos_sig) && ((VCF.chrom(vcf_record) == chrwhole)) && ((chr_range_high > VCF.pos(vcf_record) > chr_range_low))
+                                 push!(vcf_subarray,copy(vcf_record))
                                  break
                              end
                      end
 
             else
 
-                     if typeof(VCF.chrom(record)) == String
+                     if typeof(VCF.chrom(vcf_record)) == String
                               chr_sig = string(chr_sig)
 
-                              if (VCF.chrom(record) == chr_sig) && (VCF.pos(record) == pos_sig) && ((VCF.chrom(record) == chr)) && ((chr_range_high > VCF.pos(record) > chr_range_low))
-                                  push!(vcf_subarray,record)
+                              if (VCF.chrom(vcf_record) == chr_sig) && (VCF.pos(vcf_record) == pos_sig) && ((VCF.chrom(vcf_record) == chr)) && ((chr_range_high > VCF.pos(vcf_record) > chr_range_low))
+                                  push!(vcf_subarray,copy(vcf_record))
                                   break
                               end
 
                       else
 
-                              if (VCF.chrom(record) == chr_sig) && (VCF.pos(record) == pos_sig) && ((VCF.chrom(record) == chr)) && ((chr_range_high > VCF.pos(record) > chr_range_low))
-                                  push!(vcf_subarray,record)
+                              if (VCF.chrom(vcf_record) == chr_sig) && (VCF.pos(vcf_record) == pos_sig) && ((VCF.chrom(vcf_record) == chr)) && ((chr_range_high > VCF.pos(vcf_record) > chr_range_low))
+                                  push!(vcf_subarray,copy(vcf_record))
                                   break
                               end
                       end
             end
         end
+    end
     end
 
     return vcf_subarray
@@ -452,11 +566,9 @@ function create_chr_dict()
 
     chr_dict = Dict()
 
-    labels_with_chr = ["chr1" "chr2" "chr3" "chr4" "chr5" "chr6" "chr7" "chr8" "chr9" "chr10" "chr11" "chr12" "chr13" "chr14" "chr15" "chr16" "chr17" "chr18" "chr19" "chr20" "chr21" "chr22" "chrX" "chrY" "chrM"]
+    labels_with_chr = []
 
-    for item in labels_with_chr
-           chr_dict[item] = 800
-    end
+    chr_dict = Dict("chr1"=> 1,"chr2"=> 2,"chr3"=> 3,"chr4"=> 4,"chr5"=> 5,"chr6"=> 6,"chr7"=> 7,"chr8"=> 8,"chr9"=> 9,"chr10"=> 10,"chr11"=> 11,"chr12"=> 12,"chr13"=> 13,"chr14"=> 14,"chr15"=> 15,"chr16"=> 16,"chr17"=> 17,"chr18"=> 18,"chr19"=> 19,"chr20"=> 20,"chr21"=> 21,"chr22"=> 22,"chrX"=> X,"chrY"=> Y,"chrM"=> M)
 
     return chr_dict
 end
@@ -524,7 +636,7 @@ returns dictionary of values for use in replace_genotype_with_vals()
 function define_geno_dict()
     geno_dict = Dict()
 
-    homo_variant = ["1/1" "1/2" "2/2" "1/3" "2/3" "3/3" "1/4" "2/4" "3/4" "4/4" "1/5" "2/5" "3/5" "4/5" "5/5" "1/6" "2/6" "3/6" "4/6" "5/6" "6/6" "1|1" "1|2" "2|2" "1|3" "2|3" "3|3" "1|4" "2|4" "3|4" "4|4" "1|5" "2|5" "3|5" "4|5" "5|5" "1|6" "2|6" "3|6" "4|6" "5|6" "6|6" "2/1" "3/2" "4/2" "5/2" "6/2" "4/3" "5/3" "6/3" "5/4" "6/4" "6/5" "2|1" "3|2" "4|2" "5|2" "6|2" "4|3" "5|3" "6|3" "5|4" "6|4" "6|5"]
+    homo_variant = ["1/1" "1/2" "2/2" "1/3" "2/3" "3/3" "1/4" "2/4" "3/4" "4/4" "1/5" "2/5" "3/5" "4/5" "5/5" "1/6" "2/6" "3/6" "4/6" "5/6" "6/6" "1|1" "1|2" "2|2" "1|3" "2|3" "3|3" "1|4" "2|4" "3|4" "4|4" "1|5" "2|5" "3|5" "4|5" "5|5" "1|6" "2|6" "3|6" "4|6" "5|6" "6|6" "2/1" "3/1" "4/1" "5/1" "6/1" "3/2" "4/2" "5/2" "6/2" "4/3" "5/3" "6/3" "5/4" "6/4" "6/5" "2|1" "3|1" "4|1" "5|1" "6|1" "3|2" "4|2" "5|2" "6|2" "4|3" "5|3" "6|3" "5|4" "6|4" "6|5"]
 
     hetero_variant = ["0/1" "0/2" "0/3" "0/4" "0/5" "0/6" "1/0" "2/0" "3/0" "4/0" "5/0" "6/0" "0|1" "0|2" "0|3" "0|4" "0|5" "0|6" "1|0" "2|0" "3|0" "4|0" "5|0" "6|0" "1/0" "2/0" "3/0" "4/0" "5/0" "6/0" "1|0" "2|0" "3|0" "4|0" "5|0" "6|0"]
 
@@ -533,16 +645,16 @@ function define_geno_dict()
     ref = ["0/0" "0|0"]
 
     for item in homo_variant
-           geno_dict[item] = 3#800
+           geno_dict[item] = 3
     end
     for item in hetero_variant
-           geno_dict[item] = 2#600
+           geno_dict[item] = 2
     end
     for item in no_data
            geno_dict[item] = 0
     end
     for item in ref
-           geno_dict[item] = 1#400
+           geno_dict[item] = 1
     end
 
     return geno_dict
@@ -636,10 +748,12 @@ function sortcols_by_phenotype_matrix(pheno_matrix_filename::String,trait_to_gro
 
     #remove phenotype_row_labels used to identify row to sort by, so row can be sorted without strings causing issues
     pheno_no_trait_labels = pheno[:,2:size(pheno,2)]
+    trait_labels=pheno[2:size(pheno,1),1]
 
     pheno_no_trait_labels = sortcols(pheno_no_trait_labels, by = x -> x[row_to_sort_by], rev = false)
 
     id_list = pheno_no_trait_labels[1,:]
+    pheno_data=pheno_no_trait_labels[]
 
     sample_ids=sample_names
 
@@ -659,7 +773,7 @@ function sortcols_by_phenotype_matrix(pheno_matrix_filename::String,trait_to_gro
 
     id_list=reshape(id_list,1,length(id_list))
 
-    return ordered_num_array,group_label_pack,pheno,id_list
+    return ordered_num_array,group_label_pack,pheno_no_trait_labels,id_list,trait_labels
 
 end
 
@@ -686,7 +800,7 @@ function select_columns(filename_sample_list::AbstractString, num_array::Array{I
     df_selected_samples_num_array = df_num_array[:, col_selectedcolumns]
 
     selected_samples_num_array = Matrix(df_selected_samples_num_array)
-    return selected_samples_num_array
+    return selected_samples_num_array,col_selectedcolumns
 end
 
 
@@ -770,7 +884,7 @@ function list_variant_positions_low_dp(variant_avg_list::Array{Float64,1},chrom_
             end
         end
 
-    low_dp_positions = Array{Tuple{Int64,Int64}}(0)
+    low_dp_positions = Array{Tuple{Any,Int64}}(0)
 
         for i in low_dp_index_list
             chrom_position = chrom_labels[i,1],chrom_labels[i,2]
@@ -824,19 +938,20 @@ function chromosome_label_generator(chromosome_labels::Array{Any,1})
         for item=2:(length(chrom_labels))
 
             ratio=((chrom_label_indices[item])-(chrom_label_indices[item-1]))/(length(chromosome_labels))
-        #    println(ratio)
 
             if ratio < 0.2
                 font_size = "8"
                 #println("font size is $font_size")
                 return chrom_labels,chrom_label_indices,font_size
+
             else
                 font_size = "10"
                 #println("font size is $font_size")
-
                 return chrom_labels,chrom_label_indices,font_size
+
             end
         end
+
     else
 
         font_size = "10"
@@ -874,4 +989,57 @@ chr_pos_tuple_list=Array{Tuple}(0)
     end
 
     return chr_pos_tuple_list
+end
+
+"""
+    index_vcf(vcf_filename)
+Creates and saves index file with three column array of vcf chrom, position, and row number to be used by significant list filter functions.
+"""
+function index_vcf(vcf_filename)
+
+ reader = VCF.Reader(open(vcf_filename, "r"))
+
+ chr_pos_col = Array{Any}(0)
+ row_col = Array{Any}(0)
+
+ row=1
+
+  for record in reader
+
+   chr = VCF.chrom(record)
+   pos = VCF.pos(record)
+   chr_pos_tuple = chr,pos
+   row = row+1
+
+   push!(chr_pos_col,chr_pos_tuple)
+   push!(row_col,row)
+
+  end
+
+  index_matrix=hcat(chr_pos_col,row_col)
+  return index_matrix
+
+end
+
+"""
+    match_siglist_to_index(sig_list,vcf_index)
+Returns vcf row indices of each variant position in sig_list for reader function to allow fast filtering in significant list filter funcitons.
+"""
+function match_siglist_to_index(sig_list,index_matrix)
+
+ sig_list_tuples = Array{Any}(0)
+
+  for row = 1:size(sig_list,1)
+
+   chrom = sig_list[row,1]
+   pos = sig_list[row,2]
+   sig_list_tuple = chrom,pos
+   push!(sig_list_tuples,sig_list_tuple)
+
+  end
+
+  sig_list_index = findin(index_matrix,sig_list_tuples)
+
+  return sig_list_index
+
 end

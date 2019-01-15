@@ -1,15 +1,14 @@
 module ViVa
 
 using DataFrames
-using PlotlyJS
-using Rsvg
-using Blink
+#using PlotlyJS
+#using Rsvg
+#using Blink
 using GeneticVariation
 using ArgParse
 using VCFTools
+using RCall
 #using Base.Filesystem
-
-
 
 #include("vcf_utils.jl")
 #include("plot_utils.jl")
@@ -71,7 +70,8 @@ export
     clean_column1_chr,
     clean_column1_siglist!,
     process_plot_inputs,
-    process_plot_inputs_for_grouped_data
+    process_plot_inputs_for_grouped_data,
+    returnXY_column1_siglist!
 
 #include("vcf_utils.jl")
 include("vcf_utils_complete.jl")

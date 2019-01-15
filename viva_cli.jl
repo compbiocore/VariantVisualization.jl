@@ -1,24 +1,33 @@
+tic()
+
 println("Welcome to ViVa.")
 println()
 println("Loading packages:")
-println("ViVa")
-println("While using ViVa for Julia <v0.7 ignore 'WARNING: Method definition' when loading packages.")
-using ViVa
+
+#using Suppressor
+
+println("1/4 ViVa")
+#println("While using ViVa for Julia <v0.7 ignore 'WARNING: Method definition' when loading packages.")
+(using ViVa)
+
 
 #println("ProgressMeter")
 #using ProgressMeter
 
-println("GeneticVariation")
+println("2/4 GeneticVariation")
 using GeneticVariation
 
-println("ArgParse")
+println("3/4 ArgParse")
 using ArgParse
 
-println("VCFTools")
-using VCFTools
-println()
+#println("VCFTools")
+#using VCFTools
+#println()
 
-println("Finished loading packages")
+println("4/4 RCall")
+using RCall
+
+println("Finished loading packages!")
 println()
 
 #=
@@ -40,8 +49,6 @@ println("VCFTools")
 using VCFTools
 toc()
 =#
-
-tic()
 
 function test_parse_main(ARGS::Vector{String})
 
@@ -101,7 +108,7 @@ function test_parse_main(ARGS::Vector{String})
 
         "--y_axis_labels"
         help = "specify whether to label y-axis with all chromosome positions (options = positions / chromosome) separators. Defaults to chromosome separators."
-        default = "chromosomes"
+        default = "hover_positions"
         arg_type = String
 
         "--heatmap_title"
@@ -118,11 +125,13 @@ function test_parse_main(ARGS::Vector{String})
     #println("Parsed args:")
 
 #activate block to show all argument keys
+
 #=
     for (key,val) in parsed_args
         println("  $key  =>  $(repr(val))")
     end
-=#
+    =#
+
 
     return parsed_args
 end
@@ -137,6 +146,7 @@ println()
 
 reader = VCF.Reader(open(vcf_filename, "r"))
 sample_names = get_sample_names(reader)
+save_ext = parsed_args["save_format"]
 
 ViVa.checkfor_outputdirectory(parsed_args["output_directory"])
 
@@ -175,7 +185,7 @@ end
 tic()
 #pass_filter
 if parsed_args["pass_filter"] == true && parsed_args["chromosome_range"] == nothing && parsed_args["positions_list"] == nothing
-    sub = ViVa.io_pass_filter(reader)
+    sub = ViVa.io_pass_filter(vcf_filename)
     number_rows = size(sub,1)
     println("selected $number_rows variants with Filter status: PASS")
     heatmap_input = "pass_filtered"
@@ -183,7 +193,7 @@ end
 
 #chr_range
 if parsed_args["chromosome_range"] != nothing && parsed_args["pass_filter"] == false && parsed_args["positions_list"] == nothing
-    sub = ViVa.io_chromosome_range_vcf_filter(parsed_args["chromosome_range"],reader)
+    sub = ViVa.io_chromosome_range_vcf_filter(parsed_args["chromosome_range"],vcf_filename)
     number_rows = size(sub,1)
     println("selected $number_rows variants within chromosome range: $(parsed_args["chromosome_range"])")
     heatmap_input = "range_filtered"
@@ -208,7 +218,7 @@ end
 
 #pass_filter and chr_range
 if parsed_args["pass_filter"] == true && parsed_args["chromosome_range"] != nothing && parsed_args["positions_list"] == nothing
-    sub = ViVa.pass_chrrange_filter(reader, parsed_args["chromosome_range"])
+    sub = ViVa.pass_chrrange_filter(reader, parsed_args["chromosome_range"],vcf_filename)
     number_rows = size(sub,1)
     println("selected $number_rows variants with Filter status: PASS and are within chromosome range: $(parsed_args["chromosome_range"])")
 end
@@ -280,28 +290,34 @@ if parsed_args["heatmap"] == "genotype"
             gt_num_array = select_columns(parsed_args["select_samples"],
                                           gt_num_array,
                                           sample_names)
+            sample_names = col_selectedcolumns
         end
 
         group_trait_matrix_filename=((parsed_args["group_samples"])[1])
         trait_to_group_by = ((parsed_args["group_samples"])[2])
         println("grouping samples by $trait_to_group_by")
 
-        ordered_num_array,group_label_pack,pheno,id_list = sortcols_by_phenotype_matrix(group_trait_matrix_filename, trait_to_group_by, gt_num_array, sample_names)
+        ordered_num_array,group_label_pack,pheno,id_list,trait_labels = sortcols_by_phenotype_matrix(group_trait_matrix_filename, trait_to_group_by, gt_num_array, sample_names)
 
-        graphic = ViVa.genotype_heatmap_with_groups(ordered_num_array,title,chrom_label_info,group_label_pack,id_list,chr_pos_tuple_list,y_axis_label_option)
-
+        ViVa.genotype_heatmap_with_groups(ordered_num_array,title,joinpath("$(parsed_args["output_directory"])" ,"$title.$(parsed_args["save_format"])"),id_list,gt_chromosome_labels,pheno,trait_labels,y_axis_label_option,save_ext)
+        println(joinpath("$(parsed_args["output_directory"])" ,"$title.$(parsed_args["save_format"])"))
     else
 
         if parsed_args["select_samples"] != nothing
-            gt_num_array = select_columns(parsed_args["select_samples"], gt_num_array, sample_names)
+            gt_num_array,col_selectedcolumns = select_columns(parsed_args["select_samples"], gt_num_array, sample_names)
+            sample_names=col_selectedcolumns
         end
 
-        graphic = ViVa.genotype_heatmap2(gt_num_array,title,chrom_label_info,sample_names,chr_pos_tuple_list,y_axis_label_option)
+        #graphic = ViVa.genotype_heatmap2(gt_num_array,title,chrom_label_info,sample_names,chr_pos_tuple_list,y_axis_label_option)
+        #ViVa.genotype_heatmap2(gt_num_array,title,"test_3.html")
+        (ViVa.genotype_heatmap2(gt_num_array,title,joinpath("$(parsed_args["output_directory"])","$title.$(parsed_args["save_format"])"),sample_names,gt_chromosome_labels,y_axis_label_option,save_ext))
+        #ViVa.genotype_heatmap2(gt_num_array,title,joinpath("$(parsed_args["output_directory"])","title_test.pdf"),sample_names,gt_chromosome_labels,y_axis_label_option,save_ext,chrom_label_info)
+
     end
 
     println("saving now")
 
-    PlotlyJS.savefig(graphic, joinpath("$(parsed_args["output_directory"])" ,"$title.$(parsed_args["save_format"])"), js=:remote)
+    #PlotlyJS.savefig(graphic, joinpath("$(parsed_args["output_directory"])" ,"$title.$(parsed_args["save_format"])"), js=:remote)
 
 end
 
@@ -324,17 +340,18 @@ if parsed_args["heatmap"] == "read_depth"
 
         if parsed_args["select_samples"] != nothing
             println("selecting samples listed in $(parsed_args["select_samples"])")
-            dp_num_array = select_columns(parsed_args["select_samples"], dp_num_array, sample_names)
+            dp_num_array,col_selectedcolumns = select_columns(parsed_args["select_samples"], dp_num_array, sample_names)
+            sample_names=col_selectedcolumns
         end
 
         group_trait_matrix_filename=((parsed_args["group_samples"])[1])
         trait_to_group_by = ((parsed_args["group_samples"])[2])
         println("grouping samples by $trait_to_group_by")
 
-        ordered_dp_num_array,group_label_pack,pheno,id_list = sortcols_by_phenotype_matrix(group_trait_matrix_filename, trait_to_group_by, dp_num_array, sample_names)
+        ordered_dp_num_array,group_label_pack,pheno,id_list,trait_labels = sortcols_by_phenotype_matrix(group_trait_matrix_filename, trait_to_group_by, dp_num_array, sample_names)
         dp_num_array_limited=read_depth_threshhold(ordered_dp_num_array)
 
-        graphic = ViVa.dp_heatmap2_with_groups(dp_num_array_limited,title,chrom_label_info,group_label_pack,id_list,chr_pos_tuple_list,y_axis_label_option)
+        (ViVa.dp_heatmap2_with_groups(dp_num_array_limited,title,joinpath("$(parsed_args["output_directory"])" ,"$title.$(parsed_args["save_format"])"),id_list,dp_chromosome_labels,pheno,trait_labels,y_axis_label_option,save_ext))
 
     else
 
@@ -343,10 +360,9 @@ if parsed_args["heatmap"] == "read_depth"
         end
 
         dp_num_array_limited=read_depth_threshhold(dp_num_array)
-        graphic = ViVa.dp_heatmap2(dp_num_array_limited, title, chrom_label_info, sample_names,chr_pos_tuple_list,y_axis_label_option)
+        (ViVa.dp_heatmap2(dp_num_array_limited, title,joinpath("$(parsed_args["output_directory"])","$title.$(parsed_args["save_format"])"),sample_names,dp_chromosome_labels,y_axis_label_option,save_ext))
     end
 
-    PlotlyJS.savefig(graphic, joinpath("$(parsed_args["output_directory"])","$title.$(parsed_args["save_format"])"), js=:remote) # on Julia v0.7+ use  PlotlyJS.savehtml(p, "file/name.html", :remote)
 
 elseif parsed_args["heatmap"] == "genotype,read_depth" || parsed_args["heatmap"] == "read_depth,genotype"
 
@@ -367,31 +383,39 @@ elseif parsed_args["heatmap"] == "genotype,read_depth" || parsed_args["heatmap"]
 
         if parsed_args["select_samples"] != nothing
             println("selecting samples listed in $(parsed_args["select_samples"])")
-            gt_num_array = select_columns(parsed_args["select_samples"],
+            gt_num_array,col_selectedcolumns = select_columns(parsed_args["select_samples"],
                                           gt_num_array,
                                           sample_names)
+
+            sample_names=col_selectedcolumns
         end
 
         group_trait_matrix_filename=((parsed_args["group_samples"])[1])
         trait_to_group_by = ((parsed_args["group_samples"])[2])
         println("grouping samples by $trait_to_group_by")
 
-        ordered_num_array,group_label_pack,pheno,id_list = sortcols_by_phenotype_matrix(group_trait_matrix_filename, trait_to_group_by, gt_num_array, sample_names)
+        ordered_num_array,group_label_pack,pheno,id_list,trait_labels = sortcols_by_phenotype_matrix(group_trait_matrix_filename, trait_to_group_by, gt_num_array, sample_names)
 
-        graphic = ViVa.genotype_heatmap_with_groups(ordered_num_array,title,chrom_label_info,group_label_pack,id_list,chr_pos_tuple_list,y_axis_label_option)
+        (ViVa.genotype_heatmap_with_groups(ordered_num_array,title,joinpath("$(parsed_args["output_directory"])" ,"$title.$(parsed_args["save_format"])"),id_list,gt_chromosome_labels,pheno,trait_labels,y_axis_label_option,save_ext))
 
     else
 
         if parsed_args["select_samples"] != nothing
-            gt_num_array = select_columns(parsed_args["select_samples"], gt_num_array, sample_names)
+            gt_num_array,col_selectedcolumns = select_columns(parsed_args["select_samples"], gt_num_array, sample_names)
+            sample_names=col_selectedcolumns
         end
 
-        graphic = ViVa.genotype_heatmap2(gt_num_array,title,chrom_label_info,sample_names,chr_pos_tuple_list,y_axis_label_option)
+        (ViVa.genotype_heatmap2(gt_num_array,title,joinpath("$(parsed_args["output_directory"])","$title.$(parsed_args["save_format"])"),sample_names,gt_chromosome_labels,y_axis_label_option,save_ext))
     end
 
     println("saving now")
 
-    PlotlyJS.savefig(graphic, joinpath("$(parsed_args["output_directory"])" ,"$title.$(parsed_args["save_format"])"), js=:remote)
+    if parsed_args["heatmap_title"] != nothing
+        title = parsed_args["heatmap_title"]
+    else
+        bn = Base.Filesystem.basename(parsed_args["vcf_file"])
+        title = "Read_Depth_$bn"
+    end
 
     dp_num_array,dp_chromosome_labels = combined_all_read_depth_array_functions(sub)
 
@@ -410,29 +434,30 @@ elseif parsed_args["heatmap"] == "genotype,read_depth" || parsed_args["heatmap"]
 
         if parsed_args["select_samples"] != nothing
             println("selecting samples listed in $(parsed_args["select_samples"])")
-            dp_num_array = select_columns(parsed_args["select_samples"], dp_num_array, sample_names)
+            dp_num_array,col_selectedcolumns = select_columns(parsed_args["select_samples"], dp_num_array, sample_names)
+            sample_names=col_selectedcolumns
         end
 
         group_trait_matrix_filename=((parsed_args["group_samples"])[1])
         trait_to_group_by = ((parsed_args["group_samples"])[2])
         #println("grouping samples by $trait_to_group_by")
 
-        ordered_dp_num_array,group_label_pack,pheno,id_list = sortcols_by_phenotype_matrix(group_trait_matrix_filename, trait_to_group_by, dp_num_array, sample_names)
+        ordered_dp_num_array,group_label_pack,pheno,id_list,trait_labels = sortcols_by_phenotype_matrix(group_trait_matrix_filename, trait_to_group_by, dp_num_array, sample_names)
         dp_num_array_limited=read_depth_threshhold(ordered_dp_num_array)
 
-        graphic = ViVa.dp_heatmap2_with_groups(dp_num_array_limited,title,chrom_label_info,group_label_pack,id_list,chr_pos_tuple_list,y_axis_label_option)
+        (ViVa.dp_heatmap2_with_groups(dp_num_array_limited,title,joinpath("$(parsed_args["output_directory"])" ,"$title.$(parsed_args["save_format"])"),id_list,dp_chromosome_labels,pheno,trait_labels,y_axis_label_option,save_ext))
 
     else
 
         if parsed_args["select_samples"] != nothing
-            dp_num_array = select_columns(parsed_args["select_samples"], dp_num_array, sample_names)
+            dp_num_array,col_selectedcolumns = select_columns(parsed_args["select_samples"], dp_num_array, sample_names)
+            sample_names=col_selectedcolumns
         end
 
         dp_num_array_limited=read_depth_threshhold(dp_num_array)
-        graphic = ViVa.dp_heatmap2(dp_num_array_limited, title, chrom_label_info, sample_names,chr_pos_tuple_list,y_axis_label_option)
-    end
+        (ViVa.dp_heatmap2(dp_num_array_limited, title,joinpath("$(parsed_args["output_directory"])","$title.$(parsed_args["save_format"])"),sample_names,dp_chromosome_labels,y_axis_label_option,save_ext))
 
-    PlotlyJS.savefig(graphic, joinpath("$(parsed_args["output_directory"])","$title.$(parsed_args["save_format"])"), js=:remote) # on Julia v0.7+ use  PlotlyJS.savehtml(p, "file/name.html", :remote)
+    end
 
 end
 
@@ -496,13 +521,13 @@ end
 
 close(reader)
 
-
 #println("_______________________________________________")
 println()
 println("Finished plotting. Total time to run:")
 toc()
 #println("_______________________________________________")
 println()
+
 
 #=
 println("_______________________________________________")

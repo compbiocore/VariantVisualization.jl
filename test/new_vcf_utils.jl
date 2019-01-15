@@ -29,7 +29,7 @@ end
 #functions for variant filters
 
 @testset "io_chromosome_range_vcf_filter" begin
-sub = io_chromosome_range_vcf_filter("chr4:0-400000000",reader)
+sub = io_chromosome_range_vcf_filter("chr4:0-400000000",vcf_filename)
 @test typeof(sub) == Array{Any,1}
 @test size(sub,1) == 1012
 #println("io_chromosome_range_vcf_filter type is $(typeof(sub))")
@@ -40,55 +40,57 @@ end
 @testset "filters_with_siglist" begin
 
     @testset "load_siglist" begin
-    sig_list=load_siglist("test_files/significantList_for_proteinstructures.csv")
+    sig_list=load_siglist("test_files/sig_list_for_test.csv")
     #println(sig_list[2:1])
     #println(size(sig_list,1))
 
-            @testset "clean_column1_siglist!" begin
-            clean_column1_siglist!(sig_list)
-            #println(sig_list[1,2])
-            #println(size(sig_list,1))
-            end
+    @testset "pass_chrrange_siglist_filter" begin
+    println(vcf_filename)
+    println(sig_list)
+    sig_list=load_siglist("test_files/sig_list_for_test.csv")
+    sub = pass_chrrange_siglist_filter(vcf_filename,sig_list,"chr4:0-5000000000")
+    println(sub)
+
+    println(typeof(sub[1]))
+    @test (typeof(sub[1])) == GeneticVariation.VCF.Record
+    @test (length(sub)) ==  5
+    end
 
             @testset "io_sig_list_vcf_filter" begin
-            sub=io_sig_list_vcf_filter(sig_list,vcf_filename)
+
+            sub = ViVa.io_sig_list_vcf_filter(sig_list,vcf_filename)
+            println(sub)
             @test (typeof(sub[1])) == GeneticVariation.VCF.Record
-            @test (length(sub)) ==  13
+            @test (length(sub)) ==  11
             end
 
-            @testset "pass_chrrange_siglist_filter" begin
-            sub = pass_chrrange_siglist_filter(vcf_filename,sig_list,"chr4:0-400000000")
-            @test (typeof(sub[1])) == GeneticVariation.VCF.Record
-            @test (length(sub)) ==  12
-            end
+
 
             @testset "pass_siglist_filter" begin
             sub = pass_siglist_filter(vcf_filename, sig_list)
             @test (typeof(sub[1])) == GeneticVariation.VCF.Record
-            @test (length(sub)) ==  12
+            @test (length(sub)) ==  10
             end
 
             @testset "chrrange_siglist_filter" begin
             sub = chrrange_siglist_filter(vcf_filename,sig_list,"chr4:0-400000000")
             @test (typeof(sub[1])) == GeneticVariation.VCF.Record
-            @test (length(sub)) ==  13
+            @test (length(sub)) ==  5
             end
 
     end
-
-    end
+end
 
 
 @testset "io_pass_filter" begin
-    reader = VCF.Reader(open(vcf_filename, "r"))
-    sub = io_pass_filter(reader)
+    sub = io_pass_filter(vcf_filename)
     @test (typeof(sub[1])) == GeneticVariation.VCF.Record
     @test (length(sub)) ==  1164
 end
 
 @testset "pass_chrrange_filter" begin
     reader = VCF.Reader(open(vcf_filename, "r"))
-    sub = pass_chrrange_filter(reader,"chr4:0-400000000")
+    sub = pass_chrrange_filter(reader,"chr4:0-400000000",vcf_filename)
     @test (typeof(sub[1])) == GeneticVariation.VCF.Record
     @test (length(sub)) ==  856
 end
@@ -96,8 +98,7 @@ end
 #functions for converting vcf record array to numerical array
 @testset "combined_all_genotype_array_functions" begin
 
-reader = VCF.Reader(open(vcf_filename, "r"))
-sub = io_pass_filter(reader)
+sub = io_pass_filter(vcf_filename)
 
 gt_num_array,gt_chromosome_labels=combined_all_genotype_array_functions(sub)
 #println("combined_all_genotype_array_functions gt array is type: $(typeof(gt_num_array))")
@@ -126,8 +127,7 @@ gt_num_array,gt_chromosome_labels=combined_all_genotype_array_functions(sub)
     end
 
     @testset "generate_genotype_array" begin
-    reader = VCF.Reader(open(vcf_filename, "r"))
-    sub = io_pass_filter(reader)
+    sub = io_pass_filter(vcf_filename)
     genotype_array=generate_genotype_array(sub,"GT")
 
     #println("generate_genotype_array is $(typeof(genotype_array))")
@@ -140,7 +140,7 @@ gt_num_array,gt_chromosome_labels=combined_all_genotype_array_functions(sub)
     #println("define_geno_dict is type is $(typeof(geno_dict))")
     #println("define_geno_dict is length is $(length(geno_dict))")
     @test typeof(geno_dict) == Dict{Any,Any}
-    @test length(geno_dict) == 92
+    @test length(geno_dict) == 100
 
     @testset "translate_genotype_to_num_array" begin
     gt_num_array,gt_chromosome_labels=translate_genotype_to_num_array(genotype_array,geno_dict)
@@ -160,8 +160,7 @@ end
 
 @testset "combined_all_read_depth_array_functions" begin
 
-reader = VCF.Reader(open(vcf_filename, "r"))
-sub = io_pass_filter(reader)
+sub = io_pass_filter(vcf_filename)
 dp_num_array,dp_chromosome_labels=combined_all_read_depth_array_functions(sub)
 
 #println("combined_all_read_depth_array_functions dp_num_array type is $(typeof(dp_num_array))")
@@ -218,7 +217,7 @@ dp_num_array,dp_chromosome_labels=combined_all_read_depth_array_functions(sub)
         list=list_variant_positions_low_dp(avg_variant_list,dp_chromosome_labels)
         #println("list_variant_positions_low_dp list type is $(typeof(list))")
         #println("list_variant_positions_low_dp list length is $(length(list))")
-        @test typeof(list) == Array{Tuple{Int64,Int64},1}
+        @test typeof(list) == Array{Tuple{Any,Int64},1}
         @test size(list,1) == 33
 
         end
@@ -251,8 +250,8 @@ dp_num_array,dp_chromosome_labels=combined_all_read_depth_array_functions(sub)
         dp_num_array=select_columns("test_files/select_samples_list.txt", dp_num_array, sample_names)
         #println("select_columns dp_num_array type is $(typeof(dp_num_array))")
         #println("select_columns dp_num_array size is $(size(dp_num_array,1))")
-        @test typeof(dp_num_array) == Array{Int64,2}
-        @test size(dp_num_array,1) == 1164
+        @test typeof(dp_num_array) == Tuple{Array{Int64,2},Array{Any,1}}
+        @test size(dp_num_array,1) == 2
         end
 
     end
