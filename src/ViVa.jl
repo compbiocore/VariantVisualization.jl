@@ -8,6 +8,7 @@ using GeneticVariation
 using ArgParse
 using VCFTools
 using RCall
+
 #using Base.Filesystem
 
 #include("vcf_utils.jl")
@@ -71,7 +72,8 @@ export
     clean_column1_siglist!,
     process_plot_inputs,
     process_plot_inputs_for_grouped_data,
-    returnXY_column1_siglist!
+    returnXY_column1_siglist!,
+    chromosome_label_generator
 
 #include("vcf_utils.jl")
 include("vcf_utils_complete.jl")

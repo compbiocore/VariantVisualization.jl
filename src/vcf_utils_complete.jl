@@ -11,7 +11,6 @@ function clean_column1!(matrix_with_chr_column)
         matrix_with_chr_column[i, 1] = matrix_with_chr_column[i, 1] == "Y" ? "24" : matrix_with_chr_column[i, 1]
         matrix_with_chr_column[i, 1] = matrix_with_chr_column[i, 1] == "M" ? "25" : matrix_with_chr_column[i, 1]
     end
-
 end
 
 """
@@ -39,7 +38,6 @@ function returnXY_column1!(chr_label_vector)
         chr_label_vector[i, 1] = chr_label_vector[i, 1] == 24 ? "Y" : chr_label_vector[i, 1]
         chr_label_vector[i, 1] = chr_label_vector[i, 1] == 25 ? "M" : chr_label_vector[i, 1]
     end
-
 end
 
 """
@@ -53,7 +51,6 @@ function returnXY_column1_siglist!(siglist_sorted)
         siglist_sorted[i, 1] = siglist_sorted[i, 1] == 24 ? "Y" : siglist_sorted[i, 1]
         siglist_sorted[i, 1] = siglist_sorted[i, 1] == 25 ? "M" : siglist_sorted[i, 1]
     end
-
 end
 
 """
@@ -254,8 +251,6 @@ returns subarray of vcf records with io_pass_filter, io_sig_list_vcf_filter, and
 """
 function pass_chrrange_siglist_filter(vcf_filename,sig_list,chr_range::AbstractString)
 
-    println(sig_list)
-
     a=split(chr_range,":")
     chrwhole=a[1]
     chrnumber=split(chrwhole,"r")
@@ -303,25 +298,6 @@ function pass_chrrange_siglist_filter(vcf_filename,sig_list,chr_range::AbstractS
                              end
 
                         else
-#=
-                            println("test555")
-
-                            println(VCF.chrom(vcf_record))
-                            println(chr_sig)
-
-                            println(VCF.pos(vcf_record))
-                            println(pos_sig)
-
-                            println(VCF.hasfilter(vcf_record))
-                            println(VCF.filter(vcf_record))
-
-                            println(VCF.chrom(vcf_record))
-                            println(chr)
-                            println(VCF.pos(vcf_record))
-                            println((chr_range_high))
-                            println((chr_range_low))
-
-                            =#
 
                             if (VCF.chrom(vcf_record) == chr_sig) && (VCF.pos(vcf_record) == pos_sig) && (VCF.hasfilter(vcf_record)) && (VCF.filter(vcf_record) == String["PASS"]) && ((VCF.chrom(vcf_record) == chr)) && ((chr_range_high > VCF.pos(vcf_record) > chr_range_low))
                                 push!(vcf_subarray,copy(vcf_record))
@@ -693,7 +669,7 @@ function translate_readdepth_strings_to_num_array(read_depth_array::Array{Any,2}
 
        dp_array_for_plotly = read_depth_array[:,3:size(read_depth_array,2)]
 
-       map!(s->replace(s, ".", "0"), dp_array_for_plotly, dp_array_for_plotly)
+       map!(s->replace(s, ".", "-1"), dp_array_for_plotly, dp_array_for_plotly)
 
        dp_array_for_plotly = [parse(Int, i) for i in dp_array_for_plotly]
 
@@ -897,12 +873,12 @@ end
 #functions for producing objects for plot functions
 
 """
-    read_depth_threshhold(dp_array::Array{Int64,2})
-sets ceiling for read depth values at dp = 100. All dp over 100 are set to 100 to visualize read depth values between 0 < dp > 100 in better definition
+    read_depth_threshhold(dp_array::Array{Int64,2},dp_limit)
+sets ceiling for read depth values at user defined threshhold. threshhold defaults to dp = 100. All dp over 100 are set to 100 to visualize read depth values between 0 < dp > 100 in better definition.
 """
-function read_depth_threshhold(dp_array::Array{Int64,2})
+function read_depth_threshhold(dp_array::Array{Int64,2},dp_limit)
 
-    dp_array[dp_array[:,:].>100].=100
+    dp_array[dp_array[:,:].>dp_limit].=dp_limit
 
     return dp_array
 end
@@ -923,16 +899,23 @@ function save_numerical_array(num_array,sample_names,chr_labels)
 end
 
 """
-    chromosome_label_generator(chromosome_labels::Array{String,2})
+    chromosome_label_generator(chromosome_labels::Array{String,2},number_rows)
 Returns vector of chr labels and indices to mark chromosomes in plotly heatmap
 Specifically, saves indexes and chrom labels in vectors to pass into heatmap function to ticvals and tictext respectively
 Input is either gt_chromosome_labels or dp_chromosome_labels from translate_gt/dp_to_num_array()
 """
-
-function chromosome_label_generator(chromosome_labels::Array{Any,1})
+function chromosome_label_generator(chromosome_labels::Array{Any,1},number_rows)
     chrom_label_indices = findfirst.(map(a -> (y -> isequal(a, y)), unique(chromosome_labels)), [chromosome_labels])
     chrom_labels = unique(chromosome_labels)
     chrom_labels = [string(i) for i in chrom_labels]
+
+    if chrom_label_indices[length(chrom_label_indices)] == number_rows
+        duplicate_last_label="true"
+    else
+        duplicate_last_label="false"
+    end
+
+    push!(chrom_label_indices,number_rows)
 
     if length(chrom_labels) > 1
         for item=2:(length(chrom_labels))
@@ -942,12 +925,12 @@ function chromosome_label_generator(chromosome_labels::Array{Any,1})
             if ratio < 0.2
                 font_size = "8"
                 #println("font size is $font_size")
-                return chrom_labels,chrom_label_indices,font_size
+                return chrom_labels,chrom_label_indices,font_size,duplicate_last_label
 
             else
                 font_size = "10"
                 #println("font size is $font_size")
-                return chrom_labels,chrom_label_indices,font_size
+                return chrom_labels,chrom_label_indices,font_size,duplicate_last_label
 
             end
         end
@@ -955,8 +938,10 @@ function chromosome_label_generator(chromosome_labels::Array{Any,1})
     else
 
         font_size = "10"
-        return chrom_labels,chrom_label_indices,font_size
+
+        return chrom_labels,chrom_label_indices,font_size,duplicate_last_label
     end
+
 end
 
 """
@@ -1041,5 +1026,37 @@ function match_siglist_to_index(sig_list,index_matrix)
   sig_list_index = findin(index_matrix,sig_list_tuples)
 
   return sig_list_index
+
+end
+
+"""
+    make_chromosome_labels(chrom_label_info)
+Returns vector of values to use as tick vals to show first chromosome label per chromosome with blank spaces between each first chromosome position for use with --y_axis_labels=chromosomes. duplicate_last_label tells if last chrom label is single or mutiple which affects number_to_fill value.
+"""
+function make_chromosome_labels(chrom_label_info)
+
+       labels=chrom_label_info[1]
+       index=chrom_label_info[2]
+       duplicate_last_label=chrom_label_info[4]
+
+       x=Array{Any}(0)
+
+       for n = 1:size(labels,1)
+
+              push!(x, labels[n])
+              counter=0
+              number_to_fill=index[n+1]-index[n]
+
+              while counter < number_to_fill - 1
+                  counter = counter+1
+                  push!(x, labels[n])
+              end
+        end
+
+    if duplicate_last_label != "true"
+      push!(x,labels[size(labels,1)])
+    end
+
+    return x
 
 end

@@ -17,6 +17,7 @@ vcf_filename_with_chr = "test_files/test_with_chr.vcf"
 reader = VCF.Reader(open(vcf_filename, "r"))
 reader_with_chr = VCF.Reader(open(vcf_filename_with_chr, "r"))
 sample_names = get_sample_names(reader)
+dp_limit = 50
 
 @testset "clean_column1!" begin
     df = Matrix(["X" 1 2; "Y" 2 3; 2 4 1])
@@ -41,30 +42,22 @@ end
 
     @testset "load_siglist" begin
     sig_list=load_siglist("test_files/sig_list_for_test.csv")
-    #println(sig_list[2:1])
-    #println(size(sig_list,1))
 
     @testset "pass_chrrange_siglist_filter" begin
-    println(vcf_filename)
-    println(sig_list)
     sig_list=load_siglist("test_files/sig_list_for_test.csv")
     sub = pass_chrrange_siglist_filter(vcf_filename,sig_list,"chr4:0-5000000000")
-    println(sub)
 
-    println(typeof(sub[1]))
     @test (typeof(sub[1])) == GeneticVariation.VCF.Record
     @test (length(sub)) ==  5
+    
     end
 
             @testset "io_sig_list_vcf_filter" begin
 
             sub = ViVa.io_sig_list_vcf_filter(sig_list,vcf_filename)
-            println(sub)
             @test (typeof(sub[1])) == GeneticVariation.VCF.Record
             @test (length(sub)) ==  11
             end
-
-
 
             @testset "pass_siglist_filter" begin
             sub = pass_siglist_filter(vcf_filename, sig_list)
@@ -99,6 +92,7 @@ end
 @testset "combined_all_genotype_array_functions" begin
 
 sub = io_pass_filter(vcf_filename)
+number_rows = size(sub,1)
 
 gt_num_array,gt_chromosome_labels=combined_all_genotype_array_functions(sub)
 #println("combined_all_genotype_array_functions gt array is type: $(typeof(gt_num_array))")
@@ -111,11 +105,11 @@ gt_num_array,gt_chromosome_labels=combined_all_genotype_array_functions(sub)
 @test length(gt_chromosome_labels) == 2328
 
     @testset "chromosome_label_generator" begin
-    chrom_label_info = ViVa.chromosome_label_generator(gt_chromosome_labels[:,1])
+    chrom_label_info = ViVa.chromosome_label_generator(gt_chromosome_labels[:,1],number_rows)
     #println("chromosome_label_generator chrom_label_info is type $(typeof(chrom_label_info))")
     #println("chromosome_label_generator chrom_label_info is length $(length(chrom_label_info))")
-    @test typeof(chrom_label_info) == Tuple{Array{String,1},Array{Int64,1},String}
-    @test size(chrom_label_info,1) == 3
+    @test typeof(chrom_label_info) == Tuple{Array{String,1},Array{Int64,1},String,String}
+    @test size(chrom_label_info,1) == 4
     end
 
     @testset "generate_chromosome_positions_for_hover_labels" begin
@@ -182,7 +176,7 @@ dp_num_array,dp_chromosome_labels=combined_all_read_depth_array_functions(sub)
     @test length(sample_names) == 191
 
             @testset "read_depth_threshhold" begin
-            dp_num_array=read_depth_threshhold(dp_num_array)
+            dp_num_array=read_depth_threshhold(dp_num_array,dp_limit)
             #println("read_depth_threshhold dp_num_array is type $(typeof(dp_num_array))")
             #println("read_depth_threshhold dp_num_array is size $(size(dp_num_array,1))")
             @test typeof(dp_num_array) == Array{Int64,2}
@@ -218,7 +212,7 @@ dp_num_array,dp_chromosome_labels=combined_all_read_depth_array_functions(sub)
         #println("list_variant_positions_low_dp list type is $(typeof(list))")
         #println("list_variant_positions_low_dp list length is $(length(list))")
         @test typeof(list) == Array{Tuple{Any,Int64},1}
-        @test size(list,1) == 33
+        @test size(list,1) == 73
 
         end
 
