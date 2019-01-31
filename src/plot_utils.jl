@@ -1,904 +1,334 @@
+#heatmap plots for grouped and ungrouped genotype and read depth viz
+
 """
-    genotype_heatmap2(input::Array{Any,2},title::AbstractString,filename,sample_names,gt_chromosome_labels,y_axis_label_option,x_axis_label_option,save_ext,chrom_label_info)
+    genotype_heatmap2(input::Array{Any,2},title::AbstractString,filename,sample_names,gt_chromosome_labels,y_axis_label_option,x_axis_label_option,save_ext,chrom_label_info,number_rows)
 generate heatmap of genotype data.
 """
-function genotype_heatmap2(input,title,filename,sample_names,gt_chromosome_labels,y_axis_label_option,x_axis_label_option,save_ext,chrom_label_info)
+function genotype_heatmap2(input,title,chrom_label_info,sample_names,chr_pos_tuple_list_rev,y_axis_label_option) #chr_pos_tuple_list_rev is rev because heatmap in plotly mirrors list for some reason.
 
-    chromosome_label_array=make_chromosome_labels(chrom_label_info)
+            chr_pos_tuple_indices,chr_pos_tuple_list,sample_name_indices,sample_names,chrom_labels,chrom_label_indices,font_size = process_plot_inputs(chrom_label_info,sample_names,chr_pos_tuple_list_rev)
+            title_no_underscores=replace(title, "_", ' ')
 
-    chrom=gt_chromosome_labels[:,1]
-    pos=gt_chromosome_labels[:,2]
+               trace=heatmap(
+                   z = input, x = 1:size(input, 2),y = 1:size(input, 1),
 
-    @rput input
-    @rput title
-    @rput filename
-    @rput sample_names
-    @rput chrom
-    @rput pos
-    @rput save_ext
-    @rput chromosome_label_array
-    @rput x_axis_label_option
+                   zauto=false,zmax=3,zmin=0,
 
-    if y_axis_label_option == "positions"
+                   transpose=true,
+                   colorscale =    [[0, "rgb(255,255,255)"],
+                                   [0.33, "rgb(51,106,145)"],
+                                   [0.66, "rgb(65,165,137)"],
+                                   [1, "rgb(251,231,65)"]],
 
-            reval("
+                   gridcolor = "#E2E2E2",
+                   showscale = true,
+                   colorbar = attr(tickvals = [0, 1, 2, 3],
+                   ticktext = ["No Call (0)", "Homozygous Reference (1)", "Heterozygous Variant (2)", "Homozygous Variant (3)"])
+                   );
 
-            suppressPackageStartupMessages(library(heatmaply))
+                if y_axis_label_option == "chromosomes"
 
-            genotypes <- c('no call', 'homozygous reference',
-                'heterozygous variant', 'homozygous variant')
+                   layout = Layout(
+                                   title = "$title_no_underscores",
+                                   xaxis=attr(title="Sample ID", showgrid=false, zeroline=false, tickvals=sample_name_indices,
+                                   ticktext=sample_names, tickfont_size=5, tickangle=45,showticklabels=false),
+                                   yaxis=attr(title="Genomic Location", zeroline=false, tickvals=chrom_label_indices,
+                                   ticktext=chrom_labels,tickfont_size=font_size,hovermode=true,automargin=true)
+                   )
 
-            genotype_index <- as.matrix(input) + 1
-            genotype_text <- matrix(
-                paste('Genotype:', genotypes[genotype_index]),
-                ncol = ncol(input)
-            )
+                  data = (trace)
+                      plot(data,layout)
 
-            d=paste(chrom,pos,sep=',')
+               elseif y_axis_label_option == "positions"
 
-            colnames(input)<-sample_names
-            row.names(input)<-d
+                   layout = Layout(
+                                   title = "$title_no_underscores",
+                                   xaxis=attr(title="Sample ID", showgrid=false, zeroline=false, tickvals=sample_name_indices,
+                                   ticktext=sample_names, tickfont_size=5, tickangle=45,showticklabels=false),
+                                   yaxis=attr(title="Genomic Location", zeroline=false, tickvals=chr_pos_tuple_indices,
+                                   ticktext=chr_pos_tuple_list,tickfont_size=font_size,hovermode=true,automargin=true)
+                   )
 
-            h=heatmaply(
-            #plot_method='plotly',
-            input,
-            dend=FALSE,
-            showticklabels = if (x_axis_label_option=='true') {c(TRUE)} else {c(FALSE,TRUE)},
-            limits=c(0,3),
-            custom_hovertext = genotype_text,
-            Rowv=NULL,
-            Colv=NULL,
-            label_names = c('Position', 'Sample ID', 'Genotype Value'),
-            main = title,
-            xlab = 'Sample IDs',
-            ylab = 'Chromosomal Positions',
-            key.title = 'Genotype'
-            )
+               data = (trace)
+                   plot(data,layout)
 
-            h[['x']][['data']][[length(h[['x']][['data']])]][['marker']][['colorbar']][['ticktext']] <- genotypes
+               elseif y_axis_label_option == "hover_positions"
 
-            f<-filename
-            if (save_ext == 'html') {htmlwidgets::saveWidget(h,file.path(normalizePath(dirname(f)),basename(f)))} else {withr::with_dir(dirname(f), orca(h, basename(f)))
+                   layout = Layout(
+                                   title = "$title_no_underscores",
+                                   xaxis=attr(title="Sample ID", showgrid=false, zeroline=false, tickvals=sample_name_indices,
+                                   ticktext=sample_names, tickfont_size=5, tickangle=45,showticklabels=false),
+                                   yaxis=attr(title="Genomic Location", zeroline=false, tickvals=chr_pos_tuple_indices,
+                                   ticktext=chr_pos_tuple_list,tickfont_size=font_size,hovermode=true,automargin=true,showticklabels=false)
+                   )
 
-            }
+               data = (trace)
+                   plot(data,layout)
 
-            ")
+                else
+                    println("--y_axis_labels is not a valid option. Choose positions or chromosomes")
+                end
+end
 
-        elseif y_axis_label_option == "hover_positions"
+"""
+   genotype_heatmap_with_groups(input::Array{Int64,2},title::String,chrom_label_info::Tuple{Array{String,1},Array{Int64,1},String},group_label_pack::Array{Any,1},id_list,chr_pos_tuple_list_rev,y_axis_label_option)
+generate heatmap of genotype data.
+"""
+function genotype_heatmap_with_groups(input::Array{Int64,2},title::String,chrom_label_info::Tuple{Array{String,1},Array{Int64,1},String},group_label_pack::Array{Any,1},id_list,chr_pos_tuple_list_rev,y_axis_label_option)
 
-            reval("
+sample_name_indices,id_list,chrom_labels,chrom_label_indices,font_size,group_dividing_line,group1_label,group2_label,chr_pos_tuple_indices,chr_pos_tuple_list,font_size = process_plot_inputs_for_grouped_data(chrom_label_info::Tuple{Array{String,1},Array{Int64,1},String},group_label_pack::Array{Any,1},id_list,chr_pos_tuple_list_rev)
 
-            suppressPackageStartupMessages(library(heatmaply));
+title_no_underscores=replace(title, "_", ' ')
 
-            d=paste(chrom,pos,sep=',')
+                  trace=heatmap(
+                       z = input, x=1:size(input, 2),y=1:size(input, 1),
 
-            genotypes <- c('no call', 'homozygous reference',
-                'heterozygous variant', 'homozygous variant')
+                       zauto=false,zmax=3,zmin=-2,
 
-            genotype_index <- as.matrix(input) + 1
-            genotype_text <- matrix(
-                paste('Genotype:', genotypes[genotype_index]),
-                ncol = ncol(input)
-            )
+                      transpose=true,
+                      colorscale = [
+                                    [0, "rgb(174, 145, 255)"],
+                                    [0.2, "rgb(255, 220, 145)"],
+                                    [0.4, "rgb(56,25,90)"],
+                                    [0.6, "rgb(51,106,145)"],
+                                    [0.8, "rgb(65,165,137)"],
+                                    [1, "rgb(251,231,65)"]
+                                    ],
 
-            colnames(input)<-sample_names
-            row.names(input)<-d
+                      gridcolor = "#E2E2E2",
+                      showscale = true,
+                      colorbar = attr(tickvals = [-2, -1, 0, 1, 2, 3],
+                      ticktext = ["Trait 2", "Trait 1", "No Call (0)", "Homozygous Reference (1)", "Heterozygous Variant (2)", "Homozygous Variant (3)"])
+                      );
+                      shapes = [vline(group_dividing_line)]
 
-            h=heatmaply(
-            input,
-            dend=FALSE,
-            showticklabels= if (x_axis_label_option=='true') {c(TRUE,FALSE)} else {FALSE},
-            limits=c(0,3),
-            custom_hovertext = genotype_text,
-            Rowv=NULL,
-            Colv=NULL,
-            label_names = c('Position', 'Sample ID', 'Genotype Value'),
-            main = title,
-            xlab = 'Sample IDs',
-            ylab = 'Chromosomal Positions',
-            key.title = 'Genotype'
+      if y_axis_label_option == "chromosomes"
 
-            )
+          layout = Layout(
+                          title = "$title_no_underscores",
 
-            h[['x']][['data']][[length(h[['x']][['data']])]][['marker']][['colorbar']][['ticktext']] <- genotypes
+                          xaxis=attr(title="Sample ID (Grouped by $(group1_label) | $(group2_label))", showgrid=false, zeroline=false, tickvals=sample_name_indices,
+                          ticktext=id_list, tickfont_size=5, tickangle=45,showticklabels=false),
 
-            f<-filename
-            if (save_ext == 'html') {htmlwidgets::saveWidget(h,file.path(normalizePath(dirname(f)),basename(f)))} else {withr::with_dir(dirname(f), orca(h, basename(f)))
-            }
+                          yaxis=attr(title="Genomic Location", zeroline=false, tickvals=chrom_label_indices,
+                          ticktext=chrom_labels,tickfont_size=font_size,hovermode=true,automargin=true),
 
-            ")
+                          shapes=shapes, yaxis_range = [1:size(input,1)], xaxis_range = [1:size(input,2)]
+                        )
 
-        elseif y_axis_label_option == "chromosomes"
+            data = (trace)
+            plot(data,layout)
 
-            reval("
+      elseif y_axis_label_option == "positions"
+          layout = Layout(
+                          title = "$title_no_underscores",
 
-            #Convert array for chromosome row_side_colors colorbar from list to matrix and name with colname
-            chromosome_label_array2 <- matrix(unlist(chromosome_label_array))
-            colnames(chromosome_label_array2)<-'Chromosome'
+                          xaxis=attr(title="Sample ID (Grouped by $(group1_label) | $(group2_label))", showgrid=false, zeroline=false, tickvals=sample_name_indices,
+                          ticktext=id_list, tickfont_size=5, tickangle=45,showticklabels=false),
 
-            genotypes <- c('no call', 'homozygous reference',
-                'heterozygous variant', 'homozygous variant')
+                          yaxis=attr(title="Genomic Location", zeroline=false, tickvals=chr_pos_tuple_indices,
+                          ticktext=chr_pos_tuple_list,tickfont_size=font_size,hovermode=true,automargin=true),
 
-            genotype_index <- as.matrix(input) + 1
-            genotype_text <- matrix(
-                paste('Genotype:', genotypes[genotype_index]),
-                ncol = ncol(input)
-            )
+                          shapes=shapes, yaxis_range = [1:size(input,1)], xaxis_range = [1:size(input,2)] #line bright white
+                        )
 
-            #prepare chromosome positions hover labels
-            d=paste(chrom,pos,sep=',')
+            data = (trace)
+            plot(data,layout)
 
-            #m <- data.matrix(input)
-            m<-input
+      elseif y_axis_label_option == "hover_positions"
 
-            colnames(m)<-sample_names
-            row.names(m)<-d
+        layout = Layout(
+                        title = "$title_no_underscores",
+                        xaxis=attr(title="Sample ID (Grouped by $(group1_label) | $(group2_label))", showgrid=false, zeroline=false, tickvals=sample_name_indices,
+                        ticktext=id_list, tickfont_size=5, tickangle=45,showticklabels=false),
 
-            suppressPackageStartupMessages(library(heatmaply));
+                        yaxis=attr(title="Genomic Location", zeroline=false, tickvals=chr_pos_tuple_indices,
+                        ticktext=chr_pos_tuple_list,tickfont_size=font_size,hovermode=true,automargin=true,showticklabels=false),
 
-            h=heatmaply(
-            m,
-            dend=FALSE,
-            showticklabels= if (x_axis_label_option=='true') {c(TRUE,FALSE)} else {FALSE},
-            #plot_method='plotly',
-            colorbar_xanchor = 'left',
-            colorbar_yanchor = 'top',
-            colorbar_xpos = 1,
-            colorbar_ypos = 1,
-            row_side_colors=chromosome_label_array2,
-            row_side_palette = c(
-            '1'= '#d3d7cf',
-            '2'='#babdb6',
-            '3'='#fce94f',
-            '4'='#edd400',
-            '5'='#c4a000',
-            '6'='#8ae234',
-            '7'='#4e9a06',
-            '8'='#fcaf3e',
-            '9'='#f57900',
-            '10'='#ce5c00',
-            '11'='#e9b96e',
-            '12'='#c17d11',
-            '13'='#8f5902',
-            '14'='#729fcf',
-            '15'='#3465a4',
-            '16'='#204a87',
-            '17'='#ad7fa8',
-            '18'='#75507b',
-            '19'='#5c3566',
-            '20'='#888a85',
-            '21'='#555753',
-            '22'='#2e3436',
-            'X'='#ef2929',
-            'Y'='#cc0000',
-            'M'='#a40000'),
-            limits=c(0,3),
-            custom_hovertext = genotype_text,
-            Rowv=NULL,
-            Colv=NULL,
-            label_names = c('Position', 'Sample ID', 'Genotype Value'),
-            main = title,
-            xlab = 'Sample IDs',
-            ylab = 'Chromosomal Positions',
-            key.title = 'Genotype'
-            )
+                        shapes=shapes, yaxis_range = [1:size(input,1)], xaxis_range = [1:size(input,2)]
+        )
+        data = (trace)
+        plot(data,layout)
 
-            h[['x']][['data']][[length(h[['x']][['data']])]][['marker']][['colorbar']][['ticktext']] <- genotypes
+      else
+          println("--y_axis_labels is not a valid option. Choose positions or chromosomes")
+      end
+  end
 
-            f<-filename
-            if (save_ext == 'html') {htmlwidgets::saveWidget(h,file.path(normalizePath(dirname(f)),basename(f)))} else {withr::with_dir(dirname(f), orca(h, basename(f)))
-            }
-            ")
+"""
+    dp_heatmap2(input::Array{Int64,2},title::String,chrom_label_info::Tuple{Array{String,1},Array{Int64,1},String}, sample_names,chr_pos_tuple_list_rev,y_axis_label_option)
+generate heatmap of read depth data.
+"""
+function dp_heatmap2(input, title, chrom_label_info, sample_names,chr_pos_tuple_list_rev,y_axis_label_option)
+#rename chrom labels to y_labels and y_label indices
+    chr_pos_tuple_indices,chr_pos_tuple_list,sample_name_indices,sample_names,chrom_labels,chrom_label_indices,font_size = process_plot_inputs(chrom_label_info,sample_names,chr_pos_tuple_list_rev)
+
+    title_no_underscores=replace(title, "_", ' ')
+
+    trace=heatmap(
+        z = input, x=1:size(input, 2),y=1:size(input, 1),
+
+        zauto=false,zmax=100,zmin=-20,
+
+        transpose=true,
+        colorscale = [
+                     [0, "rgb(255,255,255)"],
+                     [0.2, "rgb(153,231,255)"],
+                     [0.3, "rgb(79,146,255)"],
+                     [0.41, "rgb(43,124,255)"],
+                     [1, "rgb(0,64,168)"]
+                     ],
+
+        colorbar = attr(tickvals = [-20,0,20,40,60,80,99],
+        title="Read Depth",
+        ticktext = ["No Call","0","20","40","60","80","100+"]),
+
+        gridcolor = "#E2E2E2",
+        showscale = true,
+        );
+
+        if y_axis_label_option == "chromosomes"
+
+           layout = Layout(
+                           title = "$title_no_underscores",
+                           xaxis=attr(title="Sample ID", showgrid=false, zeroline=false, tickvals=sample_name_indices,
+                           ticktext=sample_names, tickfont_size=5, tickangle=45,showticklabels=false),
+                           yaxis=attr(title="Genomic Location", zeroline=false, tickvals=chrom_label_indices,
+                           ticktext=chrom_labels,tickfont_size=font_size,hovermode=true,automargin=true)
+           )
+
+          data = (trace)
+              plot(data,layout)
+
+       elseif y_axis_label_option == "positions"
+
+           layout = Layout(
+                           title = "$title_no_underscores",
+                           xaxis=attr(title="Sample ID", showgrid=false, zeroline=false, tickvals=sample_name_indices,
+                           ticktext=sample_names, tickfont_size=5, tickangle=45,showticklabels=false),
+                           yaxis=attr(title="Genomic Location", zeroline=false, tickvals=chr_pos_tuple_indices,
+                           ticktext=chr_pos_tuple_list,tickfont_size=font_size,hovermode=true,automargin=true)
+           )
+
+       data = (trace)
+           plot(data,layout)
+
+       elseif y_axis_label_option == "hover_positions"
+
+           layout = Layout(
+                           title = "$title_no_underscores",
+                           xaxis=attr(title="Sample ID", showgrid=false, zeroline=false, tickvals=sample_name_indices,
+                           ticktext=sample_names, tickfont_size=5, tickangle=45,showticklabels=false),
+                           yaxis=attr(title="Genomic Location", zeroline=false, tickvals=chr_pos_tuple_indices,
+                           ticktext=chr_pos_tuple_list,tickfont_size=font_size,hovermode=true,automargin=true,showticklabels=false)
+           )
+           data = (trace)
+               plot(data,layout)
+
 
         else
-            println("--y_axis_labels is not a valid option. Choose positions or hover_positions")
+            println("--y_axis_labels is not a valid option. Choose positions or chromosomes")
         end
 end
 
 """
-   genotype_heatmap_with_groups(input::Array{Int64,2},title::String,filename,sample_names,gt_chromosome_labels,pheno_matrix,trait_labels,y_axis_label_option,x_axis_label_option,save_ext,chrom_label_info)
-generate heatmap of genotype data.
-"""
-function genotype_heatmap_with_groups(input,title,filename,sample_names,gt_chromosome_labels,pheno_matrix,trait_labels,y_axis_label_option,x_axis_label_option,save_ext,chrom_label_info)
-
-    chromosome_label_array=make_chromosome_labels(chrom_label_info)
-
-    pheno_rows=size(pheno_matrix,1)-1
-    pheno_cols=size(pheno_matrix,2)
-
-    chrom=gt_chromosome_labels[:,1]
-    pos=gt_chromosome_labels[:,2]
-
-    @rput input
-    @rput title
-    @rput filename
-    @rput sample_names
-    @rput chrom
-    @rput pos
-    @rput pheno_matrix
-    @rput trait_labels
-    @rput save_ext
-    @rput chromosome_label_array
-    @rput x_axis_label_option
-    @rput pheno_rows
-    @rput pheno_cols
-
-    if y_axis_label_option == "positions"
-
-        reval("
-
-        #set object genotypes to hold titles for legend. Set genotype_index and genotype_index to build labeled legend
-        genotypes <- c('no call', 'homozygous reference',
-            'heterozygous variant', 'homozygous variant')
-
-        genotype_index <- as.matrix(input) + 1
-        genotype_text <- matrix(
-            paste('Genotype:', genotypes[genotype_index]),
-            ncol = ncol(input)
-        )
-
-        #prepare chromosome positions hover labels
-        d=paste(chrom,pos,sep=',')
-
-        #transpose phenotype matrix to correct automatic transposition in heatmaply function.
-        pheno_matrix=t(pheno_matrix)
-        #Remove sample names from pheno matrix
-        pheno_matrix=pheno_matrix[,-1]
-        #transpose trait labels to match dims of pheno_matrix
-        trait_labels=t(trait_labels)
-        #convert pheno_matrix from type list to matrix
-        pheno_matrix2 <- matrix(unlist(pheno_matrix, use.names=FALSE), ncol = pheno_rows, byrow = FALSE)
-        #assign sample names as rownames and trait_labels as col_names on pheno_matrix because pheno_matrix is automatically transposed in heatmaply function
-        row.names(pheno_matrix2)<-sample_names
-        colnames(pheno_matrix2)<-trait_labels
-
-        #assign sample ids to input matrix column names and chromosome positions to row names for automatically generated tick labels
-        colnames(input)<-sample_names
-        row.names(input)<-d
-
-        suppressPackageStartupMessages(library(heatmaply))
-
-        h=heatmaply(
-        plot_method='plotly',
-        input,
-        dend=FALSE,
-        showticklabels= if (x_axis_label_option=='true') {c(TRUE)} else {c(FALSE,TRUE)},
-        limits=c(0,3),
-        custom_hovertext = genotype_text,
-        Rowv=NULL,
-        Colv=NULL,
-        col_side_colors=pheno_matrix2,
-        col_side_palette = c('1'= 'mediumpurple2',
-        '2'='steelblue2'),
-        label_names = c('Position', 'Sample ID', 'Genotype Value'),
-        main = title,
-        xlab = 'Sample IDs',
-        ylab = 'Chromosomal Positions',
-        key.title = 'Genotype'
-        )
-
-        h[['x']][['data']][[length(h[['x']][['data']])]][['marker']][['colorbar']][['ticktext']] <- genotypes
-
-        f<-filename
-        if (save_ext == 'html') {htmlwidgets::saveWidget(h,file.path(normalizePath(dirname(f)),basename(f)))} else {withr::with_dir(dirname(f), orca(h, basename(f)))
-
-        }
-        ")
-
-    elseif y_axis_label_option == "hover_positions"
-
-        reval("
-
-        #set object genotypes to hold titles for legend. Set genotype_index and genotype_index to build labeled legend
-        genotypes <- c('no call', 'homozygous reference',
-            'heterozygous variant', 'homozygous variant')
-
-        genotype_index <- as.matrix(input) + 1
-        genotype_text <- matrix(
-            paste('Genotype:', genotypes[genotype_index]),
-            ncol = ncol(input)
-        )
-
-        #prepare chromosome positions hover labels
-        d=paste(chrom,pos,sep=',')
-
-        #transpose phenotype matrix to correct automatic transposition in heatmaply function.
-        pheno_matrix=t(pheno_matrix)
-        #Remove sample names from pheno matrix
-        pheno_matrix=pheno_matrix[,-1]
-        #transpose trait labels to match dims of pheno_matrix
-        trait_labels=t(trait_labels)
-        #convert pheno_matrix from type list to matrix
-        pheno_matrix2 <- matrix(unlist(pheno_matrix, use.names=FALSE), ncol = pheno_rows, byrow = FALSE)
-        #assign sample names as rownames and trait_labels as col_names on pheno_matrix because pheno_matrix is automatically transposed in heatmaply function
-        row.names(pheno_matrix2)<-sample_names
-        colnames(pheno_matrix2)<-trait_labels
-
-        #assign sample ids to input matrix column names and chromosome positions to row names for automatically generated tick labels
-        colnames(input)<-sample_names
-        row.names(input)<-d
-
-        suppressPackageStartupMessages(library(heatmaply))
-
-        h=heatmaply(
-        plot_method='plotly',
-        input,
-        dend=FALSE,
-        showticklabels = if (x_axis_label_option=='true') {c(TRUE,FALSE)} else {FALSE},
-        limits=c(0,3),
-        custom_hovertext = genotype_text,
-        Rowv=NULL,
-        Colv=NULL,
-        showticklabels=FALSE,
-        col_side_colors=pheno_matrix2,
-        col_side_palette = c('1'= 'mediumpurple2',
-        '2'='steelblue2'),
-        label_names = c('Position', 'Sample ID', 'Genotype Value'),
-        main = title,
-        xlab = 'Sample IDs',
-        ylab = 'Chromosomal Positions',
-        key.title = 'Genotype'
-        )
-
-        h[['x']][['data']][[length(h[['x']][['data']])]][['marker']][['colorbar']][['ticktext']] <- genotypes
-
-        f<-filename
-        if (save_ext == 'html') {htmlwidgets::saveWidget(h,file.path(normalizePath(dirname(f)),basename(f)))} else {withr::with_dir(dirname(f), orca(h, basename(f)))
-
-        }
-
-        ")
-
-    elseif y_axis_label_option == "chromosomes"
-
-        reval("
-
-        #Convert array for chromosome row_side_colors colorbar from list to matrix and name with colname
-        chromosome_label_array2 <- matrix(unlist(chromosome_label_array))
-        colnames(chromosome_label_array2)<-'Chromosome'
-
-        #set object genotypes to hold titles for legend. Set genotype_index and genotype_index to build labeled legend
-        genotypes <- c('no call', 'homozygous reference',
-            'heterozygous variant', 'homozygous variant')
-
-        genotype_index <- as.matrix(input) + 1
-        genotype_text <- matrix(
-            paste('Genotype:', genotypes[genotype_index]),
-            ncol = ncol(input)
-        )
-
-        #prepare chromosome positions hover labels
-        d=paste(chrom,pos,sep=',')
-
-        #transpose phenotype matrix to correct automatic transposition in heatmaply function.
-        pheno_matrix=t(pheno_matrix)
-        #Remove sample names from pheno matrix
-        pheno_matrix=pheno_matrix[,-1]
-        #transpose trait labels to match dims of pheno_matrix
-        trait_labels=t(trait_labels)
-        #convert pheno_matrix from type list to matrix
-        pheno_matrix2 <- matrix(unlist(pheno_matrix, use.names=FALSE), ncol = pheno_rows, byrow = FALSE)
-        #assign sample names as rownames and trait_labels as col_names on pheno_matrix because pheno_matrix is automatically transposed in heatmaply function
-        row.names(pheno_matrix2)<-sample_names
-        colnames(pheno_matrix2)<-trait_labels
-
-        #assign sample ids to input matrix column names and chromosome positions to row names for automatically generated tick labels
-        colnames(input)<-sample_names
-        row.names(input)<-d
-
-        #load heatmaply package and suppress printing start up message
-        suppressPackageStartupMessages(library(heatmaply))
-
-        #define heatmap function for grouped genotype matrix with chromosome colorbar
-        h=heatmaply(
-        input,
-        dend=FALSE,
-        plot_method='plotly',
-        showticklabels= if (x_axis_label_option=='true') {c(TRUE,FALSE)} else {FALSE},
-        colorbar_xanchor = 'left',
-        colorbar_yanchor = 'top',
-        colorbar_xpos = -0.5,
-        colorbar_ypos = 0.5,
-        row_side_colors=(chromosome_label_array2),
-        subplot_widths=c(0.95,0.05),
-        subplot_heights=c(0.05,0.95),
-        row_side_palette = c(
-        '1'= '#d3d7cf',
-        '2'='#babdb6',
-        '3'='#fce94f',
-        '4'='#edd400',
-        '5'='#c4a000',
-        '6'='#8ae234',
-        '7'='#4e9a06',
-        '8'='#fcaf3e',
-        '9'='#f57900',
-        '10'='#ce5c00',
-        '11'='#e9b96e',
-        '12'='#c17d11',
-        '13'='#8f5902',
-        '14'='#729fcf',
-        '15'='#3465a4',
-        '16'='#204a87',
-        '17'='#ad7fa8',
-        '18'='#75507b',
-        '19'='#5c3566',
-        '20'='#888a85',
-        '21'='#555753',
-        '22'='#2e3436',
-        'X'='#ef2929',
-        'Y'='#cc0000',
-        'M'='#a40000'),
-        limits=c(0,3),
-        custom_hovertext = genotype_text,
-        Rowv=NULL,
-        Colv=NULL,
-        col_side_colors=pheno_matrix2,
-        col_side_palette = c('1'='mediumpurple2','2'='steelblue2'),
-        label_names = c('Position', 'Sample ID', 'Genotype Value'),
-        main = title,
-        xlab = 'Sample IDs',
-        ylab = 'Chromosomal Positions',
-        key.title = 'Genotype'
-        )
-
-        #set custom ticktext to colorbar genotype legend
-        #h[['x']][['data']][[length(h[['x']][['data']])]][['marker']][['colorbar']][['ticktext']] <- genotypes
-
-        #save file to output directory in correct format
-        f<-filename
-        if (save_ext == 'html') {htmlwidgets::saveWidget(h,file.path(normalizePath(dirname(f)),basename(f)))} else {withr::with_dir(dirname(f), orca(h, basename(f)))
-
-        }
-
-        ")
-
-    else
-        println("--y_axis_labels is not a valid option. Choose positions or hover_positions")
-    end
-
-end
-
-"""
-    dp_heatmap2(input::Array{Int64,2},title::String,chrom_label_info::Tuple{Array{String,1},Array{Int64,1},String}, sample_names,chr_pos_tuple_list_rev,y_axis_label_option,x_axis_label_option,save_ext,chrom_label_info,dp_limit)
-generate heatmap of read depth data.
-"""
-function dp_heatmap2(input,title,filename,sample_names,gt_chromosome_labels,y_axis_label_option,x_axis_label_option,save_ext,chrom_label_info,dp_limit)
-
-    chromosome_label_array=make_chromosome_labels(chrom_label_info)
-
-    chrom=gt_chromosome_labels[:,1]
-    pos=gt_chromosome_labels[:,2]
-
-    @rput input
-    @rput title
-    @rput filename
-    @rput sample_names
-    @rput chrom
-    @rput pos
-    @rput save_ext
-    @rput chromosome_label_array
-    @rput x_axis_label_option
-    @rput dp_limit
-
-    if y_axis_label_option == "positions"
-
-        reval("
-
-        d=paste(chrom,pos,sep=',')
-
-        colnames(input)<-sample_names
-        row.names(input)<-d
-
-        suppressPackageStartupMessages(library(heatmaply));
-
-        read_depth_colors <- c(
-              '#ffffff',
-              '#0037ff'
-        )
-
-        h=heatmaply(
-        #plot_method='plotly',
-        input,
-        dend=FALSE,
-        showticklabels= if (x_axis_label_option=='true') {c(TRUE)} else {c(FALSE,TRUE)},
-        colorbar_len=0.7,
-        colors = read_depth_colors,
-        limits = c(-1, dp_limit),
-        Rowv=NULL,
-        Colv=NULL,
-        label_names = c('Position', 'Sample ID', 'Read Depth'),
-        main = title,
-        xlab = 'Sample IDs',
-        ylab = 'Chromosomal Positions',
-        key.title = 'Read Depth'
-        )
-
-        f<-filename
-        if (save_ext == 'html') {htmlwidgets::saveWidget(h,file.path(normalizePath(dirname(f)),basename(f)))} else {withr::with_dir(dirname(f), orca(h, basename(f)))
-
-        }
-
-        ")
-
-    elseif y_axis_label_option == "hover_positions"
-
-        reval("
-
-        d=paste(chrom,pos,sep=',')
-
-        colnames(input)<-sample_names
-        row.names(input)<-d
-
-        suppressPackageStartupMessages(library(heatmaply));
-
-        read_depth_colors <- c(
-              '#ffffff',
-              '#0037ff'
-        )
-
-        #read_depth_colors <- c(
-        #      '#ffffff',
-        #      '#47aee1',
-        #      '#0037ff'
-        #)
-
-        h=heatmaply(
-        #plot_method='plotly',
-        input,
-        dend=FALSE,
-        colorbar_len=0.7,
-        colors = read_depth_colors,
-        limits = c(-1, dp_limit),
-        showticklabels= if (x_axis_label_option=='true') {c(TRUE,FALSE)} else {FALSE},
-        Rowv=NULL,
-        Colv=NULL,
-        label_names = c('Position', 'Sample ID', 'Read Depth'),
-        main = title,
-        xlab = 'Sample IDs',
-        ylab = 'Chromosomal Positions',
-        key.title = 'Read Depth'
-        )
-
-        f<-filename
-        if (save_ext == 'html') {htmlwidgets::saveWidget(h,file.path(normalizePath(dirname(f)),basename(f)))} else {withr::with_dir(dirname(f), orca(h, basename(f)))
-
-        }
-
-        ")
-
-    elseif y_axis_label_option == "chromosomes"
-
-        reval("
-
-        chromosome_label_array2 <- matrix(unlist(chromosome_label_array))
-        colnames(chromosome_label_array2)<-'Chromosome'
-
-        colnames(input)<-sample_names
-
-        suppressPackageStartupMessages(library(heatmaply));
-
-        read_depth_colors <- c(
-              '#ffffff',
-              '#0037ff'
-        )
-
-        h=heatmaply(
-        input,
-        dend=FALSE,
-        plot_method ='plotly',
-        colorbar_len=0.7,
-        colors = read_depth_colors,
-        limits = c(-1, dp_limit),
-        colorbar_xanchor = 'left',
-        colorbar_yanchor = 'top',
-        colorbar_xpos = 1,
-        colorbar_ypos = 1,
-        showticklabels= if (x_axis_label_option=='true') {c(TRUE,FALSE)} else {FALSE},
-        row_side_colors=chromosome_label_array2,
-        row_side_palette = c(
-        '1'= '#d3d7cf',
-        '2'='#babdb6',
-        '3'='#fce94f',
-        '4'='#edd400',
-        '5'='#c4a000',
-        '6'='#8ae234',
-        '7'='#4e9a06',
-        '8'='#fcaf3e',
-        '9'='#f57900',
-        '10'='#ce5c00',
-        '11'='#e9b96e',
-        '12'='#c17d11',
-        '13'='#8f5902',
-        '14'='#729fcf',
-        '15'='#3465a4',
-        '16'='#204a87',
-        '17'='#ad7fa8',
-        '18'='#75507b',
-        '19'='#5c3566',
-        '20'='#888a85',
-        '21'='#555753',
-        '22'='#2e3436',
-        'X'='#ef2929',
-        'Y'='#cc0000',
-        'M'='#a40000'),
-        Rowv=NULL,
-        Colv=NULL,
-        label_names = c('Position', 'Sample ID', 'Read Depth'),
-        main = title,
-        xlab = 'Sample IDs',
-        ylab = 'Chromosomal Positions',
-        key.title = 'Read Depth'
-        )
-
-        f<-filename
-        if (save_ext == 'html') {htmlwidgets::saveWidget(h,file.path(normalizePath(dirname(f)),basename(f)))} else {withr::with_dir(dirname(f), orca(h, basename(f)))
-
-        }
-
-        ")
-
-    else
-        println("--y_axis_labels is not a valid option. Choose positions or hover_positions")
-    end
-
-end
-
-#=
-read_depth_colors <- c(
-      'dark_blue' = '#0037ff',
-      'light_blue' = '#f37735',
-      'white' = '#ffffff'
-)
-
-=#
-
-"""
-    dp_heatmap2_with_groups(input::Array{Int64,2},title::String,chrom_label_info::Tuple{Array{String,1},Array{Int64,1},String},group_label_pack::Array{Any,1},id_list,chr_pos_tuple_list_rev,y_axis_label_option,x_axis_label_option,save_ext,chrom_label_info,dp_limit)
+    dp_heatmap2_with_groups(input::Array{Int64,2},title::String,chrom_label_info::Tuple{Array{String,1},Array{Int64,1},String},group_label_pack::Array{Any,1},id_list,chr_pos_tuple_list_rev,y_axis_label_option)
 generate heatmap of read depth data with grouped samples.
 """
-function dp_heatmap2_with_groups(input,title,filename,sample_names,gt_chromosome_labels,pheno_matrix,trait_labels,y_axis_label_option,x_axis_label_option,save_ext,chrom_label_info,dp_limit)
+function dp_heatmap2_with_groups(input::Array{Int64,2},title::String,chrom_label_info::Tuple{Array{String,1},Array{Int64,1},String},group_label_pack::Array{Any,1},id_list,chr_pos_tuple_list_rev,y_axis_label_option)
 
-    chromosome_label_array=make_chromosome_labels(chrom_label_info)
+    sample_name_indices,id_list,chrom_labels,chrom_label_indices,font_size,group_dividing_line,group1_label,group2_label,chr_pos_tuple_indices,chr_pos_tuple_list,font_size = process_plot_inputs_for_grouped_data(chrom_label_info::Tuple{Array{String,1},Array{Int64,1},String},group_label_pack::Array{Any,1},id_list,chr_pos_tuple_list_rev)
 
-    pheno_rows=size(pheno_matrix,1)-1
-    pheno_cols=size(pheno_matrix,2)
+    title_no_underscores=replace(title, "_", ' ')
 
-    chrom=gt_chromosome_labels[:,1]
-    pos=gt_chromosome_labels[:,2]
+    trace=heatmap(
+        z = input, x=1:size(input, 2),y=1:size(input, 1),
 
-    @rput input
-    @rput title
-    @rput filename
-    @rput sample_names
-    @rput chrom
-    @rput pos
-    @rput pheno_matrix
-    @rput trait_labels
-    @rput save_ext
-    @rput chromosome_label_array
-    @rput x_axis_label_option
-    @rput pheno_rows
-    @rput pheno_cols
-    @rput dp_limit
+        zauto=false,zmax=100,zmin=-60,
 
-    if y_axis_label_option == "positions"
+        transpose=true,
 
-        reval("
+        colorscale = [
+                         [0, "rgb(174, 145, 255)"],
+                         [0.125, "rgb(255, 220, 145)"],
+                         [0.25, "rgb(255, 255, 255)"],
+                         [0.4, "rgb(153,231,255)"],
+                         [0.5, "rgb(79,146,255)"],
+                         [0.5625, "rgb(43,124,255)"],
+                         [1, "rgb(0,64,168)"]
+                     ],
 
-        #prepare chromosome positions hover labels
-        d=paste(chrom,pos,sep=',')
+                     colorbar = attr(tickvals = [-60,-40,-20,0,20,40,60,80,99],
+                     title="Depth / Trait",
+                     ticktext = ["Trait 2","Trait 1","No Call","0","20","40","60","80","100+"]),
+                     gridcolor = "#E2E2E2",
+                     showscale = true,
+                     );
 
-        #transpose phenotype matrix to correct automatic transposition in heatmaply function.
-        pheno_matrix=t(pheno_matrix)
-        #Remove sample names from pheno matrix
-        pheno_matrix=pheno_matrix[,-1]
-        #transpose trait labels to match dims of pheno_matrix
-        trait_labels=t(trait_labels)
-        #convert pheno_matrix from type list to matrix
-        pheno_matrix2 <- matrix(unlist(pheno_matrix, use.names=FALSE), ncol = pheno_rows, byrow = FALSE)
-        #assign sample names as rownames and trait_labels as col_names on pheno_matrix because pheno_matrix is automatically transposed in heatmaply function
-        row.names(pheno_matrix2)<-sample_names
-        colnames(pheno_matrix2)<-trait_labels
+        shapes = [vline(group_dividing_line)]
 
-        #assign sample ids to input matrix column names and chromosome positions to row names for automatically generated tick labels
-        colnames(input)<-sample_names
-        row.names(input)<-d
+if y_axis_label_option == "chromosomes"
 
-        #define read_depth_colors
-        read_depth_colors <- c(
-              '#ffffff',
-              '#0037ff'
-        )
+    layout = Layout(
+                    title = "$title_no_underscores",
 
-        suppressPackageStartupMessages(library(heatmaply))
+                    xaxis=attr(title="Sample ID (Grouped by $(group1_label) | $(group2_label))",
+                    showgrid=false, zeroline=false, tickvals=sample_name_indices,
+                    ticktext=id_list, tickfont_size=5, tickangle=45,showticklabels=false),
 
-        h=heatmaply(
-        plot_method='plotly',
-        input,
-        dend=FALSE,
-        showticklabels= if (x_axis_label_option=='true') {c(TRUE)} else {c(FALSE,TRUE)},
-        colorbar_len=0.7,
-        colors = read_depth_colors,
-        limits = c(-1, dp_limit),        Rowv=NULL,
-        Colv=NULL,
-        col_side_colors=pheno_matrix2,
-        col_side_palette = c('1'= 'mediumpurple2',
-        '2'='steelblue2'),
-        label_names = c('Position', 'Sample ID', 'Read Depth'),
-        main = title,
-        xlab = 'Sample IDs',
-        ylab = 'Chromosomal Positions',
-        key.title = 'Read Depth'
-        )
+                    yaxis=attr(title="Genomic Location", zeroline=false,
+                    tickvals=chrom_label_indices,ticktext=chrom_labels,
+                    tickfont_size=font_size,hovermode=true,automargin=true),
 
-        f<-filename
-        if (save_ext == 'html') {htmlwidgets::saveWidget(h,file.path(normalizePath(dirname(f)),basename(f)))} else {withr::with_dir(dirname(f), orca(h, basename(f)))
+                    shapes=shapes, yaxis_range = [1:size(input,1)],
+                    xaxis_range = [1:size(input,2)]
+                  )
 
-        }
+      data = (trace)
+      plot(data,layout)
 
+elseif y_axis_label_option == "positions"
+    layout = Layout(
+                    title = "$title_no_underscores",
 
-        ")
+                    xaxis=attr(title="Sample ID (Grouped by $(group1_label) | $(group2_label))",
+                    showgrid=false, zeroline=false, tickvals=sample_name_indices,
+                    ticktext=id_list, tickfont_size=5, tickangle=45,showticklabels=false),
 
-    elseif y_axis_label_option == "hover_positions"
+                    yaxis=attr(title="Genomic Location", zeroline=false,
+                    tickvals=chr_pos_tuple_indices,
+                    ticktext=chr_pos_tuple_list,tickfont_size=font_size,
+                    hovermode=true,automargin=true),
 
-        reval("
+                    shapes=shapes, yaxis_range = [1:size(input,1)],
+                    xaxis_range = [1:size(input,2)] #line bright white
+                  )
 
-        #prepare chromosome positions hover labels
-        d=paste(chrom,pos,sep=',')
+      data = (trace)
+      plot(data,layout)
 
-        #transpose phenotype matrix to correct automatic transposition in heatmaply function.
-        pheno_matrix=t(pheno_matrix)
-        #Remove sample names from pheno matrix
-        pheno_matrix=pheno_matrix[,-1]
-        #transpose trait labels to match dims of pheno_matrix
-        trait_labels=t(trait_labels)
-        #convert pheno_matrix from type list to matrix
-        pheno_matrix2 <- matrix(unlist(pheno_matrix, use.names=FALSE), ncol = pheno_rows, byrow = FALSE)
-        #assign sample names as rownames and trait_labels as col_names on pheno_matrix because pheno_matrix is automatically transposed in heatmaply function
-        row.names(pheno_matrix2)<-sample_names
-        colnames(pheno_matrix2)<-trait_labels
+elseif y_axis_label_option == "hover_positions"
 
-        #assign sample ids to input matrix column names and chromosome positions to row names for automatically generated tick labels
-        colnames(input)<-sample_names
-        row.names(input)<-d
+  layout = Layout(
+                  title = "$title_no_underscores",
+                  xaxis=attr(title="Sample ID (Grouped by $(group1_label) | $(group2_label))", showgrid=false, zeroline=false, tickvals=sample_name_indices,
+                  ticktext=id_list, tickfont_size=5, tickangle=45,showticklabels=false),
 
-        #define read_depth_colors
-        read_depth_colors <- c(
-              '#ffffff',
-              '#0037ff'
-        )
+                  yaxis=attr(title="Genomic Location", zeroline=false, tickvals=chr_pos_tuple_indices,
+                  ticktext=chr_pos_tuple_list,tickfont_size=font_size,hovermode=true,automargin=true,showticklabels=false),
 
-        suppressPackageStartupMessages(library(heatmaply))
+                  shapes=shapes, yaxis_range = [1:size(input,1)], xaxis_range = [1:size(input,2)] #line bright white
+  )
+  data = (trace)
+  plot(data,layout)
 
-        h=heatmaply(
-        plot_method='plotly',
-        input,
-        dend=FALSE,
-        showticklabels= if (x_axis_label_option=='true') {c(TRUE,FALSE)} else {FALSE},
-        colorbar_len=0.7,
-        colors = read_depth_colors,
-        limits = c(-1, dp_limit),
-        Rowv=NULL,
-        Colv=NULL,
-        col_side_colors=pheno_matrix2,
-        col_side_palette = c('1'= 'mediumpurple2',
-        '2'='steelblue2'),
-        label_names = c('Position', 'Sample ID', 'Read Depth'),
-        main = title,
-        xlab = 'Sample IDs',
-        ylab = 'Chromosomal Positions',
-        key.title = 'Read Depth'
-        )
-
-        f<-filename
-        if (save_ext == 'html') {htmlwidgets::saveWidget(h,file.path(normalizePath(dirname(f)),basename(f)))} else {withr::with_dir(dirname(f), orca(h, basename(f)))
-
-        }
-
-        ")
-
-    elseif y_axis_label_option == "chromosomes"
-
-        reval("
-
-        #Convert array for chromosome row_side_colors colorbar from list to matrix and name with colname
-        chromosome_label_array2 <- matrix(unlist(chromosome_label_array))
-        colnames(chromosome_label_array2)<-'Chromosome'
-
-        #prepare chromosome positions hover labels
-        d=paste(chrom,pos,sep=',')
-
-        #transpose phenotype matrix to correct automatic transposition in heatmaply function.
-        pheno_matrix=t(pheno_matrix)
-        #Remove sample names from pheno matrix
-        pheno_matrix=pheno_matrix[,-1]
-        #transpose trait labels to match dims of pheno_matrix
-        trait_labels=t(trait_labels)
-        #convert pheno_matrix from type list to matrix
-        pheno_matrix2 <- matrix(unlist(pheno_matrix, use.names=FALSE), ncol = pheno_rows, byrow = FALSE)
-        #assign sample names as rownames and trait_labels as col_names on pheno_matrix because pheno_matrix is automatically transposed in heatmaply function
-        row.names(pheno_matrix2)<-sample_names
-        colnames(pheno_matrix2)<-trait_labels
-
-        #assign sample ids to input matrix column names and chromosome positions to row names for automatically generated tick labels
-        colnames(input)<-sample_names
-        row.names(input)<-d
-
-        #load heatmaply package and suppress printing start up message
-        suppressPackageStartupMessages(library(heatmaply))
-
-        #define read_depth_colors
-        read_depth_colors <- c(
-              '#ffffff',
-              '#0037ff'
-        )
-
-        h=heatmaply(
-        plot_method='plotly',
-        input,
-        dend=FALSE,
-        showticklabels= if (x_axis_label_option=='true') {c(TRUE,FALSE)} else {FALSE},
-        colorbar_len=0.7,
-        colors = read_depth_colors,
-        limits = c(-1, dp_limit),
-        colorbar_xanchor = 'left',
-        colorbar_yanchor = 'top',
-        colorbar_xpos = 1,
-        colorbar_ypos = 1,
-        row_side_colors=chromosome_label_array2,
-        row_side_palette = c(
-        '1'= '#d3d7cf',
-        '2'='#babdb6',
-        '3'='#fce94f',
-        '4'='#edd400',
-        '5'='#c4a000',
-        '6'='#8ae234',
-        '7'='#4e9a06',
-        '8'='#fcaf3e',
-        '9'='#f57900',
-        '10'='#ce5c00',
-        '11'='#e9b96e',
-        '12'='#c17d11',
-        '13'='#8f5902',
-        '14'='#729fcf',
-        '15'='#3465a4',
-        '16'='#204a87',
-        '17'='#ad7fa8',
-        '18'='#75507b',
-        '19'='#5c3566',
-        '20'='#888a85',
-        '21'='#555753',
-        '22'='#2e3436',
-        'X'='#ef2929',
-        'Y'='#cc0000',
-        'M'='#a40000'),
-        Rowv=NULL,
-        Colv=NULL,
-        col_side_colors=pheno_matrix2,
-        col_side_palette = c('1'= 'mediumpurple2',
-        '2'='steelblue2'),
-        label_names = c('Position', 'Sample ID', 'Read Depth'),
-        main = title,
-        xlab = 'Sample IDs',
-        ylab = 'Chromosomal Positions',
-        key.title = 'Read Depth'
-        )
-
-        f<-filename
-        if (save_ext == 'html') {htmlwidgets::saveWidget(h,file.path(normalizePath(dirname(f)),basename(f)))} else {withr::with_dir(dirname(f), orca(h, basename(f)))
-
-        }
-
-        ")
-
-    else
-        println("--y_axis_labels is not a valid option. Choose positions or hover_positions")
-    end
+else
+    println("--y_axis_labels is not a valid option. Choose positions or chromosomes")
+end
 
 end
 
-#PlotlyJS scatter plots
-
+#Scatter plots for average read depth viz
 """
     avg_sample_dp_scatter(sample_avg_list::Array{Float64,1},sample_names)
 generate line chart of average read depths of each sample.
@@ -908,7 +338,7 @@ function avg_sample_dp_scatter(sample_avg_list::Array{Float64,1},sample_names)
     sample_name_indices = collect(1:1:size(sample_names,2))
 
     trace = scatter(;x=1:size(sample_avg_list,1), y=sample_avg_list,mode="markers")
-    layout = Layout(title="Average Sample Read Depth",xaxis=attr(title="Samples",ticktext=sample_names,tickvals=sample_name_indices,tickangle=45,tickfont_size=5),yaxis=attr(title="Average Read Depth"),showticklabels=False)
+    layout = Layout(title="Average Sample Read Depth",xaxis=attr(title="Samples",ticktext=sample_names,tickvals=sample_name_indices,tickangle=45,tickfont_size=5),yaxis=attr(title="Average Read Depth"),showticklabels=false)
     plot(trace,layout)
 end
 
@@ -920,7 +350,65 @@ function avg_variant_dp_line_chart(variant_avg_list::Array{Float64,1},chr_pos_tu
 
     chr_pos_tuple_indices = collect(1:1:size(chr_pos_tuple_list,1))
 
-    trace = scatter(;x=1:size(variant_avg_list,1), y=variant_avg_list,mode="lines")
-    layout = Layout(title="Average Variant Read Depth",xaxis=attr(title="Variant Positions",ticktext=chr_pos_tuple_list,tickvals=chr_pos_tuple_indices,tickangle=45,tickfont_size=5,showticklabels=False),yaxis=attr(title="Average Read Depth"))
+    trace = scatter(;x=1:size(variant_avg_list,1), y=variant_avg_list,mode="markers")
+    layout = Layout(title="Average Variant Read Depth",xaxis=attr(title="Variant Positions",ticktext=chr_pos_tuple_list,tickvals=chr_pos_tuple_indices,tickangle=45,tickfont_size=5,showticklabels=false),yaxis=attr(title="Average Read Depth"))
     plot(trace,layout)
+end
+
+
+"""
+    process_plot_inputs(chrom_label_info,sample_names,chr_pos_tuple_list_rev)
+Prepares input for heatmap plot function for both genotype and read depth plots without --group_samples flag.
+"""
+function process_plot_inputs(chrom_label_info,sample_names,chr_pos_tuple_list_rev)
+
+    chr_pos_tuple_indices = collect(1:1:size(chr_pos_tuple_list_rev,1))
+    #chr_pos_tuple_list_rev=chr_pos_tuple_list_rev[end:-1:1,end:-1:1]
+
+    chr_pos_tuple_list=Array{Tuple{Any,Int64}}(0)
+
+    for i in chr_pos_tuple_list_rev
+        push!(chr_pos_tuple_list, i)
+    end
+
+    sample_name_indices = collect(1:1:size(sample_names,2))
+    #sample_names=sample_names[end:-1:1,end:-1:1]
+
+    chrom_labels = chrom_label_info[1]
+    returnXY_column1!(chrom_labels)
+    chrom_label_indices = chrom_label_info[2]
+    font_size = chrom_label_info[3]
+
+    return chr_pos_tuple_indices,chr_pos_tuple_list,sample_name_indices,sample_names,chrom_labels,chrom_label_indices,font_size
+end
+
+"""
+    process_plot_inputs_for_grouped_data(chrom_label_info::Tuple{Array{String,1},Array{Int64,1},String},group_label_pack::Array{Any,1},id_list,chr_pos_tuple_list_rev)
+Prepares input for heatmap plot function for both genotype and read depth plots with --group_samples flag.
+"""
+function process_plot_inputs_for_grouped_data(chrom_label_info::Tuple{Array{String,1},Array{Int64,1},String},group_label_pack::Array{Any,1},id_list,chr_pos_tuple_list_rev)
+
+    sample_name_indices = collect(1:1:size(id_list,2))
+    #id_list=id_list[end:-1:1,end:-1:1]
+
+    chrom_labels = chrom_label_info[1]
+    returnXY_column1!(chrom_labels)
+    chrom_label_indices = chrom_label_info[2]
+    font_size = chrom_label_info[3]
+
+    group_dividing_line=group_label_pack[3]
+    group1_label=group_label_pack[4]
+    group2_label=group_label_pack[5]
+
+    chr_pos_tuple_indices = collect(1:1:size(chr_pos_tuple_list_rev,1))
+    #chr_pos_tuple_list_rev=chr_pos_tuple_list_rev[end:-1:1,end:-1:1]
+
+    chr_pos_tuple_list=Array{Tuple{Any,Int64}}(0)
+
+    for i in chr_pos_tuple_list_rev
+        push!(chr_pos_tuple_list, i)
+    end
+
+    return sample_name_indices,id_list,chrom_labels,chrom_label_indices,font_size,group_dividing_line,group1_label,group2_label,chr_pos_tuple_indices,chr_pos_tuple_list,font_size
+
 end

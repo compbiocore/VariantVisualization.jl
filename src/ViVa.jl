@@ -1,13 +1,15 @@
 module ViVa
 
 using DataFrames
-#using PlotlyJS
-#using Rsvg
-#using Blink
+using PlotlyJS
+using Rsvg
+using Blink
 using GeneticVariation
 using ArgParse
-using VCFTools
+#using VCFTools
 using RCall
+#using VegaLite
+
 
 #using Base.Filesystem
 
@@ -67,13 +69,16 @@ export
     checkfor_outputdirectory,
     combined_all_genotype_array_functions,
     combined_all_read_depth_array_functions,
+    combined_all_read_depth_array_functions_for_avg_dp,
     generate_chromosome_positions_for_hover_labels,
     clean_column1_chr,
     clean_column1_siglist!,
     process_plot_inputs,
     process_plot_inputs_for_grouped_data,
     returnXY_column1_siglist!,
-    chromosome_label_generator
+    chromosome_label_generator,
+    add_pheno_matrix_to_gt_data_for_plotting,
+    add_pheno_matrix_to_dp_data_for_plotting
 
 #include("vcf_utils.jl")
 include("vcf_utils_complete.jl")

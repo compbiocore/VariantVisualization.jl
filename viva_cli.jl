@@ -1,15 +1,17 @@
 tic()
 
+println()
 println("Welcome to ViVa.")
 println()
 println("Loading packages:")
+println()
+
 
 #using Suppressor
 
 println("1/4 ViVa")
 #println("While using ViVa for Julia <v0.7 ignore 'WARNING: Method definition' when loading packages.")
 (using ViVa)
-
 
 #println("ProgressMeter")
 #using ProgressMeter
@@ -26,29 +28,11 @@ using ArgParse
 
 println("4/4 RCall")
 using RCall
+println()
 
 println("Finished loading packages!")
 println()
 
-#=
-tic()
-println("loading packages:")
-println("ViVa")
-using ViVa
-toc()
-tic()
-println("GeneticVariation")
-using GeneticVariation
-toc()
-tic()
-println("ArgParse")
-using ArgParse
-toc()
-tic()
-println("VCFTools")
-using VCFTools
-toc()
-=#
 
 function test_parse_main(ARGS::Vector{String})
 
@@ -118,7 +102,7 @@ function test_parse_main(ARGS::Vector{String})
         arg_type = String
 
         "--heatmap_title", "-t"
-        help = "positional argument. Specify filename for heatmap"
+        help = "Specify filename for heatmap with underscores for spaces."
         arg_type = String
 
         "--avg_dp"
@@ -126,14 +110,10 @@ function test_parse_main(ARGS::Vector{String})
         arg_type = String
         #default = "sample,variant" #turn on when plotly working
 
-        "--dp_limit"
-        help = "set ceiling for dp values to be visualized. Defaults to DP = 50. Allows for visualizing better resolution."
-        arg_type = Integer
-        default = 50
-
     end
 
-    parsed_args = parse_args(s)# can turn off printing parsed args after development"
+    parsed_args = parse_args(s)
+    # can turn off printing parsed args after development"
     #println("Parsed args:")
 
 #activate block to show all argument keys
@@ -153,8 +133,7 @@ parsed_args = test_parse_main(ARGS)
 
 vcf_filename = (parsed_args["vcf_file"])
 println("Reading $vcf_filename ...")
-
-dp_limit = parsed_args["dp_limit"]
+println()
 
 reader = VCF.Reader(open(vcf_filename, "r"))
 sample_names = get_sample_names(reader)
@@ -312,7 +291,7 @@ if parsed_args["heatmap"] == "genotype"
 
     chr_pos_tuple_list = generate_chromosome_positions_for_hover_labels(gt_chromosome_labels)
 
-    chrom_label_info = chromosome_label_generator(gt_chromosome_labels[:,1],number_rows)
+    chrom_label_info = ViVa.chromosome_label_generator(gt_chromosome_labels[:,1])
 
     if length(parsed_args["group_samples"]) == 2
 
@@ -330,9 +309,20 @@ if parsed_args["heatmap"] == "genotype"
 
         ordered_num_array,group_label_pack,pheno,id_list,trait_labels = sortcols_by_phenotype_matrix(group_trait_matrix_filename, trait_to_group_by, gt_num_array, sample_names)
 
-        ViVa.genotype_heatmap_with_groups(ordered_num_array,title,joinpath("$(parsed_args["output_directory"])" ,"$title.$(parsed_args["save_format"])"),id_list,gt_chromosome_labels,pheno,trait_labels,y_axis_label_option,x_axis_label_option,save_ext,chrom_label_info)
-        println(joinpath("$(parsed_args["output_directory"])" ,"$title.$(parsed_args["save_format"])"))
+        #=
+        writedlm("exon_01_burden_matrix.csv",ordered_num_array,',')
+        chr_set=vcat("chr,position",chr_pos_tuple_list)
+        labeled_value_matrix_withsamplenames(sample_names,ordered_num_array)
+        hcat(chr_set,)
 
+        =#
+
+        save_numerical_array(ordered_num_array,sample_names,chr_pos_tuple_list)
+
+        pheno_num_array,trait_label_array=add_pheno_matrix_to_gt_data_for_plotting(ordered_num_array,pheno,trait_labels)
+
+        #ViVa.genotype_heatmap_with_groups(ordered_num_array,title,joinpath("$(parsed_args["output_directory"])" ,"$title.$(parsed_args["save_format"])"),id_list,gt_chromosome_labels,pheno,trait_labels,y_axis_label_option,x_axis_label_option,save_ext,chrom_label_info,number_rows)
+        graphic = ViVa.genotype_heatmap_with_groups(pheno_num_array,title,chrom_label_info,group_label_pack,id_list,chr_pos_tuple_list,y_axis_label_option)
     else
 
         if parsed_args["select_samples"] != nothing
@@ -342,14 +332,15 @@ if parsed_args["heatmap"] == "genotype"
 
         #graphic = ViVa.genotype_heatmap2(gt_num_array,title,chrom_label_info,sample_names,chr_pos_tuple_list,y_axis_label_option)
         #ViVa.genotype_heatmap2(gt_num_array,title,"test_3.html")
-        (ViVa.genotype_heatmap2(gt_num_array,title,joinpath("$(parsed_args["output_directory"])","$title.$(parsed_args["save_format"])"),sample_names,gt_chromosome_labels,y_axis_label_option,x_axis_label_option,save_ext,chrom_label_info))
+        graphic = ViVa.genotype_heatmap2(gt_num_array,title,chrom_label_info,sample_names,chr_pos_tuple_list,y_axis_label_option)
+        #(ViVa.genotype_heatmap2(gt_num_array,title,joinpath("$(parsed_args["output_directory"])","$title.$(parsed_args["save_format"])"),sample_names,gt_chromosome_labels,y_axis_label_option,x_axis_label_option,save_ext,chrom_label_info,number_rows))
         #ViVa.genotype_heatmap2(gt_num_array,title,joinpath("$(parsed_args["output_directory"])","title_test.pdf"),sample_names,gt_chromosome_labels,y_axis_label_option,x_axis_label_option,save_ext,chrom_label_info,dp_limit)
 
     end
 
-    println("saving now")
+    println("saving genotype heatmap")
 
-    #PlotlyJS.savefig(graphic, joinpath("$(parsed_args["output_directory"])" ,"$title.$(parsed_args["save_format"])"), js=:remote)
+    PlotlyJS.savefig(graphic, joinpath("$(parsed_args["output_directory"])" ,"$title.$(parsed_args["save_format"])"), js=:remote)
 
 end
 
@@ -366,7 +357,7 @@ if parsed_args["heatmap"] == "read_depth"
 
     chr_pos_tuple_list = generate_chromosome_positions_for_hover_labels(dp_chromosome_labels)
 
-    chrom_label_info = ViVa.chromosome_label_generator(dp_chromosome_labels[:,1],number_rows)
+    chrom_label_info = ViVa.chromosome_label_generator(dp_chromosome_labels[:,1])
 
     if length(parsed_args["group_samples"]) == 2
 
@@ -381,9 +372,12 @@ if parsed_args["heatmap"] == "read_depth"
         println("grouping samples by $trait_to_group_by")
 
         ordered_dp_num_array,group_label_pack,pheno,id_list,trait_labels = sortcols_by_phenotype_matrix(group_trait_matrix_filename, trait_to_group_by, dp_num_array, sample_names)
-        dp_num_array_limited=read_depth_threshhold(ordered_dp_num_array,dp_limit)
+        dp_num_array_limited=read_depth_threshhold(ordered_dp_num_array)
 
-        (ViVa.dp_heatmap2_with_groups(dp_num_array_limited,title,joinpath("$(parsed_args["output_directory"])" ,"$title.$(parsed_args["save_format"])"),id_list,dp_chromosome_labels,pheno,trait_labels,y_axis_label_option,x_axis_label_option,save_ext,chrom_label_info,dp_limit))
+        pheno_num_array,trait_label_array = add_pheno_matrix_to_dp_data_for_plotting(dp_num_array_limited,pheno,trait_labels)
+
+        #(ViVa.dp_heatmap2_with_groups(dp_num_array_limited,title,joinpath("$(parsed_args["output_directory"])" ,"$title.$(parsed_args["save_format"])"),id_list,dp_chromosome_labels,pheno,trait_labels,y_axis_label_option,x_axis_label_option,save_ext,chrom_label_info,dp_limit))
+        graphic = ViVa.dp_heatmap2_with_groups(pheno_num_array,title,chrom_label_info,group_label_pack,id_list,chr_pos_tuple_list,y_axis_label_option)
 
     else
 
@@ -391,9 +385,14 @@ if parsed_args["heatmap"] == "read_depth"
             dp_num_array = select_columns(parsed_args["select_samples"], dp_num_array, sample_names)
         end
 
-        dp_num_array_limited=read_depth_threshhold(dp_num_array,dp_limit)
-        (ViVa.dp_heatmap2(dp_num_array_limited, title,joinpath("$(parsed_args["output_directory"])","$title.$(parsed_args["save_format"])"),sample_names,dp_chromosome_labels,y_axis_label_option,x_axis_label_option,save_ext,chrom_label_info,dp_limit))
+        dp_num_array_limited=read_depth_threshhold(dp_num_array)
+        #(ViVa.dp_heatmap2(dp_num_array_limited, title,joinpath("$(parsed_args["output_directory"])","$title.$(parsed_args["save_format"])"),sample_names,dp_chromosome_labels,y_axis_label_option,x_axis_label_option,save_ext,chrom_label_info,dp_limit))
+        graphic = ViVa.dp_heatmap2(dp_num_array, title, chrom_label_info, sample_names,chr_pos_tuple_list,y_axis_label_option)
     end
+
+    println("saving read depth heatmap")
+
+    PlotlyJS.savefig(graphic, joinpath("$(parsed_args["output_directory"])" ,"$title.$(parsed_args["save_format"])"), js=:remote)
 
 
 elseif parsed_args["heatmap"] == "genotype,read_depth" || parsed_args["heatmap"] == "read_depth,genotype"
@@ -409,7 +408,7 @@ elseif parsed_args["heatmap"] == "genotype,read_depth" || parsed_args["heatmap"]
 
     chr_pos_tuple_list = generate_chromosome_positions_for_hover_labels(gt_chromosome_labels)
 
-    chrom_label_info = ViVa.chromosome_label_generator(gt_chromosome_labels[:,1],number_rows)
+    chrom_label_info = ViVa.chromosome_label_generator(gt_chromosome_labels[:,1])
 
     if length(parsed_args["group_samples"]) == 2
 
@@ -426,8 +425,10 @@ elseif parsed_args["heatmap"] == "genotype,read_depth" || parsed_args["heatmap"]
         println("grouping samples by $trait_to_group_by")
 
         ordered_num_array,group_label_pack,pheno,id_list,trait_labels = sortcols_by_phenotype_matrix(group_trait_matrix_filename, trait_to_group_by, gt_num_array, sample_names)
+        pheno_num_array,trait_label_array=add_pheno_matrix_to_gt_data_for_plotting(ordered_num_array,pheno,trait_labels)
 
-        (ViVa.genotype_heatmap_with_groups(ordered_num_array,title,joinpath("$(parsed_args["output_directory"])" ,"$title.$(parsed_args["save_format"])"),id_list,gt_chromosome_labels,pheno,trait_labels,y_axis_label_option,x_axis_label_option,save_ext,chrom_label_info))
+        #ViVa.genotype_heatmap_with_groups(ordered_num_array,title,joinpath("$(parsed_args["output_directory"])" ,"$title.$(parsed_args["save_format"])"),id_list,gt_chromosome_labels,pheno,trait_labels,y_axis_label_option,x_axis_label_option,save_ext,chrom_label_info,number_rows)
+        graphic = ViVa.genotype_heatmap_with_groups(pheno_num_array,title,chrom_label_info,group_label_pack,id_list,chr_pos_tuple_list,y_axis_label_option)
 
     else
 
@@ -436,10 +437,13 @@ elseif parsed_args["heatmap"] == "genotype,read_depth" || parsed_args["heatmap"]
             sample_names=col_selectedcolumns
         end
 
-        (ViVa.genotype_heatmap2(gt_num_array,title,joinpath("$(parsed_args["output_directory"])","$title.$(parsed_args["save_format"])"),sample_names,gt_chromosome_labels,y_axis_label_option,x_axis_label_option,save_ext,chrom_label_info))
+        graphic = ViVa.genotype_heatmap2(gt_num_array,title,chrom_label_info,sample_names,chr_pos_tuple_list,y_axis_label_option)
+        #(ViVa.genotype_heatmap2(gt_num_array,title,joinpath("$(parsed_args["output_directory"])","$title.$(parsed_args["save_format"])"),sample_names,gt_chromosome_labels,y_axis_label_option,x_axis_label_option,save_ext,chrom_label_info,number_rows))
     end
 
-    println("saving now")
+    println("saving genotype heatmap")
+
+    PlotlyJS.savefig(graphic, joinpath("$(parsed_args["output_directory"])" ,"$title.$(parsed_args["save_format"])"), js=:remote)
 
     if parsed_args["heatmap_title"] != nothing
         title = parsed_args["heatmap_title"]
@@ -459,7 +463,7 @@ elseif parsed_args["heatmap"] == "genotype,read_depth" || parsed_args["heatmap"]
 
     chr_pos_tuple_list = generate_chromosome_positions_for_hover_labels(dp_chromosome_labels)
 
-    chrom_label_info = ViVa.chromosome_label_generator(dp_chromosome_labels[:,1],number_rows)
+    chrom_label_info = ViVa.chromosome_label_generator(dp_chromosome_labels[:,1])
 
     if length(parsed_args["group_samples"]) == 2
 
@@ -474,9 +478,12 @@ elseif parsed_args["heatmap"] == "genotype,read_depth" || parsed_args["heatmap"]
         #println("grouping samples by $trait_to_group_by")
 
         ordered_dp_num_array,group_label_pack,pheno,id_list,trait_labels = sortcols_by_phenotype_matrix(group_trait_matrix_filename, trait_to_group_by, dp_num_array, sample_names)
-        dp_num_array_limited=read_depth_threshhold(ordered_dp_num_array,dp_limit)
+        dp_num_array_limited=read_depth_threshhold(ordered_dp_num_array)
 
-        (ViVa.dp_heatmap2_with_groups(dp_num_array_limited,title,joinpath("$(parsed_args["output_directory"])" ,"$title.$(parsed_args["save_format"])"),id_list,dp_chromosome_labels,pheno,trait_labels,y_axis_label_option,x_axis_label_option,save_ext,chrom_label_info,dp_limit))
+        pheno_num_array,trait_label_array = add_pheno_matrix_to_dp_data_for_plotting(dp_num_array_limited,pheno,trait_labels)
+
+        #(ViVa.dp_heatmap2_with_groups(dp_num_array_limited,title,joinpath("$(parsed_args["output_directory"])" ,"$title.$(parsed_args["save_format"])"),id_list,dp_chromosome_labels,pheno,trait_labels,y_axis_label_option,x_axis_label_option,save_ext,chrom_label_info,dp_limit))
+        graphic = ViVa.dp_heatmap2_with_groups(pheno_num_array,title,chrom_label_info,group_label_pack,id_list,chr_pos_tuple_list,y_axis_label_option)
 
     else
 
@@ -485,18 +492,22 @@ elseif parsed_args["heatmap"] == "genotype,read_depth" || parsed_args["heatmap"]
             sample_names=col_selectedcolumns
         end
 
-        dp_num_array_limited=read_depth_threshhold(dp_num_array,dp_limit)
-        (ViVa.dp_heatmap2(dp_num_array_limited, title,joinpath("$(parsed_args["output_directory"])","$title.$(parsed_args["save_format"])"),sample_names,dp_chromosome_labels,y_axis_label_option,x_axis_label_option,save_ext,chrom_label_info,dp_limit))
+        dp_num_array_limited=read_depth_threshhold(dp_num_array)
+        #(ViVa.dp_heatmap2(dp_num_array_limited, title,joinpath("$(parsed_args["output_directory"])","$title.$(parsed_args["save_format"])"),sample_names,dp_chromosome_labels,y_axis_label_option,x_axis_label_option,save_ext,chrom_label_info,dp_limit))
+        graphic = ViVa.dp_heatmap2(dp_num_array, title, chrom_label_info, sample_names,chr_pos_tuple_list,y_axis_label_option)
 
     end
+
+    println("saving read depth heatmap")
+
+    PlotlyJS.savefig(graphic, joinpath("$(parsed_args["output_directory"])" ,"$title.$(parsed_args["save_format"])"), js=:remote)
+
 
 end
 
 if parsed_args["avg_dp"] == "sample"
 
-    if isdefined(:dp_num_array) == false
-        dp_num_array,dp_chromosome_labels=combined_all_read_depth_array_functions(sub)
-    end
+    dp_num_array,dp_chromosome_labels=combined_all_read_depth_array_functions_for_avg_dp(sub)
 
     chr_pos_tuple_list = generate_chromosome_positions_for_hover_labels(dp_chromosome_labels)
 
@@ -509,9 +520,7 @@ if parsed_args["avg_dp"] == "sample"
 
 elseif parsed_args["avg_dp"] == "variant"
 
-    if isdefined(:dp_num_array) == false
-        dp_num_array,dp_chromosome_labels=combined_all_read_depth_array_functions(sub)
-    end
+    dp_num_array,dp_chromosome_labels=combined_all_read_depth_array_functions_for_avg_dp(sub)
 
     chr_pos_tuple_list = generate_chromosome_positions_for_hover_labels(dp_chromosome_labels)
 
@@ -525,9 +534,7 @@ elseif parsed_args["avg_dp"] == "variant"
 
 elseif parsed_args["avg_dp"] == "variant,sample" || parsed_args["avg_dp"] == "sample,variant"
 
-    if isdefined(:dp_num_array) == false
-        dp_num_array,dp_chromosome_labels=combined_all_read_depth_array_functions(sub)
-    end
+    dp_num_array,dp_chromosome_labels=combined_all_read_depth_array_functions_for_avg_dp(sub)
 
     chr_pos_tuple_list = generate_chromosome_positions_for_hover_labels(dp_chromosome_labels)
 

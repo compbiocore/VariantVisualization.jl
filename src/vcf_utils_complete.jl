@@ -575,7 +575,20 @@ function combined_all_read_depth_array_functions(sub)
     clean_column1!(read_depth_array)
     read_depth_array=ViVa.sort_genotype_array(read_depth_array)
     dp_num_array,dp_chromosome_labels = translate_readdepth_strings_to_num_array(read_depth_array)
+    return dp_num_array,dp_chromosome_labels
+end
 
+"""
+    combined_all_read_depth_array_functions_for_avg_dp(sub)
+convert sub from variant filters to dp_num_array and dp_chromosome_labels for plot functions.
+"""
+function combined_all_read_depth_array_functions_for_avg_dp(sub)
+
+    read_depth_array = ViVa.generate_genotype_array(sub,"DP")
+    map!(s->replace(s, "chr", ""), read_depth_array, read_depth_array)
+    clean_column1!(read_depth_array)
+    read_depth_array=ViVa.sort_genotype_array(read_depth_array)
+    dp_num_array,dp_chromosome_labels = translate_readdepth_strings_to_num_array_for_avg_dp(read_depth_array)
     return dp_num_array,dp_chromosome_labels
 end
 
@@ -659,7 +672,7 @@ end
 """
     translate_readdepth_strings_to_num_array(read_depth_array::Array{Any,2})
 Returns array of read_depth as int for plotting and average calculation.
-By default, read depth values over 100 are replaced with 100 to improve heatmap visualization (see read_depth_threshhold() ).
+Ceiling of dp=100 is set to prevent high dp value from hiding (or "blowing out") low dp values. (see read_depth_threshhold() ).
 Where read_depth_array is output of generate_genotype_array() for DP option
 returns a tuple of num_array type Int for average calculation and plotting, and chromosome labels for plotting as label bar
 """
@@ -669,7 +682,27 @@ function translate_readdepth_strings_to_num_array(read_depth_array::Array{Any,2}
 
        dp_array_for_plotly = read_depth_array[:,3:size(read_depth_array,2)]
 
-       map!(s->replace(s, ".", "-1"), dp_array_for_plotly, dp_array_for_plotly)
+       map!(s->replace(s, ".", "-20"), dp_array_for_plotly, dp_array_for_plotly)
+
+       dp_array_for_plotly = [parse(Int, i) for i in dp_array_for_plotly]
+
+       return dp_array_for_plotly, chromosome_labels
+end
+
+"""
+    translate_readdepth_strings_to_num_array_for_avg_dp(read_depth_array::Array{Any,2})
+Returns array of read_depth as int for plotting and average calculation.
+'read_depth_array' is output of generate_genotype_array() for DP option
+returns a tuple of num_array type Int for average calculation and plotting, and chromosome labels for plotting as label bar
+No call is replaced with 0 for avg_calculation. Ceiling of dp=100 is set to prevent high dp value from hiding (or "blowing out") low dp values.
+"""
+function translate_readdepth_strings_to_num_array_for_avg_dp(read_depth_array::Array{Any,2})
+
+       chromosome_labels = read_depth_array[:,1:2]
+
+       dp_array_for_plotly = read_depth_array[:,3:size(read_depth_array,2)]
+
+       map!(s->replace(s, ".", "0"), dp_array_for_plotly, dp_array_for_plotly)
 
        dp_array_for_plotly = [parse(Int, i) for i in dp_array_for_plotly]
 
@@ -873,14 +906,17 @@ end
 #functions for producing objects for plot functions
 
 """
-    read_depth_threshhold(dp_array::Array{Int64,2},dp_limit)
-sets ceiling for read depth values at user defined threshhold. threshhold defaults to dp = 100. All dp over 100 are set to 100 to visualize read depth values between 0 < dp > 100 in better definition.
+    read_depth_threshhold(dp_array::Array{Int64,2})
+Caps read depth outlier values at user defined threshhold.
+threshhold defaults to dp = 100. All dp over 100 are set to 100 to visualize
+read depth values between 0 < dp > 100 in better definition.
 """
-function read_depth_threshhold(dp_array::Array{Int64,2},dp_limit)
+function read_depth_threshhold(dp_array::Array{Int64,2})
 
-    dp_array[dp_array[:,:].>dp_limit].=dp_limit
+    dp_array[dp_array[:,:].>100].=100
 
     return dp_array
+
 end
 
 """
@@ -888,23 +924,75 @@ end
 save numerical array with chr labels and sample ids to working directory
 """
 function save_numerical_array(num_array,sample_names,chr_labels)
+    println(sample_names)
+    println(chr_labels)
 
-      headings = hcat("chr","position")
+    println(size(sample_names,2))
+    println(size(chr_labels,2))
+
+      headings = hcat("chr,position")
       sample_names = hcat(headings,sample_names)
 
-      chr_labeled_array_for_plotly=hcat(chr_labels, num_array)
-      labeled_value_matrix_withsamplenames= vcat(sample_names,chr_labeled_array_for_plotly)
+      println(size(sample_names,2))
+      println(size(chr_labels,2))
 
-      writedlm("AC_gatk406_eh_PASS_withheader_value_matrix_.txt", labeled_value_matrix_withsamplenames, "\t")
+      chr_labeled_array_for_plotly=hcat(chr_labels, num_array)
+
+      println(size(sample_names,2))
+      println(size(chr_labeled_array_for_plotly,2))
+
+      labeled_value_matrix_withsamplenames= vcat(sample_names,
+                                            chr_labeled_array_for_plotly)
+
+      writedlm("exon_05_burden_matrix.txt", labeled_value_matrix_withsamplenames, ",")
 end
 
+
 """
-    chromosome_label_generator(chromosome_labels::Array{String,2},number_rows)
+    chromosome_label_generator(chromosome_labels::Array{Any,1})
 Returns vector of chr labels and indices to mark chromosomes in plotly heatmap
-Specifically, saves indexes and chrom labels in vectors to pass into heatmap function to ticvals and tictext respectively
+Specifically, saves indexes and chrom labels in vectors to pass into heatmap
+function to ticvals and tictext respectively.
+Input is either gt_chromosome_labels or dp_chromosome_labels from
+translate_gt/dp_to_num_array()
+"""
+function chromosome_label_generator(chromosome_labels::Array{Any,1})
+    chrom_label_indices = findfirst.(map(a -> (y -> isequal(a, y)),
+    unique(chromosome_labels)), [chromosome_labels])
+    chrom_labels = unique(chromosome_labels)
+    chrom_labels = [string(i) for i in chrom_labels]
+    
+    if length(chrom_labels) > 1
+        for item=2:(length(chrom_labels))
+
+            ratio=((chrom_label_indices[item])-(chrom_label_indices[item-1]))/(length(chromosome_labels))
+
+            if ratio < 0.2
+                font_size = "8"
+                return chrom_labels,chrom_label_indices,font_size
+
+            else
+                font_size = "10"
+                return chrom_labels,chrom_label_indices,font_size
+
+            end
+        end
+
+    else
+
+        font_size = "10"
+        return chrom_labels,chrom_label_indices,font_size
+    end
+end
+
+#=
+"""
+    chromosome_label_generator_for_chrom_bar(chromosome_labels::Array{String,2},number_rows)
+Returns vector of chr labels and indices to build chromosome bar in heatmaply r
+Specifically, saves indexes and chrom labels in vectors to pass into heatmap function to build array for row side colorbar
 Input is either gt_chromosome_labels or dp_chromosome_labels from translate_gt/dp_to_num_array()
 """
-function chromosome_label_generator(chromosome_labels::Array{Any,1},number_rows)
+function chromosome_label_generator_for_chrom_bar(chromosome_labels::Array{Any,1},number_rows)
     chrom_label_indices = findfirst.(map(a -> (y -> isequal(a, y)), unique(chromosome_labels)), [chromosome_labels])
     chrom_labels = unique(chromosome_labels)
     chrom_labels = [string(i) for i in chrom_labels]
@@ -944,9 +1032,12 @@ function chromosome_label_generator(chromosome_labels::Array{Any,1},number_rows)
 
 end
 
+=#
+
 """
     checkfor_outputdirectory(path::String)
-Checks to see if output directory exists already. If it doesn't, it creates the new directory to write output files to.
+Checks to see if output directory exists already. If it doesn't, it creates the
+new directory to write output files to.
 """
 function checkfor_outputdirectory(path::String)
     if isdir(path) == true
@@ -957,7 +1048,8 @@ end
 
 """
     generate_chromosome_positions_for_hover_labels(chr_labels::Array{Any,2})
-creates tuple of genomic locations to set as tick labels. This is automatically store chromosome positions in hover labels. However tick labels are set to hidden with showticklabels=false so they will not crowd the y axis.
+creates tuple of genomic locations to set as tick labels. This is automatically
+store chromosome positions in hover labels. However tick labels are set to hidden with showticklabels=false so they will not crowd the y axis.
 """
 function generate_chromosome_positions_for_hover_labels(chr_labels::Array{Any,2})
 
@@ -1059,4 +1151,139 @@ function make_chromosome_labels(chrom_label_info)
 
     return x
 
+end
+
+#=
+"""
+    make_chromosome_labels_chromosome_bar(chrom_label_info)
+For heatmaply r plotting dev version of ViVa only. Returns vector of values to use as tick vals to show first chromosome label per chromosome with blank spaces between each first chromosome position for use with --y_axis_labels=chromosomes. duplicate_last_label tells if last chrom label is single or mutiple which affects number_to_fill value.
+"""
+function make_chromosome_labels_chromosome_bar(chrom_label_info)
+
+       labels=chrom_label_info[1]
+       index=chrom_label_info[2]
+       duplicate_last_label=chrom_label_info[4]
+
+       x=Array{Any}(0)
+
+       for n = 1:size(labels,1)
+
+              push!(x, labels[n])
+              counter=0
+              number_to_fill=index[n+1]-index[n]
+
+              while counter < number_to_fill - 1
+                  counter = counter+1
+                  push!(x, labels[n])
+              end
+        end
+
+    if duplicate_last_label != "true"
+      push!(x,labels[size(labels,1)])
+    end
+
+    return x
+
+end
+
+=#
+
+"""
+    add_pheno_matrix_to_gt_data_for_plotting(pheno_matrix,gt_num_array,trait_labels)
+add the pheno matrix used to group samples to the data array for input into plotting functions. Resizes the pheno matrix to maintain correct dimensions for heatmap viz by finding value=0.05*number_rows_data to multiply each pheno row by before vcat.
+"""
+function add_pheno_matrix_to_gt_data_for_plotting(gt_num_array,pheno_matrix,trait_labels)
+
+    pheno_matrix=pheno_matrix[2:size(pheno_matrix,1),:]
+
+    #consider options when have few variants. no multiplyer when can't find even multiple?
+
+    #find multiplyer value
+    pheno_row_multiplyer=0.05*(size(gt_num_array,1))
+    pheno_row_multiplyer=round(pheno_row_multiplyer)
+    pheno_row_multiplyer=pheno_row_multiplyer/(size(pheno_matrix,1))
+
+    for i = 1:(size(pheno_matrix, 1))
+        for n=1:(size(pheno_matrix, 2))
+            pheno_matrix[i, n] = pheno_matrix[i, n] == 1 ? -1 : pheno_matrix[i, n]
+            pheno_matrix[i, n] = pheno_matrix[i, n] == 2 ? -2 : pheno_matrix[i, n]
+        end
+    end
+
+    #resize pheno matrix and create trait_label_array for labeling
+    resized_pheno_matrix=pheno_matrix[1:1, :]
+
+    trait_label_array=trait_labels[1]
+    println(trait_label_array)
+
+    for row = 1:size(pheno_matrix,1)
+
+        trait_row=pheno_matrix[row:row, :]
+        trait = trait_labels[row]
+
+        i=0
+
+        while i <= (pheno_row_multiplyer+1)
+            println(i)
+            i=i+1
+            resized_pheno_matrix=vcat(resized_pheno_matrix,trait_row)
+            trait_label_array=vcat(trait_label_array,trait)
+        end
+    end
+
+    println(trait_label_array)
+
+    #vcat pheno matrix to gt_num_array
+    data_and_pheno_matrix=vcat(gt_num_array,resized_pheno_matrix)
+
+    data_and_pheno_matrix=convert(Array{Int64,2},data_and_pheno_matrix)
+
+    return data_and_pheno_matrix,trait_label_array
+end
+
+"""
+    add_pheno_matrix_to_dp_data_for_plotting(pheno_matrix,dp_num_array,trait_labels)
+add the pheno matrix used to group samples to the data array for input into plotting functions. Resizes the pheno matrix to maintain correct dimensions for heatmap viz by finding value=0.05*number_rows_data to multiply each pheno row by before vcat.
+"""
+function add_pheno_matrix_to_dp_data_for_plotting(dp_num_array,pheno_matrix,trait_labels)
+
+    pheno_matrix=pheno_matrix[2:size(pheno_matrix,1),:]
+
+    #consider options when have few variants. no multiplyer when can't find even multiple?
+
+    #find multiplyer value
+    pheno_row_multiplyer=0.05*(size(dp_num_array,1))
+    pheno_row_multiplyer=round(pheno_row_multiplyer)
+    pheno_row_multiplyer=pheno_row_multiplyer/(size(pheno_matrix,1))
+
+    for i = 1:(size(pheno_matrix, 1))
+        for n=1:(size(pheno_matrix, 2))
+            pheno_matrix[i, n] = pheno_matrix[i, n] == 1 ? -40 : pheno_matrix[i, n]
+            pheno_matrix[i, n] = pheno_matrix[i, n] == 2 ? -60 : pheno_matrix[i, n]
+        end
+    end
+
+    #resize pheno matrix
+    resized_pheno_matrix=pheno_matrix[1:1, :]
+
+    for row = 1:size(pheno_matrix,1)
+
+        trait_row=pheno_matrix[row:row, :]
+
+        i=0
+
+        while i <= (pheno_row_multiplyer+1)
+            i=i+1
+            resized_pheno_matrix=vcat(resized_pheno_matrix,trait_row)
+        end
+    end
+
+    #vcat pheno matrix to dp_num_array
+    data_and_pheno_matrix=vcat(dp_num_array,resized_pheno_matrix)
+
+    data_and_pheno_matrix=convert(Array{Int64,2},data_and_pheno_matrix)
+
+    #plot colors set -2, -3 to light grey, black
+
+    return data_and_pheno_matrix
 end
