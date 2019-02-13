@@ -747,7 +747,7 @@ end
     sortcols_by_phenotype_matrix(pheno_matrix_filename::String,trait_to_group_by::String,num_array::Array{Int64,2}, sample_names::Array{Symbol,2})
 group samples by a common trait using a user generated key matrix ("phenotype matrix") returns num_array,group_label_pack,
 """
-function sortcols_by_phenotype_matrix(pheno_matrix_filename::String,trait_to_group_by::String, num_array::Array{Int64,2}, sample_names::Array{Symbol,2})
+function sortcols_by_phenotype_matrix(pheno_matrix_filename::String,trait_to_group_by::String, num_array::Array{Int64,2}, sample_names)
 
     pheno = readdlm(pheno_matrix_filename, ',')
 
@@ -787,10 +787,10 @@ function sortcols_by_phenotype_matrix(pheno_matrix_filename::String,trait_to_gro
 end
 
 """
-    select_columns(filename_sample_list::AbstractString, num_array::Array{Int64,2}, sample_names::Array{Symbol,2})
+    select_columns(filename_sample_list::AbstractString, num_array::Array{Int64,2}, sample_names)
 returns num_array with columns matching user generated list of sample ids to select for analysis. num_array now has sample ids in first row.
 """
-function select_columns(filename_sample_list::AbstractString, num_array::Array{Int64,2}, sample_names::Array{Symbol,2})
+function select_columns(filename_sample_list::AbstractString, num_array::Array{Int64,2}, sample_names)
 
     selectedcolumns=readdlm(filename_sample_list)
 
@@ -802,6 +802,8 @@ function select_columns(filename_sample_list::AbstractString, num_array::Array{I
 
     col_selectedcolumns=vec(selectedcolumns)
 
+    selectedcolumns=convert(Array{Symbol}, col_selectedcolumns)
+
     df_num_array = DataFrame(num_array)
 
     rename!(df_num_array, f => t for (f, t) = zip(names(df_num_array), sample_names))
@@ -809,6 +811,7 @@ function select_columns(filename_sample_list::AbstractString, num_array::Array{I
     df_selected_samples_num_array = df_num_array[:, col_selectedcolumns]
 
     selected_samples_num_array = Matrix(df_selected_samples_num_array)
+
     return selected_samples_num_array,col_selectedcolumns
 end
 
@@ -920,33 +923,21 @@ function read_depth_threshhold(dp_array::Array{Int64,2})
 end
 
 """
-    save_numerical_array(num_array::Matrix{Any},sample_names,chr_labels)
+    save_numerical_array(num_array::Matrix{Any},sample_names,chr_labels,title,output_directory)
 save numerical array with chr labels and sample ids to working directory
 """
-function save_numerical_array(num_array,sample_names,chr_labels)
-    println(sample_names)
-    println(chr_labels)
-
-    println(size(sample_names,2))
-    println(size(chr_labels,2))
+function save_numerical_array(num_array,sample_names,chr_labels,title,output_directory)
 
       headings = hcat("chr,position")
       sample_names = hcat(headings,sample_names)
 
-      println(size(sample_names,2))
-      println(size(chr_labels,2))
-
       chr_labeled_array_for_plotly=hcat(chr_labels, num_array)
-
-      println(size(sample_names,2))
-      println(size(chr_labeled_array_for_plotly,2))
 
       labeled_value_matrix_withsamplenames= vcat(sample_names,
                                             chr_labeled_array_for_plotly)
 
-      writedlm("exon_05_burden_matrix.txt", labeled_value_matrix_withsamplenames, ",")
+      writedlm(joinpath(output_directory ,"$(title)_matrix.csv"), labeled_value_matrix_withsamplenames, ",")
 end
-
 
 """
     chromosome_label_generator(chromosome_labels::Array{Any,1})
@@ -961,7 +952,7 @@ function chromosome_label_generator(chromosome_labels::Array{Any,1})
     unique(chromosome_labels)), [chromosome_labels])
     chrom_labels = unique(chromosome_labels)
     chrom_labels = [string(i) for i in chrom_labels]
-    
+
     if length(chrom_labels) > 1
         for item=2:(length(chrom_labels))
 
@@ -981,6 +972,7 @@ function chromosome_label_generator(chromosome_labels::Array{Any,1})
     else
 
         font_size = "10"
+
         return chrom_labels,chrom_label_indices,font_size
     end
 end
@@ -1055,18 +1047,38 @@ function generate_chromosome_positions_for_hover_labels(chr_labels::Array{Any,2}
 
 returnXY_column1!(chr_labels)
 
+chr_pos_tuple_list=Array{String}(0)
+
+    for row = 1:size(chr_labels,1)
+
+        chr=chr_labels[row,1]
+        pos=chr_labels[row,2]
+        chr_pos_tuple="chr$chr,$pos"
+        push!(chr_pos_tuple_list,chr_pos_tuple)
+    end
+
+    return chr_pos_tuple_list
+end
+
+#=function generate_chromosome_positions_for_hover_labels(chr_labels::Array{Any,2})
+
+returnXY_column1!(chr_labels)
+
 chr_pos_tuple_list=Array{Tuple}(0)
 
     for row = 1:size(chr_labels,1)
 
         chr=chr_labels[row,1]
         pos=chr_labels[row,2]
+        println(pos)
         chr_pos_tuple=chr,pos
         push!(chr_pos_tuple_list,chr_pos_tuple)
+        println(chr_pos_tuple)
     end
 
     return chr_pos_tuple_list
 end
+=#
 
 """
     index_vcf(vcf_filename)
@@ -1189,10 +1201,10 @@ end
 =#
 
 """
-    add_pheno_matrix_to_gt_data_for_plotting(pheno_matrix,gt_num_array,trait_labels)
+    add_pheno_matrix_to_gt_data_for_plotting(pheno_matrix,gt_num_array,trait_labels,chrom_label_info,number_rows)
 add the pheno matrix used to group samples to the data array for input into plotting functions. Resizes the pheno matrix to maintain correct dimensions for heatmap viz by finding value=0.05*number_rows_data to multiply each pheno row by before vcat.
 """
-function add_pheno_matrix_to_gt_data_for_plotting(gt_num_array,pheno_matrix,trait_labels)
+function add_pheno_matrix_to_gt_data_for_plotting(gt_num_array,pheno_matrix,trait_labels,chrom_label_info,number_rows)
 
     pheno_matrix=pheno_matrix[2:size(pheno_matrix,1),:]
 
@@ -1214,7 +1226,6 @@ function add_pheno_matrix_to_gt_data_for_plotting(gt_num_array,pheno_matrix,trai
     resized_pheno_matrix=pheno_matrix[1:1, :]
 
     trait_label_array=trait_labels[1]
-    println(trait_label_array)
 
     for row = 1:size(pheno_matrix,1)
 
@@ -1224,28 +1235,39 @@ function add_pheno_matrix_to_gt_data_for_plotting(gt_num_array,pheno_matrix,trai
         i=0
 
         while i <= (pheno_row_multiplyer+1)
-            println(i)
             i=i+1
             resized_pheno_matrix=vcat(resized_pheno_matrix,trait_row)
             trait_label_array=vcat(trait_label_array,trait)
         end
     end
 
-    println(trait_label_array)
+    trait_label_indices = findfirst.(map(a -> (y -> isequal(a, y)),
+    unique(trait_label_array)), [trait_label_array])
+    pheno_trait_labels = unique(trait_label_array)
+    pheno_trait_labels = [String(i) for i in pheno_trait_labels]
+    trait_label_indices = [i+number_rows for i in trait_label_indices]
+
+    chrom_labels=chrom_label_info[1]
+    chrom_label_indices=chrom_label_info[2]
+
+    chrom_labels = vcat(chrom_labels,pheno_trait_labels)
+    chrom_label_indices = vcat(chrom_label_indices,trait_label_indices)
+
+    chrom_label_info = chrom_labels,chrom_label_indices,chrom_label_info[3]
 
     #vcat pheno matrix to gt_num_array
     data_and_pheno_matrix=vcat(gt_num_array,resized_pheno_matrix)
 
     data_and_pheno_matrix=convert(Array{Int64,2},data_and_pheno_matrix)
 
-    return data_and_pheno_matrix,trait_label_array
+    return data_and_pheno_matrix,trait_label_array,chrom_label_info
 end
 
 """
-    add_pheno_matrix_to_dp_data_for_plotting(pheno_matrix,dp_num_array,trait_labels)
+    add_pheno_matrix_to_dp_data_for_plotting(pheno_matrix,dp_num_array,trait_labels,chrom_label_info,number_rows)
 add the pheno matrix used to group samples to the data array for input into plotting functions. Resizes the pheno matrix to maintain correct dimensions for heatmap viz by finding value=0.05*number_rows_data to multiply each pheno row by before vcat.
 """
-function add_pheno_matrix_to_dp_data_for_plotting(dp_num_array,pheno_matrix,trait_labels)
+function add_pheno_matrix_to_dp_data_for_plotting(dp_num_array,pheno_matrix,trait_labels,chrom_label_info,number_rows)
 
     pheno_matrix=pheno_matrix[2:size(pheno_matrix,1),:]
 
@@ -1263,27 +1285,158 @@ function add_pheno_matrix_to_dp_data_for_plotting(dp_num_array,pheno_matrix,trai
         end
     end
 
-    #resize pheno matrix
+    #resize pheno matrix and create trait_label_array for labeling
     resized_pheno_matrix=pheno_matrix[1:1, :]
+
+    trait_label_array=trait_labels[1]
 
     for row = 1:size(pheno_matrix,1)
 
         trait_row=pheno_matrix[row:row, :]
+        trait = trait_labels[row]
 
         i=0
 
         while i <= (pheno_row_multiplyer+1)
             i=i+1
             resized_pheno_matrix=vcat(resized_pheno_matrix,trait_row)
+            trait_label_array=vcat(trait_label_array,trait)
         end
     end
 
-    #vcat pheno matrix to dp_num_array
+    trait_label_indices = findfirst.(map(a -> (y -> isequal(a, y)),
+    unique(trait_label_array)), [trait_label_array])
+    pheno_trait_labels = unique(trait_label_array)
+    pheno_trait_labels = [String(i) for i in pheno_trait_labels]
+    trait_label_indices = [i+number_rows for i in trait_label_indices]
+
+    chrom_labels=chrom_label_info[1]
+    chrom_label_indices=chrom_label_info[2]
+
+    chrom_labels = vcat(chrom_labels,pheno_trait_labels)
+    chrom_label_indices = vcat(chrom_label_indices,trait_label_indices)
+
+    chrom_label_info = chrom_labels,chrom_label_indices,chrom_label_info[3]
+
+    #vcat pheno matrix to gt_num_array
     data_and_pheno_matrix=vcat(dp_num_array,resized_pheno_matrix)
 
     data_and_pheno_matrix=convert(Array{Int64,2},data_and_pheno_matrix)
 
-    #plot colors set -2, -3 to light grey, black
+    return data_and_pheno_matrix,trait_label_array,chrom_label_info
+end
 
-    return data_and_pheno_matrix
+"""
+    generate_hover_text_array(chr_pos_tuple_list,sample_names,input,mode)
+Generate array of data for hovertext to use as custom hover text for ungrouped heatmaps. Where mode is GT or DP.
+"""
+function generate_hover_text_array(chr_pos_tuple_list,sample_names,input,mode)
+
+hover_text_array=Array{Any,1}(0)
+
+    for n=1:length(chr_pos_tuple_list)
+        pos=chr_pos_tuple_list[n]
+
+        row_data_vector=Array{Any,1}(0)
+
+        for m=1:length(sample_names)
+            id=sample_names[m]
+
+            z=input[n,m]
+
+            if mode == "GT"
+            z_dict = Dict(0 => "No Call", 1 => "Homozygous Reference", 2 => "Heterozygous Variant", 3 => "Homozygous Variant")
+            z=z_dict[z]
+
+            elseif mode == "DP"
+                if z==-1
+                    z="No Call"
+                end
+            end
+
+            text_cell="ID: $id \n $pos \n $mode: $z"
+
+            push!(row_data_vector,text_cell)
+        end
+
+        push!(hover_text_array,row_data_vector)
+    end
+
+return(hover_text_array)
+
+end
+
+"""
+    generate_hover_text_array_grouped(chr_pos_tuple_list,sample_names,input,mode)
+Generate array of data for hovertext to use as custom hover text for grouped heatmaps. Where mode is GT or DP.
+"""
+function generate_hover_text_array_grouped(chr_pos_tuple_list,sample_names,input,mode,number_rows)
+
+hover_text_array=Array{Any,1}(0)
+
+    for n=1:number_rows
+        pos=chr_pos_tuple_list[n]
+
+        row_data_vector=Array{Any,1}(0)
+
+        for m=1:length(sample_names)
+            id=sample_names[m]
+
+            z=input[n,m]
+
+            if mode == "GT"
+            z_dict = Dict(0 => "No Call", 1 => "Homozygous Reference", 2 => "Heterozygous Variant", 3 => "Homozygous Variant")
+            z=z_dict[z]
+
+            elseif mode == "DP"
+                if z==-1
+                    z="No Call"
+                end
+            end
+
+            text_cell="ID: $id \n $pos \n $mode: $z"
+
+            push!(row_data_vector,text_cell)
+        end
+
+        push!(hover_text_array,row_data_vector)
+    end
+
+    for n=number_rows+1:length(chr_pos_tuple_list)
+        trait=chr_pos_tuple_list[n]
+
+        split_trait=split(trait,',')
+
+        row_data_vector=Array{Any,1}(0)
+
+        for m=1:length(sample_names)
+            id=sample_names[m]
+
+            z=input[n,m]
+
+            if mode == "GT"
+                if z==-1
+                    z=split_trait[1]
+                elseif z==-2
+                    z=split_trait[2]
+                end
+
+            elseif mode == "DP"
+                if z==-40
+                    z="Trait 1: $split_trait[1]"
+                elseif z==-60
+                    z="Trait 2: $split_trait[2]"
+                end
+            end
+
+            text_cell="ID: $id \n $z"
+
+            push!(row_data_vector,text_cell)
+        end
+
+        push!(hover_text_array,row_data_vector)
+    end
+
+return(hover_text_array)
+
 end
