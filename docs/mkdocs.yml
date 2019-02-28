@@ -1,0 +1,31 @@
+site_name:        ViVa.jl
+site_author:      George Tollefson
+repo_url:         https://github.com/compbiocore/ViVa.jl
+site_description: Visualization of Variants
+site_author:      compbiocore
+
+theme:
+  name: material
+  feature:
+    tabs: true
+  palette:
+    primary: 'blue grey'
+    accent: 'indigo'
+  logo: cbc-logo.svg
+
+extra_css:
+  - dark_mode.css
+
+markdown_extensions:
+  - extra
+  - tables
+  - fenced_code
+  - codehilite
+
+docs_dir: 'build'
+
+pages:
+- Home: index.md
+- Manual:
+  - Read and Filter VCF: filtering_vcf.md
+  - Heatmaps: plotting.md

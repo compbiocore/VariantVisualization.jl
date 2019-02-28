@@ -1,0 +1,47 @@
+## Documentation: http://docs.travis-ci.com/user/languages/julia/
+language: julia
+
+# os:
+#   - linux
+#   - osx
+#
+# julia:
+#   - 1.1
+#
+# notifications:
+#   email: false
+#
+# git:
+#   depth: 99999999
+#
+# before_script:
+#   - export PATH=$HOME/.local/bin:$PATH
+
+# after_success:
+#   - julia -e 'import Pkg; Pkg.add("Coverage"); using Coverage; Codecov.submit(Codecov.process_folder())'
+
+jobs:
+  include:
+    - stage: "Deploy Documentation"
+      julia: 1.1
+      os: linux
+      script:
+        - julia --project=docs/ -e 'using Pkg; Pkg.develop(PackageSpec(path=pwd())); Pkg.instantiate()'
+        - julia --project=docs/ docs/make.jl
+      after_success: skip
+      
+   - stage: Semantic Release
+      if: branch = master AND type != pull_request
+      language: python
+      os: linux
+      python: 3.6
+      before_script: skip
+      install:
+        - pip install typing
+        - pip install python-semantic-release
+      script:
+        - git config --global user.name "semantic-release (via TravisCI)"
+        - git config --global user.email "semantic-release@travis"
+        - semantic-release publish
+      after_script: skip
+      after_success: skip
