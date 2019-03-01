@@ -1,21 +1,21 @@
-matrix:
-  include:
-    - stage: Test
-      language: julia
-      os:
-        - linux
-        - osx
-      julia:
-        - 1.1
-      notifications:
-        email: false
-      git:
-        depth: 999999
-      before_script:
-        - export PATH=$HOME/.local/bin:$PATH=
-      after_success:
-        - julia -e 'import Pkg; Pkg.add("Coverage"); using Coverage; Codecov.submit(Codecov.process_folder())'
+language: julia
+os:
+  - linux
+  - osx
+julia:
+  - 1.1
+notifications:
+  email: false
+git:
+  depth: 999999
+before_script:
+  - export PATH=$HOME/.local/bin:$PATH=
+  
+after_success:
+  - julia -e 'import Pkg; Pkg.add("Coverage"); using Coverage; Codecov.submit(Codecov.process_folder())'
 
+jobs:
+  include:
     - stage: "Deploy Documentation"
       julia: 1.1
       os: linux
