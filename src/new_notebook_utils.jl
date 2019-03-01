@@ -1,28 +1,12 @@
 """
-jupyter_main(vcf_filename,field_to_visualize,variant_filter,sample_filter,plot_types,save_format,plot_title,plot_labels)
+jupyter_main(vcf_filename,field_to_visualize,variant_filter,sample_filter,plot_types,save_format,plot_title,plot_labels,output_directory::String)
 
 filters, plots visualization, and saves as figure.
 utilizes all global variables set in first cell of jupyter notebook
 """
 function jupyter_main_new(vcf_filename::String,field_to_visualize::String,variant_filter::Array{String,1},sample_filter::Array{String,1},plot_types::Array{String,1},save_format::String,plot_title::String,output_directory::String)
 
-println("loading packages...")
 
-println("finished loading packages")
-#show stats
-#=
-number_records = nrecords(vcf_filename)
-number_samples = nsamples(vcf_filename)
-
-println("_______________________________________________")
-println()
-println("Summary Statistics of $(parsed_args["vcf_file"])")
-println()
-println("number of records: $number_records")
-println("number of samples: $number_samples")
-println("_______________________________________________")
-println()
-=#
 #create vcf reader object
 println("Reading $vcf_filename")
 reader = VCF.Reader(open(vcf_filename, "r")) #reader = VCF.Reader(open("test_4X_191.vcf", "r"))
@@ -255,8 +239,8 @@ elseif field_to_visualize == "read_depth"
        list = ViVa.list_sample_names_low_dp(avg_list, sample_names)
        writedlm(joinpath("$output_directory","Samples_with_low_dp.txt"),list, ",")
        #println("The following samples have read depth of under 15: $list")
-       avg_sample_dp_line_chart(avg_list)
-       graphic = avg_sample_dp_line_chart(avg_list)
+       avg_sample_dp_scatter(avg_list)
+       graphic = avg_sample_dp_scatter(avg_list)
        PlotlyJS.savefig(graphic, joinpath("$output_directory" ,"Average Sample Read Depth.$save_format"))
        return graphic
 

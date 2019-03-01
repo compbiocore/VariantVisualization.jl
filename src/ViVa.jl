@@ -1,15 +1,16 @@
-module ViVa
+module VIVA
 
 using DataFrames
 using PlotlyJS
+using ORCA
 using Rsvg
 using Blink
 using GeneticVariation
 using ArgParse
-#using VCFTools
+using DelimitedFiles
+using Test
+
 #using Base.Filesystem
-
-
 
 #include("vcf_utils.jl")
 #include("plot_utils.jl")
@@ -67,15 +68,25 @@ export
     checkfor_outputdirectory,
     combined_all_genotype_array_functions,
     combined_all_read_depth_array_functions,
+    combined_all_read_depth_array_functions_for_avg_dp,
     generate_chromosome_positions_for_hover_labels,
     clean_column1_chr,
-    clean_column1_siglist!
+    clean_column1_siglist!,
+    process_plot_inputs,
+    process_plot_inputs_for_grouped_data,
+    returnXY_column1_siglist!,
+    chromosome_label_generator,
+    add_pheno_matrix_to_gt_data_for_plotting,
+    add_pheno_matrix_to_dp_data_for_plotting,
+    generate_hover_text_array,
+    generate_hover_text_array_grouped,
+    save_graphic
 
 #include("vcf_utils.jl")
 include("vcf_utils_complete.jl")
 include("plot_utils.jl")
-#include("notebook_utils.jl")
 include("new_notebook_utils.jl")
+#include("v1_VIVA_notebook_utils.jl")
 #include("io_filters.jl")
 
 end # module

@@ -1,11 +1,11 @@
 module TestViVa
 
-using ViVa
-
+using VIVA
+using Test
 using DataFrames
 using GeneticVariation
-using Base.Test
-
+#using Base.Test #version
+using DelimitedFiles
 
 all_tests = [
     ("new_vcf_utils.jl",   "           Testing: New VCF Utils"),
