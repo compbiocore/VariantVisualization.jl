@@ -2,7 +2,7 @@ matrix:
   include:
     - stage: Test OSX
       language: julia
-      os: linux
+      os: osx
       julia: 1.1
       notifications:
         email: false
