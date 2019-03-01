@@ -4,7 +4,7 @@ makedocs(sitename="docs")
 
 deploydocs(
     repo   = "github.com/compbiocore/VIVA.jl.git",
-    deps   = Deps.pip("mkdocs==1.0.4", "mkdocs-material==4.0.2", "pygments"),
+    deps   = Deps.pip("mkdocs==0.17.5", "mkdocs-material==2.9.4", "pygments"),
     make   = () -> run(`mkdocs build`),
     target = "site"
 )
