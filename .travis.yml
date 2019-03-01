@@ -1,26 +1,21 @@
-language: julia
-
-os:
-  - linux
-  - osx
-
-julia:
-  - 1.1
-
-notifications:
-  email: false
-
-git:
-  depth: 99999999
-
-before_script:
-  - export PATH=$HOME/.local/bin:$PATH
-
-after_success:
-  - julia -e 'import Pkg; Pkg.add("Coverage"); using Coverage; Codecov.submit(Codecov.process_folder())'
-
-jobs:
+matrix:
   include:
+    - stage: Test
+      language: julia
+      os:
+        - linux
+        - osx
+      julia:
+        - 1.1
+      notifications:
+        email: false
+      git:
+        depth: 999999
+      before_script:
+        - export PATH=$HOME/.local/bin:$PATH=
+      after_success:
+        - julia -e 'import Pkg; Pkg.add("Coverage"); using Coverage; Codecov.submit(Codecov.process_folder())'
+
     - stage: "Deploy Documentation"
       julia: 1.1
       os: linux
@@ -29,7 +24,7 @@ jobs:
         - julia --project=docs/ docs/make.jl
       after_success: skip
 
-   - stage: Semantic Release
+    - stage: semantic release
       if: branch = master AND type != pull_request
       language: python
       os: linux
