@@ -29,3 +29,4 @@ pages:
 - Manual:
   - Read and Filter VCF: filtering_vcf.md
   - Heatmaps: plotting.md
+- API: api.md
