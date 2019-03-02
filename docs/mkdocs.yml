@@ -22,7 +22,7 @@ markdown_extensions:
   - fenced_code
   - codehilite
 
-docs_dir: 'build'
+docs_dir: 'src'
 
 pages:
 - Home: index.md
