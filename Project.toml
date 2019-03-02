@@ -1,7 +1,7 @@
 name = "VIVA"
 uuid = "d7f9f8fa-e687-11e8-2c0b-eb4ab256ef6a"
 authors = ["George Tollefson <gatollefson@gmail.com>"]
-version = "0.0.1"
+version = "0.1.0"
 
 [deps]
 ArgParse = "c7e460c6-2fb9-53a9-8c5b-16f535851c63"
