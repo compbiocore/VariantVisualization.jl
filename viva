@@ -1,3 +1,4 @@
+#!/usr/bin/env julia
 println()
 println("Welcome to VIVA.")
 println()
