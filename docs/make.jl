@@ -1,6 +1,6 @@
-using Documenter, VIVA
+using Documenter, DocumenterMarkdown, VIVA
 
-makedocs(sitename="docs")
+makedocs(sitename="docs", format = Markdown())
 
 deploydocs(
     repo   = "github.com/compbiocore/VIVA.jl.git",
