@@ -10,6 +10,8 @@ function clean_column1!(matrix_with_chr_column)
         matrix_with_chr_column[i, 1] = matrix_with_chr_column[i, 1] == "X" ? "23" : matrix_with_chr_column[i, 1]
         matrix_with_chr_column[i, 1] = matrix_with_chr_column[i, 1] == "Y" ? "24" : matrix_with_chr_column[i, 1]
         matrix_with_chr_column[i, 1] = matrix_with_chr_column[i, 1] == "M" ? "25" : matrix_with_chr_column[i, 1]
+        matrix_with_chr_column[i, 1] = matrix_with_chr_column[i, 1] == "MT" ? "25" : matrix_with_chr_column[i, 1]
+        matrix_with_chr_column[i, 1] = matrix_with_chr_column[i, 1] == "Mt" ? "25" : matrix_with_chr_column[i, 1]
     end
 end
 
@@ -24,6 +26,8 @@ function clean_column1_siglist!(siglist)
         siglist[i, 1] = siglist[i, 1] == "X" ? 23 : siglist[i, 1]
         siglist[i, 1] = siglist[i, 1] == "Y" ? 24 : siglist[i, 1]
         siglist[i, 1] = siglist[i, 1] == "M" ? 25 : siglist[i, 1]
+        siglist[i, 1] = siglist[i, 1] == "MT" ? 25 : siglist[i, 1]
+        siglist[i, 1] = siglist[i, 1] == "Mt" ? 25 : siglist[i, 1]
     end
 end
 
@@ -37,6 +41,8 @@ function returnXY_column1!(chr_label_vector)
         chr_label_vector[i, 1] = chr_label_vector[i, 1] == 23 ? "X" : chr_label_vector[i, 1]
         chr_label_vector[i, 1] = chr_label_vector[i, 1] == 24 ? "Y" : chr_label_vector[i, 1]
         chr_label_vector[i, 1] = chr_label_vector[i, 1] == 25 ? "M" : chr_label_vector[i, 1]
+        chr_label_vector[i, 1] = chr_label_vector[i, 1] == 25 ? "MT" : chr_label_vector[i, 1]
+        chr_label_vector[i, 1] = chr_label_vector[i, 1] == 25 ? "Mt" : chr_label_vector[i, 1]
     end
 end
 
@@ -50,6 +56,8 @@ function returnXY_column1_siglist!(siglist_sorted)
         siglist_sorted[i, 1] = siglist_sorted[i, 1] == 23 ? "X" : siglist_sorted[i, 1]
         siglist_sorted[i, 1] = siglist_sorted[i, 1] == 24 ? "Y" : siglist_sorted[i, 1]
         siglist_sorted[i, 1] = siglist_sorted[i, 1] == 25 ? "M" : siglist_sorted[i, 1]
+        siglist_sorted[i, 1] = siglist_sorted[i, 1] == 25 ? "MT" : siglist_sorted[i, 1]
+        siglist_sorted[i, 1] = siglist_sorted[i, 1] == 25 ? "Mt" : siglist_sorted[i, 1]
     end
 end
 
@@ -108,10 +116,10 @@ end
 
 #functions for variant filters
 """
-io_chromosome_range_vcf_filter(chr_range::String, vcf_filename::AbstractString)
+io_genomic_range_vcf_filter(chr_range::String, vcf_filename::AbstractString)
 create subarray of vcf variant records matching user specified chromosome range in format: (e.g. chr1:0-30000000)
 """
-function io_chromosome_range_vcf_filter(chr_range::String,vcf_filename::AbstractString)
+function io_genomic_range_vcf_filter(chr_range::String,vcf_filename::AbstractString)
     a=split(chr_range,":")
     chrwhole=a[1]
     chrnumber=split(chrwhole,"r")
@@ -156,7 +164,7 @@ end
 end
 
 #=
-function io_chromosome_range_vcf_filter(chr_range::String,vcf_filename::AbstractString)
+function io_genomic_range_vcf_filter(chr_range::String,vcf_filename::AbstractString)
 
        a=split(chr_range,":")
        chrwhole=a[1]
@@ -248,10 +256,10 @@ end
 end
 
 """
-    pass_chrrange_siglist_filter(vcf_filename,sig_list,chr_range::AbstractString)
-returns subarray of vcf records with io_pass_filter, io_sig_list_vcf_filter, and io_chromosome_range_vcf_filter applied.
+    pass_genomic_range_siglist_filter(vcf_filename,sig_list,chr_range::AbstractString)
+returns subarray of vcf records with io_pass_filter, io_sig_list_vcf_filter, and io_genomic_range_vcf_filter applied.
 """
-function pass_chrrange_siglist_filter(vcf_filename,sig_list,chr_range::AbstractString)
+function pass_genomic_range_siglist_filter(vcf_filename,sig_list,chr_range::AbstractString)
 
     a=split(chr_range,":")
     chrwhole=a[1]
@@ -333,10 +341,10 @@ function pass_chrrange_siglist_filter(vcf_filename,sig_list,chr_range::AbstractS
     end
 
 """
-    pass_chrrange_filter(reader::GeneticVariation.VCF.Reader,chr_range::AbstractString,vcf_filename)
-returns subarray of vcf records with io_pass_filter and io_chromosome_range_vcf_filter applied.
+    pass_genomic_range_filter(reader::GeneticVariation.VCF.Reader,chr_range::AbstractString,vcf_filename)
+returns subarray of vcf records with io_pass_filter and io_genomic_range_vcf_filter applied.
 """
-    function pass_chrrange_filter(reader::GeneticVariation.VCF.Reader,chr_range::AbstractString,vcf_filename)
+    function pass_genomic_range_filter(reader::GeneticVariation.VCF.Reader,chr_range::AbstractString,vcf_filename)
 
         a=split(chr_range,":")
         chrwhole=a[1]
@@ -407,7 +415,7 @@ returns subarray of vcf records with io_pass_filter and io_chromosome_range_vcf_
 
 """
     pass_siglist_filter(vcf_filename,sig_list,chr_range::AbstractString)
-returns subarray of vcf records with io_pass_filter, io_sig_list_vcf_filter, and io_chromosome_range_vcf_filter applied.
+returns subarray of vcf records with io_pass_filter, io_sig_list_vcf_filter, and io_genomic_range_vcf_filter applied.
 """
 function pass_siglist_filter(vcf_filename,sig_list)
 
@@ -453,10 +461,10 @@ end
 end
 
 """
-    chrrange_siglist_filter(vcf_filename,sig_list,chr_range::AbstractString)
-returns subarray of vcf records with io_pass_filter, io_sig_list_vcf_filter, and io_chromosome_range_vcf_filter applied.
+    genomic_range_siglist_filter(vcf_filename,sig_list,chr_range::AbstractString)
+returns subarray of vcf records with io_pass_filter, io_sig_list_vcf_filter, and io_genomic_range_vcf_filter applied.
 """
-function chrrange_siglist_filter(vcf_filename,sig_list,chr_range::AbstractString)
+function genomic_range_siglist_filter(vcf_filename,sig_list,chr_range::AbstractString)
 
     a=split(chr_range,":")
     chrwhole=a[1]
@@ -1469,7 +1477,7 @@ end
 
 """
     save_graphic(graphic,output_directory,save_ext,title)
-Save plot in either html or static image format
+Save plot in either html or static image formats incuding eps, png, svg, and pdf
 """
 function save_graphic(graphic,output_directory,save_ext,title)
 
@@ -1478,5 +1486,7 @@ function save_graphic(graphic,output_directory,save_ext,title)
     elseif save_ext != "html"
         PlotlyJS.savefig(graphic, joinpath("$(output_directory)" ,"$title.$(save_ext)"))
     end
+
+    display(graphic)
 
 end

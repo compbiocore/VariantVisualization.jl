@@ -141,14 +141,28 @@ h_line_index_list = generate_hline_indices(number_rows,input)
 
                       transpose=true,
                       colorscale = [
-                                    [0, "rgb(174, 145, 255)"], #purple
-                                    [0.2, "rgb(255, 220, 145)"], #gold
+                      [0, "rgb(210, 213, 219)"], #light grey
+                      [0.2, "rgb(123, 125, 130)"], #dark grey
                                     [0.4, "rgb(255,255,255)"], #white
                                     #[0.4, "rgb(56,25,90)"], #dark blue
                                     [0.6, "rgb(51,106,145)"], #blue
                                     [0.8, "rgb(65,165,137)"], #green
                                     [1, "rgb(251,231,65)"] #yellow
                                     ],
+
+                                    #=
+
+                                    colorscale = [
+                                                  [0, "rgb(174, 145, 255)"], #purple
+                                                  [0.2, "rgb(255, 220, 145)"], #gold
+                                                  [0.4, "rgb(255,255,255)"], #white
+                                                  #[0.4, "rgb(56,25,90)"], #dark blue
+                                                  [0.6, "rgb(51,106,145)"], #blue
+                                                  [0.8, "rgb(65,165,137)"], #green
+                                                  [1, "rgb(251,231,65)"] #yellow
+                                                  ],
+
+                                    =#
 
                       gridcolor = "#E2E2E2",
                       showscale = true,
@@ -330,9 +344,11 @@ function dp_heatmap2_with_groups(input::Array{Int64,2},title::String,chrom_label
 
         transpose=true,
 
+
+
         colorscale = [
-                         [0, "rgb(174, 145, 255)"],
-                         [0.125, "rgb(255, 220, 145)"],
+        [0, "rgb(210, 213, 219)"], #light grey
+        [1.25, "rgb(123, 125, 130)"], #dark grey
                          [0.25, "rgb(255, 255, 255)"],
                          [0.4, "rgb(153,231,255)"],
                          [0.5, "rgb(79,146,255)"],
@@ -340,7 +356,19 @@ function dp_heatmap2_with_groups(input::Array{Int64,2},title::String,chrom_label
                          [1, "rgb(0,64,168)"]
                      ],
 
-                     colorbar = attr(tickvals = [-60,-40,-20,0,20,40,60,80,99],
+                     #=
+                     colorscale = [
+                                      [0, "rgb(174, 145, 255)"], #purple
+                                      [0.125, "rgb(255, 220, 145)"], #gold
+                                      [0.25, "rgb(255, 255, 255)"],
+                                      [0.4, "rgb(153,231,255)"],
+                                      [0.5, "rgb(79,146,255)"],
+                                      [0.5625, "rgb(43,124,255)"],
+                                      [1, "rgb(0,64,168)"]
+                                  ],
+                                  =#
+
+                     colorbar = attr(tickvals = [-60, -40, -20, 0, 20, 40, 60, 80, 99],
                      title="Depth / Trait",
                      ticktext = ["Trait 2","Trait 1","No Call","0","20","40","60","80","100+"]),
                      gridcolor = "#E2E2E2",
