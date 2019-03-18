@@ -80,12 +80,14 @@ export
     add_pheno_matrix_to_dp_data_for_plotting,
     generate_hover_text_array,
     generate_hover_text_array_grouped,
-    save_graphic
+    save_graphic,
+    alias
 
 #include("vcf_utils.jl")
 include("vcf_utils_complete.jl")
 include("plot_utils.jl")
 include("new_notebook_utils.jl")
+include("init.jl")
 #include("v1_VIVA_notebook_utils.jl")
 #include("io_filters.jl")
 
