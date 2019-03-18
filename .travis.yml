@@ -23,7 +23,6 @@ matrix:
       git:
         depth: 99999999
       before_script:
-        - julia -e 'import Pkg; Pkg.add("Cairo"); Pkg.build("Cairo")'
         - export PATH=$HOME/.local/bin:$PATH
       after_success:
         - julia -e 'import Pkg; Pkg.add("Coverage"); using Coverage; Coveralls.submit(Coveralls.process_folder())'
