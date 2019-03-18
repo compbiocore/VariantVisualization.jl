@@ -2,22 +2,22 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
      <loc>/</loc>
-     <lastmod>2019-03-05</lastmod>
+     <lastmod>2019-03-18</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>/filtering_vcf/</loc>
-     <lastmod>2019-03-05</lastmod>
+     <lastmod>2019-03-18</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>/plotting/</loc>
-     <lastmod>2019-03-05</lastmod>
+     <lastmod>2019-03-18</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>/api/</loc>
-     <lastmod>2019-03-05</lastmod>
+     <lastmod>2019-03-18</lastmod>
      <changefreq>daily</changefreq>
     </url>
 </urlset>
