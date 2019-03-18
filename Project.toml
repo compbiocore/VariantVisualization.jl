@@ -6,7 +6,6 @@ version = "0.1.0"
 [deps]
 ArgParse = "c7e460c6-2fb9-53a9-8c5b-16f535851c63"
 Blink = "ad839575-38b3-5650-b840-f874b8c74a25"
-Cairo = "159f3aea-2a34-519c-b102-8c37f9878175"
 DataFrames = "a93c6f00-e57d-5684-b7b6-d8193f3e46c0"
 DelimitedFiles = "8bb1440f-4735-579b-a4ab-409b98df4dab"
 DocumenterMarkdown = "997ab1e6-3595-5248-9280-8efb232c3433"
