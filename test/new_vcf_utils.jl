@@ -12,10 +12,10 @@ julia> Pkg.test(pkg_for"VIVA")
 @testset "VCFUtils" begin
 
 vcf_filename = "test_files/test_4X_191.vcf"
-vcf_filename_with_chr = "test_files/test_with_chr.vcf"
+#vcf_filename_with_chr = "test_files/test_with_chr.vcf"
 
 reader = VCF.Reader(open(vcf_filename, "r"))
-reader_with_chr = VCF.Reader(open(vcf_filename_with_chr, "r"))
+#reader_with_chr = VCF.Reader(open(vcf_filename_with_chr, "r"))
 sample_names = get_sample_names(reader)
 
 dp_limit = 50
@@ -30,23 +30,23 @@ end
 
 #functions for variant filters
 
-@testset "io_chromosome_range_vcf_filter" begin
-sub = io_chromosome_range_vcf_filter("chr4:0-400000000",vcf_filename)
+@testset "io_genomic_range_vcf_filter" begin
+sub = io_genomic_range_vcf_filter("chr4:0-400000000",vcf_filename)
 @test typeof(sub) == Array{Any,1}
 @test size(sub,1) == 1012
-#println("io_chromosome_range_vcf_filter type is $(typeof(sub))")
-#println("io_chromosome_range_vcf_filter size is $(size(sub,1))")
+#println("io_genomic_range_vcf_filter type is $(typeof(sub))")
+#println("io_genomic_range_vcf_filter size is $(size(sub,1))")
 end
 
 
 @testset "filters_with_siglist" begin
 
     @testset "load_siglist" begin
-    sig_list=load_siglist("test_files/sig_list_for_test.csv")
+    sig_list=load_siglist("test_files/positions_list.csv")
 
-    @testset "pass_chrrange_siglist_filter" begin
-    sig_list=load_siglist("test_files/sig_list_for_test.csv")
-    sub = pass_chrrange_siglist_filter(vcf_filename,sig_list,"chr4:0-5000000000")
+    @testset "pass_genomic_range_siglist_filter" begin
+    sig_list=load_siglist("test_files/positions_list.csv")
+    sub = pass_genomic_range_siglist_filter(vcf_filename,sig_list,"chr4:0-5000000000")
 
     @test (typeof(sub[1])) == GeneticVariation.VCF.Record
     @test (length(sub)) ==  5
@@ -66,8 +66,8 @@ end
             @test (length(sub)) ==  10
             end
 
-            @testset "chrrange_siglist_filter" begin
-            sub = chrrange_siglist_filter(vcf_filename,sig_list,"chr4:0-400000000")
+            @testset "genomic_range_siglist_filter" begin
+            sub = genomic_range_siglist_filter(vcf_filename,sig_list,"chr4:0-400000000")
             @test (typeof(sub[1])) == GeneticVariation.VCF.Record
             @test (length(sub)) ==  5
             end
@@ -82,9 +82,9 @@ end
     @test (length(sub)) ==  1164
 end
 
-@testset "pass_chrrange_filter" begin
+@testset "pass_genomic_range_filter" begin
     reader = VCF.Reader(open(vcf_filename, "r"))
-    sub = pass_chrrange_filter(reader,"chr4:0-400000000",vcf_filename)
+    sub = pass_genomic_range_filter(reader,"chr4:0-400000000",vcf_filename)
     @test (typeof(sub[1])) == GeneticVariation.VCF.Record
     @test (length(sub)) ==  856
 end
@@ -220,7 +220,7 @@ dp_num_array,dp_chromosome_labels=combined_all_read_depth_array_functions(sub)
     end
 
     @testset "sortcols_by_phenotype_matrix" begin
-    vcf,group_label_pack=sortcols_by_phenotype_matrix("test_files/fixed_pheno_matrix_test.csv","case,control", dp_num_array, sample_names)
+    vcf,group_label_pack=sortcols_by_phenotype_matrix("test_files/sample_metadata_matrix.csv","case,control", dp_num_array, sample_names)
     #println("sortcols_by_phenotype_matrix vcf type is $(typeof(vcf))")
     #println("sortcols_by_phenotype_matrix vcf size is $(size(vcf,1))")
     #println("sortcols_by_phenotype_matrix group_label_pack type is $(typeof(group_label_pack))")

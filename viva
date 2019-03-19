@@ -54,12 +54,11 @@ function test_parse_main(ARGS::Vector{String})
         default = "html"
 
         "--genomic_range", "-r"
-        help = "select rows within a given chromosome range. Provide chromosome range after this flag."
+        help = "select rows within a given chromosome range. Provide chromosome range after this flag in format chr4:20000000-30000000."
         arg_type = String
 
         "--pass_filter", "-p"
-        help = "select rows within a given chromosome range. Provide chromosome range after this flag in format chr4:20000000-30000000"
-        arg_type = String
+        help = "select rows with PASS in the FILTER field."
         action = :store_true
 
         "--positions_list", "-l"
@@ -99,6 +98,12 @@ function test_parse_main(ARGS::Vector{String})
 
         "--avg_dp"
         help = "visualize average read depths as line chart. Options: average sample read depth, average variant read depth, or both. eg. =sample, =variant, =sample,variant"
+
+        "--save_remotely"
+        help = "Specify filename for heatmap with underscores for spaces."
+        action = :store_true
+
+
         #nargs = 2
         #metavar = ["avg_option", "markers_or_lines"]
         #default = ["variant,sample", "markers"]
@@ -133,6 +138,8 @@ reader = VCF.Reader(open(vcf_filename, "r"))
 sample_names = get_sample_names(reader)
 
 save_ext = parsed_args["save_format"]
+
+remote_option = parsed_args["save_remotely"]
 
 VIVA.checkfor_outputdirectory(parsed_args["output_directory"])
 output_directory=parsed_args["output_directory"]
@@ -311,7 +318,7 @@ if parsed_args["heatmap"] == "genotype"
 
     println("Saving genotype heatmap")
 
-    save_graphic(graphic,output_directory,save_ext,title)
+    save_graphic(graphic,output_directory,save_ext,title,remote_option)
 
 end
 
@@ -379,7 +386,7 @@ if parsed_args["heatmap"] == "read_depth"
 
     println("Saving read depth heatmap")
 
-    save_graphic(graphic,output_directory,save_ext,title)
+    save_graphic(graphic,output_directory,save_ext,title,remote_option)
 end
 
 if parsed_args["heatmap"] == "genotype,read_depth" || parsed_args["heatmap"] == "read_depth,genotype"
@@ -448,7 +455,7 @@ if parsed_args["heatmap"] == "genotype,read_depth" || parsed_args["heatmap"] == 
     save_numerical_array(gt_num_array,sample_names,chr_pos_tuple_list,title,output_directory)
     end
 
-    save_graphic(graphic,output_directory,save_ext,title)
+    save_graphic(graphic,output_directory,save_ext,title,remote_option)
 
     if parsed_args["heatmap_title"] != nothing
         title = "Read_Depth_$(parsed_args["heatmap_title"])"
@@ -509,7 +516,7 @@ if parsed_args["heatmap"] == "genotype,read_depth" || parsed_args["heatmap"] == 
 
     println("Saving read depth heatmap")
 
-    save_graphic(graphic,output_directory,save_ext,title)
+    save_graphic(graphic,output_directory,save_ext,title,remote_option)
 
 end
 
@@ -530,7 +537,7 @@ if parsed_args["avg_dp"] == "sample"
     bn = Base.Filesystem.basename(parsed_args["vcf_file"])
     title = "Average_Sample_Read_Depth_$bn"
 
-    save_graphic(graphic,output_directory,save_ext,title)
+    save_graphic(graphic,output_directory,save_ext,title,remote_option)
 
 elseif parsed_args["avg_dp"] == "variant"
 
@@ -550,7 +557,7 @@ elseif parsed_args["avg_dp"] == "variant"
     title = "Average_Variant_Read_Depth$bn"
 
     graphic = avg_variant_dp_line_chart(avg_list,chr_pos_tuple_list,y_axis_label_option,chrom_label_info)
-    save_graphic(graphic,output_directory,save_ext,title)
+    save_graphic(graphic,output_directory,save_ext,title,remote_option)
 
 elseif parsed_args["avg_dp"] == "variant,sample" || parsed_args["avg_dp"] == "sample,variant"
 
@@ -570,7 +577,7 @@ elseif parsed_args["avg_dp"] == "variant,sample" || parsed_args["avg_dp"] == "sa
     title = "Average_Variant_Read_Depth$bn"
 
     graphic = avg_variant_dp_line_chart(avg_list,chr_pos_tuple_list,y_axis_label_option,chrom_label_info)
-    save_graphic(graphic,output_directory,save_ext,title)
+    save_graphic(graphic,output_directory,save_ext,title,remote_option)
 
     avg_list = VIVA.avg_dp_samples(dp_num_array)
     list = VIVA.list_sample_names_low_dp(avg_list, sample_names)
@@ -582,7 +589,7 @@ elseif parsed_args["avg_dp"] == "variant,sample" || parsed_args["avg_dp"] == "sa
 
     graphic = avg_sample_dp_scatter(avg_list,sample_names,x_axis_label_option)
 
-    save_graphic(graphic,output_directory,save_ext,title)
+    save_graphic(graphic,output_directory,save_ext,title,remote_option)
 
 elseif parsed_args["avg_dp"] != nothing
     println("--avg_dp flag did not find expected arguments: sample, variant, or sample,variant. Average read depth plot not saved.")

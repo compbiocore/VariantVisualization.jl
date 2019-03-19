@@ -17,7 +17,7 @@ end
 
 """
     clean_column1_siglist!(siglist)
-    replaces "X","Y","M" with 23,24,25 {Int}
+Replaces strings "X","Y","M" with 23,24,25 {Int} in array generated in load_siglist()
 use in load_siglist() because X and Y need to be replaced with Int
 """
 function clean_column1_siglist!(siglist)
@@ -1476,13 +1476,15 @@ return(hover_text_array)
 end
 
 """
-    save_graphic(graphic,output_directory,save_ext,title)
+    save_graphic(graphic,output_directory,save_ext,title,remote_option)
 Save plot in either html or static image formats incuding eps, png, svg, and pdf
 """
-function save_graphic(graphic,output_directory,save_ext,title)
+function save_graphic(graphic,output_directory,save_ext,title,remote_option)
 
-    if save_ext=="html"
+    if save_ext=="html" && remote_option == true
         PlotlyJS.savehtml(graphic, joinpath("$(output_directory)" ,"$title.$(save_ext)"), :remote)
+    elseif save_ext=="html" && remote_option != true
+        PlotlyJS.savehtml(graphic, joinpath("$(output_directory)" ,"$title.$(save_ext)"))
     elseif save_ext != "html"
         PlotlyJS.savefig(graphic, joinpath("$(output_directory)" ,"$title.$(save_ext)"))
     end
