@@ -12,7 +12,6 @@ matrix:
     #     - export PATH=$HOME/.local/bin:$PATH
     #   after_success:
     #     - julia -e 'import Pkg; Pkg.add("Coverage"); using Coverage; Coveralls.submit(Coveralls.process_folder())'
-
     - stage: Test Linux
       language: julia
       os: linux

@@ -9,10 +9,22 @@
 
 ## Overview
 
-ViVa.jl is a user-friendly command line tool for creating publication quality graphics from Variant Call Format (VCF) files and has been designed for clinicians and bioinformaticians to explore their VCF files visually. Users can quickly extract genotype or read depth information and plot trends in interactive categorical heatmaps and scatter plots of average read depth values. ViVa.jl offers a robust set of filters to select variants and samples of interest for analysis. ViVa.jl is especially useful in early data exploration for identifying batch effect and sources of poor read depth, as well as identifying distribution of disease causing variants in a set of clinical samples.
+VIVA.jl is a user-friendly command line tool for creating publication quality graphics from Variant Call Format (VCF) files and has been designed for clinicians and bioinformaticians to explore their VCF files visually. Users can quickly extract genotype or read depth information and plot trends in interactive categorical heatmaps and scatter plots of average read depth values. ViVa.jl offers a robust set of filters to select variants and samples of interest for analysis. ViVa.jl is especially useful in early data exploration for identifying batch effect and sources of poor read depth, as well as identifying distribution of disease causing variants in a set of clinical samples.
 
 
 ## Installation
+
+### Command Line Tool
+
+Add VIVA.jl in the Julia Pkg prompt.
+
+### Jupyer Notebook
+
+Install Jupyter and download the [VIVA Jupyter Notebook]().
+
+### Latest Features
+
+To stay up to date with cutting edge development features install VIVA.jl from the Master branch. 
 
 Install ViVa.jl
 
@@ -29,7 +41,7 @@ Pkg.clone("https://github.com/compbiocore/ViVa.jl")
 
 ## Contributing and Questions
 
-Contributions are very welcome, as are feature requests and suggestions. Please open an
+Contributions are welcome, as are feature requests and suggestions. Please open an
 [issue][issues-url] if you encounter any problems or would just like to ask a question.
 
-[issues-url]: https://github.com/compbiocore/CAOS/issues
+[issues-url]: https://github.com/compbiocore/VIVA.jl/issues

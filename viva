@@ -10,7 +10,7 @@ using ArgParse
 
 println("2/5 VIVA")
 using Pkg #remove after VIVA is deployed
-Pkg.activate("/Users/George/.julia/dev/VIVA") #remove after VIVA is deployed
+Pkg.activate(@__DIR__) #remove after VIVA is deployed
 using VIVA
 
 println("3/5 PlotlyJS")
@@ -53,13 +53,12 @@ function test_parse_main(ARGS::Vector{String})
         arg_type = String
         default = "html"
 
-        "--chromosome_range", "-r"
-        help = "select rows within a given chromosome range. Provide chromosome range after this flag."
+        "--genomic_range", "-r"
+        help = "select rows within a given chromosome range. Provide chromosome range after this flag in format chr4:20000000-30000000."
         arg_type = String
 
         "--pass_filter", "-p"
-        help = "select rows within a given chromosome range. Provide chromosome range after this flag in format chr4:20000000-30000000"
-        arg_type = String
+        help = "select rows with PASS in the FILTER field."
         action = :store_true
 
         "--positions_list", "-l"
@@ -99,6 +98,12 @@ function test_parse_main(ARGS::Vector{String})
 
         "--avg_dp"
         help = "visualize average read depths as line chart. Options: average sample read depth, average variant read depth, or both. eg. =sample, =variant, =sample,variant"
+
+        "--save_remotely"
+        help = "Specify filename for heatmap with underscores for spaces."
+        action = :store_true
+
+
         #nargs = 2
         #metavar = ["avg_option", "markers_or_lines"]
         #default = ["variant,sample", "markers"]
@@ -134,6 +139,8 @@ sample_names = get_sample_names(reader)
 
 save_ext = parsed_args["save_format"]
 
+remote_option = parsed_args["save_remotely"]
+
 VIVA.checkfor_outputdirectory(parsed_args["output_directory"])
 output_directory=parsed_args["output_directory"]
 
@@ -163,7 +170,7 @@ else
 end
 
 #pass_filter
-if parsed_args["pass_filter"] == true && parsed_args["chromosome_range"] == nothing && parsed_args["positions_list"] == nothing
+if parsed_args["pass_filter"] == true && parsed_args["genomic_range"] == nothing && parsed_args["positions_list"] == nothing
     println("Only pass filter is applied. Large vcf files with many PASS variants will take a long time to process and heatmap visualizations will lose resolution at this scale unless viewed in interactive html for zooming.")
     println()
     sub = VIVA.io_pass_filter(vcf_filename)
@@ -173,15 +180,15 @@ if parsed_args["pass_filter"] == true && parsed_args["chromosome_range"] == noth
 end
 
 #chr_range
-if parsed_args["chromosome_range"] != nothing && parsed_args["pass_filter"] == false && parsed_args["positions_list"] == nothing
-    sub = VIVA.io_chromosome_range_vcf_filter(parsed_args["chromosome_range"],vcf_filename)
+if parsed_args["genomic_range"] != nothing && parsed_args["pass_filter"] == false && parsed_args["positions_list"] == nothing
+    sub = VIVA.io_genomic_range_vcf_filter(parsed_args["genomic_range"],vcf_filename)
     number_rows = size(sub,1)
-    println("Selected $number_rows variants within chromosome range: $(parsed_args["chromosome_range"])")
+    println("Selected $number_rows variants within chromosome range: $(parsed_args["genomic_range"])")
     heatmap_input = "range_filtered"
 end
 
 #list
-if parsed_args["positions_list"] != nothing && parsed_args["chromosome_range"] == nothing && parsed_args["pass_filter"] == false
+if parsed_args["positions_list"] != nothing && parsed_args["genomic_range"] == nothing && parsed_args["pass_filter"] == false
     sig_list =  load_siglist(parsed_args["positions_list"])
     sub = VIVA.io_sig_list_vcf_filter(sig_list,vcf_filename)
     number_rows = size(sub,1)
@@ -190,22 +197,22 @@ if parsed_args["positions_list"] != nothing && parsed_args["chromosome_range"] =
 end
 
 #pass_filter and chr_range and list
-if parsed_args["pass_filter"] == true && parsed_args["chromosome_range"] != nothing && parsed_args["positions_list"] != nothing
+if parsed_args["pass_filter"] == true && parsed_args["genomic_range"] != nothing && parsed_args["positions_list"] != nothing
     sig_list =  load_siglist(parsed_args["positions_list"])
-    sub = VIVA.pass_chrrange_siglist_filter(vcf_filename, sig_list, parsed_args["chromosome_range"])
+    sub = VIVA.pass_genomic_range_siglist_filter(vcf_filename, sig_list, parsed_args["genomic_range"])
     number_rows = size(sub,1)
-    println("Selected $number_rows variants with Filter status: PASS, that match list of chromosome positions of interest, and are within chromosome range: $(parsed_args["chromosome_range"])")
+    println("Selected $number_rows variants with Filter status: PASS, that match list of chromosome positions of interest, and are within chromosome range: $(parsed_args["genomic_range"])")
 end
 
 #pass_filter and chr_range
-if parsed_args["pass_filter"] == true && parsed_args["chromosome_range"] != nothing && parsed_args["positions_list"] == nothing
-    sub = VIVA.pass_chrrange_filter(reader, parsed_args["chromosome_range"],vcf_filename)
+if parsed_args["pass_filter"] == true && parsed_args["genomic_range"] != nothing && parsed_args["positions_list"] == nothing
+    sub = VIVA.pass_genomic_range_filter(reader, parsed_args["genomic_range"],vcf_filename)
     number_rows = size(sub,1)
-    println("Selected $number_rows variants with Filter status: PASS and are within chromosome range: $(parsed_args["chromosome_range"])")
+    println("Selected $number_rows variants with Filter status: PASS and are within chromosome range: $(parsed_args["genomic_range"])")
 end
 
 #pass_filter and list
-if parsed_args["pass_filter"] == true && parsed_args["chromosome_range"] == nothing && parsed_args["positions_list"] != nothing
+if parsed_args["pass_filter"] == true && parsed_args["genomic_range"] == nothing && parsed_args["positions_list"] != nothing
     sig_list =  load_siglist(parsed_args["positions_list"])
     sub = VIVA.pass_siglist_filter(vcf_filename, sig_list)
     number_rows = size(sub,1)
@@ -213,15 +220,15 @@ if parsed_args["pass_filter"] == true && parsed_args["chromosome_range"] == noth
 end
 
 #chr_range and list
-if parsed_args["pass_filter"] == false && parsed_args["chromosome_range"] != nothing && parsed_args["positions_list"] != nothing
+if parsed_args["pass_filter"] == false && parsed_args["genomic_range"] != nothing && parsed_args["positions_list"] != nothing
     sig_list =  load_siglist(parsed_args["positions_list"])
-    sub = VIVA.chrrange_siglist_filter(vcf_filename, sig_list, parsed_args["chromosome_range"])
+    sub = VIVA.genomic_range_siglist_filter(vcf_filename, sig_list, parsed_args["genomic_range"])
     number_rows = size(sub,1)
-    println("Selected $number_rows variants that are within chromosome range: $(parsed_args["chromosome_range"]) and that match list of chromosome positions of interest")
+    println("Selected $number_rows variants that are within chromosome range: $(parsed_args["genomic_range"]) and that match list of chromosome positions of interest")
 end
 
 #no filters
-if parsed_args["pass_filter"] == false && parsed_args["chromosome_range"] == nothing && parsed_args["positions_list"] == nothing
+if parsed_args["pass_filter"] == false && parsed_args["genomic_range"] == nothing && parsed_args["positions_list"] == nothing
 
     println("No filters applied. Large vcf files will take a long time to process and heatmap visualizations will lose resolution at this scale unless viewed in interactive html for zooming.")
     println()
@@ -237,11 +244,6 @@ if parsed_args["pass_filter"] == false && parsed_args["chromosome_range"] == not
 
 
 end
-
-println()
-println("Finished Filtering. Total time to filter:")
-
-println("_______________________________________________")
 
 y_axis_label_option = parsed_args["y_axis_labels"]
 
@@ -316,7 +318,7 @@ if parsed_args["heatmap"] == "genotype"
 
     println("Saving genotype heatmap")
 
-    save_graphic(graphic,output_directory,save_ext,title)
+    save_graphic(graphic,output_directory,save_ext,title,remote_option)
 
 end
 
@@ -384,7 +386,7 @@ if parsed_args["heatmap"] == "read_depth"
 
     println("Saving read depth heatmap")
 
-    save_graphic(graphic,output_directory,save_ext,title)
+    save_graphic(graphic,output_directory,save_ext,title,remote_option)
 end
 
 if parsed_args["heatmap"] == "genotype,read_depth" || parsed_args["heatmap"] == "read_depth,genotype"
@@ -453,7 +455,7 @@ if parsed_args["heatmap"] == "genotype,read_depth" || parsed_args["heatmap"] == 
     save_numerical_array(gt_num_array,sample_names,chr_pos_tuple_list,title,output_directory)
     end
 
-    save_graphic(graphic,output_directory,save_ext,title)
+    save_graphic(graphic,output_directory,save_ext,title,remote_option)
 
     if parsed_args["heatmap_title"] != nothing
         title = "Read_Depth_$(parsed_args["heatmap_title"])"
@@ -480,10 +482,6 @@ if parsed_args["heatmap"] == "genotype,read_depth" || parsed_args["heatmap"] == 
 
         group_trait_matrix_filename=((parsed_args["group_samples"])[1])
         trait_to_group_by = ((parsed_args["group_samples"])[2])
-
-        println()
-        #println("Grouping samples by $trait_to_group_by")
-        println()
 
         ordered_dp_num_array,group_label_pack,pheno,id_list,trait_labels = sortcols_by_phenotype_matrix(group_trait_matrix_filename, trait_to_group_by, dp_num_array, sample_names)
         dp_num_array_limited=read_depth_threshhold(ordered_dp_num_array)
@@ -518,7 +516,7 @@ if parsed_args["heatmap"] == "genotype,read_depth" || parsed_args["heatmap"] == 
 
     println("Saving read depth heatmap")
 
-    save_graphic(graphic,output_directory,save_ext,title)
+    save_graphic(graphic,output_directory,save_ext,title,remote_option)
 
 end
 
@@ -528,16 +526,18 @@ if parsed_args["avg_dp"] == "sample"
 
     chr_pos_tuple_list = generate_chromosome_positions_for_hover_labels(dp_chromosome_labels)
 
+    dp_num_array_limited=read_depth_threshhold(dp_num_array)
     avg_list = VIVA.avg_dp_samples(dp_num_array)
+
     list = VIVA.list_sample_names_low_dp(avg_list, sample_names)
-    DelimitedFiles.writedlm(joinpath("$(parsed_args["output_directory"])","Samples_with_low_dp.csv"),list, ",")
+    #DelimitedFiles.writedlm(joinpath("$(parsed_args["output_directory"])","Samples_with_low_dp.csv"),list, ",") #turn on when create argument for this and add argument for cutoff e.g. list samples with avg dp <30.
     #println("The following samples have read depth of under 15: $list")
     graphic = avg_sample_dp_scatter(avg_list,sample_names,x_axis_label_option)
 
     bn = Base.Filesystem.basename(parsed_args["vcf_file"])
     title = "Average_Sample_Read_Depth_$bn"
 
-    save_graphic(graphic,output_directory,save_ext,title)
+    save_graphic(graphic,output_directory,save_ext,title,remote_option)
 
 elseif parsed_args["avg_dp"] == "variant"
 
@@ -546,16 +546,18 @@ elseif parsed_args["avg_dp"] == "variant"
     chr_pos_tuple_list = generate_chromosome_positions_for_hover_labels(dp_chromosome_labels)
     chrom_label_info = VIVA.chromosome_label_generator(dp_chromosome_labels[:,1])
 
+    dp_num_array_limited=read_depth_threshhold(dp_num_array)
     avg_list = VIVA.avg_dp_variant(dp_num_array)
+
     list = VIVA.list_variant_positions_low_dp(avg_list, dp_chromosome_labels)
-    DelimitedFiles.writedlm(joinpath("$(parsed_args["output_directory"])","Variant_positions_with_low_dp.csv"),list,",")
-    #println("The following variants have read depth of less than 15: $list")
+    #DelimitedFiles.writedlm(joinpath("$(parsed_args["output_directory"])","Variant_positions_with_low_dp.csv"),list,",") #turn on when create argument for this and add argument for cutoff e.g. list samples with avg dp <30.
+    #println("The following variants have read depth of less than 15: $list") #turn on when create argument for this and add argument for cutoff e.g. list samples with avg dp <30.
 
     bn = Base.Filesystem.basename(parsed_args["vcf_file"])
     title = "Average_Variant_Read_Depth$bn"
 
     graphic = avg_variant_dp_line_chart(avg_list,chr_pos_tuple_list,y_axis_label_option,chrom_label_info)
-    save_graphic(graphic,output_directory,save_ext,title)
+    save_graphic(graphic,output_directory,save_ext,title,remote_option)
 
 elseif parsed_args["avg_dp"] == "variant,sample" || parsed_args["avg_dp"] == "sample,variant"
 
@@ -564,20 +566,22 @@ elseif parsed_args["avg_dp"] == "variant,sample" || parsed_args["avg_dp"] == "sa
     chr_pos_tuple_list = generate_chromosome_positions_for_hover_labels(dp_chromosome_labels)
     chrom_label_info = VIVA.chromosome_label_generator(dp_chromosome_labels[:,1])
 
+    dp_num_array_limited=read_depth_threshhold(dp_num_array)
     avg_list = VIVA.avg_dp_variant(dp_num_array)
+
     list = VIVA.list_variant_positions_low_dp(avg_list, dp_chromosome_labels)
-    DelimitedFiles.writedlm(joinpath("$(parsed_args["output_directory"])","Variant_positions_with_low_dp.csv"),list,",")
+   #DelimitedFiles.writedlm(joinpath("$(parsed_args["output_directory"])","Variant_positions_with_low_dp.csv"),list,",") #turn on when create argument for this and add argument for cutoff e.g. list samples with avg dp <30.
     #println("The following variants have read depth of less than 15: $list")
 
     bn = Base.Filesystem.basename(parsed_args["vcf_file"])
     title = "Average_Variant_Read_Depth$bn"
 
     graphic = avg_variant_dp_line_chart(avg_list,chr_pos_tuple_list,y_axis_label_option,chrom_label_info)
-    save_graphic(graphic,output_directory,save_ext,title)
+    save_graphic(graphic,output_directory,save_ext,title,remote_option)
 
     avg_list = VIVA.avg_dp_samples(dp_num_array)
     list = VIVA.list_sample_names_low_dp(avg_list, sample_names)
-    DelimitedFiles.writedlm(joinpath("$(parsed_args["output_directory"])","Samples_with_low_dp.csv"),list, ",")
+    #DelimitedFiles.writedlm(joinpath("$(parsed_args["output_directory"])","Samples_with_low_dp.csv"),list, ",") #turn on when create argument for this and add argument for cutoff e.g. list samples with avg dp <30.
     #println("The following samples have read depth of under 15: $list")
 
     bn = Base.Filesystem.basename(parsed_args["vcf_file"])
@@ -585,15 +589,10 @@ elseif parsed_args["avg_dp"] == "variant,sample" || parsed_args["avg_dp"] == "sa
 
     graphic = avg_sample_dp_scatter(avg_list,sample_names,x_axis_label_option)
 
-    save_graphic(graphic,output_directory,save_ext,title)
+    save_graphic(graphic,output_directory,save_ext,title,remote_option)
 
 elseif parsed_args["avg_dp"] != nothing
     println("--avg_dp flag did not find expected arguments: sample, variant, or sample,variant. Average read depth plot not saved.")
 end
 
 close(reader)
-
-println()
-println("Finished plotting. Total time to run:")
-
-println()
