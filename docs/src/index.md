@@ -1,6 +1,6 @@
 # Getting Started 
 
-![alt text](https://github.com/compbiocore/VIVA.jl/tree/master/docs/assets/VIVA_logo.png)
+![VIVA Logo](assets/VIVA_logo.png)
 
 ### *Command Line Tool and Jupyter Notebook*
 
