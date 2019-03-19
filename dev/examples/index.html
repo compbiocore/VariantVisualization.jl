@@ -40,7 +40,7 @@
     
     
       
-        <title>Making Plots - ViVa.jl</title>
+        <title>Examples - ViVa.jl</title>
       
     
     
@@ -130,7 +130,7 @@
                 ViVa.jl
               </span>
               <span class="md-header-nav__topic">
-                Making Plots
+                Examples
               </span>
             
           
@@ -327,6 +327,18 @@
           
           
 
+
+  <li class="md-nav__item">
+    <a href="../plotting/" title="Making Plots" class="md-nav__link">
+      Making Plots
+    </a>
+  </li>
+
+        
+          
+          
+          
+
   
 
 
@@ -338,11 +350,11 @@
     
     
       <label class="md-nav__link md-nav__link--active" for="__toc">
-        Making Plots
+        Examples
       </label>
     
-    <a href="./" title="Making Plots" class="md-nav__link md-nav__link--active">
-      Making Plots
+    <a href="./" title="Examples" class="md-nav__link md-nav__link--active">
+      Examples
     </a>
     
       
@@ -418,13 +430,6 @@
   
 </li>
       
-        <li class="md-nav__item">
-  <a href="#make-html-plots-shareable" title="Make HTML plots shareable" class="md-nav__link">
-    Make HTML plots shareable
-  </a>
-  
-</li>
-      
       
       
       
@@ -433,18 +438,6 @@
   
 </nav>
     
-  </li>
-
-        
-          
-          
-          
-
-
-  <li class="md-nav__item">
-    <a href="../examples/" title="Examples" class="md-nav__link">
-      Examples
-    </a>
   </li>
 
         
@@ -548,13 +541,6 @@
   
 </li>
       
-        <li class="md-nav__item">
-  <a href="#make-html-plots-shareable" title="Make HTML plots shareable" class="md-nav__link">
-    Make HTML plots shareable
-  </a>
-  
-</li>
-      
       
       
       
@@ -571,7 +557,7 @@
             <article class="md-content__inner md-typeset">
               
                 
-                  <a href="https://github.com/compbiocore/ViVa.jl/edit/master/docs/plotting.md" title="Edit this page" class="md-icon md-content__icon">&#xE3C9;</a>
+                  <a href="https://github.com/compbiocore/ViVa.jl/edit/master/docs/examples.md" title="Edit this page" class="md-icon md-content__icon">&#xE3C9;</a>
                 
                 
                 <p><a id='Plotting-1'></a></p>
@@ -656,26 +642,10 @@
 
 <p><a id='Export-heatmap-data-as-numerical-array-1'></a></p>
 <h2 id="export-heatmap-data-as-numerical-array">Export heatmap data as numerical array</h2>
-<p>Save input array to heatmap function with column and row labels. </p>
-<p>Specifically, saves numerical array of genotype or read depth values for selected variants and samples as a .csv table with genomic positions and sample names for row names and column names respectively.</p>
+<p>Save input array to heatmap function with column and row labels.  Specifically, saves numerical array of genotype or read depth values for selected variants and samples as a .csv table with genomic positions and sample names for row names and column names respectively.</p>
 <p><em>flags</em>: <code>--num_array</code>, <code>-n</code></p>
 <p><em>arguments</em>: none, this is a positional argument.</p>
 <div class="codehilite"><pre><span></span>julia VIVA -f example.vcf `-n` 
-</pre></div>
-
-
-<div class="codehilite"><pre><span></span>julia VIVA -f example.vcf `-x`
-</pre></div>
-
-
-<p><a id='Make-HTML-plots-shareable-1'></a></p>
-<h2 id="make-html-plots-shareable">Make HTML plots shareable</h2>
-<p>Make HTML plots shareable by saving HTML supporting files remotely on the internet rather than on the users local filesystem. </p>
-<p>This allows sending HTML output files to others who don't have VIVA installed on their computers. However, in order to open HTML files saved with this option engaged, users will need to be connected to the internet. </p>
-<p>Without calling this feature, HTML outputs can be opened without internet connection but only on the computer where the plots were generated.</p>
-<p><em>flags</em>: <code>--save_remotely</code></p>
-<p><em>arguments</em>: none, this is a positional argument.</p>
-<div class="codehilite"><pre><span></span>julia VIVA -f example.vcf `--save_remotely` 
 </pre></div>
                 
                   
@@ -697,7 +667,7 @@
     <div class="md-footer-nav">
       <nav class="md-footer-nav__inner md-grid">
         
-          <a href="../filtering_vcf/" title="Filtering Your VCF File" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+          <a href="../plotting/" title="Making Plots" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
             <div class="md-flex__cell md-flex__cell--shrink">
               <i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
             </div>
@@ -706,19 +676,19 @@
                 <span class="md-footer-nav__direction">
                   Previous
                 </span>
-                Filtering Your VCF File
+                Making Plots
               </span>
             </div>
           </a>
         
         
-          <a href="../examples/" title="Examples" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
+          <a href="../api/" title="API" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
             <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
               <span class="md-flex__ellipsis">
                 <span class="md-footer-nav__direction">
                   Next
                 </span>
-                Examples
+                API
               </span>
             </div>
             <div class="md-flex__cell md-flex__cell--shrink">

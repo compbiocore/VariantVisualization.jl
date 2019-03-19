@@ -104,7 +104,7 @@
     <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
     <label class="md-overlay" data-md-component="overlay" for="__drawer"></label>
     
-      <a href="#description" tabindex="1" class="md-skip">
+      <a href="#getting-started" tabindex="1" class="md-skip">
         Skip to content
       </a>
     
@@ -290,9 +290,92 @@
       
     
     
+      <label class="md-nav__link md-nav__link--active" for="__toc">
+        Home
+      </label>
+    
     <a href="." title="Home" class="md-nav__link md-nav__link--active">
       Home
     </a>
+    
+      
+<nav class="md-nav md-nav--secondary">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">Table of contents</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#command-line-tool-and-jupyter-notebook" title="Command Line Tool and Jupyter Notebook" class="md-nav__link">
+    Command Line Tool and Jupyter Notebook
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#description" title="Description" class="md-nav__link">
+    Description
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#general-use" title="General Use" class="md-nav__link">
+    General Use
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#command-line" title="Command Line" class="md-nav__link">
+    Command Line
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#default-options" title="Default Options:" class="md-nav__link">
+    Default Options:
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#jupyter-notebook" title="Jupyter Notebook" class="md-nav__link">
+    Jupyter Notebook
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#continue-reading-for" title="Continue reading for:" class="md-nav__link">
+    Continue reading for:
+  </a>
+  
+</li>
+      
+      
+      
+      
+      
+    </ul>
+  
+</nav>
     
   </li>
 
@@ -322,8 +405,8 @@
 
 
   <li class="md-nav__item">
-    <a href="filtering_vcf/" title="Read and Filter VCF" class="md-nav__link">
-      Read and Filter VCF
+    <a href="filtering_vcf/" title="Filtering Your VCF File" class="md-nav__link">
+      Filtering Your VCF File
     </a>
   </li>
 
@@ -334,8 +417,20 @@
 
 
   <li class="md-nav__item">
-    <a href="plotting/" title="Heatmaps" class="md-nav__link">
-      Heatmaps
+    <a href="plotting/" title="Making Plots" class="md-nav__link">
+      Making Plots
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="examples/" title="Examples" class="md-nav__link">
+      Examples
     </a>
   </li>
 
@@ -374,6 +469,76 @@
     
   
   
+    <label class="md-nav__title" for="__toc">Table of contents</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#command-line-tool-and-jupyter-notebook" title="Command Line Tool and Jupyter Notebook" class="md-nav__link">
+    Command Line Tool and Jupyter Notebook
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#description" title="Description" class="md-nav__link">
+    Description
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#general-use" title="General Use" class="md-nav__link">
+    General Use
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#command-line" title="Command Line" class="md-nav__link">
+    Command Line
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#default-options" title="Default Options:" class="md-nav__link">
+    Default Options:
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#jupyter-notebook" title="Jupyter Notebook" class="md-nav__link">
+    Jupyter Notebook
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#continue-reading-for" title="Continue reading for:" class="md-nav__link">
+    Continue reading for:
+  </a>
+  
+</li>
+      
+      
+      
+      
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -387,43 +552,68 @@
                   <a href="https://github.com/compbiocore/ViVa.jl/edit/master/docs/index.md" title="Edit this page" class="md-icon md-content__icon">&#xE3C9;</a>
                 
                 
-                <h1 id="description">Description</h1>
-<div class="codehilite"><pre><span></span>ViVa.jl is a user-friendly command line tool for creating publication quality graphics from Variant Call Format (VCF) files. ViVa.jl provides tools to quickly select variant records and samples to include in visualization.
-
-ViVa.jl utilizes ArgParse.jl to parse command line arguments and GeneticVariation.jl to create a memory-efficient VCF Reader object which ViVa.jl utilizes to quickly extract variants of interest.
-
-This documentation details each [REQUIRED] and optional argument, as well as necessary specific structure for user-generated input files for manipulating records and samples. Clearly named examples of all user-generated input files can be found in the /tests/ directory of the ViVa.jl repository.
-
-ViVa.jl can be run through the command line with the following structure:
-
-julia viva_cli.jl [--help] [COMMAND] [OPTIONS]
-
-Example:
-julia viva_cli.jl -v example.vcf -r chr1:20000-30000000 -s html --heatmap read_depth --line_chart samples
+                <p><a id='Getting-Started-1'></a></p>
+<h1 id="getting-started">Getting Started</h1>
+<p><img alt="alt text" src="https://github.com/compbiocore/VIVA.jl/tree/master/docs/assets/VIVA_logo.png" /></p>
+<p><a id='*Command-Line-Tool-and-Jupyter-Notebook*-1'></a></p>
+<h3 id="command-line-tool-and-jupyter-notebook"><em>Command Line Tool and Jupyter Notebook</em></h3>
+<p><a id='Description-1'></a></p>
+<h2 id="description">Description</h2>
+<p>VIVA is a user-friendly command line tool for exploratory analysis and generation of publication quality graphics for variant analysis project using Variant Call Format (VCF) files.</p>
+<p>Variant selection and plotting is all executed in a single command. </p>
+<p>We describe each of VIVA's arguments in this documentation under the Manual page.</p>
+<p>VIVA is available as a Jupyter Notebook utility <a href="https://github.com/compbiocore/VIVA.jl/tree/master">here</a>. Instructions for installing Jupyter, downloading VIVA Jupyter Notebook, and using the notebook are detailed in the <em>Jupyter Notebook</em> section of this documentation.</p>
+<p>Formatting requirements for VIVA's input files are described in the Manual and clearly named examples of all user-generated input files can be found in the <code>/test/test_files</code> directory of the <code>VIVA.jl</code> repository.</p>
+<p><a id='General-Use-1'></a></p>
+<h2 id="general-use">General Use</h2>
+<p>To use VIVA, we recommend creating a new directory for storing your VCF file to analyze where output files will be saved. Alternatively, users may also provide paths to the VCF file and to preferred output file locations as command line arguments.</p>
+<p><a id='Command-Line-1'></a></p>
+<h3 id="command-line">Command Line</h3>
+<p>VIVA's general command line argument structure is as follows:</p>
+<div class="codehilite"><pre><span></span>    julia VIVA -f file.vcf [OPTIONS]
 </pre></div>
 
 
-<h1 id="installation">Installation</h1>
-<blockquote>
-<blockquote>
-<blockquote>
-<blockquote>
-<blockquote>
-<blockquote>
-<blockquote>
-<p>e6804e0d0fe65a23bcac9cfccb1395101d283ed2</p>
-</blockquote>
-</blockquote>
-</blockquote>
-</blockquote>
-</blockquote>
-</blockquote>
-</blockquote>
-<p>Install ViVa.jl</p>
-<p>To stay up to date with new features before release, please check out the master branch.</p>
-<div class="codehilite"><pre><span></span><span class="k">using</span> <span class="n">Pkg</span>
-<span class="n">Pkg</span><span class="o">.</span><span class="n">clone</span><span class="p">(</span><span class="s">&quot;https://github.com/compbiocore/ViVa.jl&quot;</span><span class="p">)</span>
+<p>From the command line or powershell, run the VIVA command line tool script which takes arguments from the command line and parses them with ArgParse.jl.</p>
+<p>Example:</p>
+<div class="codehilite"><pre><span></span>    julia VIVA -f example.vcf -r chr1:20000-30000000 -s pdf -m genotype,read_depth --avg_dp samples
 </pre></div>
+
+
+<p>To display a complete set of help instructions while using the tool, run VIVA with the help flag (<code>--help</code>, <code>-h</code>).</p>
+<div class="codehilite"><pre><span></span>    julia VIVA -h
+</pre></div>
+
+
+<p><a id='Default-Options:-1'></a></p>
+<h2 id="default-options">Default Options:</h2>
+<p>By running VIVA with only a VCF filename:</p>
+<div class="codehilite"><pre><span></span>    julia VIVA -f file.vcf
+</pre></div>
+
+
+<p>Default options will be used:</p>
+<p><code>--heatmap</code> = <code>genotype,read_depth</code> <code>--save_format</code> = <code>html</code> <code>--output_directory</code> = <code>output</code> <code>--heatmap_title</code> = <code>vcf_filename</code> <code>--y_axis_labels</code> = <code>chromosomes</code> <code>--x_axis_labels</code> = <code>true</code></p>
+<p>These default settings generate a heatmap plots of genotype and read depth values of all variants for all sample ids within a VCF file. </p>
+<p>We recommend using variant filters with most VCF files as there is too much data to plot or evaluate visually. </p>
+<p>Specifically, we recommend visualizing fewer than 2000 variants at a time for effective visualization. However, VIVA uses memory efficient filtering and plotting and is capable of plotting &gt;200,000 datapoints. </p>
+<p><a id='Jupyter-Notebook-1'></a></p>
+<h3 id="jupyter-notebook">Jupyter Notebook</h3>
+<p>Use the following steps to use the VIVA Jupyter Notebook utility:</p>
+<ol>
+<li>Install Jupyter Notebook following the <a href="https://plot.ly/python/ipython-notebook-tutorial/">platform specific instructions</a></li>
+<li>Download the <a href="./PATH">VIVA Jupyter Notebook</a> to a working directory containing your VCF file.</li>
+<li>Open the Julia REPL on the command line from any directory.</li>
+<li>Run <code>using IJulia</code> and then <code>notebook()</code></li>
+<li>Navigate to the directory containing the VIVA Jupyter Notebook <em>VIVA.ipynb</em> and double click to open.</li>
+<li>Follow the step-by-step instructions within the notebook to generate your figures.</li>
+</ol>
+<p><a id='Continue-reading-for:-1'></a></p>
+<h2 id="continue-reading-for">Continue reading for:</h2>
+<ul>
+<li><a href="https://github.com/compbiocore/VIVA.jl/tree/master/docs/src/filtering_vcf.md">Variant and Sample Selection</a></li>
+<li><a href="https://github.com/compbiocore/VIVA.jl/tree/master/docs/src/plotting.md">Plotting Options</a></li>
+</ul>
                 
                   
                 
@@ -445,13 +635,13 @@ julia viva_cli.jl -v example.vcf -r chr1:20000-30000000 -s html --heatmap read_d
       <nav class="md-footer-nav__inner md-grid">
         
         
-          <a href="filtering_vcf/" title="Read and Filter VCF" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
+          <a href="filtering_vcf/" title="Filtering Your VCF File" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
             <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
               <span class="md-flex__ellipsis">
                 <span class="md-footer-nav__direction">
                   Next
                 </span>
-                Read and Filter VCF
+                Filtering Your VCF File
               </span>
             </div>
             <div class="md-flex__cell md-flex__cell--shrink">

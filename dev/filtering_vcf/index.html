@@ -40,7 +40,7 @@
     
     
       
-        <title>Read and Filter VCF - ViVa.jl</title>
+        <title>Filtering Your VCF File - ViVa.jl</title>
       
     
     
@@ -104,7 +104,7 @@
     <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
     <label class="md-overlay" data-md-component="overlay" for="__drawer"></label>
     
-      <a href="#vcf-record-and-sample-manipulation" tabindex="1" class="md-skip">
+      <a href="#variant-record-and-sample-selection" tabindex="1" class="md-skip">
         Skip to content
       </a>
     
@@ -130,7 +130,7 @@
                 ViVa.jl
               </span>
               <span class="md-header-nav__topic">
-                Read and Filter VCF
+                Filtering Your VCF File
               </span>
             
           
@@ -325,9 +325,126 @@
       
     
     
-    <a href="./" title="Read and Filter VCF" class="md-nav__link md-nav__link--active">
-      Read and Filter VCF
+      <label class="md-nav__link md-nav__link--active" for="__toc">
+        Filtering Your VCF File
+      </label>
+    
+    <a href="./" title="Filtering Your VCF File" class="md-nav__link md-nav__link--active">
+      Filtering Your VCF File
     </a>
+    
+      
+<nav class="md-nav md-nav--secondary">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">Table of contents</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#general-notes-extracting-and-reshaping-vcf-data" title="General notes: Extracting and Reshaping VCF Data" class="md-nav__link">
+    General notes: Extracting and Reshaping VCF Data
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#choose-a-vcf-file-to-visualize-required" title="Choose a VCF file to Visualize REQUIRED" class="md-nav__link">
+    Choose a VCF file to Visualize REQUIRED
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#selecting-variant-records" title="Selecting Variant Records" class="md-nav__link">
+    Selecting Variant Records
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#genomic-range" title="Genomic range" class="md-nav__link">
+    Genomic range
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#variant-list" title="Variant list" class="md-nav__link">
+    Variant list
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pass-filter" title="Pass filter" class="md-nav__link">
+    Pass filter
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#selecting-and-grouping-samples" title="Selecting and Grouping Samples" class="md-nav__link">
+    Selecting and Grouping Samples
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#group-samples-by-sample-metadata-traits" title="Group samples by sample metadata traits" class="md-nav__link">
+    Group samples by sample metadata traits
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#use-cases-for-sample-grouping" title="Use cases for sample grouping" class="md-nav__link">
+    Use cases for sample grouping
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#input-file-formatting" title="Input file formatting" class="md-nav__link">
+    Input file formatting
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#select-samples-to-include-in-visualization" title="Select samples to include in visualization" class="md-nav__link">
+    Select samples to include in visualization
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+      
+      
+      
+      
+    </ul>
+  
+</nav>
     
   </li>
 
@@ -338,8 +455,20 @@
 
 
   <li class="md-nav__item">
-    <a href="../plotting/" title="Heatmaps" class="md-nav__link">
-      Heatmaps
+    <a href="../plotting/" title="Making Plots" class="md-nav__link">
+      Making Plots
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../examples/" title="Examples" class="md-nav__link">
+      Examples
     </a>
   </li>
 
@@ -378,6 +507,110 @@
     
   
   
+    <label class="md-nav__title" for="__toc">Table of contents</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#general-notes-extracting-and-reshaping-vcf-data" title="General notes: Extracting and Reshaping VCF Data" class="md-nav__link">
+    General notes: Extracting and Reshaping VCF Data
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#choose-a-vcf-file-to-visualize-required" title="Choose a VCF file to Visualize REQUIRED" class="md-nav__link">
+    Choose a VCF file to Visualize REQUIRED
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#selecting-variant-records" title="Selecting Variant Records" class="md-nav__link">
+    Selecting Variant Records
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#genomic-range" title="Genomic range" class="md-nav__link">
+    Genomic range
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#variant-list" title="Variant list" class="md-nav__link">
+    Variant list
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pass-filter" title="Pass filter" class="md-nav__link">
+    Pass filter
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#selecting-and-grouping-samples" title="Selecting and Grouping Samples" class="md-nav__link">
+    Selecting and Grouping Samples
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#group-samples-by-sample-metadata-traits" title="Group samples by sample metadata traits" class="md-nav__link">
+    Group samples by sample metadata traits
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#use-cases-for-sample-grouping" title="Use cases for sample grouping" class="md-nav__link">
+    Use cases for sample grouping
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#input-file-formatting" title="Input file formatting" class="md-nav__link">
+    Input file formatting
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#select-samples-to-include-in-visualization" title="Select samples to include in visualization" class="md-nav__link">
+    Select samples to include in visualization
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+      
+      
+      
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -391,49 +624,73 @@
                   <a href="https://github.com/compbiocore/ViVa.jl/edit/master/docs/filtering_vcf.md" title="Edit this page" class="md-icon md-content__icon">&#xE3C9;</a>
                 
                 
-                <p><a id='VCF-Record-and-Sample-Manipulation-1'></a></p>
-<h1 id="vcf-record-and-sample-manipulation">VCF Record and Sample Manipulation</h1>
-<div class="codehilite"><pre><span></span>ViVa.jl provides tools for filtering records as well as selecting and grouping samples by common traits for visualization. Users can access these tools by using ViVa.jl on the command line using the following arguments or single character flags when available for convenience.
+                <h1 id="variant-record-and-sample-selection">Variant Record and Sample Selection</h1>
+<h2 id="general-notes-extracting-and-reshaping-vcf-data">General notes: Extracting and Reshaping VCF Data</h2>
+<p>VIVA supports flexible filters for selecting variant records for visualization. </p>
+<p>Additionally, the tool supports selecting and grouping samples by common traits for visualization. </p>
+<p>Grouping samples is particularly useful for exploring phenotypic and genotypic associations, displaying differential distribution of variants between groups of samples, and identifying batch effect on coverage between groups of samples in variant analysis experiments. </p>
+<h2 id="choose-a-vcf-file-to-visualize-required">Choose a VCF file to Visualize <em>REQUIRED</em></h2>
+<p>Specify filename of VCF file. </p>
+<p><em>flags</em>: <code>--vcf_file</code>, <code>-f</code></p>
+<p><em>arguments</em>: Provide VCF filename (or filepath to VCF file if the file is not in the curret working directory).</p>
+<p><em>note</em> This is the <em>only required argument</em> for VIVA. If you run with none of the other options, default options will be used. These default options are described in detail below.</p>
+<div class="codehilite"><pre><span></span>julia VIVA -f example.vcf [OPTIONS]
 </pre></div>
 
 
-<p><a id='Reading-a-VCF-1'></a></p>
-<h1 id="reading-a-vcf">Reading a VCF</h1>
-<div class="codehilite"><pre><span></span>Specify filename of VCF file. [REQUIRED]
-&quot;--vcf_file&quot;, &quot;-f&quot;
-... -f example.vcf ..
-
-Print number of records and samples in VCF file.
-&quot;--show_stats&quot;
-... --show_stats ...
+<h2 id="selecting-variant-records">Selecting Variant Records</h2>
+<p>VIVA offers three filters for selecting variant records to visualize from VCF files. </p>
+<p>It is recommended to use one or a combination of these filters to reduce the number of variant records extracted from the VCF for plotting. This is recommended for reasons related to technical limitations and practical visual interpretation. The number of variant records able to be plotted is limited by both the user's available computing resources as well as the number of pixels in their display for displaying data points. While it is possible to visualize many thousands of variant records at one time with VIVA, <strong>we recommend visualizing fewer than 2000 variants</strong> so that all data points can be displayed that your computing resources are not overburdened. However, VIVA is capable of extracting and plotting hundreds of thousands of data points from VCF files.</p>
+<h3 id="genomic-range">Genomic range</h3>
+<p>Select rows within a given genomic range.</p>
+<p><em>flags</em>: <code>--genomic_range</code>, <code>-r</code></p>
+<p><em>arguments</em>: Specify genomic range within a single chromosome in format <code>chr4:20000000-30000000</code></p>
+<p><em>note</em> To visualize genomic ranges within multiple chromosomes, you may create a batch script to run VIVA multiple times using different genomic ranges.</p>
+<div class="codehilite"><pre><span></span>julia VIVA -f example.vcf -r chr1:20000-30000000
 </pre></div>
 
 
-<p><a id='Filtering-Records-1'></a></p>
-<h1 id="filtering-records">Filtering Records</h1>
-<div class="codehilite"><pre><span></span>Select rows within a given chromosome range. Provide chromosome range after this flag.
-&quot;--chromosome_range&quot;, &quot;-r&quot;
-... -r chr1:20000-30000000 ...
-
-Select rows within a given chromosome range. Provide chromosome range after this flag in format chr4:20000000-30000000
-&quot;--pass_filter&quot;, &quot;-p&quot;
-... --pass_filter ...
-
-Select variants matching list of chromosomal positions. Provide filename of text file formatted with two columns in .csv format.
-&quot;--positions_list&quot;, &quot;-l&quot;
-... -l &quot;example_positions_list.txt&quot;
+<h3 id="variant-list">Variant list</h3>
+<p>Select variants matching list of chromosomal positions.</p>
+<p><em>flags</em>: <code>--positions_list</code>, <code>-l</code></p>
+<p><em>arguments</em>: Provide filename of text file formatted with two columns in .csv format as an argument. There should be a header row with "chr" and "start" in row 1 of column 1 and 2 respectively. Column 1 should contain chromosome number in the format "chr1" or "1" and should match the syntax of the VCF file (that is, if the VCF file lists chromosome numbers in the form "chrX", use "chrX" in your positions list, not "X") You can find an example of this file <a href="" title="[here](&quot;https://github.com/compbiocore/VIVA.jl/tree/master/test/test_files/positions_list.csv">here</a>")</p>
+<div class="codehilite"><pre><span></span>julia VIVA -f example.vcf -l &quot;example_positions_list.txt&quot;
 </pre></div>
 
 
-<p><a id='Selecting-and-Grouping-Samples-1'></a></p>
-<h1 id="selecting-and-grouping-samples">Selecting and Grouping Samples</h1>
-<div class="codehilite"><pre><span></span>Select samples to include in visualization by providing tab delimited list of sample names (eg. samplenames.txt)
-&quot;--select_samples&quot;, &quot;-x&quot;
-... -x example_list_of_sample_ids.txt
+<h3 id="pass-filter">Pass filter</h3>
+<p>Select rows that passed filters originally set during variant calling and VCF file generation. Selects records with "PASS" in the FILTER column of the VCF file. This filter alone is often not stringent enough to reduce the number of variants for plotting and visual interpretation. For analyzing large VCF files with many "passed" filter records, use genomic range,</p>
+<p><em>flags</em>: <code>--pass_filter</code>, <code>-p</code></p>
+<p><em>arguments</em>: This flag is a positional argument and does not take options.</p>
+<div class="codehilite"><pre><span></span>julia VIVA -f example.vcf -p
+</pre></div>
 
-Group samples by common trait using user generated matrix key of traits and sample names following format guidelines in documentation. Provide file name of .csv file followed by trait to group by as it appears in the matrix key of traits and sample names.
-&quot;--group_samples&quot;, &quot;-g&quot;
-... -g example_sample_traits_key.csv controls,cases ...
+
+<h2 id="selecting-and-grouping-samples">Selecting and Grouping Samples</h2>
+<h3 id="group-samples-by-sample-metadata-traits">Group samples by sample metadata traits</h3>
+<p>Group sample columns using your sample metadata and visualize metadata attributes in a colorbar above heatmap visualizations.</p>
+<p><em>flags</em>: <code>--group_samples</code>, <code>-g</code></p>
+<p><em>arguments</em>: This flag takes two arguments. First provide filename of sample<em>metadata</em>matrix.csv file. Second, enter the trait to group by as it appears in column 1 of the matrix.</p>
+<p><a id='Use-cases-for-sample-grouping-1'></a></p>
+<h5 id="use-cases-for-sample-grouping">Use cases for sample grouping</h5>
+<p>VIVA supports grouping samples for visualization using any user-supplied binary metadata attributes and visualizes these in a colorbar above heatmap visualizations. </p>
+<p>This is broadly useful for purposes such as exploring and presenting <strong>phenotypic and genotypic associations</strong>, <strong>identifying batch effect on coverage</strong>, or <strong>visualizing differential variant incidence</strong> between two groups of samples (such as cases and controls). </p>
+<p><a id='Input-file-formatting-1'></a></p>
+<h5 id="input-file-formatting">Input file formatting</h5>
+<p>Sample metadata matrix is a user generated input file and should be formatted in a table of sample ids and binary metadata traits (such as case,control or treatment1,treatment2 or seq<em>site</em>1,seq<em>site</em>2). An example of formatting for this table can be found <a href="" title="https://github.com/compbiocore/VIVA.jl/tree/master/test/test_files/sample_metadata_matrix.csv">here</a>. </p>
+<p>Sample ids must match those found in the VCF file. Additionally, if the user would like to use the –select_samples option, sample ids must match the sample selection list.</p>
+<p>Metadata traits are stored as rownames in the first column of the table and should be binary traits seperated by a comma (like "case,control"). For each metadata trait, samples should be labeled with "1" or "2" to correspond with the first and second group of the trait respectively (e.g. 1 = case and 2 = control). </p>
+<p>This matrix should be saved as a comma delimited .csv file. Microsoft Excel is commonly used for this purpose, but sometimes creates extra delimiter characters in the output file that produce an error in VIVA. You can check to make sure the .csv file was saved properly by opening the file with a text editor such as BBEdit to inspect for and delete empty values or extra delimiter characters at the end of each row. </p>
+<div class="codehilite"><pre><span></span>julia VIVA -f example.vcf -g sample_metadata_matrix.csv case,control
+</pre></div>
+
+
+<h3 id="select-samples-to-include-in-visualization">Select samples to include in visualization</h3>
+<p>Select specific samples to be extracted from the VCF for visualization.</p>
+<p><em>flags</em>: <code>--select_samples</code></p>
+<p><em>arguments</em>: Provide filename or filepath to tab delimited list of sample names to include in visualization as an argument. An example of this list can be found <a href="" title="https://github.com/compbiocore/VIVA.jl/tree/master/test/test_files/select_samples_list.txt">here</a>.</p>
+<p><em>note</em> To use the sample selection feature in combination with the sample grouping feature, the sample metadata matrix must only contain the sample ids to be selected.</p>
+<div class="codehilite"><pre><span></span>julia VIVA -f example.vcf --select_samples select_samples_list.txt
 </pre></div>
                 
                   
@@ -470,13 +727,13 @@ Group samples by common trait using user generated matrix key of traits and samp
           </a>
         
         
-          <a href="../plotting/" title="Heatmaps" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
+          <a href="../plotting/" title="Making Plots" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
             <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
               <span class="md-flex__ellipsis">
                 <span class="md-footer-nav__direction">
                   Next
                 </span>
-                Heatmaps
+                Making Plots
               </span>
             </div>
             <div class="md-flex__cell md-flex__cell--shrink">
