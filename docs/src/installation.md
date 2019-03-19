@@ -20,9 +20,11 @@ If successful, `VIVA.jl` will be installed in your Julia packages directory (.ju
 
 ##Install the Jupyter Notebook
 
-If you plan to use the Jupyter Notebook VIVA utility, install Jupyter then download the VIVA notebook:
+If you plan to use the Jupyter Notebook VIVA utility, install Jupyter then download the [VIVA Notebook]().
 
 ***Fernando, let's decide how to make VIVA notebook accessible***
+
+If you already have Jupyter installed, update following [these instructions](https://jupyter.readthedocs.io/en/latest/projects/upgrade-notebook.html)
 
 
 ##New Features

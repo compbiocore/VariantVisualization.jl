@@ -27,6 +27,7 @@ docs_dir: 'build'
 pages:
 - Home: index.md
 - Manual:
-  - Read and Filter VCF: filtering_vcf.md
-  - Heatmaps: plotting.md
+  - Filtering Your VCF File: filtering_vcf.md
+  - Making Plots: plotting.md
+  - Examples: examples.md
 - API: api.md

@@ -120,7 +120,6 @@ julia VIVA -f example.vcf `-x`
 ## Export heatmap data as numerical array
 
 Save input array to heatmap function with column and row labels. 
-
 Specifically, saves numerical array of genotype or read depth values for selected variants and samples as a .csv table with genomic positions and sample names for row names and column names respectively.
 
 *flags*: `--num_array`, `-n`
@@ -129,26 +128,6 @@ Specifically, saves numerical array of genotype or read depth values for selecte
 
 ```
 julia VIVA -f example.vcf `-n` 
-```
-
-```
-julia VIVA -f example.vcf `-x`
-```
-
-## Make HTML plots shareable
-
-Make HTML plots shareable by saving HTML supporting files remotely on the internet rather than on the users local filesystem. 
-
-This allows sending HTML output files to others who don't have VIVA installed on their computers. However, in order to open HTML files saved with this option engaged, users will need to be connected to the internet. 
-
-Without calling this feature, HTML outputs can be opened without internet connection but only on the computer where the plots were generated.
-
-*flags*: `--save_remotely`
-
-*arguments*: none, this is a positional argument.
-
-```
-julia VIVA -f example.vcf `--save_remotely` 
 ```
   
    
