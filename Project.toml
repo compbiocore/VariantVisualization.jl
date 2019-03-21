@@ -16,4 +16,4 @@ Rsvg = "c4c386cf-5103-5370-be45-f3a111cca3b8"
 Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
 
 [compat]
-julia = ">=0.7"
+julia = ">=1.0"
