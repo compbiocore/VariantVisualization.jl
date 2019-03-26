@@ -1,0 +1,1014 @@
+
+
+
+
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      <meta http-equiv="x-ua-compatible" content="ie=edge">
+      
+        <meta name="description" content="Visualization of Variants">
+      
+      
+      
+        <meta name="author" content="compbiocore">
+      
+      
+        <meta name="lang:clipboard.copy" content="Copy to clipboard">
+      
+        <meta name="lang:clipboard.copied" content="Copied to clipboard">
+      
+        <meta name="lang:search.language" content="en">
+      
+        <meta name="lang:search.pipeline.stopwords" content="True">
+      
+        <meta name="lang:search.pipeline.trimmer" content="True">
+      
+        <meta name="lang:search.result.none" content="No matching documents">
+      
+        <meta name="lang:search.result.one" content="1 matching document">
+      
+        <meta name="lang:search.result.other" content="# matching documents">
+      
+        <meta name="lang:search.tokenizer" content="[\s\-]+">
+      
+      <link rel="shortcut icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-0.17.5, mkdocs-material-2.9.4">
+    
+    
+      
+        <title>API - ViVa.jl</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/application.451f80e5.css">
+      
+        <link rel="stylesheet" href="../assets/stylesheets/application-palette.22915126.css">
+      
+      
+        
+        
+        <meta name="theme-color" content="#546e7a">
+      
+    
+    
+      <script src="../assets/javascripts/modernizr.1aa3b519.js"></script>
+    
+    
+      <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+      
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700|Roboto+Mono">
+        <style>body,input{font-family:"Roboto","Helvetica Neue",Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono","Courier New",Courier,monospace}</style>
+      
+    
+    <link rel="stylesheet" href="../assets/fonts/material-icons.css">
+    
+      <link rel="stylesheet" href="../dark_mode.css">
+    
+    
+  </head>
+  
+    
+    
+    <body dir="ltr" data-md-color-primary="blue-grey" data-md-color-accent="indigo">
+  
+    <svg class="md-svg">
+      <defs>
+        
+        
+          <svg xmlns="http://www.w3.org/2000/svg" width="416" height="448"
+    viewBox="0 0 416 448" id="__github">
+  <path fill="currentColor" d="M160 304q0 10-3.125 20.5t-10.75 19-18.125
+        8.5-18.125-8.5-10.75-19-3.125-20.5 3.125-20.5 10.75-19 18.125-8.5
+        18.125 8.5 10.75 19 3.125 20.5zM320 304q0 10-3.125 20.5t-10.75
+        19-18.125 8.5-18.125-8.5-10.75-19-3.125-20.5 3.125-20.5 10.75-19
+        18.125-8.5 18.125 8.5 10.75 19 3.125 20.5zM360
+        304q0-30-17.25-51t-46.75-21q-10.25 0-48.75 5.25-17.75 2.75-39.25
+        2.75t-39.25-2.75q-38-5.25-48.75-5.25-29.5 0-46.75 21t-17.25 51q0 22 8
+        38.375t20.25 25.75 30.5 15 35 7.375 37.25 1.75h42q20.5 0
+        37.25-1.75t35-7.375 30.5-15 20.25-25.75 8-38.375zM416 260q0 51.75-15.25
+        82.75-9.5 19.25-26.375 33.25t-35.25 21.5-42.5 11.875-42.875 5.5-41.75
+        1.125q-19.5 0-35.5-0.75t-36.875-3.125-38.125-7.5-34.25-12.875-30.25-20.25-21.5-28.75q-15.5-30.75-15.5-82.75
+        0-59.25 34-99-6.75-20.5-6.75-42.5 0-29 12.75-54.5 27 0 47.5 9.875t47.25
+        30.875q36.75-8.75 77.25-8.75 37 0 70 8 26.25-20.5
+        46.75-30.25t47.25-9.75q12.75 25.5 12.75 54.5 0 21.75-6.75 42 34 40 34
+        99.5z" />
+</svg>
+        
+      </defs>
+    </svg>
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" data-md-component="overlay" for="__drawer"></label>
+    
+      <a href="#import" tabindex="1" class="md-skip">
+        Skip to content
+      </a>
+    
+    
+      <header class="md-header" data-md-component="header">
+  <nav class="md-header-nav md-grid">
+    <div class="md-flex">
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <a href=".." title="ViVa.jl" class="md-header-nav__button md-logo">
+          
+            <img src="../cbc-logo.svg" width="24" height="24">
+          
+        </a>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <label class="md-icon md-icon--menu md-header-nav__button" for="__drawer"></label>
+      </div>
+      <div class="md-flex__cell md-flex__cell--stretch">
+        <div class="md-flex__ellipsis md-header-nav__title" data-md-component="title">
+          
+            
+              <span class="md-header-nav__topic">
+                ViVa.jl
+              </span>
+              <span class="md-header-nav__topic">
+                API
+              </span>
+            
+          
+        </div>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        
+          
+            <label class="md-icon md-icon--search md-header-nav__button" for="__search"></label>
+            
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="query" data-md-state="active">
+      <label class="md-icon md-search__icon" for="__search"></label>
+      <button type="reset" class="md-icon md-search__icon" data-md-component="reset" tabindex="-1">
+        &#xE5CD;
+      </button>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="result">
+          <div class="md-search-result__meta">
+            Type to start searching
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+          
+        
+      </div>
+      
+        <div class="md-flex__cell md-flex__cell--shrink">
+          <div class="md-header-nav__source">
+            
+
+
+  
+
+
+  <a href="https://github.com/compbiocore/ViVa.jl/" title="Go to repository" class="md-source" data-md-source="github">
+    
+      <div class="md-source__icon">
+        <svg viewBox="0 0 24 24" width="24" height="24">
+          <use xlink:href="#__github" width="24" height="24"></use>
+        </svg>
+      </div>
+    
+    <div class="md-source__repository">
+      GitHub
+    </div>
+  </a>
+
+          </div>
+        </div>
+      
+    </div>
+  </nav>
+</header>
+    
+    <div class="md-container">
+      
+        
+      
+      
+        
+
+<nav class="md-tabs" data-md-component="tabs">
+  <div class="md-tabs__inner md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  <li class="md-tabs__item">
+    
+      <a href=".." title="Home" class="md-tabs__link md-tabs__link--active">
+        Home
+      </a>
+    
+  </li>
+
+      
+        
+  
+  
+    <li class="md-tabs__item">
+      
+        <a href="../filtering_vcf/" title="Manual" class="md-tabs__link">
+          Manual
+        </a>
+      
+    </li>
+  
+
+      
+        
+      
+    </ul>
+  </div>
+</nav>
+      
+      <main class="md-main">
+        <div class="md-main__inner md-grid" data-md-component="container">
+          
+            
+              <div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    <nav class="md-nav md-nav--primary" data-md-level="0">
+  <label class="md-nav__title md-nav__title--site" for="__drawer">
+    <a href=".." title="ViVa.jl" class="md-nav__button md-logo">
+      
+        <img src="../cbc-logo.svg" width="48" height="48">
+      
+    </a>
+    ViVa.jl
+  </label>
+  
+    <div class="md-nav__source">
+      
+
+
+  
+
+
+  <a href="https://github.com/compbiocore/ViVa.jl/" title="Go to repository" class="md-source" data-md-source="github">
+    
+      <div class="md-source__icon">
+        <svg viewBox="0 0 24 24" width="24" height="24">
+          <use xlink:href="#__github" width="24" height="24"></use>
+        </svg>
+      </div>
+    
+    <div class="md-source__repository">
+      GitHub
+    </div>
+  </a>
+
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href=".." title="Home" class="md-nav__link">
+      Home
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-2" type="checkbox" id="nav-2">
+    
+    <label class="md-nav__link" for="nav-2">
+      Manual
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-2">
+        Manual
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../filtering_vcf/" title="Filtering Your VCF File" class="md-nav__link">
+      Filtering Your VCF File
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../plotting/" title="Making Plots" class="md-nav__link">
+      Making Plots
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../examples/" title="Examples" class="md-nav__link">
+      Examples
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active">
+    
+    <input class="md-toggle md-nav__toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+    
+    
+      <label class="md-nav__link md-nav__link--active" for="__toc">
+        API
+      </label>
+    
+    <a href="./" title="API" class="md-nav__link md-nav__link--active">
+      API
+    </a>
+    
+      
+<nav class="md-nav md-nav--secondary">
+  
+  
+  
+    <label class="md-nav__title" for="__toc">Table of contents</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#import" title="Import" class="md-nav__link">
+    Import
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#index" title="Index" class="md-nav__link">
+    Index
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#functions" title="Functions" class="md-nav__link">
+    Functions
+  </a>
+  
+</li>
+      
+      
+      
+      
+      
+    </ul>
+  
+</nav>
+    
+  </li>
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary">
+  
+  
+  
+    <label class="md-nav__title" for="__toc">Table of contents</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#import" title="Import" class="md-nav__link">
+    Import
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#index" title="Index" class="md-nav__link">
+    Index
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#functions" title="Functions" class="md-nav__link">
+    Functions
+  </a>
+  
+</li>
+      
+      
+      
+      
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                  <a href="https://github.com/compbiocore/ViVa.jl/edit/master/docs/api.md" title="Edit this page" class="md-icon md-content__icon">&#xE3C9;</a>
+                
+                
+                  <h1>API</h1>
+                
+                <h2 id="import">Import</h2>
+<div class="codehilite"><pre><span></span>using VIVA
+</pre></div>
+
+
+<p><a id='Index-1'></a></p>
+<h2 id="index">Index</h2>
+<ul>
+<li><a href="./#VIVA.add_pheno_matrix_to_dp_data_for_plotting-NTuple{5,Any}"><code>VIVA.add_pheno_matrix_to_dp_data_for_plotting</code></a></li>
+<li><a href="./#VIVA.add_pheno_matrix_to_gt_data_for_plotting-NTuple{5,Any}"><code>VIVA.add_pheno_matrix_to_gt_data_for_plotting</code></a></li>
+<li><a href="./#VIVA.avg_dp_samples-Tuple{Array{Int64,2}}"><code>VIVA.avg_dp_samples</code></a></li>
+<li><a href="./#VIVA.avg_dp_variant-Tuple{Array{Int64,2}}"><code>VIVA.avg_dp_variant</code></a></li>
+<li><a href="./#VIVA.avg_sample_dp_scatter-Tuple{Array{Float64,1},Any,Any}"><code>VIVA.avg_sample_dp_scatter</code></a></li>
+<li><a href="./#VIVA.avg_variant_dp_line_chart-Tuple{Array{Float64,1},Any,Any,Any}"><code>VIVA.avg_variant_dp_line_chart</code></a></li>
+<li><a href="./#VIVA.build_set_from_list-Tuple{Array{Any,2}}"><code>VIVA.build_set_from_list</code></a></li>
+<li><a href="./#VIVA.checkfor_outputdirectory-Tuple{String}"><code>VIVA.checkfor_outputdirectory</code></a></li>
+<li><a href="./#VIVA.chromosome_label_generator-Tuple{Array{Any,1}}"><code>VIVA.chromosome_label_generator</code></a></li>
+<li><a href="./#VIVA.clean_column1!-Tuple{Any}"><code>VIVA.clean_column1!</code></a></li>
+<li><a href="./#VIVA.clean_column1_siglist!-Tuple{Any}"><code>VIVA.clean_column1_siglist!</code></a></li>
+<li><a href="./#VIVA.combined_all_genotype_array_functions-Tuple{Any}"><code>VIVA.combined_all_genotype_array_functions</code></a></li>
+<li><a href="./#VIVA.combined_all_read_depth_array_functions-Tuple{Any}"><code>VIVA.combined_all_read_depth_array_functions</code></a></li>
+<li><a href="./#VIVA.combined_all_read_depth_array_functions_for_avg_dp-Tuple{Any}"><code>VIVA.combined_all_read_depth_array_functions_for_avg_dp</code></a></li>
+<li><a href="./#VIVA.create_chr_dict-Tuple{}"><code>VIVA.create_chr_dict</code></a></li>
+<li><a href="./#VIVA.define_geno_dict-Tuple{}"><code>VIVA.define_geno_dict</code></a></li>
+<li><a href="./#VIVA.dp_heatmap2-NTuple{7,Any}"><code>VIVA.dp_heatmap2</code></a></li>
+<li><a href="./#VIVA.dp_heatmap2_with_groups-Tuple{Array{Int64,2},String,Tuple{Array{String,1},Array{Int64,1},String},Array{Any,1},Any,Any,Any,Any,Any,Any}"><code>VIVA.dp_heatmap2_with_groups</code></a></li>
+<li><a href="./#VIVA.find_group_label_indices-Tuple{Any,Any,Any}"><code>VIVA.find_group_label_indices</code></a></li>
+<li><a href="./#VIVA.generate_chromosome_positions_for_hover_labels-Tuple{Array{Any,2}}"><code>VIVA.generate_chromosome_positions_for_hover_labels</code></a></li>
+<li><a href="./#VIVA.generate_genotype_array-Tuple{Array{Any,1},Any}"><code>VIVA.generate_genotype_array</code></a></li>
+<li><a href="./#VIVA.generate_hover_text_array-NTuple{4,Any}"><code>VIVA.generate_hover_text_array</code></a></li>
+<li><a href="./#VIVA.generate_hover_text_array_grouped-NTuple{5,Any}"><code>VIVA.generate_hover_text_array_grouped</code></a></li>
+<li><a href="./#VIVA.genomic_range_siglist_filter-Tuple{Any,Any,AbstractString}"><code>VIVA.genomic_range_siglist_filter</code></a></li>
+<li><a href="./#VIVA.genotype_heatmap2-NTuple{7,Any}"><code>VIVA.genotype_heatmap2</code></a></li>
+<li><a href="./#VIVA.genotype_heatmap_with_groups-Tuple{Array{Int64,2},String,Tuple{Array{String,1},Array{Int64,1},String},Array{Any,1},Any,Any,Any,Any,Any,Any}"><code>VIVA.genotype_heatmap_with_groups</code></a></li>
+<li><a href="./#VIVA.get_sample_names-Tuple{Any}"><code>VIVA.get_sample_names</code></a></li>
+<li><a href="./#VIVA.index_vcf-Tuple{Any}"><code>VIVA.index_vcf</code></a></li>
+<li><a href="./#VIVA.io_genomic_range_vcf_filter-Tuple{String,AbstractString}"><code>VIVA.io_genomic_range_vcf_filter</code></a></li>
+<li><a href="./#VIVA.io_pass_filter-Tuple{Any}"><code>VIVA.io_pass_filter</code></a></li>
+<li><a href="./#VIVA.io_sig_list_vcf_filter-Tuple{Any,Any}"><code>VIVA.io_sig_list_vcf_filter</code></a></li>
+<li><a href="./#VIVA.jupyter_main-NTuple{5,Any}"><code>VIVA.jupyter_main</code></a></li>
+<li><a href="./#VIVA.list_sample_names_low_dp-Tuple{Array{Float64,1},Any}"><code>VIVA.list_sample_names_low_dp</code></a></li>
+<li><a href="./#VIVA.list_variant_positions_low_dp-Tuple{Array{Float64,1},Any}"><code>VIVA.list_variant_positions_low_dp</code></a></li>
+<li><a href="./#VIVA.load_siglist-Tuple{AbstractString}"><code>VIVA.load_siglist</code></a></li>
+<li><a href="./#VIVA.make_chromosome_labels-Tuple{Any}"><code>VIVA.make_chromosome_labels</code></a></li>
+<li><a href="./#VIVA.match_siglist_to_index-Tuple{Any,Any}"><code>VIVA.match_siglist_to_index</code></a></li>
+<li><a href="./#VIVA.pass_genomic_range_filter-Tuple{GeneticVariation.VCF.Reader,AbstractString,Any}"><code>VIVA.pass_genomic_range_filter</code></a></li>
+<li><a href="./#VIVA.pass_genomic_range_siglist_filter-Tuple{Any,Any,AbstractString}"><code>VIVA.pass_genomic_range_siglist_filter</code></a></li>
+<li><a href="./#VIVA.pass_siglist_filter-Tuple{Any,Any}"><code>VIVA.pass_siglist_filter</code></a></li>
+<li><a href="./#VIVA.process_plot_inputs-Tuple{Any,Any,Any}"><code>VIVA.process_plot_inputs</code></a></li>
+<li><a href="./#VIVA.process_plot_inputs_for_grouped_data-Tuple{Tuple{Array{String,1},Array{Int64,1},String},Array{Any,1},Any,Any,Any}"><code>VIVA.process_plot_inputs_for_grouped_data</code></a></li>
+<li><a href="./#VIVA.read_depth_threshhold-Tuple{Array{Int64,2}}"><code>VIVA.read_depth_threshhold</code></a></li>
+<li><a href="./#VIVA.returnXY_column1!-Tuple{Any}"><code>VIVA.returnXY_column1!</code></a></li>
+<li><a href="./#VIVA.returnXY_column1_siglist!-Tuple{Any}"><code>VIVA.returnXY_column1_siglist!</code></a></li>
+<li><a href="./#VIVA.save_graphic-NTuple{5,Any}"><code>VIVA.save_graphic</code></a></li>
+<li><a href="./#VIVA.save_numerical_array-NTuple{5,Any}"><code>VIVA.save_numerical_array</code></a></li>
+<li><a href="./#VIVA.select_columns-Tuple{AbstractString,Array{Int64,2},Any}"><code>VIVA.select_columns</code></a></li>
+<li><a href="./#VIVA.sort_genotype_array-Tuple{Any}"><code>VIVA.sort_genotype_array</code></a></li>
+<li><a href="./#VIVA.sortcols_by_phenotype_matrix-Tuple{String,String,Array{Int64,2},Any}"><code>VIVA.sortcols_by_phenotype_matrix</code></a></li>
+<li><a href="./#VIVA.translate_genotype_to_num_array-Tuple{Any,Any}"><code>VIVA.translate_genotype_to_num_array</code></a></li>
+<li><a href="./#VIVA.translate_readdepth_strings_to_num_array-Tuple{Array{Any,2}}"><code>VIVA.translate_readdepth_strings_to_num_array</code></a></li>
+<li><a href="./#VIVA.translate_readdepth_strings_to_num_array_for_avg_dp-Tuple{Array{Any,2}}"><code>VIVA.translate_readdepth_strings_to_num_array_for_avg_dp</code></a></li>
+</ul>
+<p><a id='Functions-1'></a></p>
+<h2 id="functions">Functions</h2>
+<p><a id='VIVA.add_pheno_matrix_to_dp_data_for_plotting-NTuple{5,Any}' href='#VIVA.add_pheno_matrix_to_dp_data_for_plotting-NTuple{5,Any}'>#</a>
+<strong><code>VIVA.add_pheno_matrix_to_dp_data_for_plotting</code></strong> &mdash; <em>Method</em>.</p>
+<div class="codehilite"><pre><span></span>add_pheno_matrix_to_dp_data_for_plotting(pheno_matrix,dp_num_array,trait_labels,chrom_label_info,number_rows)
+</pre></div>
+
+
+<p>add the pheno matrix used to group samples to the data array for input into plotting functions. Resizes the pheno matrix to maintain correct dimensions for heatmap viz by finding value=0.05<em>number</em>rows*data to multiply each pheno row by before vcat.</p>
+<p><a target='_blank' href='https://github.com/compbiocore/VIVA.jl/blob/0ed032624b5c18f416ee963189a365857426df1d/src/vcf_utils_complete.jl#L1300-L1303' class='documenter-source'>source</a><br></p>
+<p><a id='VIVA.add_pheno_matrix_to_gt_data_for_plotting-NTuple{5,Any}' href='#VIVA.add_pheno_matrix_to_gt_data_for_plotting-NTuple{5,Any}'>#</a>
+<strong><code>VIVA.add_pheno_matrix_to_gt_data_for_plotting</code></strong> &mdash; <em>Method</em>.</p>
+<div class="codehilite"><pre><span></span>add_pheno_matrix_to_gt_data_for_plotting(pheno_matrix,gt_num_array,trait_labels,chrom_label_info,number_rows)
+</pre></div>
+
+
+<p>add the pheno matrix used to group samples to the data array for input into plotting functions. Resizes the pheno matrix to maintain correct dimensions for heatmap viz by finding value=0.05<em>number</em>rows*data to multiply each pheno row by before vcat.</p>
+<p><a target='_blank' href='https://github.com/compbiocore/VIVA.jl/blob/0ed032624b5c18f416ee963189a365857426df1d/src/vcf_utils_complete.jl#L1233-L1236' class='documenter-source'>source</a><br></p>
+<p><a id='VIVA.avg_dp_samples-Tuple{Array{Int64,2}}' href='#VIVA.avg_dp_samples-Tuple{Array{Int64,2}}'>#</a>
+<strong><code>VIVA.avg_dp_samples</code></strong> &mdash; <em>Method</em>.</p>
+<div class="codehilite"><pre><span></span>avg_dp_samples(dp_num_array::Array{Int64,2})
+</pre></div>
+
+
+<p>create sample<em>avg</em>list vector that lists averages of read depth for each sample for input into avg<em>sample</em>dp<em>line</em>chart(sample<em>avg</em>list) dp<em>num</em>array must contain dp values as Int64 and be without chromosome position columns</p>
+<p><a target='_blank' href='https://github.com/compbiocore/VIVA.jl/blob/0ed032624b5c18f416ee963189a365857426df1d/src/vcf_utils_complete.jl#L847-L851' class='documenter-source'>source</a><br></p>
+<p><a id='VIVA.avg_dp_variant-Tuple{Array{Int64,2}}' href='#VIVA.avg_dp_variant-Tuple{Array{Int64,2}}'>#</a>
+<strong><code>VIVA.avg_dp_variant</code></strong> &mdash; <em>Method</em>.</p>
+<div class="codehilite"><pre><span></span>avg_dp_variant(dp_num_array::Array{Int64,2})
+</pre></div>
+
+
+<p>create variant<em>avg</em>list vector that lists averages of read depth for each variant for input into avg<em>variant</em>dp<em>line</em>chart(variant<em>avg</em>list)</p>
+<p><a target='_blank' href='https://github.com/compbiocore/VIVA.jl/blob/0ed032624b5c18f416ee963189a365857426df1d/src/vcf_utils_complete.jl#L868-L871' class='documenter-source'>source</a><br></p>
+<p><a id='VIVA.avg_sample_dp_scatter-Tuple{Array{Float64,1},Any,Any}' href='#VIVA.avg_sample_dp_scatter-Tuple{Array{Float64,1},Any,Any}'>#</a>
+<strong><code>VIVA.avg_sample_dp_scatter</code></strong> &mdash; <em>Method</em>.</p>
+<div class="codehilite"><pre><span></span>avg_sample_dp_scatter(sample_avg_list::Array{Float64,1},sample_names,x_axis_label_option)
+</pre></div>
+
+
+<p>generate line chart of average read depths of each sample.</p>
+<p><a target='_blank' href='https://github.com/compbiocore/VIVA.jl/blob/0ed032624b5c18f416ee963189a365857426df1d/src/plot_utils.jl#L442-L445' class='documenter-source'>source</a><br></p>
+<p><a id='VIVA.avg_variant_dp_line_chart-Tuple{Array{Float64,1},Any,Any,Any}' href='#VIVA.avg_variant_dp_line_chart-Tuple{Array{Float64,1},Any,Any,Any}'>#</a>
+<strong><code>VIVA.avg_variant_dp_line_chart</code></strong> &mdash; <em>Method</em>.</p>
+<div class="codehilite"><pre><span></span>avg_variant_dp_line_chart(variant_avg_list::Array{Float64,1},chr_pos_tuple_list,y_axis_label_option,chrom_label_info)
+</pre></div>
+
+
+<p>generate line chart of average read depths of each variant.</p>
+<p><a target='_blank' href='https://github.com/compbiocore/VIVA.jl/blob/0ed032624b5c18f416ee963189a365857426df1d/src/plot_utils.jl#L461-L464' class='documenter-source'>source</a><br></p>
+<p><a id='VIVA.checkfor_outputdirectory-Tuple{String}' href='#VIVA.checkfor_outputdirectory-Tuple{String}'>#</a>
+<strong><code>VIVA.checkfor_outputdirectory</code></strong> &mdash; <em>Method</em>.</p>
+<div class="codehilite"><pre><span></span>checkfor_outputdirectory(path::String)
+</pre></div>
+
+
+<p>Checks to see if output directory exists already. If it doesn't, it creates the new directory to write output files to.</p>
+<p><a target='_blank' href='https://github.com/compbiocore/VIVA.jl/blob/0ed032624b5c18f416ee963189a365857426df1d/src/vcf_utils_complete.jl#L1059-L1063' class='documenter-source'>source</a><br></p>
+<p><a id='VIVA.chromosome_label_generator-Tuple{Array{Any,1}}' href='#VIVA.chromosome_label_generator-Tuple{Array{Any,1}}'>#</a>
+<strong><code>VIVA.chromosome_label_generator</code></strong> &mdash; <em>Method</em>.</p>
+<div class="codehilite"><pre><span></span>chromosome_label_generator(chromosome_labels::Array{Any,1})
+</pre></div>
+
+
+<p>Returns vector of chr labels and indices to mark chromosomes in plotly heatmap Specifically, saves indexes and chrom labels in vectors to pass into heatmap function to ticvals and tictext respectively. Input is either gt<em>chromosome</em>labels or dp<em>chromosome</em>labels from translate<em>gt/dp</em>to<em>num</em>array()</p>
+<p><a target='_blank' href='https://github.com/compbiocore/VIVA.jl/blob/0ed032624b5c18f416ee963189a365857426df1d/src/vcf_utils_complete.jl#L972-L979' class='documenter-source'>source</a><br></p>
+<p><a id='VIVA.clean_column1!-Tuple{Any}' href='#VIVA.clean_column1!-Tuple{Any}'>#</a>
+<strong><code>VIVA.clean_column1!</code></strong> &mdash; <em>Method</em>.</p>
+<div class="codehilite"><pre><span></span>clean_column1!(matrix_with_chr_column)
+</pre></div>
+
+
+<p>Replace String "X","Y","M" from chromosome column with 23,24,25 respectively so variants can be sorted by descending chr position for plotting</p>
+<p><a target='_blank' href='https://github.com/compbiocore/VIVA.jl/blob/0ed032624b5c18f416ee963189a365857426df1d/src/vcf_utils_complete.jl#L3-L6' class='documenter-source'>source</a><br></p>
+<p><a id='VIVA.clean_column1_siglist!-Tuple{Any}' href='#VIVA.clean_column1_siglist!-Tuple{Any}'>#</a>
+<strong><code>VIVA.clean_column1_siglist!</code></strong> &mdash; <em>Method</em>.</p>
+<div class="codehilite"><pre><span></span>clean_column1_siglist!(siglist)
+</pre></div>
+
+
+<p>Replaces strings "X","Y","M" with 23,24,25 {Int} in array generated in load<em>siglist() use in load</em>siglist() because X and Y need to be replaced with Int</p>
+<p><a target='_blank' href='https://github.com/compbiocore/VIVA.jl/blob/0ed032624b5c18f416ee963189a365857426df1d/src/vcf_utils_complete.jl#L18-L22' class='documenter-source'>source</a><br></p>
+<p><a id='VIVA.combined_all_genotype_array_functions-Tuple{Any}' href='#VIVA.combined_all_genotype_array_functions-Tuple{Any}'>#</a>
+<strong><code>VIVA.combined_all_genotype_array_functions</code></strong> &mdash; <em>Method</em>.</p>
+<div class="codehilite"><pre><span></span>combined_all_genotype_array_functions(sub)
+</pre></div>
+
+
+<p>convert sub from variant filters to gt<em>num</em>array and gt<em>chromosome</em>labels for plot functions.</p>
+<p><a target='_blank' href='https://github.com/compbiocore/VIVA.jl/blob/0ed032624b5c18f416ee963189a365857426df1d/src/vcf_utils_complete.jl#L563-L566' class='documenter-source'>source</a><br></p>
+<p><a id='VIVA.combined_all_read_depth_array_functions-Tuple{Any}' href='#VIVA.combined_all_read_depth_array_functions-Tuple{Any}'>#</a>
+<strong><code>VIVA.combined_all_read_depth_array_functions</code></strong> &mdash; <em>Method</em>.</p>
+<div class="codehilite"><pre><span></span>combined_all_read_depth_array_functions(sub)
+</pre></div>
+
+
+<p>convert sub from variant filters to dp<em>num</em>array and dp<em>chromosome</em>labels for plot functions.</p>
+<p><a target='_blank' href='https://github.com/compbiocore/VIVA.jl/blob/0ed032624b5c18f416ee963189a365857426df1d/src/vcf_utils_complete.jl#L578-L581' class='documenter-source'>source</a><br></p>
+<p><a id='VIVA.combined_all_read_depth_array_functions_for_avg_dp-Tuple{Any}' href='#VIVA.combined_all_read_depth_array_functions_for_avg_dp-Tuple{Any}'>#</a>
+<strong><code>VIVA.combined_all_read_depth_array_functions_for_avg_dp</code></strong> &mdash; <em>Method</em>.</p>
+<div class="codehilite"><pre><span></span>combined_all_read_depth_array_functions_for_avg_dp(sub)
+</pre></div>
+
+
+<p>convert sub from variant filters to dp<em>num</em>array and dp<em>chromosome</em>labels for plot functions.</p>
+<p><a target='_blank' href='https://github.com/compbiocore/VIVA.jl/blob/0ed032624b5c18f416ee963189a365857426df1d/src/vcf_utils_complete.jl#L592-L595' class='documenter-source'>source</a><br></p>
+<p><a id='VIVA.define_geno_dict-Tuple{}' href='#VIVA.define_geno_dict-Tuple{}'>#</a>
+<strong><code>VIVA.define_geno_dict</code></strong> &mdash; <em>Method</em>.</p>
+<div class="codehilite"><pre><span></span>define_geno_dict()
+</pre></div>
+
+
+<p>returns dictionary of values for use in replace<em>genotype</em>with_vals()</p>
+<p><a target='_blank' href='https://github.com/compbiocore/VIVA.jl/blob/0ed032624b5c18f416ee963189a365857426df1d/src/vcf_utils_complete.jl#L632-L635' class='documenter-source'>source</a><br></p>
+<p><a id='VIVA.dp_heatmap2-NTuple{7,Any}' href='#VIVA.dp_heatmap2-NTuple{7,Any}'>#</a>
+<strong><code>VIVA.dp_heatmap2</code></strong> &mdash; <em>Method</em>.</p>
+<div class="codehilite"><pre><span></span>dp_heatmap2(input::Array{Int64,2},title::String,chrom_label_info::Tuple{Array{String,1},Array{Int64,1},String}, sample_names,chr_pos_tuple_list_rev,y_axis_label_option,x_axis_label_option)
+</pre></div>
+
+
+<p>generate heatmap of read depth data.</p>
+<p><a target='_blank' href='https://github.com/compbiocore/VIVA.jl/blob/0ed032624b5c18f416ee963189a365857426df1d/src/plot_utils.jl#L243-L246' class='documenter-source'>source</a><br></p>
+<p><a id='VIVA.find_group_label_indices-Tuple{Any,Any,Any}' href='#VIVA.find_group_label_indices-Tuple{Any,Any,Any}'>#</a>
+<strong><code>VIVA.find_group_label_indices</code></strong> &mdash; <em>Method</em>.</p>
+<div class="codehilite"><pre><span></span>find_group_label_indices(pheno,trait_to_group_by,row_to_sort_by)
+</pre></div>
+
+
+<p>find indices and determines names for group 1 and group 2 labels on plots. finds index of center of each sample group to place tick mark and label.</p>
+<p><a target='_blank' href='https://github.com/compbiocore/VIVA.jl/blob/0ed032624b5c18f416ee963189a365857426df1d/src/vcf_utils_complete.jl#L743-L746' class='documenter-source'>source</a><br></p>
+<p><a id='VIVA.generate_chromosome_positions_for_hover_labels-Tuple{Array{Any,2}}' href='#VIVA.generate_chromosome_positions_for_hover_labels-Tuple{Array{Any,2}}'>#</a>
+<strong><code>VIVA.generate_chromosome_positions_for_hover_labels</code></strong> &mdash; <em>Method</em>.</p>
+<div class="codehilite"><pre><span></span>generate_chromosome_positions_for_hover_labels(chr_labels::Array{Any,2})
+</pre></div>
+
+
+<p>creates tuple of genomic locations to set as tick labels. This is automatically store chromosome positions in hover labels. However tick labels are set to hidden with showticklabels=false so they will not crowd the y axis.</p>
+<p><a target='_blank' href='https://github.com/compbiocore/VIVA.jl/blob/0ed032624b5c18f416ee963189a365857426df1d/src/vcf_utils_complete.jl#L1071-L1075' class='documenter-source'>source</a><br></p>
+<p><a id='VIVA.generate_genotype_array-Tuple{Array{Any,1},Any}' href='#VIVA.generate_genotype_array-Tuple{Array{Any,1},Any}'>#</a>
+<strong><code>VIVA.generate_genotype_array</code></strong> &mdash; <em>Method</em>.</p>
+<div class="codehilite"><pre><span></span>generate_genotype_array(record_sub::Array{Any,1},genotype_field::String)
+</pre></div>
+
+
+<p>Returns numerical array of genotype values (either genotype or read<em>depth values) which are translated by another function into num</em>array Where genotype<em>field is either GT or DP to visualize genotype or read</em>depth</p>
+<p><a target='_blank' href='https://github.com/compbiocore/VIVA.jl/blob/0ed032624b5c18f416ee963189a365857426df1d/src/vcf_utils_complete.jl#L606-L610' class='documenter-source'>source</a><br></p>
+<p><a id='VIVA.generate_hover_text_array-NTuple{4,Any}' href='#VIVA.generate_hover_text_array-NTuple{4,Any}'>#</a>
+<strong><code>VIVA.generate_hover_text_array</code></strong> &mdash; <em>Method</em>.</p>
+<div class="codehilite"><pre><span></span>generate_hover_text_array(chr_pos_tuple_list,sample_names,input,mode)
+</pre></div>
+
+
+<p>Generate array of data for hovertext to use as custom hover text for ungrouped heatmaps. Where mode is GT or DP.</p>
+<p><a target='_blank' href='https://github.com/compbiocore/VIVA.jl/blob/0ed032624b5c18f416ee963189a365857426df1d/src/vcf_utils_complete.jl#L1363-L1366' class='documenter-source'>source</a><br></p>
+<p><a id='VIVA.generate_hover_text_array_grouped-NTuple{5,Any}' href='#VIVA.generate_hover_text_array_grouped-NTuple{5,Any}'>#</a>
+<strong><code>VIVA.generate_hover_text_array_grouped</code></strong> &mdash; <em>Method</em>.</p>
+<div class="codehilite"><pre><span></span>generate_hover_text_array_grouped(chr_pos_tuple_list,sample_names,input,mode)
+</pre></div>
+
+
+<p>Generate array of data for hovertext to use as custom hover text for grouped heatmaps. Where mode is GT or DP.</p>
+<p><a target='_blank' href='https://github.com/compbiocore/VIVA.jl/blob/0ed032624b5c18f416ee963189a365857426df1d/src/vcf_utils_complete.jl#L1403-L1406' class='documenter-source'>source</a><br></p>
+<p><a id='VIVA.genomic_range_siglist_filter-Tuple{Any,Any,AbstractString}' href='#VIVA.genomic_range_siglist_filter-Tuple{Any,Any,AbstractString}'>#</a>
+<strong><code>VIVA.genomic_range_siglist_filter</code></strong> &mdash; <em>Method</em>.</p>
+<div class="codehilite"><pre><span></span>genomic_range_siglist_filter(vcf_filename,sig_list,chr_range::AbstractString)
+</pre></div>
+
+
+<p>returns subarray of vcf records with io<em>pass</em>filter, io<em>sig</em>list<em>vcf</em>filter, and io<em>genomic</em>range<em>vcf</em>filter applied.</p>
+<p><a target='_blank' href='https://github.com/compbiocore/VIVA.jl/blob/0ed032624b5c18f416ee963189a365857426df1d/src/vcf_utils_complete.jl#L463-L466' class='documenter-source'>source</a><br></p>
+<p><a id='VIVA.genotype_heatmap2-NTuple{7,Any}' href='#VIVA.genotype_heatmap2-NTuple{7,Any}'>#</a>
+<strong><code>VIVA.genotype_heatmap2</code></strong> &mdash; <em>Method</em>.</p>
+<div class="codehilite"><pre><span></span>genotype_heatmap2(input::Array{Any,2},title::AbstractString,filename,sample_names,gt_chromosome_labels,y_axis_label_option,x_axis_label_option,save_ext,chrom_label_info)
+</pre></div>
+
+
+<p>generate heatmap of genotype data.</p>
+<p><a target='_blank' href='https://github.com/compbiocore/VIVA.jl/blob/0ed032624b5c18f416ee963189a365857426df1d/src/plot_utils.jl#L3-L6' class='documenter-source'>source</a><br></p>
+<p><a id='VIVA.genotype_heatmap_with_groups-Tuple{Array{Int64,2},String,Tuple{Array{String,1},Array{Int64,1},String},Array{Any,1},Any,Any,Any,Any,Any,Any}' href='#VIVA.genotype_heatmap_with_groups-Tuple{Array{Int64,2},String,Tuple{Array{String,1},Array{Int64,1},String},Array{Any,1},Any,Any,Any,Any,Any,Any}'>#</a>
+<strong><code>VIVA.genotype_heatmap_with_groups</code></strong> &mdash; <em>Method</em>.</p>
+<p>genotype<em>heatmap</em>with<em>groups(input::Array{Int64,2},title::String,chrom</em>label<em>info::Tuple{Array{String,1},Array{Int64,1},String},group</em>label<em>pack::Array{Any,1},id</em>list,chr<em>pos</em>tuple<em>list</em>rev,y<em>axis</em>label<em>option,trait</em>label<em>array,x</em>axis<em>label</em>option,number_rows) generate heatmap of genotype data.</p>
+<p><a target='_blank' href='https://github.com/compbiocore/VIVA.jl/blob/0ed032624b5c18f416ee963189a365857426df1d/src/plot_utils.jl#L78-L81' class='documenter-source'>source</a><br></p>
+<p><a id='VIVA.get_sample_names-Tuple{Any}' href='#VIVA.get_sample_names-Tuple{Any}'>#</a>
+<strong><code>VIVA.get_sample_names</code></strong> &mdash; <em>Method</em>.</p>
+<div class="codehilite"><pre><span></span>get_sample_names(reader)
+</pre></div>
+
+
+<p>returns sample ids of vcf file as a vector of symbols for naming columns of num_array dataframe object for column filter functions</p>
+<p><a target='_blank' href='https://github.com/compbiocore/VIVA.jl/blob/0ed032624b5c18f416ee963189a365857426df1d/src/vcf_utils_complete.jl#L726-L729' class='documenter-source'>source</a><br></p>
+<p><a id='VIVA.io_genomic_range_vcf_filter-Tuple{String,AbstractString}' href='#VIVA.io_genomic_range_vcf_filter-Tuple{String,AbstractString}'>#</a>
+<strong><code>VIVA.io_genomic_range_vcf_filter</code></strong> &mdash; <em>Method</em>.</p>
+<p>io<em>genomic</em>range<em>vcf</em>filter(chr<em>range::String, vcf</em>filename::AbstractString) create subarray of vcf variant records matching user specified chromosome range in format: (e.g. chr1:0-30000000)</p>
+<p><a target='_blank' href='https://github.com/compbiocore/VIVA.jl/blob/0ed032624b5c18f416ee963189a365857426df1d/src/vcf_utils_complete.jl#L118-L121' class='documenter-source'>source</a><br></p>
+<p><a id='VIVA.io_pass_filter-Tuple{Any}' href='#VIVA.io_pass_filter-Tuple{Any}'>#</a>
+<strong><code>VIVA.io_pass_filter</code></strong> &mdash; <em>Method</em>.</p>
+<div class="codehilite"><pre><span></span>io_pass_filter(vcf_filename)
+</pre></div>
+
+
+<p>returns subarray of vcf records including only records with FILTER status = PASS</p>
+<p><a target='_blank' href='https://github.com/compbiocore/VIVA.jl/blob/0ed032624b5c18f416ee963189a365857426df1d/src/vcf_utils_complete.jl#L234-L237' class='documenter-source'>source</a><br></p>
+<p><a id='VIVA.io_sig_list_vcf_filter-Tuple{Any,Any}' href='#VIVA.io_sig_list_vcf_filter-Tuple{Any,Any}'>#</a>
+<strong><code>VIVA.io_sig_list_vcf_filter</code></strong> &mdash; <em>Method</em>.</p>
+<div class="codehilite"><pre><span></span>io_sig_list_vcf_filter(sig_list,vcf_filename)
+</pre></div>
+
+
+<p>returns subarray of variant records matching a list of variant positions returned from load_siglist()</p>
+<p><a target='_blank' href='https://github.com/compbiocore/VIVA.jl/blob/0ed032624b5c18f416ee963189a365857426df1d/src/vcf_utils_complete.jl#L208-L211' class='documenter-source'>source</a><br></p>
+<p><a id='VIVA.jupyter_main-NTuple{5,Any}' href='#VIVA.jupyter_main-NTuple{5,Any}'>#</a>
+<strong><code>VIVA.jupyter_main</code></strong> &mdash; <em>Method</em>.</p>
+<p>jupyter<em>main(vcf</em>filename,saving<em>options,variant</em>filters,sample<em>selection,plotting</em>options)</p>
+<p>filters, plots visualization, and saves as figure. utilizes all global variables set in first cell of jupyter notebook</p>
+<p><a target='_blank' href='https://github.com/compbiocore/VIVA.jl/blob/0ed032624b5c18f416ee963189a365857426df1d/src/new_notebook_utils.jl#L1-L6' class='documenter-source'>source</a><br></p>
+<p><a id='VIVA.list_sample_names_low_dp-Tuple{Array{Float64,1},Any}' href='#VIVA.list_sample_names_low_dp-Tuple{Array{Float64,1},Any}'>#</a>
+<strong><code>VIVA.list_sample_names_low_dp</code></strong> &mdash; <em>Method</em>.</p>
+<div class="codehilite"><pre><span></span>list_sample_names_low_dp(sample_avg_list::Array{Float64,2},sample_names)
+</pre></div>
+
+
+<p>returns list of sample ids that have an average read depth of under 15 across all variant positions</p>
+<p><a target='_blank' href='https://github.com/compbiocore/VIVA.jl/blob/0ed032624b5c18f416ee963189a365857426df1d/src/vcf_utils_complete.jl#L887-L890' class='documenter-source'>source</a><br></p>
+<p><a id='VIVA.list_variant_positions_low_dp-Tuple{Array{Float64,1},Any}' href='#VIVA.list_variant_positions_low_dp-Tuple{Array{Float64,1},Any}'>#</a>
+<strong><code>VIVA.list_variant_positions_low_dp</code></strong> &mdash; <em>Method</em>.</p>
+<div class="codehilite"><pre><span></span>list_variant_positions_low_dp(variant_avg_list::Array{Float64,2},chrom_labels)
+</pre></div>
+
+
+<p>finds variant positions that have an average read depth of under 15 across all patients</p>
+<p><a target='_blank' href='https://github.com/compbiocore/VIVA.jl/blob/0ed032624b5c18f416ee963189a365857426df1d/src/vcf_utils_complete.jl#L912-L915' class='documenter-source'>source</a><br></p>
+<p><a id='VIVA.load_siglist-Tuple{AbstractString}' href='#VIVA.load_siglist-Tuple{AbstractString}'>#</a>
+<strong><code>VIVA.load_siglist</code></strong> &mdash; <em>Method</em>.</p>
+<div class="codehilite"><pre><span></span>load_siglist(filename::AbstractString)
+</pre></div>
+
+
+<p>where x = filename of significant SNP variant location list in comma delimited format (saved as .csv)</p>
+<p><a target='_blank' href='https://github.com/compbiocore/VIVA.jl/blob/0ed032624b5c18f416ee963189a365857426df1d/src/vcf_utils_complete.jl#L78-L81' class='documenter-source'>source</a><br></p>
+<p><a id='VIVA.pass_genomic_range_filter-Tuple{GeneticVariation.VCF.Reader,AbstractString,Any}' href='#VIVA.pass_genomic_range_filter-Tuple{GeneticVariation.VCF.Reader,AbstractString,Any}'>#</a>
+<strong><code>VIVA.pass_genomic_range_filter</code></strong> &mdash; <em>Method</em>.</p>
+<div class="codehilite"><pre><span></span>pass_genomic_range_filter(reader::GeneticVariation.VCF.Reader,chr_range::AbstractString,vcf_filename)
+</pre></div>
+
+
+<p>returns subarray of vcf records with io<em>pass</em>filter and io<em>genomic</em>range<em>vcf</em>filter applied.</p>
+<p><a target='_blank' href='https://github.com/compbiocore/VIVA.jl/blob/0ed032624b5c18f416ee963189a365857426df1d/src/vcf_utils_complete.jl#L343-L346' class='documenter-source'>source</a><br></p>
+<p><a id='VIVA.pass_genomic_range_siglist_filter-Tuple{Any,Any,AbstractString}' href='#VIVA.pass_genomic_range_siglist_filter-Tuple{Any,Any,AbstractString}'>#</a>
+<strong><code>VIVA.pass_genomic_range_siglist_filter</code></strong> &mdash; <em>Method</em>.</p>
+<div class="codehilite"><pre><span></span>pass_genomic_range_siglist_filter(vcf_filename,sig_list,chr_range::AbstractString)
+</pre></div>
+
+
+<p>returns subarray of vcf records with io<em>pass</em>filter, io<em>sig</em>list<em>vcf</em>filter, and io<em>genomic</em>range<em>vcf</em>filter applied.</p>
+<p><a target='_blank' href='https://github.com/compbiocore/VIVA.jl/blob/0ed032624b5c18f416ee963189a365857426df1d/src/vcf_utils_complete.jl#L258-L261' class='documenter-source'>source</a><br></p>
+<p><a id='VIVA.pass_siglist_filter-Tuple{Any,Any}' href='#VIVA.pass_siglist_filter-Tuple{Any,Any}'>#</a>
+<strong><code>VIVA.pass_siglist_filter</code></strong> &mdash; <em>Method</em>.</p>
+<div class="codehilite"><pre><span></span>pass_siglist_filter(vcf_filename,sig_list,chr_range::AbstractString)
+</pre></div>
+
+
+<p>returns subarray of vcf records with io<em>pass</em>filter, io<em>sig</em>list<em>vcf</em>filter, and io<em>genomic</em>range<em>vcf</em>filter applied.</p>
+<p><a target='_blank' href='https://github.com/compbiocore/VIVA.jl/blob/0ed032624b5c18f416ee963189a365857426df1d/src/vcf_utils_complete.jl#L416-L419' class='documenter-source'>source</a><br></p>
+<p><a id='VIVA.process_plot_inputs-Tuple{Any,Any,Any}' href='#VIVA.process_plot_inputs-Tuple{Any,Any,Any}'>#</a>
+<strong><code>VIVA.process_plot_inputs</code></strong> &mdash; <em>Method</em>.</p>
+<div class="codehilite"><pre><span></span>process_plot_inputs(chrom_label_info,sample_names,chr_pos_tuple_list_rev)
+</pre></div>
+
+
+<p>Prepares input for heatmap plot function for both genotype and read depth plots without –group_samples flag.</p>
+<p><a target='_blank' href='https://github.com/compbiocore/VIVA.jl/blob/0ed032624b5c18f416ee963189a365857426df1d/src/plot_utils.jl#L498-L501' class='documenter-source'>source</a><br></p>
+<p><a id='VIVA.process_plot_inputs_for_grouped_data-Tuple{Tuple{Array{String,1},Array{Int64,1},String},Array{Any,1},Any,Any,Any}' href='#VIVA.process_plot_inputs_for_grouped_data-Tuple{Tuple{Array{String,1},Array{Int64,1},String},Array{Any,1},Any,Any,Any}'>#</a>
+<strong><code>VIVA.process_plot_inputs_for_grouped_data</code></strong> &mdash; <em>Method</em>.</p>
+<div class="codehilite"><pre><span></span>process_plot_inputs_for_grouped_data(chrom_label_info::Tuple{Array{String,1},Array{Int64,1},String},group_label_pack::Array{Any,1},id_list,chr_pos_tuple_list_rev,trait_label_array)
+</pre></div>
+
+
+<p>Prepares input for heatmap plot function for both genotype and read depth plots with –group_samples flag.</p>
+<p><a target='_blank' href='https://github.com/compbiocore/VIVA.jl/blob/0ed032624b5c18f416ee963189a365857426df1d/src/plot_utils.jl#L523-L526' class='documenter-source'>source</a><br></p>
+<p><a id='VIVA.read_depth_threshhold-Tuple{Array{Int64,2}}' href='#VIVA.read_depth_threshhold-Tuple{Array{Int64,2}}'>#</a>
+<strong><code>VIVA.read_depth_threshhold</code></strong> &mdash; <em>Method</em>.</p>
+<div class="codehilite"><pre><span></span>read_depth_threshhold(dp_array::Array{Int64,2})
+</pre></div>
+
+
+<p>Caps read depth outlier values at user defined threshhold. threshhold defaults to dp = 100. All dp over 100 are set to 100 to visualize read depth values between 0 &lt; dp &gt; 100 in better definition.</p>
+<p><a target='_blank' href='https://github.com/compbiocore/VIVA.jl/blob/0ed032624b5c18f416ee963189a365857426df1d/src/vcf_utils_complete.jl#L941-L946' class='documenter-source'>source</a><br></p>
+<p><a id='VIVA.returnXY_column1!-Tuple{Any}' href='#VIVA.returnXY_column1!-Tuple{Any}'>#</a>
+<strong><code>VIVA.returnXY_column1!</code></strong> &mdash; <em>Method</em>.</p>
+<div class="codehilite"><pre><span></span>returnXY_column1!(chr_label_vector)
+</pre></div>
+
+
+<p>Replace String "23","24","25" with "X","Y","M" in chromosome label vector used for plot labels</p>
+<p><a target='_blank' href='https://github.com/compbiocore/VIVA.jl/blob/0ed032624b5c18f416ee963189a365857426df1d/src/vcf_utils_complete.jl#L34-L37' class='documenter-source'>source</a><br></p>
+<p><a id='VIVA.returnXY_column1_siglist!-Tuple{Any}' href='#VIVA.returnXY_column1_siglist!-Tuple{Any}'>#</a>
+<strong><code>VIVA.returnXY_column1_siglist!</code></strong> &mdash; <em>Method</em>.</p>
+<div class="codehilite"><pre><span></span>returnXY_column1_siglist!(siglist_sorted)
+</pre></div>
+
+
+<p>Replace String "23","24","25" with "X","Y","M" in siglist for filtering</p>
+<p><a target='_blank' href='https://github.com/compbiocore/VIVA.jl/blob/0ed032624b5c18f416ee963189a365857426df1d/src/vcf_utils_complete.jl#L49-L52' class='documenter-source'>source</a><br></p>
+<p><a id='VIVA.save_graphic-NTuple{5,Any}' href='#VIVA.save_graphic-NTuple{5,Any}'>#</a>
+<strong><code>VIVA.save_graphic</code></strong> &mdash; <em>Method</em>.</p>
+<div class="codehilite"><pre><span></span>save_graphic(graphic,output_directory,save_ext,title,remote_option)
+</pre></div>
+
+
+<p>Save plot in either html or static image formats incuding eps, png, svg, and pdf</p>
+<p><a target='_blank' href='https://github.com/compbiocore/VIVA.jl/blob/0ed032624b5c18f416ee963189a365857426df1d/src/vcf_utils_complete.jl#L1478-L1481' class='documenter-source'>source</a><br></p>
+<p><a id='VIVA.save_numerical_array-NTuple{5,Any}' href='#VIVA.save_numerical_array-NTuple{5,Any}'>#</a>
+<strong><code>VIVA.save_numerical_array</code></strong> &mdash; <em>Method</em>.</p>
+<div class="codehilite"><pre><span></span>save_numerical_array(num_array::Matrix{Any},sample_names,chr_labels,title,output_directory)
+</pre></div>
+
+
+<p>save numerical array with chr labels and sample ids to working directory</p>
+<p><a target='_blank' href='https://github.com/compbiocore/VIVA.jl/blob/0ed032624b5c18f416ee963189a365857426df1d/src/vcf_utils_complete.jl#L955-L958' class='documenter-source'>source</a><br></p>
+<p><a id='VIVA.select_columns-Tuple{AbstractString,Array{Int64,2},Any}' href='#VIVA.select_columns-Tuple{AbstractString,Array{Int64,2},Any}'>#</a>
+<strong><code>VIVA.select_columns</code></strong> &mdash; <em>Method</em>.</p>
+<div class="codehilite"><pre><span></span>select_columns(filename_sample_list::AbstractString, num_array::Array{Int64,2}, sample_names)
+</pre></div>
+
+
+<p>returns num<em>array with columns matching user generated list of sample ids to select for analysis. num</em>array now has sample ids in first row.</p>
+<p><a target='_blank' href='https://github.com/compbiocore/VIVA.jl/blob/0ed032624b5c18f416ee963189a365857426df1d/src/vcf_utils_complete.jl#L815-L818' class='documenter-source'>source</a><br></p>
+<p><a id='VIVA.sortcols_by_phenotype_matrix-Tuple{String,String,Array{Int64,2},Any}' href='#VIVA.sortcols_by_phenotype_matrix-Tuple{String,String,Array{Int64,2},Any}'>#</a>
+<strong><code>VIVA.sortcols_by_phenotype_matrix</code></strong> &mdash; <em>Method</em>.</p>
+<div class="codehilite"><pre><span></span>sortcols_by_phenotype_matrix(pheno_matrix_filename::String,trait_to_group_by::String,num_array::Array{Int64,2}, sample_names::Array{Symbol,2})
+</pre></div>
+
+
+<p>group samples by a common trait using a user generated key matrix ("phenotype matrix") returns num<em>array,group</em>label_pack,</p>
+<p><a target='_blank' href='https://github.com/compbiocore/VIVA.jl/blob/0ed032624b5c18f416ee963189a365857426df1d/src/vcf_utils_complete.jl#L770-L773' class='documenter-source'>source</a><br></p>
+<p><a id='VIVA.translate_genotype_to_num_array-Tuple{Any,Any}' href='#VIVA.translate_genotype_to_num_array-Tuple{Any,Any}'>#</a>
+<strong><code>VIVA.translate_genotype_to_num_array</code></strong> &mdash; <em>Method</em>.</p>
+<div class="codehilite"><pre><span></span>translate_genotype_to_num_array(genotype_array,geno_dict)
+</pre></div>
+
+
+<p>returns a tuple of num<em>array for plotting, and chromosome labels for plotting as label bar. Translates array of genotype values to numerical array of categorical values. Genotype values are converted to categorical values. No</em>call=0, 0/0=1, heterozygous<em>variant=2, homozygous</em>variant=3</p>
+<p><a target='_blank' href='https://github.com/compbiocore/VIVA.jl/blob/0ed032624b5c18f416ee963189a365857426df1d/src/vcf_utils_complete.jl#L663-L668' class='documenter-source'>source</a><br></p>
+<p><a id='VIVA.translate_readdepth_strings_to_num_array-Tuple{Array{Any,2}}' href='#VIVA.translate_readdepth_strings_to_num_array-Tuple{Array{Any,2}}'>#</a>
+<strong><code>VIVA.translate_readdepth_strings_to_num_array</code></strong> &mdash; <em>Method</em>.</p>
+<div class="codehilite"><pre><span></span>translate_readdepth_strings_to_num_array(read_depth_array::Array{Any,2})
+</pre></div>
+
+
+<p>Returns array of read<em>depth as int for plotting and average calculation. Ceiling of dp=100 is set to prevent high dp value from hiding (or "blowing out") low dp values. (see read</em>depth<em>threshhold() ). Where read</em>depth<em>array is output of generate</em>genotype<em>array() for DP option returns a tuple of num</em>array type Int for average calculation and plotting, and chromosome labels for plotting as label bar</p>
+<p><a target='_blank' href='https://github.com/compbiocore/VIVA.jl/blob/0ed032624b5c18f416ee963189a365857426df1d/src/vcf_utils_complete.jl#L683-L689' class='documenter-source'>source</a><br></p>
+<p><a id='VIVA.build_set_from_list-Tuple{Array{Any,2}}' href='#VIVA.build_set_from_list-Tuple{Array{Any,2}}'>#</a>
+<strong><code>VIVA.build_set_from_list</code></strong> &mdash; <em>Method</em>.</p>
+<div class="codehilite"><pre><span></span>build_set_from_list(sig_list::Array{Any,2})
+</pre></div>
+
+
+<p>build set of tuples of chrom and pos of each record in vcf for use in sig<em>list</em>filters.</p>
+<p><a target='_blank' href='https://github.com/compbiocore/VIVA.jl/blob/0ed032624b5c18f416ee963189a365857426df1d/src/vcf_utils_complete.jl#L101-L104' class='documenter-source'>source</a><br></p>
+<p><a id='VIVA.create_chr_dict-Tuple{}' href='#VIVA.create_chr_dict-Tuple{}'>#</a>
+<strong><code>VIVA.create_chr_dict</code></strong> &mdash; <em>Method</em>.</p>
+<div class="codehilite"><pre><span></span>create_chr_dict()
+</pre></div>
+
+
+<p>creates dict for use in combined<em>all</em>genotype<em>array</em>functions() for removing 'chr' from chromosome labels to allow sorting variant records by chromosome position.</p>
+<p><a target='_blank' href='https://github.com/compbiocore/VIVA.jl/blob/0ed032624b5c18f416ee963189a365857426df1d/src/vcf_utils_complete.jl#L548-L551' class='documenter-source'>source</a><br></p>
+<p><a id='VIVA.dp_heatmap2_with_groups-Tuple{Array{Int64,2},String,Tuple{Array{String,1},Array{Int64,1},String},Array{Any,1},Any,Any,Any,Any,Any,Any}' href='#VIVA.dp_heatmap2_with_groups-Tuple{Array{Int64,2},String,Tuple{Array{String,1},Array{Int64,1},String},Array{Any,1},Any,Any,Any,Any,Any,Any}'>#</a>
+<strong><code>VIVA.dp_heatmap2_with_groups</code></strong> &mdash; <em>Method</em>.</p>
+<div class="codehilite"><pre><span></span>dp_heatmap2_with_groups(input::Array{Int64,2},title::String,chrom_label_info::Tuple{Array{String,1},Array{Int64,1},String},group_label_pack::Array{Any,1},id_list,chr_pos_tuple_list_rev,y_axis_label_option,trait_label_array,x_axis_label_option,number_rows)
+</pre></div>
+
+
+<p>generate heatmap of read depth data with grouped samples.</p>
+<p><a target='_blank' href='https://github.com/compbiocore/VIVA.jl/blob/0ed032624b5c18f416ee963189a365857426df1d/src/plot_utils.jl#L323-L326' class='documenter-source'>source</a><br></p>
+<p><a id='VIVA.index_vcf-Tuple{Any}' href='#VIVA.index_vcf-Tuple{Any}'>#</a>
+<strong><code>VIVA.index_vcf</code></strong> &mdash; <em>Method</em>.</p>
+<div class="codehilite"><pre><span></span>index_vcf(vcf_filename)
+</pre></div>
+
+
+<p>Creates and saves index file with three column array of vcf chrom, position, and row number to be used by significant list filter functions.</p>
+<p><a target='_blank' href='https://github.com/compbiocore/VIVA.jl/blob/0ed032624b5c18f416ee963189a365857426df1d/src/vcf_utils_complete.jl#L1113-L1116' class='documenter-source'>source</a><br></p>
+<p><a id='VIVA.make_chromosome_labels-Tuple{Any}' href='#VIVA.make_chromosome_labels-Tuple{Any}'>#</a>
+<strong><code>VIVA.make_chromosome_labels</code></strong> &mdash; <em>Method</em>.</p>
+<div class="codehilite"><pre><span></span>make_chromosome_labels(chrom_label_info)
+</pre></div>
+
+
+<p>Returns vector of values to use as tick vals to show first chromosome label per chromosome with blank spaces between each first chromosome position for use with –y<em>axis</em>labels=chromosomes. duplicate<em>last</em>label tells if last chrom label is single or mutiple which affects number<em>to</em>fill value.</p>
+<p><a target='_blank' href='https://github.com/compbiocore/VIVA.jl/blob/0ed032624b5c18f416ee963189a365857426df1d/src/vcf_utils_complete.jl#L1166-L1169' class='documenter-source'>source</a><br></p>
+<p><a id='VIVA.match_siglist_to_index-Tuple{Any,Any}' href='#VIVA.match_siglist_to_index-Tuple{Any,Any}'>#</a>
+<strong><code>VIVA.match_siglist_to_index</code></strong> &mdash; <em>Method</em>.</p>
+<div class="codehilite"><pre><span></span>match_siglist_to_index(sig_list,vcf_index)
+</pre></div>
+
+
+<p>Returns vcf row indices of each variant position in sig_list for reader function to allow fast filtering in significant list filter funcitons.</p>
+<p><a target='_blank' href='https://github.com/compbiocore/VIVA.jl/blob/0ed032624b5c18f416ee963189a365857426df1d/src/vcf_utils_complete.jl#L1143-L1146' class='documenter-source'>source</a><br></p>
+<p><a id='VIVA.sort_genotype_array-Tuple{Any}' href='#VIVA.sort_genotype_array-Tuple{Any}'>#</a>
+<strong><code>VIVA.sort_genotype_array</code></strong> &mdash; <em>Method</em>.</p>
+<div class="codehilite"><pre><span></span>sort_genotype_array(genotype_array)
+</pre></div>
+
+
+<p>sorts genotype array for GT or DP by chromosomal location</p>
+<p><a target='_blank' href='https://github.com/compbiocore/VIVA.jl/blob/0ed032624b5c18f416ee963189a365857426df1d/src/vcf_utils_complete.jl#L64-L67' class='documenter-source'>source</a><br></p>
+<p><a id='VIVA.translate_readdepth_strings_to_num_array_for_avg_dp-Tuple{Array{Any,2}}' href='#VIVA.translate_readdepth_strings_to_num_array_for_avg_dp-Tuple{Array{Any,2}}'>#</a>
+<strong><code>VIVA.translate_readdepth_strings_to_num_array_for_avg_dp</code></strong> &mdash; <em>Method</em>.</p>
+<div class="codehilite"><pre><span></span>translate_readdepth_strings_to_num_array_for_avg_dp(read_depth_array::Array{Any,2})
+</pre></div>
+
+
+<p>Returns array of read<em>depth as int for plotting and average calculation. 'read</em>depth<em>array' is output of generate</em>genotype<em>array() for DP option returns a tuple of num</em>array type Int for average calculation and plotting, and chromosome labels for plotting as label bar No call is replaced with 0 for avg_calculation. Ceiling of dp=100 is set to prevent high dp value from hiding (or "blowing out") low dp values.</p>
+<p><a target='_blank' href='https://github.com/compbiocore/VIVA.jl/blob/0ed032624b5c18f416ee963189a365857426df1d/src/vcf_utils_complete.jl#L703-L709' class='documenter-source'>source</a><br></p>
+                
+                  
+                
+              
+              
+                
+
+
+              
+            </article>
+          </div>
+        </div>
+      </main>
+      
+        
+<footer class="md-footer">
+  
+    <div class="md-footer-nav">
+      <nav class="md-footer-nav__inner md-grid">
+        
+          <a href="../examples/" title="Examples" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+            <div class="md-flex__cell md-flex__cell--shrink">
+              <i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
+            </div>
+            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+              <span class="md-flex__ellipsis">
+                <span class="md-footer-nav__direction">
+                  Previous
+                </span>
+                Examples
+              </span>
+            </div>
+          </a>
+        
+        
+      </nav>
+    </div>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+        powered by
+        <a href="https://www.mkdocs.org">MkDocs</a>
+        and
+        <a href="https://squidfunk.github.io/mkdocs-material/">
+          Material for MkDocs</a>
+      </div>
+      
+        
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    
+      <script src="../assets/javascripts/application.30f6b8b1.js"></script>
+      
+      <script>app.initialize({version:"0.17.5",url:{base:".."}})</script>
+      
+    
+    
+      
+    
+  </body>
+</html>
