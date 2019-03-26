@@ -1,6 +1,6 @@
-# Getting Started 
-
 ![VIVA Logo](assets/VIVA_logo.png)
+
+# Getting Started 
 
 ### *Command Line Tool and Jupyter Notebook*
 

@@ -11,8 +11,15 @@
 
 VIVA.jl is a user-friendly command line tool for creating publication quality graphics from Variant Call Format (VCF) files and has been designed for clinicians and bioinformaticians to explore their VCF files visually. Users can quickly extract genotype or read depth information and plot trends in interactive categorical heatmaps and scatter plots of average read depth values. ViVa.jl offers a robust set of filters to select variants and samples of interest for analysis. ViVa.jl is especially useful in early data exploration for identifying batch effect and sources of poor read depth, as well as identifying distribution of disease causing variants in a set of clinical samples.
 
-
 ## Installation
+
+### Supported Operating Systems:
+
+#### macOS 
+Mojave, High Sierra, and Mojave.
+
+#### Windows
+Windows 10, Windows 7
 
 ### Command Line Tool
 
@@ -26,13 +33,13 @@ Install Jupyter and download the [VIVA Jupyter Notebook]().
 
 To stay up to date with cutting edge development features install VIVA.jl from the Master branch. 
 
-Install ViVa.jl
+Using git from the command line:
 
 ```
 git clone https://github.com/compbiocore/ViVa.jl
 ```
 
-or
+or from the Julia REPL (useful if using the PowerShell and don't have git installed):
 
 ```julia
 using Pkg
