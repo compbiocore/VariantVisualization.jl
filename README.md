@@ -14,6 +14,14 @@ VIVA.jl is a user-friendly command line tool for creating publication quality gr
 
 ## Installation
 
+### Supported Operating Systems:
+
+#### macOS 
+Mojave, High Sierra, and Mojave.
+
+#### Windows
+Windows 10, Windows 7
+
 ### Command Line Tool
 
 Add VIVA.jl in the Julia Pkg prompt.
@@ -26,13 +34,13 @@ Install Jupyter and download the [VIVA Jupyter Notebook]().
 
 To stay up to date with cutting edge development features install VIVA.jl from the Master branch. 
 
-Install ViVa.jl
+Using git from the command line:
 
 ```
 git clone https://github.com/compbiocore/ViVa.jl
 ```
 
-or
+or from the Julia REPL (useful if using the PowerShell and don't have git installed):
 
 ```julia
 using Pkg
