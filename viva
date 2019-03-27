@@ -100,7 +100,7 @@ function test_parse_main(ARGS::Vector{String})
         help = "visualize average read depths as line chart. Options: average sample read depth, average variant read depth, or both. eg. =sample, =variant, =sample,variant"
 
         "--save_remotely"
-        help = "Specify filename for heatmap with underscores for spaces."
+        help = "Save html support files online rather than locally so files can be shared between systems. Files saved in this way require internet access to open."
         action = :store_true
 
 

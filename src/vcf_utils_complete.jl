@@ -1489,6 +1489,6 @@ function save_graphic(graphic,output_directory,save_ext,title,remote_option)
         PlotlyJS.savefig(graphic, joinpath("$(output_directory)" ,"$title.$(save_ext)"))
     end
 
-    display(graphic)
+    #display(graphic)
 
 end
