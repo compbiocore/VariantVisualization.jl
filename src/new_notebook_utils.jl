@@ -30,7 +30,7 @@ function jupyter_main(vcf_filename,saving_options,variant_filters,sample_selecti
     #store save format and create output directory if it doesn't exist yet
 #=
     save_ext = save_format
-    VIVA.checkfor_outputdirectory(output_directory)
+    VariantVisualization.checkfor_outputdirectory(output_directory)
     output_directory=output_directory
 =#
 
@@ -65,14 +65,14 @@ function jupyter_main(vcf_filename,saving_options,variant_filters,sample_selecti
     #pass_filter and genomic_range and list
     if occursin("true",pass_filter) && occursin("chr",genomic_range) && occursin(".csv",positions_list)
         sig_list =  load_siglist(positions_list)
-        sub = VIVA.pass_chrrange_siglist_filter(vcf_filename, sig_list, genomic_range)
+        sub = VariantVisualization.pass_chrrange_siglist_filter(vcf_filename, sig_list, genomic_range)
         number_rows = size(sub,1)
         println("Selected $number_rows variants with Filter status: PASS, that match list of chromosome positions of interest, and are within chromosome range: $genomic_range")
     end
 
     #pass_filter and genomic_range
     if occursin("true",pass_filter) && occursin("chr",genomic_range)
-        sub = VIVA.pass_chrrange_filter(reader, genomic_range,vcf_filename)
+        sub = VariantVisualization.pass_chrrange_filter(reader, genomic_range,vcf_filename)
         number_rows = size(sub,1)
         println("Selected $number_rows variants with Filter status: PASS and are within chromosome range: $genomic_range")
     end
@@ -80,7 +80,7 @@ function jupyter_main(vcf_filename,saving_options,variant_filters,sample_selecti
     #pass_filter and list
     if occursin("true",pass_filter) && occursin(".csv",positions_list)
         sig_list =  load_siglist(positions_list)
-        sub = VIVA.pass_siglist_filter(vcf_filename, sig_list)
+        sub = VariantVisualization.pass_siglist_filter(vcf_filename, sig_list)
         number_rows = size(sub,1)
         println("Selected $number_rows variants with Filter status: PASS and that match list of chromosome positions of interest")
     end
@@ -88,7 +88,7 @@ function jupyter_main(vcf_filename,saving_options,variant_filters,sample_selecti
     #genomic_range and list
     if occursin("chr",genomic_range) && occursin(".csv",positions_list)
         sig_list =  load_siglist(positions_list)
-        sub = VIVA.chrrange_siglist_filter(vcf_filename, sig_list, genomic_range)
+        sub = VariantVisualization.chrrange_siglist_filter(vcf_filename, sig_list, genomic_range)
         number_rows = size(sub,1)
         println("Selected $number_rows variants that are within chromosome range: $genomic_range and that match list of chromosome positions of interest")
     end
@@ -97,7 +97,7 @@ function jupyter_main(vcf_filename,saving_options,variant_filters,sample_selecti
     if occursin("true",pass_filter) && !occursin("chr",genomic_range) && !occursin(".csv",positions_list)
         println("Only pass filter is applied. Large vcf files with many PASS variants will take a long time to process and heatmap visualizations will lose resolution at this scale unless viewed in interactive html for zooming.")
         println()
-        sub = VIVA.io_pass_filter(vcf_filename)
+        sub = VariantVisualization.io_pass_filter(vcf_filename)
         number_rows = size(sub,1)
         println("Selected $number_rows variants with Filter status: PASS")
         heatmap_input = "pass_filtered"
@@ -105,7 +105,7 @@ function jupyter_main(vcf_filename,saving_options,variant_filters,sample_selecti
 
     #genomic_range
     if occursin("chr",genomic_range) && !occursin("true",pass_filter) && !occursin(".csv",positions_list)
-        sub = VIVA.io_chromosome_range_vcf_filter(genomic_range,vcf_filename)
+        sub = VariantVisualization.io_chromosome_range_vcf_filter(genomic_range,vcf_filename)
         number_rows = size(sub,1)
         println("Selected $number_rows variants within chromosome range: $genomic_range")
         heatmap_input = "range_filtered"
@@ -114,7 +114,7 @@ function jupyter_main(vcf_filename,saving_options,variant_filters,sample_selecti
     #list
     if occursin(".csv",positions_list) && !occursin("chr",genomic_range) && !occursin("true",pass_filter)
         sig_list =  load_siglist(positions_list)
-        sub = VIVA.io_sig_list_vcf_filter(sig_list,vcf_filename)
+        sub = VariantVisualization.io_sig_list_vcf_filter(sig_list,vcf_filename)
         number_rows = size(sub,1)
         println("Selected $number_rows variants that match list of chromosome positions of interest")
         heatmap_input = "positions_filtered"
@@ -137,7 +137,7 @@ function jupyter_main(vcf_filename,saving_options,variant_filters,sample_selecti
 
         chr_pos_tuple_list = generate_chromosome_positions_for_hover_labels(gt_chromosome_labels)
 
-        chrom_label_info = VIVA.chromosome_label_generator(gt_chromosome_labels[:,1])
+        chrom_label_info = VariantVisualization.chromosome_label_generator(gt_chromosome_labels[:,1])
 
         if length(split(group_samples,",")) == 2
 
@@ -167,7 +167,7 @@ function jupyter_main(vcf_filename,saving_options,variant_filters,sample_selecti
 
             pheno_num_array,trait_label_array,chrom_label_info=add_pheno_matrix_to_gt_data_for_plotting(ordered_num_array,pheno,trait_labels,chrom_label_info,number_rows)
 
-            graphic = VIVA.genotype_heatmap_with_groups(pheno_num_array,title,chrom_label_info,group_label_pack,id_list,chr_pos_tuple_list,y_axis_label_option,trait_label_array,x_axis_label_option,number_rows)
+            graphic = VariantVisualization.genotype_heatmap_with_groups(pheno_num_array,title,chrom_label_info,group_label_pack,id_list,chr_pos_tuple_list,y_axis_label_option,trait_label_array,x_axis_label_option,number_rows)
             graphic
         else
 
@@ -186,7 +186,7 @@ function jupyter_main(vcf_filename,saving_options,variant_filters,sample_selecti
             save_numerical_array(gt_num_array,sample_names,chr_pos_tuple_list,title,output_directory)
             end
 
-            graphic = VIVA.genotype_heatmap2(gt_num_array,title,chrom_label_info,sample_names,chr_pos_tuple_list,y_axis_label_option,x_axis_label_option)
+            graphic = VariantVisualization.genotype_heatmap2(gt_num_array,title,chrom_label_info,sample_names,chr_pos_tuple_list,y_axis_label_option,x_axis_label_option)
             graphic
 
         end
@@ -210,7 +210,7 @@ function jupyter_main(vcf_filename,saving_options,variant_filters,sample_selecti
 
         chr_pos_tuple_list = generate_chromosome_positions_for_hover_labels(dp_chromosome_labels)
 
-        chrom_label_info = VIVA.chromosome_label_generator(dp_chromosome_labels[:,1])
+        chrom_label_info = VariantVisualization.chromosome_label_generator(dp_chromosome_labels[:,1])
 
         if length(split(group_samples,",")) == 2
 
@@ -242,7 +242,7 @@ function jupyter_main(vcf_filename,saving_options,variant_filters,sample_selecti
 
             pheno_num_array,trait_label_array,chrom_label_info = add_pheno_matrix_to_dp_data_for_plotting(dp_num_array_limited,pheno,trait_labels,chrom_label_info,number_rows)
 
-            graphic = VIVA.dp_heatmap2_with_groups(pheno_num_array,title,chrom_label_info,group_label_pack,id_list,chr_pos_tuple_list,y_axis_label_option,trait_label_array,x_axis_label_option,number_rows)
+            graphic = VariantVisualization.dp_heatmap2_with_groups(pheno_num_array,title,chrom_label_info,group_label_pack,id_list,chr_pos_tuple_list,y_axis_label_option,trait_label_array,x_axis_label_option,number_rows)
             graphic
 
         else
@@ -264,7 +264,7 @@ function jupyter_main(vcf_filename,saving_options,variant_filters,sample_selecti
 
             dp_num_array_limited=read_depth_threshhold(dp_num_array)
 
-            graphic = VIVA.dp_heatmap2(dp_num_array, title, chrom_label_info, sample_names,chr_pos_tuple_list,y_axis_label_option,x_axis_label_option)
+            graphic = VariantVisualization.dp_heatmap2(dp_num_array, title, chrom_label_info, sample_names,chr_pos_tuple_list,y_axis_label_option,x_axis_label_option)
            graphic
 
         end
@@ -287,7 +287,7 @@ function jupyter_main(vcf_filename,saving_options,variant_filters,sample_selecti
 
         chr_pos_tuple_list = generate_chromosome_positions_for_hover_labels(gt_chromosome_labels)
 
-        chrom_label_info = VIVA.chromosome_label_generator(gt_chromosome_labels[:,1])
+        chrom_label_info = VariantVisualization.chromosome_label_generator(gt_chromosome_labels[:,1])
 
         if length(split(group_samples,",")) == 2
 
@@ -317,7 +317,7 @@ function jupyter_main(vcf_filename,saving_options,variant_filters,sample_selecti
 
             pheno_num_array,trait_label_array,chrom_label_info=add_pheno_matrix_to_gt_data_for_plotting(ordered_num_array,pheno,trait_labels,chrom_label_info,number_rows)
 
-            graphic = VIVA.genotype_heatmap_with_groups(pheno_num_array,title,chrom_label_info,group_label_pack,id_list,chr_pos_tuple_list,y_axis_label_option,trait_label_array,x_axis_label_option,number_rows)
+            graphic = VariantVisualization.genotype_heatmap_with_groups(pheno_num_array,title,chrom_label_info,group_label_pack,id_list,chr_pos_tuple_list,y_axis_label_option,trait_label_array,x_axis_label_option,number_rows)
             graphic
 
         else
@@ -337,7 +337,7 @@ function jupyter_main(vcf_filename,saving_options,variant_filters,sample_selecti
             save_numerical_array(gt_num_array,sample_names,chr_pos_tuple_list,title,output_directory)
             end
 
-            graphic = VIVA.genotype_heatmap2(gt_num_array,title,chrom_label_info,sample_names,chr_pos_tuple_list,y_axis_label_option,x_axis_label_option)
+            graphic = VariantVisualization.genotype_heatmap2(gt_num_array,title,chrom_label_info,sample_names,chr_pos_tuple_list,y_axis_label_option,x_axis_label_option)
             graphic
 
         end
@@ -357,7 +357,7 @@ function jupyter_main(vcf_filename,saving_options,variant_filters,sample_selecti
 
         chr_pos_tuple_list = generate_chromosome_positions_for_hover_labels(dp_chromosome_labels)
 
-        chrom_label_info = VIVA.chromosome_label_generator(dp_chromosome_labels[:,1])
+        chrom_label_info = VariantVisualization.chromosome_label_generator(dp_chromosome_labels[:,1])
 
         if length(split(group_samples,",")) == 2
 
@@ -388,7 +388,7 @@ function jupyter_main(vcf_filename,saving_options,variant_filters,sample_selecti
 
             pheno_num_array,trait_label_array,chrom_label_info = add_pheno_matrix_to_dp_data_for_plotting(dp_num_array_limited,pheno,trait_labels,chrom_label_info,number_rows)
 
-            graphic = VIVA.dp_heatmap2_with_groups(pheno_num_array,title,chrom_label_info,group_label_pack,id_list,chr_pos_tuple_list,y_axis_label_option,trait_label_array,x_axis_label_option,number_rows)
+            graphic = VariantVisualization.dp_heatmap2_with_groups(pheno_num_array,title,chrom_label_info,group_label_pack,id_list,chr_pos_tuple_list,y_axis_label_option,trait_label_array,x_axis_label_option,number_rows)
             graphic
 
         else
@@ -411,7 +411,7 @@ function jupyter_main(vcf_filename,saving_options,variant_filters,sample_selecti
 
             dp_num_array_limited=read_depth_threshhold(dp_num_array)
 
-            graphic = VIVA.dp_heatmap2(dp_num_array, title, chrom_label_info, sample_names,chr_pos_tuple_list,y_axis_label_option,x_axis_label_option)
+            graphic = VariantVisualization.dp_heatmap2(dp_num_array, title, chrom_label_info, sample_names,chr_pos_tuple_list,y_axis_label_option,x_axis_label_option)
 
         end
 

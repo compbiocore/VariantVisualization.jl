@@ -1,21 +1,20 @@
 ![VIVA Logo](assets/VIVA_logo.png)
 
-# Getting Started 
+# Getting Started
 
 ### *Command Line Tool and Jupyter Notebook*
 
 ## Description
 
-VIVA is a user-friendly command line tool for exploratory analysis and generation of publication quality graphics for variant analysis project using Variant Call Format (VCF) files.
+VIVA is a user-friendly command line tool built with our VariantVisualization.jl package for exploratory analysis and generation of publication quality graphics for variant analysis project using Variant Call Format (VCF) files.
 
-Variant selection and plotting is all executed in a single command. 
+Variant selection and plotting is all executed in a single command.
 
 We describe each of VIVA's arguments in this documentation under the Manual page.
 
-VIVA is available as a Jupyter Notebook utility [here](https://github.com/compbiocore/VIVA.jl/tree/master). Instructions for installing Jupyter, downloading VIVA Jupyter Notebook, and using the notebook are detailed in the *Jupyter Notebook* section of this documentation.
+VIVA is available as a Jupyter Notebook utility [here](https://github.com/compbiocore/VariantVisualization.jl/tree/master). Instructions for installing Jupyter, downloading VIVA Jupyter Notebook, and using the notebook are detailed in the *Jupyter Notebook* section of this documentation.
 
-Formatting requirements for VIVA's input files are described in the Manual and clearly named examples of all user-generated input files can be found in the `/test/test_files` directory of the `VIVA.jl` repository.
-
+Formatting requirements for VIVA's input files are described in the Manual and clearly named examples of all user-generated input files can be found in the `/test/test_files` directory of the `VariantVisualization.jl` repository.
 
 ## General Use
 
@@ -59,11 +58,11 @@ Default options will be used:
 `--y_axis_labels` = `chromosomes`
 `--x_axis_labels` = `true`
 
-These default settings generate a heatmap plots of genotype and read depth values of all variants for all sample ids within a VCF file. 
+These default settings generate a heatmap plots of genotype and read depth values of all variants for all sample ids within a VCF file.
 
-We recommend using variant filters with most VCF files as there is too much data to plot or evaluate visually. 
+We recommend using variant filters with most VCF files as there is too much data to plot or evaluate visually.
 
-Specifically, we recommend visualizing fewer than 2000 variants at a time for effective visualization. However, VIVA uses memory efficient filtering and plotting and is capable of plotting >200,000 datapoints. 
+Specifically, we recommend visualizing fewer than 2000 variants at a time for effective visualization. However, VIVA uses memory efficient filtering and plotting and is capable of plotting >200,000 datapoints.
 
 ### Jupyter Notebook
 
@@ -79,10 +78,20 @@ Use the following steps to use the VIVA Jupyter Notebook utility:
 
 5. Navigate to the directory containing the VIVA Jupyter Notebook *VIVA.ipynb* and double click to open.
 
-6. Follow the step-by-step instructions within the notebook to generate your figures. 
+6. Follow the step-by-step instructions within the notebook to generate your figures.
 
 ## Continue reading for:
 
-* [Variant and Sample Selection](https://github.com/compbiocore/VIVA.jl/tree/master/docs/src/filtering_vcf.md)
+* [Variant and Sample Selection](https://github.com/compbiocore/VariantVisualization.jl/tree/master/docs/src/filtering_vcf.md)
 
-* [Plotting Options](https://github.com/compbiocore/VIVA.jl/tree/master/docs/src/plotting.md)
+* [Plotting Options](https://github.com/compbiocore/VariantVisualization.jl/tree/master/docs/src/plotting.md)
+
+### *For Developers*
+
+VIVA Jupyter notebook and the VIVA the command line tool are built with functions contained in our VariantVisualization.jl package.
+
+Developers may contribute to these open source tools by using [functions contained within VariantVisualization.jl](https://github.com/compbiocore/VariantVisualization.jl/tree/master/src/) which are carefully documented with docstrings.
+
+We have included in-line comments within the code for the ***[VIVA command line tool]***(https://github.com/compbiocore/VariantVisualization.jl/tree/master/viva).
+
+The ***VIVA Jupyter notebook*** is powered by a [main function](https://github.com/compbiocore/VariantVisualization.jl/tree/master/src/new_notebook_utils.jl) which takes arguments defined by the user in the notebook. We welcome users to post in issues to request a new feature or bug fix.

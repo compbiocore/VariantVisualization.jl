@@ -83,7 +83,7 @@ function load_siglist(filename::AbstractString)
 
 siglist_unsorted = readdlm(filename, ',', skipstart=1)
 
-VIVA.clean_column1_siglist!(siglist_unsorted)
+VariantVisualization.clean_column1_siglist!(siglist_unsorted)
 #siglist = sortrows(siglist_unsorted, by=x->(x[1],x[2]))#version
 siglist = sortslices(siglist_unsorted, dims=1, by=x->(x[1],x[2]))
 
@@ -568,7 +568,7 @@ function combined_all_genotype_array_functions(sub)
     genotype_array = generate_genotype_array(sub,"GT")
     map!(s->replace(s, "chr" => ""), genotype_array, genotype_array)
     clean_column1!(genotype_array)
-    genotype_array=VIVA.sort_genotype_array(genotype_array)
+    genotype_array=VariantVisualization.sort_genotype_array(genotype_array)
     geno_dict = define_geno_dict()
     gt_num_array,gt_chromosome_labels = translate_genotype_to_num_array(genotype_array, geno_dict)
 
@@ -581,10 +581,10 @@ convert sub from variant filters to dp_num_array and dp_chromosome_labels for pl
 """
 function combined_all_read_depth_array_functions(sub)
 
-    read_depth_array = VIVA.generate_genotype_array(sub,"DP")
+    read_depth_array = VariantVisualization.generate_genotype_array(sub,"DP")
     map!(s->replace(s, "chr"=>""), read_depth_array, read_depth_array)
     clean_column1!(read_depth_array)
-    read_depth_array=VIVA.sort_genotype_array(read_depth_array)
+    read_depth_array=VariantVisualization.sort_genotype_array(read_depth_array)
     dp_num_array,dp_chromosome_labels = translate_readdepth_strings_to_num_array(read_depth_array)
     return dp_num_array,dp_chromosome_labels
 end
@@ -595,10 +595,10 @@ convert sub from variant filters to dp_num_array and dp_chromosome_labels for pl
 """
 function combined_all_read_depth_array_functions_for_avg_dp(sub)
 
-    read_depth_array = VIVA.generate_genotype_array(sub,"DP")
+    read_depth_array = VariantVisualization.generate_genotype_array(sub,"DP")
     map!(s->replace(s, "chr"=>""), read_depth_array, read_depth_array)
     clean_column1!(read_depth_array)
-    read_depth_array=VIVA.sort_genotype_array(read_depth_array)
+    read_depth_array=VariantVisualization.sort_genotype_array(read_depth_array)
     dp_num_array,dp_chromosome_labels = translate_readdepth_strings_to_num_array_for_avg_dp(read_depth_array)
     return dp_num_array,dp_chromosome_labels
 end
@@ -1195,41 +1195,6 @@ function make_chromosome_labels(chrom_label_info)
 
 end
 
-#=
-"""
-    make_chromosome_labels_chromosome_bar(chrom_label_info)
-For heatmaply r plotting dev version of VIVA only. Returns vector of values to use as tick vals to show first chromosome label per chromosome with blank spaces between each first chromosome position for use with --y_axis_labels=chromosomes. duplicate_last_label tells if last chrom label is single or mutiple which affects number_to_fill value.
-"""
-function make_chromosome_labels_chromosome_bar(chrom_label_info)
-
-       labels=chrom_label_info[1]
-       index=chrom_label_info[2]
-       duplicate_last_label=chrom_label_info[4]
-
-       x=Array{Any}(undef,0)
-
-       for n = 1:size(labels,1)
-
-              push!(x, labels[n])
-              counter=0
-              number_to_fill=index[n+1]-index[n]
-
-              while counter < number_to_fill - 1
-                  counter = counter+1
-                  push!(x, labels[n])
-              end
-        end
-
-    if duplicate_last_label != "true"
-      push!(x,labels[size(labels,1)])
-    end
-
-    return x
-
-end
-
-=#
-
 """
     add_pheno_matrix_to_gt_data_for_plotting(pheno_matrix,gt_num_array,trait_labels,chrom_label_info,number_rows)
 add the pheno matrix used to group samples to the data array for input into plotting functions. Resizes the pheno matrix to maintain correct dimensions for heatmap viz by finding value=0.05*number_rows_data to multiply each pheno row by before vcat.
@@ -1273,8 +1238,6 @@ function add_pheno_matrix_to_gt_data_for_plotting(gt_num_array,pheno_matrix,trai
         end
     end
 
-    #println(size(resized_pheno_matrix,1))
-
     trait_label_indices = findfirst.(map(a -> (y -> isequal(a, y)),
     unique(trait_label_array)), [trait_label_array])
     pheno_trait_labels = unique(trait_label_array)
@@ -1289,7 +1252,6 @@ function add_pheno_matrix_to_gt_data_for_plotting(gt_num_array,pheno_matrix,trai
 
     chrom_label_info = chrom_labels,chrom_label_indices,chrom_label_info[3]
 
-    #vcat pheno matrix to gt_num_array
     data_and_pheno_matrix=vcat(gt_num_array,resized_pheno_matrix)
 
     data_and_pheno_matrix=convert(Array{Int64,2},data_and_pheno_matrix)

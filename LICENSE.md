@@ -1,4 +1,4 @@
-The ViVa.jl package is licensed under the MIT "Expat" License:
+The VariantVisualization.jl package is licensed under the MIT "Expat" License:
 
 > Copyright (c) 2018: Computational Biology Core - Data Science Practice - Brown University.
 >
