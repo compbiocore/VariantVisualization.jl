@@ -6,7 +6,7 @@
 
 ## Description
 
-VIVA is a user-friendly command line tool built with our VariantVisualization.jl package for exploratory analysis and generation of publication quality graphics for variant analysis project using Variant Call Format (VCF) files.
+VIVA is a user-friendly command line tool built with our VariantVisualization.jl package for exploratory analysis and generation of publication quality graphics for variant analysis projects using Variant Call Format (VCF) files.
 
 Variant selection and plotting is all executed in a single command.
 
@@ -86,12 +86,3 @@ Use the following steps to use the VIVA Jupyter Notebook utility:
 
 * [Plotting Options](https://github.com/compbiocore/VariantVisualization.jl/tree/master/docs/src/plotting.md)
 
-### *For Developers*
-
-VIVA Jupyter notebook and the VIVA the command line tool are built with functions contained in our VariantVisualization.jl package.
-
-Developers may contribute to these open source tools by using [functions contained within VariantVisualization.jl](https://github.com/compbiocore/VariantVisualization.jl/tree/master/src/) which are carefully documented with docstrings.
-
-We have included in-line comments within the code for the ***[VIVA command line tool]***(https://github.com/compbiocore/VariantVisualization.jl/tree/master/viva).
-
-The ***VIVA Jupyter notebook*** is powered by a [main function](https://github.com/compbiocore/VariantVisualization.jl/tree/master/src/new_notebook_utils.jl) which takes arguments defined by the user in the notebook. We welcome users to post in issues to request a new feature or bug fix.

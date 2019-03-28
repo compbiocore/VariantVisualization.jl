@@ -26,7 +26,7 @@ docs_dir: 'build'
 
 pages:
 - Home: index.md
-- Manual:
+- VIVA Manual:
   - Filtering Your VCF File: filtering_vcf.md
   - Making Plots: plotting.md
   - Examples: examples.md

@@ -1,7 +1,7 @@
 #Installation
 
-##Install Julia v1.1
-Follow the [instructions]("") for installing Julia v1.1 on your system.
+##Install Julia v1.1.0
+Download [Julia]("https://julialang.org/downloads/")
 
 ##Install the VariantVisualization.jl
 Add `VariantVisualization.jl` at the package prompt in the Julia v1.1 REPL.
