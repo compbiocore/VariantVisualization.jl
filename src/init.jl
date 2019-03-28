@@ -7,10 +7,10 @@ function alias()
     end
 
     dir = split(@__DIR__, "/src")[1]
-    exe = joinpath(dir, "viva")
+    exe = joinpath(dir, "VIVA")
 
     open(joinpath(homedir(), rcfile), "a+") do io
-        write(io, "\n # VIVA Alias \nalias viva=\"$exe\"")
+        write(io, "\n # VIVA Alias \nalias VIVA=\"$exe\"")
     end
     chmod(exe, 333)
 end

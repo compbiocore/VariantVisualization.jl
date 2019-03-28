@@ -1,6 +1,6 @@
-site_name:        ViVa.jl
+site_name:        VariantVisualization.jl
 site_author:      George Tollefson
-repo_url:         https://github.com/compbiocore/ViVa.jl
+repo_url:         https://github.com/compbiocore/VariantVisualization.jl
 site_description: Visualization of Variants
 site_author:      compbiocore
 

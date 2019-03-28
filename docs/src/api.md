@@ -1,18 +1,18 @@
 ##Import
 
 ```
-using VIVA
+using VariantVisualization
 ```
 
 ## Index
 
 ```@index
-Modules = [VIVA]
+Modules = [VariantVisualization]
 ```
 
 ## Functions
 
 ```@autodocs
-Modules = [VIVA]
+Modules = [VariantVisualization]
 Order   = [:function, :type]
 ```

@@ -1,6 +1,6 @@
-module TestViVa
+module TestVariantVisualization
 
-using VIVA
+using VariantVisualization
 using Test
 using DataFrames
 using GeneticVariation

@@ -1,11 +1,11 @@
 #=
 using RoguePkg
 
-julia> using VIVA
+julia> using VariantVisualization
 INFO: Loading HttpServer methods...
 WARNING: Method definition ==(Base.Nullable{S}, Base.Nullable{T}) in module Base at nullable.jl:238 overwritten in module NullableArrays at /Users/George/.julia/test/v0.6/NullableArrays/src/operators.jl:99.
 
-julia> Pkg.test(pkg_for"VIVA")
+julia> Pkg.test(pkg_for"VariantVisualization")
 
 =#
 
@@ -55,7 +55,7 @@ end
 
             @testset "io_sig_list_vcf_filter" begin
 
-            sub = VIVA.io_sig_list_vcf_filter(sig_list,vcf_filename)
+            sub = VariantVisualization.io_sig_list_vcf_filter(sig_list,vcf_filename)
             @test (typeof(sub[1])) == GeneticVariation.VCF.Record
             @test (length(sub)) ==  11
             end
@@ -106,7 +106,7 @@ gt_num_array,gt_chromosome_labels=combined_all_genotype_array_functions(sub)
 @test length(gt_chromosome_labels) == 2328
 
     @testset "chromosome_label_generator" begin
-    chrom_label_info = VIVA.chromosome_label_generator(gt_chromosome_labels[:,1])
+    chrom_label_info = VariantVisualization.chromosome_label_generator(gt_chromosome_labels[:,1])
     #println("chromosome_label_generator chrom_label_info is type $(typeof(chrom_label_info))")
     #println("chromosome_label_generator chrom_label_info is length $(length(chrom_label_info))")
     @test typeof(chrom_label_info) == Tuple{Array{String,1},Array{Int64,1},String}
