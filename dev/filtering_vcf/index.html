@@ -40,7 +40,7 @@
     
     
       
-        <title>Filtering Your VCF File - ViVa.jl</title>
+        <title>Filtering Your VCF File - VariantVisualization.jl</title>
       
     
     
@@ -113,7 +113,7 @@
   <nav class="md-header-nav md-grid">
     <div class="md-flex">
       <div class="md-flex__cell md-flex__cell--shrink">
-        <a href=".." title="ViVa.jl" class="md-header-nav__button md-logo">
+        <a href=".." title="VariantVisualization.jl" class="md-header-nav__button md-logo">
           
             <img src="../cbc-logo.svg" width="24" height="24">
           
@@ -127,7 +127,7 @@
           
             
               <span class="md-header-nav__topic">
-                ViVa.jl
+                VariantVisualization.jl
               </span>
               <span class="md-header-nav__topic">
                 Filtering Your VCF File
@@ -175,7 +175,7 @@
   
 
 
-  <a href="https://github.com/compbiocore/ViVa.jl/" title="Go to repository" class="md-source" data-md-source="github">
+  <a href="https://github.com/compbiocore/VariantVisualization.jl/" title="Go to repository" class="md-source" data-md-source="github">
     
       <div class="md-source__icon">
         <svg viewBox="0 0 24 24" width="24" height="24">
@@ -246,12 +246,12 @@
                   <div class="md-sidebar__inner">
                     <nav class="md-nav md-nav--primary" data-md-level="0">
   <label class="md-nav__title md-nav__title--site" for="__drawer">
-    <a href=".." title="ViVa.jl" class="md-nav__button md-logo">
+    <a href=".." title="VariantVisualization.jl" class="md-nav__button md-logo">
       
         <img src="../cbc-logo.svg" width="48" height="48">
       
     </a>
-    ViVa.jl
+    VariantVisualization.jl
   </label>
   
     <div class="md-nav__source">
@@ -261,7 +261,7 @@
   
 
 
-  <a href="https://github.com/compbiocore/ViVa.jl/" title="Go to repository" class="md-source" data-md-source="github">
+  <a href="https://github.com/compbiocore/VariantVisualization.jl/" title="Go to repository" class="md-source" data-md-source="github">
     
       <div class="md-source__icon">
         <svg viewBox="0 0 24 24" width="24" height="24">
@@ -621,16 +621,16 @@
             <article class="md-content__inner md-typeset">
               
                 
-                  <a href="https://github.com/compbiocore/ViVa.jl/edit/master/docs/filtering_vcf.md" title="Edit this page" class="md-icon md-content__icon">&#xE3C9;</a>
+                  <a href="https://github.com/compbiocore/VariantVisualization.jl/edit/master/docs/filtering_vcf.md" title="Edit this page" class="md-icon md-content__icon">&#xE3C9;</a>
                 
                 
                 <h1 id="variant-record-and-sample-selection">Variant Record and Sample Selection</h1>
 <h2 id="general-notes-extracting-and-reshaping-vcf-data">General notes: Extracting and Reshaping VCF Data</h2>
-<p>VIVA supports flexible filters for selecting variant records for visualization. </p>
-<p>Additionally, the tool supports selecting and grouping samples by common traits for visualization. </p>
-<p>Grouping samples is particularly useful for exploring phenotypic and genotypic associations, displaying differential distribution of variants between groups of samples, and identifying batch effect on coverage between groups of samples in variant analysis experiments. </p>
+<p>VIVA supports flexible filters for selecting variant records for visualization.</p>
+<p>Additionally, the tool supports selecting and grouping samples by common traits for visualization.</p>
+<p>Grouping samples is particularly useful for exploring phenotypic and genotypic associations, displaying differential distribution of variants between groups of samples, and identifying batch effect on coverage between groups of samples in variant analysis experiments.</p>
 <h2 id="choose-a-vcf-file-to-visualize-required">Choose a VCF file to Visualize <em>REQUIRED</em></h2>
-<p>Specify filename of VCF file. </p>
+<p>Specify filename of VCF file.</p>
 <p><em>flags</em>: <code>--vcf_file</code>, <code>-f</code></p>
 <p><em>arguments</em>: Provide VCF filename (or filepath to VCF file if the file is not in the curret working directory).</p>
 <p><em>note</em> This is the <em>only required argument</em> for VIVA. If you run with none of the other options, default options will be used. These default options are described in detail below.</p>
@@ -639,7 +639,7 @@
 
 
 <h2 id="selecting-variant-records">Selecting Variant Records</h2>
-<p>VIVA offers three filters for selecting variant records to visualize from VCF files. </p>
+<p>VIVA offers three filters for selecting variant records to visualize from VCF files.</p>
 <p>It is recommended to use one or a combination of these filters to reduce the number of variant records extracted from the VCF for plotting. This is recommended for reasons related to technical limitations and practical visual interpretation. The number of variant records able to be plotted is limited by both the user's available computing resources as well as the number of pixels in their display for displaying data points. While it is possible to visualize many thousands of variant records at one time with VIVA, <strong>we recommend visualizing fewer than 2000 variants</strong> so that all data points can be displayed that your computing resources are not overburdened. However, VIVA is capable of extracting and plotting hundreds of thousands of data points from VCF files.</p>
 <h3 id="genomic-range">Genomic range</h3>
 <p>Select rows within a given genomic range.</p>
@@ -653,7 +653,7 @@
 <h3 id="variant-list">Variant list</h3>
 <p>Select variants matching list of chromosomal positions.</p>
 <p><em>flags</em>: <code>--positions_list</code>, <code>-l</code></p>
-<p><em>arguments</em>: Provide filename of text file formatted with two columns in .csv format as an argument. There should be a header row with "chr" and "start" in row 1 of column 1 and 2 respectively. Column 1 should contain chromosome number in the format "chr1" or "1" and should match the syntax of the VCF file (that is, if the VCF file lists chromosome numbers in the form "chrX", use "chrX" in your positions list, not "X") You can find an example of this file <a href="" title="[here](&quot;https://github.com/compbiocore/VIVA.jl/tree/master/test/test_files/positions_list.csv">here</a>")</p>
+<p><em>arguments</em>: Provide filename of text file formatted with two columns in .csv format as an argument. There should be a header row with "chr" and "start" in row 1 of column 1 and 2 respectively. Column 1 should contain chromosome number in the format "chr1" or "1" and should match the syntax of the VCF file (that is, if the VCF file lists chromosome numbers in the form "chrX", use "chrX" in your positions list, not "X") You can find an example of this file <a href="" title="[here](&quot;https://github.com/compbiocore/VariantVisualization.jl/tree/master/test/test_files/positions_list.csv">here</a>")</p>
 <div class="codehilite"><pre><span></span>julia VIVA -f example.vcf -l &quot;example_positions_list.txt&quot;
 </pre></div>
 
@@ -673,14 +673,14 @@
 <p><em>arguments</em>: This flag takes two arguments. First provide filename of sample<em>metadata</em>matrix.csv file. Second, enter the trait to group by as it appears in column 1 of the matrix.</p>
 <p><a id='Use-cases-for-sample-grouping-1'></a></p>
 <h5 id="use-cases-for-sample-grouping">Use cases for sample grouping</h5>
-<p>VIVA supports grouping samples for visualization using any user-supplied binary metadata attributes and visualizes these in a colorbar above heatmap visualizations. </p>
-<p>This is broadly useful for purposes such as exploring and presenting <strong>phenotypic and genotypic associations</strong>, <strong>identifying batch effect on coverage</strong>, or <strong>visualizing differential variant incidence</strong> between two groups of samples (such as cases and controls). </p>
+<p>VIVA supports grouping samples for visualization using any user-supplied binary metadata attributes and visualizes these in a colorbar above heatmap visualizations.</p>
+<p>This is broadly useful for purposes such as exploring and presenting <strong>phenotypic and genotypic associations</strong>, <strong>identifying batch effect on coverage</strong>, or <strong>visualizing differential variant incidence</strong> between two groups of samples (such as cases and controls).</p>
 <p><a id='Input-file-formatting-1'></a></p>
 <h5 id="input-file-formatting">Input file formatting</h5>
-<p>Sample metadata matrix is a user generated input file and should be formatted in a table of sample ids and binary metadata traits (such as case,control or treatment1,treatment2 or seq<em>site</em>1,seq<em>site</em>2). An example of formatting for this table can be found <a href="" title="https://github.com/compbiocore/VIVA.jl/tree/master/test/test_files/sample_metadata_matrix.csv">here</a>. </p>
+<p>Sample metadata matrix is a user generated input file and should be formatted in a table of sample ids and binary metadata traits (such as case,control or treatment1,treatment2 or seq<em>site</em>1,seq<em>site</em>2). An example of formatting for this table can be found <a href="" title="https://github.com/compbiocore/VariantVisualization.jl/tree/master/test/test_files/sample_metadata_matrix.csv">here</a>. </p>
 <p>Sample ids must match those found in the VCF file. Additionally, if the user would like to use the –select_samples option, sample ids must match the sample selection list.</p>
-<p>Metadata traits are stored as rownames in the first column of the table and should be binary traits seperated by a comma (like "case,control"). For each metadata trait, samples should be labeled with "1" or "2" to correspond with the first and second group of the trait respectively (e.g. 1 = case and 2 = control). </p>
-<p>This matrix should be saved as a comma delimited .csv file. Microsoft Excel is commonly used for this purpose, but sometimes creates extra delimiter characters in the output file that produce an error in VIVA. You can check to make sure the .csv file was saved properly by opening the file with a text editor such as BBEdit to inspect for and delete empty values or extra delimiter characters at the end of each row. </p>
+<p>Metadata traits are stored as rownames in the first column of the table and should be binary traits seperated by a comma (like "case,control"). For each metadata trait, samples should be labeled with "1" or "2" to correspond with the first and second group of the trait respectively (e.g. 1 = case and 2 = control).</p>
+<p>This matrix should be saved as a comma delimited .csv file. Microsoft Excel is commonly used for this purpose, but sometimes creates extra delimiter characters in the output file that produce an error in VIVA. You can check to make sure the .csv file was saved properly by opening the file with a text editor such as BBEdit to inspect for and delete empty values or extra delimiter characters at the end of each row.</p>
 <div class="codehilite"><pre><span></span>julia VIVA -f example.vcf -g sample_metadata_matrix.csv case,control
 </pre></div>
 
@@ -688,7 +688,7 @@
 <h3 id="select-samples-to-include-in-visualization">Select samples to include in visualization</h3>
 <p>Select specific samples to be extracted from the VCF for visualization.</p>
 <p><em>flags</em>: <code>--select_samples</code></p>
-<p><em>arguments</em>: Provide filename or filepath to tab delimited list of sample names to include in visualization as an argument. An example of this list can be found <a href="" title="https://github.com/compbiocore/VIVA.jl/tree/master/test/test_files/select_samples_list.txt">here</a>.</p>
+<p><em>arguments</em>: Provide filename or filepath to tab delimited list of sample names to include in visualization as an argument. An example of this list can be found <a href="" title="https://github.com/compbiocore/VariantVisualization.jl/tree/master/test/test_files/select_samples_list.txt">here</a>.</p>
 <p><em>note</em> To use the sample selection feature in combination with the sample grouping feature, the sample metadata matrix must only contain the sample ids to be selected.</p>
 <div class="codehilite"><pre><span></span>julia VIVA -f example.vcf --select_samples select_samples_list.txt
 </pre></div>

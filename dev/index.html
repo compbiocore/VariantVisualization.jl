@@ -40,7 +40,7 @@
     
     
       
-        <title>ViVa.jl</title>
+        <title>VariantVisualization.jl</title>
       
     
     
@@ -113,7 +113,7 @@
   <nav class="md-header-nav md-grid">
     <div class="md-flex">
       <div class="md-flex__cell md-flex__cell--shrink">
-        <a href="." title="ViVa.jl" class="md-header-nav__button md-logo">
+        <a href="." title="VariantVisualization.jl" class="md-header-nav__button md-logo">
           
             <img src="./cbc-logo.svg" width="24" height="24">
           
@@ -127,7 +127,7 @@
           
             
               <span class="md-header-nav__topic">
-                ViVa.jl
+                VariantVisualization.jl
               </span>
               <span class="md-header-nav__topic">
                 Home
@@ -175,7 +175,7 @@
   
 
 
-  <a href="https://github.com/compbiocore/ViVa.jl/" title="Go to repository" class="md-source" data-md-source="github">
+  <a href="https://github.com/compbiocore/VariantVisualization.jl/" title="Go to repository" class="md-source" data-md-source="github">
     
       <div class="md-source__icon">
         <svg viewBox="0 0 24 24" width="24" height="24">
@@ -244,12 +244,12 @@
                   <div class="md-sidebar__inner">
                     <nav class="md-nav md-nav--primary" data-md-level="0">
   <label class="md-nav__title md-nav__title--site" for="__drawer">
-    <a href="." title="ViVa.jl" class="md-nav__button md-logo">
+    <a href="." title="VariantVisualization.jl" class="md-nav__button md-logo">
       
         <img src="./cbc-logo.svg" width="48" height="48">
       
     </a>
-    ViVa.jl
+    VariantVisualization.jl
   </label>
   
     <div class="md-nav__source">
@@ -259,7 +259,7 @@
   
 
 
-  <a href="https://github.com/compbiocore/ViVa.jl/" title="Go to repository" class="md-source" data-md-source="github">
+  <a href="https://github.com/compbiocore/VariantVisualization.jl/" title="Go to repository" class="md-source" data-md-source="github">
     
       <div class="md-source__icon">
         <svg viewBox="0 0 24 24" width="24" height="24">
@@ -366,6 +366,19 @@
   <a href="#continue-reading-for" title="Continue reading for:" class="md-nav__link">
     Continue reading for:
   </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#for-developers" title="For Developers" class="md-nav__link">
+    For Developers
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -531,6 +544,19 @@
     Continue reading for:
   </a>
   
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#for-developers" title="For Developers" class="md-nav__link">
+    For Developers
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
       
@@ -549,7 +575,7 @@
             <article class="md-content__inner md-typeset">
               
                 
-                  <a href="https://github.com/compbiocore/ViVa.jl/edit/master/docs/index.md" title="Edit this page" class="md-icon md-content__icon">&#xE3C9;</a>
+                  <a href="https://github.com/compbiocore/VariantVisualization.jl/edit/master/docs/index.md" title="Edit this page" class="md-icon md-content__icon">&#xE3C9;</a>
                 
                 
                 <p><img alt="VIVA Logo" src="./assets/VIVA_logo.png" /></p>
@@ -559,11 +585,11 @@
 <h3 id="command-line-tool-and-jupyter-notebook"><em>Command Line Tool and Jupyter Notebook</em></h3>
 <p><a id='Description-1'></a></p>
 <h2 id="description">Description</h2>
-<p>VIVA is a user-friendly command line tool for exploratory analysis and generation of publication quality graphics for variant analysis project using Variant Call Format (VCF) files.</p>
-<p>Variant selection and plotting is all executed in a single command. </p>
+<p>VIVA is a user-friendly command line tool built with our VariantVisualization.jl package for exploratory analysis and generation of publication quality graphics for variant analysis project using Variant Call Format (VCF) files.</p>
+<p>Variant selection and plotting is all executed in a single command.</p>
 <p>We describe each of VIVA's arguments in this documentation under the Manual page.</p>
-<p>VIVA is available as a Jupyter Notebook utility <a href="https://github.com/compbiocore/VIVA.jl/tree/master">here</a>. Instructions for installing Jupyter, downloading VIVA Jupyter Notebook, and using the notebook are detailed in the <em>Jupyter Notebook</em> section of this documentation.</p>
-<p>Formatting requirements for VIVA's input files are described in the Manual and clearly named examples of all user-generated input files can be found in the <code>/test/test_files</code> directory of the <code>VIVA.jl</code> repository.</p>
+<p>VIVA is available as a Jupyter Notebook utility <a href="https://github.com/compbiocore/VariantVisualization.jl/tree/master">here</a>. Instructions for installing Jupyter, downloading VIVA Jupyter Notebook, and using the notebook are detailed in the <em>Jupyter Notebook</em> section of this documentation.</p>
+<p>Formatting requirements for VIVA's input files are described in the Manual and clearly named examples of all user-generated input files can be found in the <code>/test/test_files</code> directory of the <code>VariantVisualization.jl</code> repository.</p>
 <p><a id='General-Use-1'></a></p>
 <h2 id="general-use">General Use</h2>
 <p>To use VIVA, we recommend creating a new directory for storing your VCF file to analyze where output files will be saved. Alternatively, users may also provide paths to the VCF file and to preferred output file locations as command line arguments.</p>
@@ -594,9 +620,9 @@
 
 <p>Default options will be used:</p>
 <p><code>--heatmap</code> = <code>genotype,read_depth</code> <code>--save_format</code> = <code>html</code> <code>--output_directory</code> = <code>output</code> <code>--heatmap_title</code> = <code>vcf_filename</code> <code>--y_axis_labels</code> = <code>chromosomes</code> <code>--x_axis_labels</code> = <code>true</code></p>
-<p>These default settings generate a heatmap plots of genotype and read depth values of all variants for all sample ids within a VCF file. </p>
-<p>We recommend using variant filters with most VCF files as there is too much data to plot or evaluate visually. </p>
-<p>Specifically, we recommend visualizing fewer than 2000 variants at a time for effective visualization. However, VIVA uses memory efficient filtering and plotting and is capable of plotting &gt;200,000 datapoints. </p>
+<p>These default settings generate a heatmap plots of genotype and read depth values of all variants for all sample ids within a VCF file.</p>
+<p>We recommend using variant filters with most VCF files as there is too much data to plot or evaluate visually.</p>
+<p>Specifically, we recommend visualizing fewer than 2000 variants at a time for effective visualization. However, VIVA uses memory efficient filtering and plotting and is capable of plotting &gt;200,000 datapoints.</p>
 <p><a id='Jupyter-Notebook-1'></a></p>
 <h3 id="jupyter-notebook">Jupyter Notebook</h3>
 <p>Use the following steps to use the VIVA Jupyter Notebook utility:</p>
@@ -611,9 +637,15 @@
 <p><a id='Continue-reading-for:-1'></a></p>
 <h2 id="continue-reading-for">Continue reading for:</h2>
 <ul>
-<li><a href="https://github.com/compbiocore/VIVA.jl/tree/master/docs/src/filtering_vcf.md">Variant and Sample Selection</a></li>
-<li><a href="https://github.com/compbiocore/VIVA.jl/tree/master/docs/src/plotting.md">Plotting Options</a></li>
+<li><a href="https://github.com/compbiocore/VariantVisualization.jl/tree/master/docs/src/filtering_vcf.md">Variant and Sample Selection</a></li>
+<li><a href="https://github.com/compbiocore/VariantVisualization.jl/tree/master/docs/src/plotting.md">Plotting Options</a></li>
 </ul>
+<p><a id='*For-Developers*-1'></a></p>
+<h3 id="for-developers"><em>For Developers</em></h3>
+<p>VIVA Jupyter notebook and the VIVA the command line tool are built with functions contained in our VariantVisualization.jl package.</p>
+<p>Developers may contribute to these open source tools by using <a href="https://github.com/compbiocore/VariantVisualization.jl/tree/master/src/">functions contained within VariantVisualization.jl</a> which are carefully documented with docstrings.</p>
+<p>We have included in-line comments within the code for the <strong><em>[VIVA command line tool]</em></strong>(https://github.com/compbiocore/VariantVisualization.jl/tree/master/viva).</p>
+<p>The <strong><em>VIVA Jupyter notebook</em></strong> is powered by a <a href="https://github.com/compbiocore/VariantVisualization.jl/tree/master/src/new_notebook_utils.jl">main function</a> which takes arguments defined by the user in the notebook. We welcome users to post in issues to request a new feature or bug fix.</p>
                 
                   
                 
