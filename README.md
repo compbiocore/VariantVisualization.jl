@@ -13,7 +13,7 @@ VariantVisualization.jl is a package we built specifically to power the genetics
 
 *VIVA* is a user-friendly command line tool for creating publication quality graphics from Variant Call Format (VCF) files and has been designed for clinicians and bioinformaticians to explore their VCF files visually. Users can quickly extract genotype or read depth information and plot trends in interactive categorical heatmaps and scatter plots of average read depth values. VIVA offers a robust set of filters to select variants and samples of interest for analysis. VIVA is especially useful in early data exploration for identifying batch effect and sources of poor read depth, as well as identifying distribution of disease causing variants in a set of clinical samples.
 
-To use VIVA, you must download the Julia programming language and install the VariantVisualization.jl Julia package as well as the VIVA script. 
+To use VIVA, you must download the Julia programming language version >=1.0 and install the VariantVisualization.jl Julia package as well as the VIVA script. 
 
 ## Getting Started: *Installation*
 
