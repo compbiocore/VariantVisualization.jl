@@ -1,28 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
-     <loc>/</loc>
-     <lastmod>2019-03-31</lastmod>
+     <loc>https://compbiocore.github.io/</loc>
+     <lastmod>2019-04-01</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>/filtering_vcf/</loc>
-     <lastmod>2019-03-31</lastmod>
+     <loc>https://compbiocore.github.io/filtering_vcf/</loc>
+     <lastmod>2019-04-01</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>/plotting/</loc>
-     <lastmod>2019-03-31</lastmod>
+     <loc>https://compbiocore.github.io/plotting/</loc>
+     <lastmod>2019-04-01</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>/examples/</loc>
-     <lastmod>2019-03-31</lastmod>
+     <loc>https://compbiocore.github.io/examples/</loc>
+     <lastmod>2019-04-01</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>/api/</loc>
-     <lastmod>2019-03-31</lastmod>
+     <loc>https://compbiocore.github.io/api/</loc>
+     <lastmod>2019-04-01</lastmod>
      <changefreq>daily</changefreq>
     </url>
 </urlset>
