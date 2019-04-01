@@ -39,7 +39,7 @@ Windows 10, Windows 7
 ### Jupyter Notebook
 
 1. [Install Jupyter](https://jupyter.org/install)
-2. Download the [VIVA Jupyter Notebook](https://github.com/compbiocore/VariantVisualization.jl/tree/master/VIVA.ipynb).
+2. Download the [VIVA Jupyter Notebook](https://github.com/compbiocore/VariantVisualization.jl/blob/master/VIVA.ipynb).
 3. Follow the in-notebook instructions to generate your plots.
 
 ### Latest Features
