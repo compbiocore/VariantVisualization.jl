@@ -21,7 +21,7 @@ To use VIVA, you must download the Julia programming language version >=1.0 and 
 
 #### macOS 
 
-Mojave, High Sierra, and Mojave.
+Sierra, High Sierra, and Mojave.
 
 #### Windows
 
