@@ -3,7 +3,7 @@ function alias()
     if isfile(joinpath(homedir(), ".zshrc"))
         rcfile = ".zshrc"
     else
-        rcfile = ".bashrc"
+        rcfile = ".bash_profile"
     end
 
     dir = split(@__DIR__, "/src")[1]
