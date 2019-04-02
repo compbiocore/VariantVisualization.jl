@@ -13,26 +13,33 @@ VariantVisualization.jl is a package we built specifically to power the genetics
 
 *VIVA* is a user-friendly command line tool for creating publication quality graphics from Variant Call Format (VCF) files and has been designed for clinicians and bioinformaticians to explore their VCF files visually. Users can quickly extract genotype or read depth information and plot trends in interactive categorical heatmaps and scatter plots of average read depth values. VIVA offers a robust set of filters to select variants and samples of interest for analysis. VIVA is especially useful in early data exploration for identifying batch effect and sources of poor read depth, as well as identifying distribution of disease causing variants in a set of clinical samples.
 
+To use VIVA, you must download the Julia programming language version >=1.0 and install the VariantVisualization.jl Julia package as well as the VIVA script. 
+
 ## Getting Started: *Installation*
 
 ### Supported Operating Systems:
 
 #### macOS 
+
 Mojave, High Sierra, and Mojave.
 
 #### Windows
+
 Windows 10, Windows 7
 
 ### Command Line Tool
 
-1. Add VariantVisualization.jl in the Julia Pkg prompt.
+1. Add VariantVisualization.jl using Pkg in the Julia REPL:
+	a. run `using Pkg`
+	b. run `Pkg.clone("https://github.com/compbiocore/VariantVisualization.jl")`
+	c. run `Pkg.instantiate()`
 2. Download the [VIVA](https://github.com/compbiocore/VariantVisualization.jl/blob/master/viva) tool script and save it to a working directory for your analysis.
 3. Navigate to your working directory and follow the [VIVA manual](https://compbiocore.github.io/VariantVisualization.jl/latest/) to generate your plots.
 
 ### Jupyter Notebook
 
 1. [Install Jupyter](https://jupyter.org/install)
-2. Download the [VIVA Jupyter Notebook](https://github.com/compbiocore/VariantVisualization.jl/tree/master/VIVA.ipynb).
+2. Download the [VIVA Jupyter Notebook](https://github.com/compbiocore/VariantVisualization.jl/blob/master/VIVA.ipynb).
 3. Follow the in-notebook instructions to generate your plots.
 
 ### Latest Features
