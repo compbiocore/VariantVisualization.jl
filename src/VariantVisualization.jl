@@ -49,7 +49,6 @@ export
     translate_genotype_to_num_array,
     translate_readdepth_strings_to_num_array,
     genotype_heatmap_with_groups,
-    jupyter_main_new,
     returnXY_column1!,
     pass_genomic_range_siglist_filter,
     pass_genomic_range_filter,
