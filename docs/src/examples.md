@@ -13,6 +13,7 @@ julia VIVA -f test_4X_191.vcf -t Default_Options
 ```
 
 ![Default Genotype Heatmap](assets/Genotype_Default_Options.html)
+
 ![Default Read Depth Heatmap](assets/Read_Depth_Default_Options.html)
 
 ## Grouping Samples by Metadata Traits and Generating all Four Plots

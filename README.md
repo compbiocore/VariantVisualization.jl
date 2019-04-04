@@ -15,7 +15,11 @@ VariantVisualization.jl is a package we built specifically to power the genetics
 
 To use VIVA, you must download the Julia programming language version >=1.0 and install the VariantVisualization.jl Julia package as well as the VIVA script. 
 
-## Getting Started: *Installation*
+## Getting Started: 
+
+Note: Once you have set up VIVA, you can quickly run the command line tool [examples](https://compbiocore.github.io/VariantVisualization.jl/stable/examples/) found in the documentation.
+
+*Installation*
 
 ### Supported Operating Systems:
 
@@ -34,7 +38,7 @@ Windows 10, Windows 7
 	b. run `Pkg.clone("https://github.com/compbiocore/VariantVisualization.jl")`
 	c. run `Pkg.instantiate()`
 2. Download the [VIVA](https://github.com/compbiocore/VariantVisualization.jl/blob/master/viva) tool script and save it to a working directory for your analysis.
-3. Navigate to your working directory and follow the [VIVA manual](https://compbiocore.github.io/VariantVisualization.jl/latest/) to generate your plots.
+3. Navigate to your working directory and follow the [VIVA manual](https://compbiocore.github.io/VariantVisualization.jl/stable/) to generate your plots.
 
 ### Jupyter Notebook
 
