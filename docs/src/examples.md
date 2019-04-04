@@ -1,133 +1,47 @@
-# Plotting
+# Examples
 
-##General notes: visualization options
+To run examples, download the five test files found [here](https://github.com/compbiocore/VariantVisualization.jl/tree/master/test/test_files) and put them into a working directory with the VIVA script. 
 
-Here we describe VIVA options for plotting. All plots can be generated in a single command.
+Once Julia and VariantVisualization.jl are installed, you can run the following examples and should see the same outputs.
 
-VIVA orders all variants by chromosomal location for plotting. 
+## Default Options
 
-VIVA graphics are generated with PlotlyJS.jl. Graphics can be saved in *HTML*, *PDF*, *SVG*, *PNG*, and *EPS* formats. 
-
-To create *interactive visualization* files, save VIVA's graphics in HTML format. These files are sharable and support cursor hoverlabels, zooming, panning, and PNG screen capture. Cursor hoverlabel displays genomic position, sample id, and data value for each data point in heatmap and scatter plot visualizations. We recommend saving graphics to HTML for data exploration. 
-
-To create *publication quality, scalable graphics* for presentations and publications, we recommend saving graphics as PDF. 
-
-## Genotype and read depth heatmaps
-
-Plot a categorical heatmap of genotype values and a continuous value heatmap of read depth (coverage) values.
-
-*flags*: `--heatmap`,`-m`
-
-*arguments*: `genotype`, `read_depth`, or `genotype,read_depth`
-
-default: `genotype,read_depth` (plots both)
+Running VIVA with no options produces heatmaps of genotype and read depth values for all samples and variant positions in the VCF file with default options. You can read about VIVA's default settings [here](https://compbiocore.github.io/VariantVisualization.jl/stable/#default-options)
 
 ```
-julia VIVA -f example.vcf -m genotype
+julia VIVA -f test_4X_191.vcf -t Default_Options
 ```
 
-## Average read depth scatter plots
+![Default Genotype Heatmap](assets/Genotype_Default_Options.html)
 
-Generate scatter plots of average read depths across either samples or variants. Caps outlier read depth values at 100 to optimize resolution of visualization of values under 50. 
+![Default Read Depth Heatmap](assets/Read_Depth_Default_Options.html)
 
+## Grouping Samples by Metadata Traits and Generating all Four Plots
 
-*flags*: `--avg_dp`
+Group samples by sequencing facility and generate heatmaps of genotype and read depth values as well as scatter plots of average read depth for both all selected samples and all selected variant positions. 
 
-*arguments*: `samples`, `variants`, or `samples,variants`
-
-default: `none`
-
-```
-julia VIVA -f example.vcf --avg_dp variants
-```
-
-## Save file format
-
-Specify file format you wish to save all graphics as (eg. pdf, html, png). [REQUIRED]
-
-*flags*: `--save_format`, `-s`  
-
-*arguments*: `html`, `pdf`, `svg`, `png`, `eps`
-
-default: `html`
+You can find grouping options [here]([options](https://compbiocore.github.io/VariantVisualization.jl/stable/filtering_vcf/#selecting-and-grouping-samples) to group samples by common traits.)
 
 ```
-julia VIVA -f example.vcf --avg_dp variants
-``` 
-
-## Output directory
-
-Specify output directory for saving all graphics. If directory doesn't exist, it creates the directory within the working directory. Defaults to "output."
-
-Select directory to save output files. If path doesn't exist, creates new directory. 
-
-*flags*: `--output_directory`, `-o`
-
-*arguments*: filepath
-
-default: `output`
-
-```
-julia VIVA -f example.vcf -o my_output_directory
-``` 
-
-## Title
-
-Specify title to display on heatmap and use as filename for saving heatmap files. Use underscores instead of spaces. Underscores will be replaced with spaces in the heatmap title.
-
-*flags*: `--heatmap_title`, `-t`
-
-*arguments*: title_text
-
-default: original vcf filename
-
-```
-julia VIVA -f example.vcf -t your_heatmap_title
-``` 
-
-## Y-axis label options
-
-Choose an option for displaying y-axis ticklabels showing the genomic position of variants on heatmaps and scatter plots. 
-
-*flags*: `--y_axis_labels`, `-y`
-
-*arguments*: `chromosomes`, `positions`, `hoverlabels_only`
-
-`chromosomes` separates chromosomes by adding chromosome label on the first variant of each new chromosome. 
-`positions` labels every variant position (recommended only for visualizing a few variants e.g. <20)
-`hoverlabels_only` no genomic position labels 
-
-default: `chromosomes`
-
-```
-julia VIVA -f example.vcf `-y` `hoverlabels_only`
+julia VIVA -f test_4X_191.vcf -t Grouped_by_Sequencing_Site -g sample_metadata_matrix.csv seq_site_1,seq_site_2 --avg_dp variant,sample
 ```
 
-## X-axis label options
+![Grouped Genotype Heatmap](assets/Read_Depth_Grouped_by_Sequencing_Site.html)
 
-Choose an option for displaying x-axis ticklabels showing the sample id of samples included heatmaps and scatter plots. 
+![Grouped Read Depth Heatmap](assets/Genotype_Grouped_by_Sequencing_Site.html)
 
-*flags*: `--x_axis_labels`.`x`
+![Grouped Variant Average Read Depth Scatter Plot](assets/Average_Variant_Read_Depthtest_4X_191.vcf.html)
 
-*arguments*: if `true`, displays samples names labels on x-axis. if `false`, does not display x-axis sample labels.
+![Grouped Sample Average Read Depth Scatter Plot](assets/Average_Sample_Read_Depth_test_4X_191.vcf.html)
+ 
+##Genomic Range and Samples Selection - Genotype and Read Depth Heatmaps with Variant Position Labels
 
-default: `true`
-
-```
-julia VIVA -f example.vcf `-x`
-```
-
-## Export heatmap data as numerical array
-
-Save input array to heatmap function with column and row labels. 
-Specifically, saves numerical array of genotype or read depth values for selected variants and samples as a .csv table with genomic positions and sample names for row names and column names respectively.
-
-*flags*: `--num_array`, `-n`
-
-*arguments*: none, this is a positional argument.
+Generate heatmaps of genotype and read depth values of variants selected within a genomic range, in this case, chromosome 4, nucleotides 200000-500000, with y-axis variant position labels.
 
 ```
-julia VIVA -f example.vcf `-n` 
+julia VIVA -f test/test_files/test_4X_191.vcf -t Genomic_Range_Chr4:3076150-3076390 -r chr4:3076150-3076390 -y positions --select_samples select_samples_list.txt
 ```
-  
-   
+
+![Genomic Range Genotype Heatmap](assets/Genotype_Genomic_Range_Chr4/3076150-3076390.html)
+![Genomic Range Read Depth Heatmap](assets/Read_Depth_Genomic_Range_Chr4/3076150-3076390.html)
+

@@ -2,7 +2,7 @@
 
 # Getting Started
 
-### *Command Line Tool and Jupyter Notebook*
+# *VIVA Command Line Tool and Jupyter Notebook*
 
 ## Description
 
@@ -82,7 +82,8 @@ Use the following steps to use the VIVA Jupyter Notebook utility:
 
 ## Continue reading for:
 
-* [Variant and Sample Selection](https://github.com/compbiocore/VariantVisualization.jl/tree/master/docs/src/filtering_vcf.md)
+* [Variant and Sample Selection](https://compbiocore.github.io/VariantVisualization.jl/stable/filtering_vcf/)
 
-* [Plotting Options](https://github.com/compbiocore/VariantVisualization.jl/tree/master/docs/src/plotting.md)
+* [Plotting Options](https://compbiocore.github.io/VariantVisualization.jl/stable/plotting/)
+
 

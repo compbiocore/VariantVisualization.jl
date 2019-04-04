@@ -145,7 +145,7 @@ function io_genomic_range_vcf_filter(chr_range::String,vcf_filename::AbstractStr
         while !eof(reader)
             read!(reader, vcf_record)
 
-               if (VCF.chrom(vcf_record) == chrwhole) && (chr_range_high > VCF.pos(vcf_record) > chr_range_low)
+               if (VCF.chrom(vcf_record) == chrwhole) && (chr_range_high >= VCF.pos(vcf_record) >= chr_range_low)
                       push!(vcf_subarray,copy(vcf_record))
                end
         end
@@ -154,7 +154,7 @@ function io_genomic_range_vcf_filter(chr_range::String,vcf_filename::AbstractStr
         while !eof(reader)
             read!(reader, vcf_record)
 
-               if (VCF.chrom(vcf_record) == chr) && (chr_range_high > VCF.pos(vcf_record) > chr_range_low)
+               if (VCF.chrom(vcf_record) == chr) && (chr_range_high >= VCF.pos(vcf_record) >= chr_range_low)
                       push!(vcf_subarray,copy(vcf_record))
                end
         end
@@ -303,14 +303,14 @@ function pass_genomic_range_siglist_filter(vcf_filename,sig_list,chr_range::Abst
                          #if occursin("chr",VCF.chrom(record1))#version
                          if occursin("chr",VCF.chrom(record1))
 
-                             if (VCF.chrom(vcf_record) == chr_sig) && (VCF.pos(vcf_record) == pos_sig) && (VCF.hasfilter(vcf_record)) && (VCF.filter(vcf_record) == String["PASS"]) && ((VCF.chrom(vcf_record) == chrwhole)) && ((chr_range_high > VCF.pos(vcf_record) > chr_range_low))
+                             if (VCF.chrom(vcf_record) == chr_sig) && (VCF.pos(vcf_record) == pos_sig) && (VCF.hasfilter(vcf_record)) && (VCF.filter(vcf_record) == String["PASS"]) && ((VCF.chrom(vcf_record) == chrwhole)) && ((chr_range_high >= VCF.pos(vcf_record) >= chr_range_low))
                                  push!(vcf_subarray,copy(vcf_record))
                                  break
                              end
 
                         else
 
-                            if (VCF.chrom(vcf_record) == chr_sig) && (VCF.pos(vcf_record) == pos_sig) && (VCF.hasfilter(vcf_record)) && (VCF.filter(vcf_record) == String["PASS"]) && ((VCF.chrom(vcf_record) == chr)) && ((chr_range_high > VCF.pos(vcf_record) > chr_range_low))
+                            if (VCF.chrom(vcf_record) == chr_sig) && (VCF.pos(vcf_record) == pos_sig) && (VCF.hasfilter(vcf_record)) && (VCF.filter(vcf_record) == String["PASS"]) && ((VCF.chrom(vcf_record) == chr)) && ((chr_range_high >= VCF.pos(vcf_record) >= chr_range_low))
                                 push!(vcf_subarray,copy(vcf_record))
                                 break
                             end
@@ -320,13 +320,13 @@ function pass_genomic_range_siglist_filter(vcf_filename,sig_list,chr_range::Abst
 
                      if occursin("chr",VCF.chrom(record1))
 
-                         if (VCF.chrom(vcf_record) == chr_sig) && (VCF.pos(vcf_record) == pos_sig) && (VCF.hasfilter(vcf_record)) && (VCF.filter(vcf_record) == String["PASS"]) && ((VCF.chrom(vcf_record) == chrwhole)) && ((chr_range_high > VCF.pos(vcf_record) > chr_range_low))
+                         if (VCF.chrom(vcf_record) == chr_sig) && (VCF.pos(vcf_record) == pos_sig) && (VCF.hasfilter(vcf_record)) && (VCF.filter(vcf_record) == String["PASS"]) && ((VCF.chrom(vcf_record) == chrwhole)) && ((chr_range_high >= VCF.pos(vcf_record) >= chr_range_low))
                              push!(vcf_subarray,copy(vcf_record))
                              break
                          end
 
                      else
-                        if (VCF.chrom(vcf_record) == chr_sig) && (VCF.pos(vcf_record) == pos_sig) && (VCF.hasfilter(vcf_record)) && (VCF.filter(vcf_record) == String["PASS"]) && ((VCF.chrom(vcf_record) == chr)) && ((chr_range_high > VCF.pos(vcf_record) > chr_range_low))
+                        if (VCF.chrom(vcf_record) == chr_sig) && (VCF.pos(vcf_record) == pos_sig) && (VCF.hasfilter(vcf_record)) && (VCF.filter(vcf_record) == String["PASS"]) && ((VCF.chrom(vcf_record) == chr)) && ((chr_range_high >= VCF.pos(vcf_record) >= chr_range_low))
                             push!(vcf_subarray,copy(vcf_record))
                             break
                         end
@@ -376,14 +376,14 @@ returns subarray of vcf records with io_pass_filter and io_genomic_range_vcf_fil
 
                              chr = string(chr)
 
-                             if (VCF.hasfilter(vcf_record)) && (VCF.filter(vcf_record) == String["PASS"]) && ((VCF.chrom(vcf_record) == chrwhole)) && ((chr_range_high > VCF.pos(vcf_record) > chr_range_low))
+                             if (VCF.hasfilter(vcf_record)) && (VCF.filter(vcf_record) == String["PASS"]) && ((VCF.chrom(vcf_record) == chrwhole)) && ((chr_range_high >= VCF.pos(vcf_record) >= chr_range_low))
                                  push!(vcf_subarray,copy(vcf_record))
 
                              end
 
                      else
 
-                             if (VCF.hasfilter(vcf_record)) && (VCF.filter(vcf_record) == String["PASS"]) && ((VCF.chrom(vcf_record) == chrwhole)) && ((chr_range_high > VCF.pos(vcf_record) > chr_range_low))
+                             if (VCF.hasfilter(vcf_record)) && (VCF.filter(vcf_record) == String["PASS"]) && ((VCF.chrom(vcf_record) == chrwhole)) && ((chr_range_high >= VCF.pos(vcf_record) >= chr_range_low))
                                  push!(vcf_subarray,copy(vcf_record))
                              end
                      end
@@ -394,13 +394,13 @@ returns subarray of vcf records with io_pass_filter and io_genomic_range_vcf_fil
                      if typeof(VCF.chrom(vcf_record)) == String
                             chr = string(chr)
 
-                            if (VCF.hasfilter(vcf_record)) && (VCF.filter(vcf_record) == String["PASS"]) && ((VCF.chrom(vcf_record) == chr)) && ((chr_range_high > VCF.pos(vcf_record) > chr_range_low))
+                            if (VCF.hasfilter(vcf_record)) && (VCF.filter(vcf_record) == String["PASS"]) && ((VCF.chrom(vcf_record) == chr)) && ((chr_range_high >= VCF.pos(vcf_record) >= chr_range_low))
                                 push!(vcf_subarray,copy(vcf_record))
                             end
 
                     else
 
-                            if (VCF.hasfilter(vcf_record)) && (VCF.filter(vcf_record) == String["PASS"]) && ((VCF.chrom(vcf_record) == chr)) && ((chr_range_high > VCF.pos(vcf_record) > chr_range_low))
+                            if (VCF.hasfilter(vcf_record)) && (VCF.filter(vcf_record) == String["PASS"]) && ((VCF.chrom(vcf_record) == chr)) && ((chr_range_high >= VCF.pos(vcf_record) >= chr_range_low))
                                 push!(vcf_subarray,copy(vcf_record))
 
                             end
@@ -505,14 +505,14 @@ function genomic_range_siglist_filter(vcf_filename,sig_list,chr_range::AbstractS
                     if typeof(VCF.chrom(vcf_record)) == String
                              chr_sig = string(chr_sig)
 
-                             if (VCF.chrom(vcf_record) == chr_sig) && (VCF.pos(vcf_record) == pos_sig) && ((VCF.chrom(vcf_record) == chrwhole)) && ((chr_range_high > VCF.pos(vcf_record) > chr_range_low))
+                             if (VCF.chrom(vcf_record) == chr_sig) && (VCF.pos(vcf_record) == pos_sig) && ((VCF.chrom(vcf_record) == chrwhole)) && ((chr_range_high >= VCF.pos(vcf_record) >= chr_range_low))
                                  push!(vcf_subarray,copy(vcf_record))
                                  break
                              end
 
                      else
 
-                             if (VCF.chrom(vcf_record) == chr_sig) && (VCF.pos(vcf_record) == pos_sig) && ((VCF.chrom(vcf_record) == chrwhole)) && ((chr_range_high > VCF.pos(vcf_record) > chr_range_low))
+                             if (VCF.chrom(vcf_record) == chr_sig) && (VCF.pos(vcf_record) == pos_sig) && ((VCF.chrom(vcf_record) == chrwhole)) && ((chr_range_high >= VCF.pos(vcf_record) >= chr_range_low))
                                  push!(vcf_subarray,copy(vcf_record))
                                  break
                              end
@@ -523,14 +523,14 @@ function genomic_range_siglist_filter(vcf_filename,sig_list,chr_range::AbstractS
                      if typeof(VCF.chrom(vcf_record)) == String
                               chr_sig = string(chr_sig)
 
-                              if (VCF.chrom(vcf_record) == chr_sig) && (VCF.pos(vcf_record) == pos_sig) && ((VCF.chrom(vcf_record) == chr)) && ((chr_range_high > VCF.pos(vcf_record) > chr_range_low))
+                              if (VCF.chrom(vcf_record) == chr_sig) && (VCF.pos(vcf_record) == pos_sig) && ((VCF.chrom(vcf_record) == chr)) && ((chr_range_high >= VCF.pos(vcf_record) >= chr_range_low))
                                   push!(vcf_subarray,copy(vcf_record))
                                   break
                               end
 
                       else
 
-                              if (VCF.chrom(vcf_record) == chr_sig) && (VCF.pos(vcf_record) == pos_sig) && ((VCF.chrom(vcf_record) == chr)) && ((chr_range_high > VCF.pos(vcf_record) > chr_range_low))
+                              if (VCF.chrom(vcf_record) == chr_sig) && (VCF.pos(vcf_record) == pos_sig) && ((VCF.chrom(vcf_record) == chr)) && ((chr_range_high >= VCF.pos(vcf_record) >= chr_range_low))
                                   push!(vcf_subarray,copy(vcf_record))
                                   break
                               end

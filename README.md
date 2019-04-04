@@ -3,9 +3,9 @@
 #### Visualization of Variants
 
 
-| MacOS / Linux | License | Test Coverage | Documentation | Lifecycle |
+| MacOS / Linux | Windows | License | Test Coverage | Documentation | Lifecycle |
 | --- | ---- | ------ | ------ | ---- |
-|[![Travis](https://img.shields.io/travis/compbiocore/VariantVisualization.jl/master.svg?style=flat-square)](https://travis-ci.org/compbiocore/VariantVisualization.jl)| [![License](https://img.shields.io/badge/license-MIT-orange.svg?style=flat-square)](https://github.com/compbiocore/VariantVisualization.jl/blob/clean-up/LICENSE.md)| [![Codecov](https://img.shields.io/codecov/c/github/compbiocore/VariantVisualization.jl.svg?style=flat-square)](https://codecov.io/gh/compbiocore/VariantVisualization.jl/branch/master) | [![Docs](https://img.shields.io/badge/docs-stable-blue.svg?style=flat-square)](https://compbiocore.github.io/VariantVisualization.jl/stable) [![Docs](https://img.shields.io/badge/docs-latest-blue.svg?style=flat-square)](https://compbiocore.github.io/VariantVisualization.jl/latest) | ![Lifecycle](https://img.shields.io/badge/lifecycle-experimental-orange.svg?style=flat-square) |
+|[![Travis](https://img.shields.io/travis/compbiocore/VariantVisualization.jl/master.svg?style=flat-square)](https://travis-ci.org/compbiocore/VariantVisualization.jl)|[![Build status](https://ci.appveyor.com/api/projects/status/67hyn6rckulwr2dj/branch/master?svg=true)](https://ci.appveyor.com/project/fernandogelin/variantvisualization-jl/branch/master)|[![License](https://img.shields.io/badge/license-MIT-orange.svg?style=flat-square)](https://github.com/compbiocore/VariantVisualization.jl/blob/clean-up/LICENSE.md)|[![Coverage Status](https://coveralls.io/repos/github/compbiocore/VariantVisualization.jl/badge.svg?branch=master)](https://coveralls.io/github/compbiocore/VariantVisualization.jl?branch=master)|[![Docs](https://img.shields.io/badge/docs-stable-blue.svg?style=flat-square)](https://compbiocore.github.io/VariantVisualization.jl/stable) [![Docs](https://img.shields.io/badge/docs-latest-blue.svg?style=flat-square)](https://compbiocore.github.io/VariantVisualization.jl/latest) | ![Lifecycle](https://img.shields.io/badge/lifecycle-active-green.svg?style=flat-square) |
 
 ## Overview
 
@@ -15,7 +15,11 @@ VariantVisualization.jl is a package we built specifically to power the genetics
 
 To use VIVA, you must download the Julia programming language version >=1.0 and install the VariantVisualization.jl Julia package as well as the VIVA script. 
 
-## Getting Started: *Installation*
+## Getting Started: 
+
+Note: Once you have set up VIVA, you can quickly run the command line tool [examples](https://compbiocore.github.io/VariantVisualization.jl/stable/examples/) found in the documentation.
+
+*Installation*
 
 ### Supported Operating Systems:
 
@@ -34,7 +38,7 @@ Windows 10, Windows 7
 	b. run `Pkg.clone("https://github.com/compbiocore/VariantVisualization.jl")`
 	c. run `Pkg.instantiate()`
 2. Download the [VIVA](https://github.com/compbiocore/VariantVisualization.jl/blob/master/viva) tool script and save it to a working directory for your analysis.
-3. Navigate to your working directory and follow the [VIVA manual](https://compbiocore.github.io/VariantVisualization.jl/latest/) to generate your plots.
+3. Navigate to your working directory and follow the [VIVA manual](https://compbiocore.github.io/VariantVisualization.jl/stable/) to generate your plots.
 
 ### Jupyter Notebook
 
