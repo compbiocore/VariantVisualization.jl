@@ -163,6 +163,7 @@ end
 =#
 
 if parsed_args["x_axis_labels"] == true
+    println("test2N")
     x_axis_label_option = true
 else
     x_axis_label_option = false
@@ -439,6 +440,8 @@ if parsed_args["heatmap"] == "genotype,read_depth" || parsed_args["heatmap"] == 
 
             gt_num_array,col_selectedcolumns = select_columns(parsed_args["select_samples"], gt_num_array, sample_names)
             sample_names=col_selectedcolumns
+
+            println(sample_names)
 
         elseif parsed_args["select_samples"] != nothing && length(parsed_args["group_samples"]) == 2
             println("Can not select samples with phenotype matrix provided. Please include same sample ids in phenotype matrix as in list of sample names to select.")
