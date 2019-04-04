@@ -2,7 +2,7 @@
 
 # Getting Started
 
-### *Command Line Tool and Jupyter Notebook*
+# *VIVA Command Line Tool and Jupyter Notebook*
 
 ## Description
 
