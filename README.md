@@ -4,7 +4,7 @@
 
 
 | MacOS / Linux | Windows | License | Test Coverage | Documentation | Lifecycle |
-| --- | ---- | ------ | ------ | ---- |
+| --- | ---- | ------ | ------ | ---- | ---- |
 |[![Travis](https://img.shields.io/travis/compbiocore/VariantVisualization.jl/master.svg?style=flat-square)](https://travis-ci.org/compbiocore/VariantVisualization.jl)|[![Build status](https://ci.appveyor.com/api/projects/status/67hyn6rckulwr2dj/branch/master?svg=true)](https://ci.appveyor.com/project/fernandogelin/variantvisualization-jl/branch/master)|[![License](https://img.shields.io/badge/license-MIT-orange.svg?style=flat-square)](https://github.com/compbiocore/VariantVisualization.jl/blob/clean-up/LICENSE.md)|[![Coverage Status](https://coveralls.io/repos/github/compbiocore/VariantVisualization.jl/badge.svg?branch=master)](https://coveralls.io/github/compbiocore/VariantVisualization.jl?branch=master)|[![Docs](https://img.shields.io/badge/docs-stable-blue.svg?style=flat-square)](https://compbiocore.github.io/VariantVisualization.jl/stable) [![Docs](https://img.shields.io/badge/docs-latest-blue.svg?style=flat-square)](https://compbiocore.github.io/VariantVisualization.jl/latest) | ![Lifecycle](https://img.shields.io/badge/lifecycle-active-green.svg?style=flat-square) |
 
 ## Overview
@@ -19,7 +19,7 @@ To use VIVA, you must download the Julia programming language version >=1.0 and 
 
 Note: Once you have set up VIVA, you can quickly run the command line tool [examples](https://compbiocore.github.io/VariantVisualization.jl/stable/examples/) found in the documentation.
 
-*Installation*
+## *Installation*
 
 ### Supported Operating Systems:
 
@@ -63,7 +63,7 @@ using Pkg
 Pkg.clone("https://github.com/compbiocore/VariantVisualization.jl")
 ```
 
-### *For Developers*
+### For Developers
 
 VIVA Jupyter notebook and the VIVA the command line tool are built with functions contained in our VariantVisualization.jl package.
 
