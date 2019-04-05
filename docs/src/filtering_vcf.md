@@ -1,6 +1,6 @@
 #Variant Record and Sample Selection
 
-##General notes: Extracting and Reshaping VCF Data
+##General Note:s: Extracting and Reshaping VCF Data
 
 VIVA supports flexible filters for selecting variant records for visualization.
 
@@ -16,7 +16,7 @@ Specify filename of VCF file.
 
 *arguments*: Provide VCF filename (or filepath to VCF file if the file is not in the curret working directory).
 
-*note* This is the *only required argument* for VIVA. If you run with none of the other options, default options will be used. These default options are described in detail below.
+*Note*: This is the *only required argument* for VIVA. If you run with none of the other options, default options will be used. These default options are described in detail below.
 
 ```
 julia VIVA -f example.vcf [OPTIONS]
@@ -36,7 +36,7 @@ Select rows within a given genomic range.
 
 *arguments*: Specify genomic range within a single chromosome in format `chr4:20000000-30000000`
 
-*note* To visualize genomic ranges within multiple chromosomes, you may create a batch script to run VIVA multiple times using different genomic ranges.
+*Note*: To visualize genomic ranges within multiple chromosomes, you may create a batch script to run VIVA multiple times using different genomic ranges.
 
 ```
 julia VIVA -f example.vcf -r chr1:20000-30000000
@@ -105,7 +105,7 @@ Select specific samples to be extracted from the VCF for visualization.
 
 *arguments*: Provide filename or filepath to tab delimited list of sample names to include in visualization as an argument. An example of this list can be found [here]("https://github.com/compbiocore/VariantVisualization.jl/tree/master/test/test_files/select_samples_list.txt").
 
-*note* To use the sample selection feature in combination with the sample grouping feature, the sample metadata matrix must only contain the sample ids to be selected.
+*Note*: To use the sample selection feature in combination with the sample grouping feature, the sample metadata matrix must only contain the sample ids to be selected.
 
 ```
 julia VIVA -f example.vcf --select_samples select_samples_list.txt
