@@ -11,7 +11,7 @@ function jupyter_main(vcf_filename,saving_options,variant_filters,sample_selecti
     positions_list=variant_filters[3]
     group_samples=sample_selection[1]
     select_samples=sample_selection[2]
-    heatmap=plotting_options[1]
+    heatmap_options=plotting_options[1]
     read_depth_scatter_plots=plotting_options[2]
     y_axis_label_option=plotting_options[3]
     x_axis_labels=plotting_options[4]
@@ -19,6 +19,7 @@ function jupyter_main(vcf_filename,saving_options,variant_filters,sample_selecti
     save_format=saving_options[2]
     output_directory=saving_options[3]
     num_array=saving_options[4]
+    remote_option=saving_options[5]
 
     #create vcf reader object
     println("Reading $vcf_filename")
@@ -43,8 +44,6 @@ function jupyter_main(vcf_filename,saving_options,variant_filters,sample_selecti
     else
         x_axis_label_option = false
     end
-
-    println(y_axis_label_option)
 
     #check for filters and apply then show stats again
 
@@ -124,8 +123,7 @@ function jupyter_main(vcf_filename,saving_options,variant_filters,sample_selecti
     println("Finished Filtering. Total time to filter:")
     println("_______________________________________________")
 
-
-    if occursin("genotype",heatmap) && !occursin("read_depth",heatmap)
+    if occursin("genotype",heatmap_options) && !occursin("read_depth",heatmap_options)
         gt_num_array,gt_chromosome_labels = combined_all_genotype_array_functions(sub)
 
         if heatmap_title != ""
@@ -193,11 +191,11 @@ function jupyter_main(vcf_filename,saving_options,variant_filters,sample_selecti
 
         println("Saving genotype heatmap")
 
-        save_graphic(graphic,output_directory,save_ext,title)
+        save_graphic(graphic,output_directory,save_ext,title,remote_option)
 
     end
 
-    if occursin("read_depth",heatmap) && !occursin("genotype",heatmap)
+    if occursin("read_depth",heatmap_options) && !occursin("genotype",heatmap_options)
 
         dp_num_array,dp_chromosome_labels = combined_all_read_depth_array_functions(sub)
 
@@ -271,10 +269,10 @@ function jupyter_main(vcf_filename,saving_options,variant_filters,sample_selecti
 
         println("Saving read depth heatmap")
 
-        save_graphic(graphic,output_directory,save_ext,title)
+        save_graphic(graphic,output_directory,save_ext,title,remote_option)
     end
 
-    if occursin("read_depth",heatmap) && occursin("genotype",heatmap)
+    if occursin("read_depth",heatmap_options) && occursin("genotype",heatmap_options)
 
         gt_num_array,gt_chromosome_labels = combined_all_genotype_array_functions(sub)
 
@@ -344,7 +342,7 @@ function jupyter_main(vcf_filename,saving_options,variant_filters,sample_selecti
 
         println("Saving genotype heatmap")
 
-        save_graphic(graphic,output_directory,save_ext,title)
+        save_graphic(graphic,output_directory,save_ext,title,remote_option)
 
         if heatmap_title != ""
             title = "Read_Depth_$heatmap_title"
@@ -417,7 +415,7 @@ function jupyter_main(vcf_filename,saving_options,variant_filters,sample_selecti
 
         println("Saving read depth heatmap")
 
-        save_graphic(graphic,output_directory,save_ext,title)
+        save_graphic(graphic,output_directory,save_ext,title,remote_option)
 
 
     end
