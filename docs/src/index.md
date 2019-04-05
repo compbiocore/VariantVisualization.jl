@@ -41,7 +41,7 @@ To display a complete set of help instructions while using the tool, run VIVA wi
     julia VIVA -h
 ```
 
-## Default Options:
+### Default Options:
 
 By running VIVA with only a VCF filename:
 
