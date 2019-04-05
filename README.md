@@ -19,7 +19,7 @@ To use VIVA, you must download the Julia programming language version >=1.0 and 
 
 Note: Once you have set up VIVA, you can quickly run the command line tool [examples](https://compbiocore.github.io/VariantVisualization.jl/stable/examples/) found in the documentation.
 
-*Installation*
+## *Installation*
 
 ### Supported Operating Systems:
 
@@ -63,7 +63,7 @@ using Pkg
 Pkg.clone("https://github.com/compbiocore/VariantVisualization.jl")
 ```
 
-### *For Developers*
+### For Developers
 
 VIVA Jupyter notebook and the VIVA the command line tool are built with functions contained in our VariantVisualization.jl package.
 
