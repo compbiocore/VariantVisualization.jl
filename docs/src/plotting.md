@@ -1,6 +1,6 @@
 # Plotting
 
-##General notes: visualization options
+##General Notes: visualization options
 
 Here we describe VIVA options for plotting. All plots can be generated in a single command.
 
