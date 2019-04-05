@@ -358,8 +358,8 @@
     <ul class="md-nav__list" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#general-notes-extracting-and-reshaping-vcf-data" title="General notes: Extracting and Reshaping VCF Data" class="md-nav__link">
-    General notes: Extracting and Reshaping VCF Data
+  <a href="#general-notes-extracting-and-reshaping-vcf-data" title="General Note:s: Extracting and Reshaping VCF Data" class="md-nav__link">
+    General Note:s: Extracting and Reshaping VCF Data
   </a>
   
 </li>
@@ -525,8 +525,8 @@
     <ul class="md-nav__list" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#general-notes-extracting-and-reshaping-vcf-data" title="General notes: Extracting and Reshaping VCF Data" class="md-nav__link">
-    General notes: Extracting and Reshaping VCF Data
+  <a href="#general-notes-extracting-and-reshaping-vcf-data" title="General Note:s: Extracting and Reshaping VCF Data" class="md-nav__link">
+    General Note:s: Extracting and Reshaping VCF Data
   </a>
   
 </li>
@@ -639,7 +639,7 @@
                 
                 
                 <h1 id="variant-record-and-sample-selection">Variant Record and Sample Selection</h1>
-<h2 id="general-notes-extracting-and-reshaping-vcf-data">General notes: Extracting and Reshaping VCF Data</h2>
+<h2 id="general-notes-extracting-and-reshaping-vcf-data">General Note:s: Extracting and Reshaping VCF Data</h2>
 <p>VIVA supports flexible filters for selecting variant records for visualization.</p>
 <p>Additionally, the tool supports selecting and grouping samples by common traits for visualization.</p>
 <p>Grouping samples is particularly useful for exploring phenotypic and genotypic associations, displaying differential distribution of variants between groups of samples, and identifying batch effect on coverage between groups of samples in variant analysis experiments.</p>
@@ -647,7 +647,7 @@
 <p>Specify filename of VCF file.</p>
 <p><em>flags</em>: <code>--vcf_file</code>, <code>-f</code></p>
 <p><em>arguments</em>: Provide VCF filename (or filepath to VCF file if the file is not in the curret working directory).</p>
-<p><em>note</em> This is the <em>only required argument</em> for VIVA. If you run with none of the other options, default options will be used. These default options are described in detail below.</p>
+<p><em>Note</em>: This is the <em>only required argument</em> for VIVA. If you run with none of the other options, default options will be used. These default options are described in detail below.</p>
 <div class="codehilite"><pre><span></span>julia VIVA -f example.vcf [OPTIONS]
 </pre></div>
 
@@ -659,7 +659,7 @@
 <p>Select rows within a given genomic range.</p>
 <p><em>flags</em>: <code>--genomic_range</code>, <code>-r</code></p>
 <p><em>arguments</em>: Specify genomic range within a single chromosome in format <code>chr4:20000000-30000000</code></p>
-<p><em>note</em> To visualize genomic ranges within multiple chromosomes, you may create a batch script to run VIVA multiple times using different genomic ranges.</p>
+<p><em>Note</em>: To visualize genomic ranges within multiple chromosomes, you may create a batch script to run VIVA multiple times using different genomic ranges.</p>
 <div class="codehilite"><pre><span></span>julia VIVA -f example.vcf -r chr1:20000-30000000
 </pre></div>
 
@@ -703,7 +703,7 @@
 <p>Select specific samples to be extracted from the VCF for visualization.</p>
 <p><em>flags</em>: <code>--select_samples</code></p>
 <p><em>arguments</em>: Provide filename or filepath to tab delimited list of sample names to include in visualization as an argument. An example of this list can be found <a href="" title="https://github.com/compbiocore/VariantVisualization.jl/tree/master/test/test_files/select_samples_list.txt">here</a>.</p>
-<p><em>note</em> To use the sample selection feature in combination with the sample grouping feature, the sample metadata matrix must only contain the sample ids to be selected.</p>
+<p><em>Note</em>: To use the sample selection feature in combination with the sample grouping feature, the sample metadata matrix must only contain the sample ids to be selected.</p>
 <div class="codehilite"><pre><span></span>julia VIVA -f example.vcf --select_samples select_samples_list.txt
 </pre></div>
                 
