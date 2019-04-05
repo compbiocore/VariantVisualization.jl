@@ -11,7 +11,7 @@ Running VIVA with no options produces heatmaps of genotype and read depth values
 ```
 julia VIVA -f test_4X_191.vcf -t Default_Options -s png
 ```
-
+![VIVA Logo](assets/VIVA_logo.png)
 ![Default Genotype Heatmap](assets/Genotype_Default_Options.png)
 
 ![Default Read Depth Heatmap](assets/Read_Depth_Default_Options.png)
@@ -42,6 +42,6 @@ Generate heatmaps of genotype and read depth values of variants selected within 
 julia VIVA -f test_4X_191.vcf -t Genomic_Range_Chr4:3076150-3076390 -r chr4:3076150-3076390 -y positions --select_samples select_samples_list.txt -s png
 ```
 
-![Genomic Range Genotype Heatmap](assets/Genotype_Genomic_Range_Chr4/3076150-3076390.png)
-![Genomic Range Read Depth Heatmap](assets/Read_Depth_Genomic_Range_Chr4/3076150-3076390.png)
+![Genomic Range Genotype Heatmap](assets/Genotype_Genomic_Range_Chr4:3076150-3076390.png)
+![Genomic Range Read Depth Heatmap](assets/Read_Depth_Genomic_Range_Chr4:3076150-3076390.png)
 

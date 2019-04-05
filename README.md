@@ -17,7 +17,7 @@ To use VIVA, you must download the Julia programming language version >=1.0 and 
 
 ## Getting Started: 
 
-Note: Once you have set up VIVA, you can quickly run the command line tool [examples](https://compbiocore.github.io/VariantVisualization.jl/stable/examples/) found in the documentation.
+Note: Once you have set up VIVA, you can quickly run the command line tool [EXAMPLES](https://github.com/compbiocore/VariantVisualization.jl/blob/master/docs/src/examples.md) found in the documentation.
 
 ## *Installation*
 
