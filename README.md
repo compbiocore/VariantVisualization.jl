@@ -31,6 +31,10 @@ Sierra, High Sierra, and Mojave.
 
 Windows 10, Windows 7
 
+#### Linux
+
+*Note*: When installing VariantVisualization.jl and running VIVA on Linux systems on remote compute clusters, you may need to load the OpenGl module in addition to loading the Julia module.
+
 ### Command Line Tool
 
 1. Add VariantVisualization.jl using Pkg in the Julia REPL:
