@@ -11,7 +11,11 @@ Sierra, High Sierra, and Mojave.
 
 #### Windows
 
-Windows 10, Windows 7
+Windows 10, Windows 7.
+
+#### Linux
+
+*Note*: To run on remote compute clusters, you may need to load opengl module along with julia/1.1.0.
 
 ### Command Line Tool
 
