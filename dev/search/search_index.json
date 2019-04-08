@@ -47,7 +47,7 @@
         }, 
         {
             "location": "/installation/", 
-            "text": "Installation\n\n\n\n\nInstall Julia v1.1.0\n\n\nDownload \nJulia\n\n\n\n\nSupported Operating Systems:\n\n\n\n\nmacOS\n\n\nSierra, High Sierra, and Mojave.\n\n\n\n\nWindows\n\n\nWindows 10, Windows 7\n\n\n\n\nCommand Line Tool\n\n\n\n\nAdd VariantVisualization.jl using Pkg in the Julia REPL:\n\n\n\n\na. run `using Pkg`\nb. run `Pkg.clone(\nhttps://github.com/compbiocore/VariantVisualization.jl\n)`\nc. run `Pkg.instantiate()`\n\n\n\n\n\n\n\nDownload the \nVIVA\n tool script and save it to a working directory for your analysis.\n\n\nNavigate to your working directory and follow the \nVIVA manual\n to generate your plots.\n\n\n\n\n\n\nJupyter Notebook\n\n\n\n\nInstall Jupyter\n\n\nDownload the \nVIVA Jupyter Notebook\n.\n\n\nFollow the in-notebook instructions to generate your plots.\n\n\n\n\n\n\nLatest Features\n\n\nTo stay up to date with cutting edge development features install VariantVisualization.jl from the Master branch. \n\n\nUsing git from the command line:\n\n\ngit clone https://github.com/compbiocore/VariantVisualization.jl\n\n\n\n\n\nor from the Julia REPL (useful if using the PowerShell and don't have git installed):\n\n\nusing\n \nPkg\n\n\nPkg\n.\nclone\n(\nhttps://github.com/compbiocore/VariantVisualization.jl\n)\n\n\n\n\n\n\n\n\nFor Developers\n\n\nVIVA Jupyter notebook and the VIVA the command line tool are built with functions contained in our VariantVisualization.jl package.\n\n\nDevelopers may contribute to these open source tools by using \nfunctions contained within VariantVisualization.jl\n which are carefully documented with docstrings.\n\n\nWe have included in-line comments within the code for the \nVIVA command line tool\n.\n\n\nThe \nVIVA Jupyter notebook\n is powered by a \nmain function\n which takes arguments defined by the user in the notebook. We welcome users to post in issues to request a new feature or bug fix.", 
+            "text": "Installation\n\n\n\n\nInstall Julia v1.1.0\n\n\nDownload \nJulia\n\n\n\n\nSupported Operating Systems:\n\n\n\n\nmacOS\n\n\nSierra, High Sierra, and Mojave.\n\n\n\n\nWindows\n\n\nWindows 10, Windows 7.\n\n\n\n\nLinux\n\n\nNote\n: To run on remote compute clusters, you may need to load opengl module along with julia/1.1.0.\n\n\n\n\nCommand Line Tool\n\n\n\n\nAdd VariantVisualization.jl using Pkg in the Julia REPL:\n\n\n\n\na. run `using Pkg`\nb. run `Pkg.clone(\nhttps://github.com/compbiocore/VariantVisualization.jl\n)`\nc. run `Pkg.instantiate()`\n\n\n\n\n\n\n\nDownload the \nVIVA\n tool script and save it to a working directory for your analysis.\n\n\nNavigate to your working directory and follow the \nVIVA manual\n to generate your plots.\n\n\n\n\n\n\nJupyter Notebook\n\n\n\n\nInstall Jupyter\n\n\nDownload the \nVIVA Jupyter Notebook\n.\n\n\nFollow the in-notebook instructions to generate your plots.\n\n\n\n\n\n\nLatest Features\n\n\nTo stay up to date with cutting edge development features install VariantVisualization.jl from the Master branch. \n\n\nUsing git from the command line:\n\n\ngit clone https://github.com/compbiocore/VariantVisualization.jl\n\n\n\n\n\nor from the Julia REPL (useful if using the PowerShell and don't have git installed):\n\n\nusing\n \nPkg\n\n\nPkg\n.\nclone\n(\nhttps://github.com/compbiocore/VariantVisualization.jl\n)\n\n\n\n\n\n\n\n\nFor Developers\n\n\nVIVA Jupyter notebook and the VIVA the command line tool are built with functions contained in our VariantVisualization.jl package.\n\n\nDevelopers may contribute to these open source tools by using \nfunctions contained within VariantVisualization.jl\n which are carefully documented with docstrings.\n\n\nWe have included in-line comments within the code for the \nVIVA command line tool\n.\n\n\nThe \nVIVA Jupyter notebook\n is powered by a \nmain function\n which takes arguments defined by the user in the notebook. We welcome users to post in issues to request a new feature or bug fix.", 
             "title": "Installation and Setup"
         }, 
         {
@@ -72,8 +72,13 @@
         }, 
         {
             "location": "/installation/#windows", 
-            "text": "Windows 10, Windows 7", 
+            "text": "Windows 10, Windows 7.", 
             "title": "Windows"
+        }, 
+        {
+            "location": "/installation/#linux", 
+            "text": "Note : To run on remote compute clusters, you may need to load opengl module along with julia/1.1.0.", 
+            "title": "Linux"
         }, 
         {
             "location": "/installation/#command-line-tool", 
