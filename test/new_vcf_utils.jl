@@ -248,7 +248,7 @@ dp_num_array,dp_chromosome_labels=combined_all_read_depth_array_functions(sub)
         dp_num_array=select_columns("test_files/select_samples_list.txt", dp_num_array, sample_names)
         #println("select_columns dp_num_array type is $(typeof(dp_num_array))")
         #println("select_columns dp_num_array size is $(size(dp_num_array,1))")
-        @test typeof(dp_num_array) == Tuple{Array{Int64,2},Array{Any,1}}
+        @test typeof(dp_num_array) == Tuple{Array{Int64,2},Array{Any,2}}
         @test size(dp_num_array,1) == 2
         end
 

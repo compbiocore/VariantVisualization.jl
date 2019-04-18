@@ -273,6 +273,8 @@ if parsed_args["heatmap"] == "genotype"
                                           sample_names)
             sample_names = col_selectedcolumns
 
+
+
         elseif parsed_args["select_samples"] != nothing && length(parsed_args["group_samples"]) == 2
             println("Can not select samples with phenotype matrix provided. Please include same sample ids in phenotype matrix as in list of sample names to select.")
 
@@ -342,6 +344,8 @@ if parsed_args["heatmap"] == "read_depth"
             println("Selecting samples listed in $(parsed_args["select_samples"])")
             dp_num_array,col_selectedcolumns = select_columns(parsed_args["select_samples"], dp_num_array, sample_names)
             sample_names=col_selectedcolumns
+
+
         elseif parsed_args["select_samples"] != nothing && length(parsed_args["group_samples"]) == 2
             println("Can not select samples with phenotype matrix provided. Please include same sample ids in phenotype matrix as in list of sample names to select.")
         end
@@ -369,6 +373,8 @@ if parsed_args["heatmap"] == "read_depth"
             println("Selecting samples listed in $(parsed_args["select_samples"])")
 
             dp_num_array,col_selectedcolumns = select_columns(parsed_args["select_samples"], dp_num_array, sample_names)
+            sample_names=col_selectedcolumns
+
 
         elseif parsed_args["select_samples"] != nothing && length(parsed_args["group_samples"]) == 2
             println("Can not select samples with phenotype matrix provided. Please include same sample ids in phenotype matrix as in list of sample names to select.")
@@ -444,8 +450,7 @@ if parsed_args["heatmap"] == "genotype,read_depth" || parsed_args["heatmap"] == 
             println("Can not select samples with phenotype matrix provided. Please include same sample ids in phenotype matrix as in list of sample names to select.")
 
         end
-
-        graphic = VariantVisualization.genotype_heatmap2(gt_num_array,title,chrom_label_info,sample_names,chr_pos_tuple_list,y_axis_label_option,x_axis_label_option)
+                graphic = VariantVisualization.genotype_heatmap2(gt_num_array,title,chrom_label_info,sample_names,chr_pos_tuple_list,y_axis_label_option,x_axis_label_option)
     end
 
     println("Saving genotype heatmap")
