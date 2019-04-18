@@ -36,7 +36,7 @@ function genotype_heatmap2(input,title,chrom_label_info,sample_names,chr_pos_tup
                    layout = Layout(
                                    title = "$title_no_underscores",
                                    xaxis=attr(title="Sample ID", showgrid=false, zeroline=false, tickvals=sample_name_indices,
-                                   ticktext=sample_names, tickfont_size=5, tickangle=45,showticklabels=true),
+                                   ticktext=sample_names, tickangle=45,showticklabels=true),
                                    yaxis=attr(title="Genomic Location", zeroline=false, tickvals=chrom_label_indices,
                                    ticktext=chrom_labels,tickfont_size=font_size,hovermode=true,automargin=true)
                    )
@@ -49,7 +49,7 @@ function genotype_heatmap2(input,title,chrom_label_info,sample_names,chr_pos_tup
                    layout = Layout(
                                    title = "$title_no_underscores",
                                    xaxis=attr(title="Sample ID", showgrid=false, zeroline=false, tickvals=sample_name_indices,
-                                   ticktext=sample_names, tickfont_size=5, tickangle=45, showticklabels=x_axis_label_option),
+                                   ticktext=sample_names, tickangle=45, showticklabels=x_axis_label_option),
                                    yaxis=attr(title="Genomic Location", zeroline=false, tickvals=chr_pos_tuple_indices,
                                    ticktext=chr_pos_tuple_list,tickfont_size=font_size,hovermode=true,automargin=true)
                    )
@@ -62,7 +62,7 @@ function genotype_heatmap2(input,title,chrom_label_info,sample_names,chr_pos_tup
                    layout = Layout(
                                    title = "$title_no_underscores",
                                    xaxis=attr(title="Sample ID", showgrid=false, zeroline=false, tickvals=sample_name_indices,
-                                   ticktext=sample_names, tickfont_size=5, tickangle=45,showticklabels=x_axis_label_option),
+                                   ticktext=sample_names, tickangle=45,showticklabels=x_axis_label_option),
                                    yaxis=attr(title="Genomic Location", zeroline=false, tickvals=chr_pos_tuple_indices,
                                    ticktext=chr_pos_tuple_list,tickfont_size=font_size,hovermode=true,automargin=true,showticklabels=false)
                    )
@@ -192,7 +192,7 @@ h_line_index_list = generate_hline_indices(number_rows,input)
                           title = "$title_no_underscores",
 
                           xaxis=attr(title="Sample ID (Grouped by $(group1_label) | $(group2_label))", showgrid=false, zeroline=false, tickvals=sample_name_indices,
-                          ticktext=id_list, tickfont_size=5, tickangle=45,showticklabels=x_axis_label_option),
+                          ticktext=id_list, tickangle=45,showticklabels=x_axis_label_option),
 
                           yaxis=attr(title="Genomic Location", zeroline=false, tickvals=chrom_label_indices,
                           ticktext=chrom_labels,tickfont_size=font_size,hovermode=true,automargin=true),
@@ -208,7 +208,7 @@ h_line_index_list = generate_hline_indices(number_rows,input)
                           title = "$title_no_underscores",
 
                           xaxis=attr(title="Sample ID (Grouped by $(group1_label) | $(group2_label))", showgrid=false, zeroline=false, tickvals=sample_name_indices,
-                          ticktext=id_list, tickfont_size=5, tickangle=45,showticklabels=x_axis_label_option),
+                          ticktext=id_list, tickangle=45,showticklabels=x_axis_label_option),
 
                           yaxis=attr(title="Genomic Location", zeroline=false, tickvals=chr_pos_tuple_indices,
                           ticktext=chr_pos_tuple_list,tickfont_size=font_size,hovermode=true,automargin=true),
@@ -224,7 +224,7 @@ h_line_index_list = generate_hline_indices(number_rows,input)
         layout = Layout(
                         title = "$title_no_underscores",
                         xaxis=attr(title="Sample ID (Grouped by $(group1_label) | $(group2_label))", showgrid=false, zeroline=false, tickvals=sample_name_indices,
-                        ticktext=id_list, tickfont_size=5, tickangle=45,showticklabels=x_axis_label_option),
+                        ticktext=id_list, tickangle=45,showticklabels=x_axis_label_option),
 
                         yaxis=attr(title="Genomic Location", zeroline=false, tickvals=chr_pos_tuple_indices,
                         ticktext=chr_pos_tuple_list,tickfont_size=font_size,hovermode=true,automargin=true,showticklabels=false),
@@ -281,7 +281,7 @@ function dp_heatmap2(input, title, chrom_label_info, sample_names,chr_pos_tuple_
            layout = Layout(
                            title = "$title_no_underscores",
                            xaxis=attr(title="Sample ID", showgrid=false, zeroline=false, tickvals=sample_name_indices,
-                           ticktext=sample_names, tickfont_size=5, tickangle=45,showticklabels=x_axis_label_option),
+                           ticktext=sample_names, tickangle=45,showticklabels=x_axis_label_option),
                            yaxis=attr(title="Genomic Location", zeroline=false, tickvals=chrom_label_indices,
                            ticktext=chrom_labels,tickfont_size=font_size,hovermode=true,automargin=true)
            )
@@ -294,7 +294,7 @@ function dp_heatmap2(input, title, chrom_label_info, sample_names,chr_pos_tuple_
            layout = Layout(
                            title = "$title_no_underscores",
                            xaxis=attr(title="Sample ID", showgrid=false, zeroline=false, tickvals=sample_name_indices,
-                           ticktext=sample_names, tickfont_size=5, tickangle=45,showticklabels=x_axis_label_option),
+                           ticktext=sample_names, tickangle=45,showticklabels=x_axis_label_option),
                            yaxis=attr(title="Genomic Location", zeroline=false, tickvals=chr_pos_tuple_indices,
                            ticktext=chr_pos_tuple_list,tickfont_size=font_size,hovermode=true,automargin=true)
            )
@@ -307,7 +307,7 @@ function dp_heatmap2(input, title, chrom_label_info, sample_names,chr_pos_tuple_
            layout = Layout(
                            title = "$title_no_underscores",
                            xaxis=attr(title="Sample ID", showgrid=false, zeroline=false, tickvals=sample_name_indices,
-                           ticktext=sample_names, tickfont_size=5, tickangle=45,showticklabels=x_axis_label_option),
+                           ticktext=sample_names, tickangle=45,showticklabels=x_axis_label_option),
                            yaxis=attr(title="Genomic Location", zeroline=false, tickvals=chr_pos_tuple_indices,
                            ticktext=chr_pos_tuple_list,tickfont_size=font_size,hovermode=true,automargin=true,showticklabels=false)
            )
@@ -383,7 +383,7 @@ if y_axis_label_option == "chromosomes"
 
                     xaxis=attr(title="Sample ID (Grouped by $(group1_label) | $(group2_label))",
                     showgrid=false, zeroline=false, tickvals=sample_name_indices,
-                    ticktext=id_list, tickfont_size=5, tickangle=45,showticklabels=x_axis_label_option),
+                    ticktext=id_list, tickangle=45,showticklabels=x_axis_label_option),
 
                     yaxis=attr(title="Genomic Location", zeroline=false,
                     tickvals=chrom_label_indices,ticktext=chrom_labels,
@@ -402,7 +402,7 @@ elseif y_axis_label_option == "positions"
 
                     xaxis=attr(title="Sample ID (Grouped by $(group1_label) | $(group2_label))",
                     showgrid=false, zeroline=false, tickvals=sample_name_indices,
-                    ticktext=id_list, tickfont_size=5, tickangle=45,showticklabels=x_axis_label_option),
+                    ticktext=id_list, tickangle=45,showticklabels=x_axis_label_option),
 
                     yaxis=attr(title="Genomic Location", zeroline=false,
                     tickvals=chr_pos_tuple_indices,
@@ -421,7 +421,7 @@ elseif y_axis_label_option == "hover_positions"
   layout = Layout(
                   title = "$title_no_underscores",
                   xaxis=attr(title="Sample ID (Grouped by $(group1_label) | $(group2_label))", showgrid=false, zeroline=false, tickvals=sample_name_indices,
-                  ticktext=id_list, tickfont_size=5, tickangle=45,showticklabels=x_axis_label_option),
+                  ticktext=id_list, tickangle=45,showticklabels=x_axis_label_option),
 
                   yaxis=attr(title="Genomic Location", zeroline=false, tickvals=chr_pos_tuple_indices,
                   ticktext=chr_pos_tuple_list,tickfont_size=font_size,hovermode=true,automargin=true,showticklabels=false),

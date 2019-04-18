@@ -839,7 +839,9 @@ function select_columns(filename_sample_list::AbstractString, num_array::Array{I
 
     selected_samples_num_array = Matrix(df_selected_samples_num_array)
 
-    return selected_samples_num_array,col_selectedcolumns
+    sample_names=permutedims(col_selectedcolumns)
+
+    return selected_samples_num_array,sample_names
 end
 
 
