@@ -23,7 +23,7 @@ Note: Once you have set up VIVA, you can quickly run the command line tool [EXAM
 
 ### Supported Operating Systems:
 
-macOS ( Sierra, High Sierra, and Mojave ), Windows, and Linux
+macOS ( Sierra, High Sierra, and Mojave ), Windows, and Linux.
 
 Expected Time for Installation: Installation time depends on your network bandwidth, but should take less than 10 minutes for VIVA installation to install all dependency packages. Installing and using Julia packages for the first time takes longer than when using them in subsequent sessions. 
 
