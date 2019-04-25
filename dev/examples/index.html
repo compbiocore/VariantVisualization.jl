@@ -495,15 +495,15 @@
 <p>To run examples:</p>
 <ol>
 <li>Install Julia and the VariantVisualization.jl package</li>
-<li>Download the five test files found <a href="https://github.com/compbiocore/VariantVisualization.jl/tree/master/test/test_files">here</a> and put them into a working directory with the VIVA script.</li>
+<li>Download the five test files found <a href="https://github.com/compbiocore/VariantVisualization.jl/tree/master/test/test_files">here</a> and put them into a working directory with the viva script.</li>
 <li>Open the command line (Terminal or Powershell), copy the provided commands into the command line prompt, and press enter.</li>
-<li>Your first VIVA run will take longer than usual (several minutes) because of the way Julia compiles packages. All subsequent runs will be much faster. Each example should take 30-50 seconds to run and you should see the same outputs as those below each demo.</li>
+<li>Your first viva run will take longer than usual (several minutes) because of the way Julia compiles packages. All subsequent runs will be much faster. Each example should take 30-50 seconds to run and you should see the same outputs as those below each demo.</li>
 </ol>
 <p>We encourage you to also run these examples without the flag <code>-s png</code> to save and view interactive HTML graphics with cursor hovertext, zooming, panning, and screen capture features. View HTML graphics in your browser by opening the HTML file.</p>
 <p><a id='Default-Options-1'></a></p>
 <h2 id="default-options">Default Options</h2>
-<p>Running VIVA with no options produces heatmaps of genotype and read depth values for all samples and variant positions in the VCF file with default options. You can read about VIVA's default settings <a href="https://compbiocore.github.io/VariantVisualization.jl/stable/#default-options">here</a></p>
-<div class="codehilite"><pre><span></span>julia VIVA -f test_4X_191.vcf -t Default_Options -s png
+<p>Running viva with no options produces heatmaps of genotype and read depth values for all samples and variant positions in the VCF file with default options. You can read about viva's default settings <a href="https://compbiocore.github.io/VariantVisualization.jl/stable/#default-options">here</a></p>
+<div class="codehilite"><pre><span></span>julia viva -f test_4X_191.vcf -t Default_Options -s png
 </pre></div>
 
 
@@ -513,7 +513,7 @@
 <h2 id="grouping-samples-by-metadata-traits-and-generating-all-four-plots">Grouping Samples by Metadata Traits and Generating all Four Plots</h2>
 <p>Group samples by sequencing facility and generate heatmaps of genotype and read depth values as well as scatter plots of average read depth for both all selected samples and all selected variant positions. </p>
 <p>You can find grouping options <a href="https://compbiocore.github.io/VariantVisualization.jl/stable/filtering_vcf/#selecting-and-grouping-samples">here</a>.</p>
-<div class="codehilite"><pre><span></span>julia VIVA -f test_4X_191.vcf -t Grouped_by_Sequencing_Site -g sample_metadata_matrix.csv seq_site_1,seq_site_2 --avg_dp variant,sample -s png
+<div class="codehilite"><pre><span></span>julia viva -f test_4X_191.vcf -t Grouped_by_Sequencing_Site -g sample_metadata_matrix.csv seq_site_1,seq_site_2 --avg_dp variant,sample -s png
 </pre></div>
 
 
@@ -523,11 +523,11 @@
 <p><img alt="Grouped Sample Average Read Depth Scatter Plot" src="../assets/Average_Sample_Read_Depth_test_4X_191.vcf.png" /></p>
 <h2 id="genomic-range-and-samples-selection-genotype-and-read-depth-heatmaps-with-variant-position-labels">Genomic Range and Samples Selection - Genotype and Read Depth Heatmaps with Variant Position Labels</h2>
 <p>Generate heatmaps of genotype and read depth values of variants selected within a genomic range, in this case, chromosome 4, nucleotides 200000-500000, with y-axis variant position labels.</p>
-<div class="codehilite"><pre><span></span>julia VIVA -f test_4X_191.vcf -t Genomic_Range -r chr4:3076150-3076390 -y positions --select_samples select_samples_list.txt -s png
+<div class="codehilite"><pre><span></span>julia viva -f test_4X_191.vcf -t Genomic_Range -r chr4:3076150-3076390 -y positions --select_samples select_samples_list.txt -s png
 </pre></div>
 
 
-<p>docs/src/assets/Read<em>Depth</em>Genomic*Range.png <img alt="Genomic Range Genotype Heatmap" src="../assets/Genotype*Genomic*Range.png" /> <img alt="Genomic Range Read Depth Heatmap" src="../assets/Read*Depth*Genomic*Range.png" /></p>
+<p><img alt="Genomic Range Genotype Heatmap" src="../assets/Genotype_Genomic_Range.png" /> <img alt="Genomic Range Read Depth Heatmap" src="../assets/Read_Depth_Genomic_Range.png" /></p>
                 
                   
                 
