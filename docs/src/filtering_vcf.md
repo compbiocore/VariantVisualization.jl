@@ -87,7 +87,7 @@ This is broadly useful for purposes such as exploring and presenting **phenotypi
 Sample metadata matrix is a user generated input file and should be formatted in a table of sample ids and binary metadata traits (such as case,control or treatment1,treatment2 or seq_site_1,seq_site_2). An example of formatting for this table can be found [here]
 ("https://github.com/compbiocore/VariantVisualization.jl/tree/master/test/test_files/sample_metadata_matrix.csv"). 
 
-Sample ids must match those found in the VCF file. Additionally, if the user would like to use the --select_samples option, sample ids must match the sample selection list.
+Sample ids must match those found in the VCF file but do not need to be in the same order as they appear in the VCF header. Additionally, if the user would like to use the --select_samples option, sample ids must match the sample selection list.
 
 Metadata traits are stored as rownames in the first column of the table and should be binary traits seperated by a comma (like "case,control"). For each metadata trait, samples should be labeled with "1" or "2" to correspond with the first and second group of the trait respectively (e.g. 1 = case and 2 = control).
 
