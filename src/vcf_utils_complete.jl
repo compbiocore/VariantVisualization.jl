@@ -640,7 +640,7 @@ function define_geno_dict()
 
     hetero_variant = ["0/1" "0/2" "0/3" "0/4" "0/5" "0/6" "1/0" "2/0" "3/0" "4/0" "5/0" "6/0" "0|1" "0|2" "0|3" "0|4" "0|5" "0|6" "1|0" "2|0" "3|0" "4|0" "5|0" "6|0" "1/0" "2/0" "3/0" "4/0" "5/0" "6/0" "1|0" "2|0" "3|0" "4|0" "5|0" "6|0"]
 
-    no_data = ["./." ".|."]
+    no_data = ["./." ".|." "."]
 
     ref = ["0/0" "0|0"]
 
@@ -1238,7 +1238,7 @@ function add_pheno_matrix_to_gt_data_for_plotting(gt_num_array,pheno_matrix,trai
             resized_pheno_matrix=vcat(resized_pheno_matrix,trait_row)
             trait_label_array=vcat(trait_label_array,trait)
         end
-        
+
     end
 
     trait_label_indices = findfirst.(map(a -> (y -> isequal(a, y)),
