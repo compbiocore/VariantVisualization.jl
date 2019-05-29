@@ -1234,10 +1234,11 @@ function add_pheno_matrix_to_gt_data_for_plotting(gt_num_array,pheno_matrix,trai
 
         while i <= (pheno_row_multiplyer+1)
             i=i+1
-            #println(i)
+
             resized_pheno_matrix=vcat(resized_pheno_matrix,trait_row)
             trait_label_array=vcat(trait_label_array,trait)
         end
+        
     end
 
     trait_label_indices = findfirst.(map(a -> (y -> isequal(a, y)),
