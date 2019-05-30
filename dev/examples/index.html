@@ -503,7 +503,7 @@
 <p><a id='Default-Options-1'></a></p>
 <h2 id="default-options">Default Options</h2>
 <p>Running viva with no options produces heatmaps of genotype and read depth values for all samples and variant positions in the VCF file with default options. You can read about viva's default settings <a href="https://compbiocore.github.io/VariantVisualization.jl/stable/#default-options">here</a></p>
-<div class="codehilite"><pre><span></span>julia viva -f test_4X_191.vcf -t Default_Options -s png
+<div class="codehilite"><pre><span></span><span class="n">julia</span> <span class="n">viva</span> <span class="o">-</span><span class="n">f</span> <span class="n">test_4X_191</span><span class="p">.</span><span class="n">vcf</span> <span class="o">-</span><span class="n">t</span> <span class="n">Default_Options</span> <span class="o">-</span><span class="n">s</span> <span class="n">png</span>
 </pre></div>
 
 
@@ -513,7 +513,7 @@
 <h2 id="grouping-samples-by-metadata-traits-and-generating-all-four-plots">Grouping Samples by Metadata Traits and Generating all Four Plots</h2>
 <p>Group samples by sequencing facility and generate heatmaps of genotype and read depth values as well as scatter plots of average read depth for both all selected samples and all selected variant positions. </p>
 <p>You can find grouping options <a href="https://compbiocore.github.io/VariantVisualization.jl/stable/filtering_vcf/#selecting-and-grouping-samples">here</a>.</p>
-<div class="codehilite"><pre><span></span>julia viva -f test_4X_191.vcf -t Grouped_by_Sequencing_Site -g sample_metadata_matrix.csv seq_site_1,seq_site_2 --avg_dp variant,sample -s png
+<div class="codehilite"><pre><span></span><span class="n">julia</span> <span class="n">viva</span> <span class="o">-</span><span class="n">f</span> <span class="n">test_4X_191</span><span class="p">.</span><span class="n">vcf</span> <span class="o">-</span><span class="n">t</span> <span class="n">Grouped_by_Sequencing_Site</span> <span class="o">-</span><span class="k">g</span> <span class="n">sample_metadata_matrix</span><span class="p">.</span><span class="n">csv</span> <span class="n">seq_site_1</span><span class="p">,</span><span class="n">seq_site_2</span> <span class="c1">--avg_dp variant,sample -s png</span>
 </pre></div>
 
 
@@ -521,9 +521,10 @@
 <p><img alt="Grouped Read Depth Heatmap" src="../assets/Genotype_Grouped_by_Sequencing_Site.png" /></p>
 <p><img alt="Grouped Variant Average Read Depth Scatter Plot" src="../assets/Average_Variant_Read_Depthtest_4X_191.vcf.png" /></p>
 <p><img alt="Grouped Sample Average Read Depth Scatter Plot" src="../assets/Average_Sample_Read_Depth_test_4X_191.vcf.png" /></p>
+<p><a id='Genomic-Range-and-Samples-Selection-Genotype-and-Read-Depth-Heatmaps-with-Variant-Position-Labels-1'></a></p>
 <h2 id="genomic-range-and-samples-selection-genotype-and-read-depth-heatmaps-with-variant-position-labels">Genomic Range and Samples Selection - Genotype and Read Depth Heatmaps with Variant Position Labels</h2>
 <p>Generate heatmaps of genotype and read depth values of variants selected within a genomic range, in this case, chromosome 4, nucleotides 200000-500000, with y-axis variant position labels.</p>
-<div class="codehilite"><pre><span></span>julia viva -f test_4X_191.vcf -t Genomic_Range -r chr4:3076150-3076390 -y positions --select_samples select_samples_list.txt -s png
+<div class="codehilite"><pre><span></span><span class="n">julia</span> <span class="n">viva</span> <span class="o">-</span><span class="n">f</span> <span class="n">test_4X_191</span><span class="p">.</span><span class="n">vcf</span> <span class="o">-</span><span class="n">t</span> <span class="n">Genomic_Range</span> <span class="o">-</span><span class="n">r</span> <span class="n">chr4</span><span class="p">:</span><span class="mi">3076150</span><span class="o">-</span><span class="mi">3076390</span> <span class="o">-</span><span class="n">y</span> <span class="n">positions</span> <span class="c1">--select_samples select_samples_list.txt -s png</span>
 </pre></div>
 
 

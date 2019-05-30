@@ -602,7 +602,7 @@
 <p><em>flags</em>: <code>--heatmap</code>,<code>-m</code></p>
 <p><em>arguments</em>: <code>genotype</code>, <code>read_depth</code>, or <code>genotype,read_depth</code></p>
 <p>default: <code>genotype,read_depth</code> (plots both)</p>
-<div class="codehilite"><pre><span></span>julia VIVA -f example.vcf -m genotype
+<div class="codehilite"><pre><span></span><span class="n">julia</span> <span class="n">VIVA</span> <span class="o">-</span><span class="n">f</span> <span class="n">example</span><span class="p">.</span><span class="n">vcf</span> <span class="o">-</span><span class="n">m</span> <span class="n">genotype</span>
 </pre></div>
 
 
@@ -612,7 +612,7 @@
 <p><em>flags</em>: <code>--avg_dp</code></p>
 <p><em>arguments</em>: <code>samples</code>, <code>variants</code>, or <code>samples,variants</code></p>
 <p>default: <code>none</code></p>
-<div class="codehilite"><pre><span></span>julia VIVA -f example.vcf --avg_dp variants
+<div class="codehilite"><pre><span></span><span class="n">julia</span> <span class="n">VIVA</span> <span class="o">-</span><span class="n">f</span> <span class="n">example</span><span class="p">.</span><span class="n">vcf</span> <span class="c1">--avg_dp variants</span>
 </pre></div>
 
 
@@ -622,7 +622,7 @@
 <p><em>flags</em>: <code>--save_format</code>, <code>-s</code>  </p>
 <p><em>arguments</em>: <code>html</code>, <code>pdf</code>, <code>svg</code>, <code>png</code>, <code>eps</code></p>
 <p>default: <code>html</code></p>
-<div class="codehilite"><pre><span></span>julia VIVA -f example.vcf --avg_dp variants
+<div class="codehilite"><pre><span></span><span class="n">julia</span> <span class="n">VIVA</span> <span class="o">-</span><span class="n">f</span> <span class="n">example</span><span class="p">.</span><span class="n">vcf</span> <span class="c1">--avg_dp variants</span>
 </pre></div>
 
 
@@ -633,7 +633,7 @@
 <p><em>flags</em>: <code>--output_directory</code>, <code>-o</code></p>
 <p><em>arguments</em>: filepath</p>
 <p>default: <code>output</code></p>
-<div class="codehilite"><pre><span></span>julia VIVA -f example.vcf -o my_output_directory
+<div class="codehilite"><pre><span></span><span class="n">julia</span> <span class="n">VIVA</span> <span class="o">-</span><span class="n">f</span> <span class="n">example</span><span class="p">.</span><span class="n">vcf</span> <span class="o">-</span><span class="n">o</span> <span class="n">my_output_directory</span>
 </pre></div>
 
 
@@ -643,7 +643,7 @@
 <p><em>flags</em>: <code>--heatmap_title</code>, <code>-t</code></p>
 <p><em>arguments</em>: title_text</p>
 <p>default: original vcf filename</p>
-<div class="codehilite"><pre><span></span>julia VIVA -f example.vcf -t your_heatmap_title
+<div class="codehilite"><pre><span></span><span class="n">julia</span> <span class="n">VIVA</span> <span class="o">-</span><span class="n">f</span> <span class="n">example</span><span class="p">.</span><span class="n">vcf</span> <span class="o">-</span><span class="n">t</span> <span class="n">your_heatmap_title</span>
 </pre></div>
 
 
@@ -654,7 +654,7 @@
 <p><em>arguments</em>: <code>chromosomes</code>, <code>positions</code>, <code>hoverlabels_only</code></p>
 <p><code>chromosomes</code> separates chromosomes by adding chromosome label on the first variant of each new chromosome.  <code>positions</code> labels every variant position (recommended only for visualizing a few variants e.g. &lt;20) <code>hoverlabels_only</code> no genomic position labels </p>
 <p>default: <code>chromosomes</code></p>
-<div class="codehilite"><pre><span></span>julia VIVA -f example.vcf `-y` `hoverlabels_only`
+<div class="codehilite"><pre><span></span><span class="n">julia</span> <span class="n">VIVA</span> <span class="o">-</span><span class="n">f</span> <span class="n">example</span><span class="p">.</span><span class="n">vcf</span> <span class="ss">`-y`</span> <span class="ss">`hoverlabels_only`</span>
 </pre></div>
 
 
@@ -664,7 +664,7 @@
 <p><em>flags</em>: <code>--x_axis_labels</code>.<code>x</code></p>
 <p><em>arguments</em>: if <code>true</code>, displays samples names labels on x-axis. if <code>false</code>, does not display x-axis sample labels.</p>
 <p>default: <code>true</code></p>
-<div class="codehilite"><pre><span></span>julia VIVA -f example.vcf `-x`
+<div class="codehilite"><pre><span></span><span class="n">julia</span> <span class="n">VIVA</span> <span class="o">-</span><span class="n">f</span> <span class="n">example</span><span class="p">.</span><span class="n">vcf</span> <span class="o">`-</span><span class="n">x</span><span class="o">`</span>
 </pre></div>
 
 
@@ -674,11 +674,11 @@
 <p>Specifically, saves numerical array of genotype or read depth values for selected variants and samples as a .csv table with genomic positions and sample names for row names and column names respectively.</p>
 <p><em>flags</em>: <code>--num_array</code>, <code>-n</code></p>
 <p><em>arguments</em>: none, this is a positional argument.</p>
-<div class="codehilite"><pre><span></span>julia VIVA -f example.vcf `-n` 
+<div class="codehilite"><pre><span></span><span class="n">julia</span> <span class="n">VIVA</span> <span class="o">-</span><span class="n">f</span> <span class="n">example</span><span class="p">.</span><span class="n">vcf</span> <span class="o">`-</span><span class="n">n</span><span class="o">`</span> 
 </pre></div>
 
 
-<div class="codehilite"><pre><span></span>julia VIVA -f example.vcf `-x`
+<div class="codehilite"><pre><span></span><span class="n">julia</span> <span class="n">VIVA</span> <span class="o">-</span><span class="n">f</span> <span class="n">example</span><span class="p">.</span><span class="n">vcf</span> <span class="o">`-</span><span class="n">x</span><span class="o">`</span>
 </pre></div>
 
 
@@ -689,7 +689,7 @@
 <p>Without calling this feature, HTML outputs can be opened without internet connection but only on the computer where the plots were generated.</p>
 <p><em>flags</em>: <code>--save_remotely</code></p>
 <p><em>arguments</em>: none, this is a positional argument.</p>
-<div class="codehilite"><pre><span></span>julia VIVA -f example.vcf `--save_remotely` 
+<div class="codehilite"><pre><span></span><span class="n">julia</span> <span class="n">VIVA</span> <span class="o">-</span><span class="n">f</span> <span class="n">example</span><span class="p">.</span><span class="n">vcf</span> <span class="o">`</span><span class="c1">--save_remotely` </span>
 </pre></div>
                 
                   

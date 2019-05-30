@@ -648,7 +648,7 @@
 <p><em>flags</em>: <code>--vcf_file</code>, <code>-f</code></p>
 <p><em>arguments</em>: Provide VCF filename (or filepath to VCF file if the file is not in the curret working directory).</p>
 <p><em>Note</em>: This is the <em>only required argument</em> for VIVA. If you run with none of the other options, default options will be used. These default options are described in detail below.</p>
-<div class="codehilite"><pre><span></span>julia VIVA -f example.vcf [OPTIONS]
+<div class="codehilite"><pre><span></span><span class="n">julia</span><span class="w"> </span><span class="n">VIVA</span><span class="w"> </span><span class="o">-</span><span class="n">f</span><span class="w"> </span><span class="n">example</span><span class="p">.</span><span class="n">vcf</span><span class="w"> </span><span class="o">[</span><span class="n">OPTIONS</span><span class="o">]</span><span class="w"></span>
 </pre></div>
 
 
@@ -660,7 +660,7 @@
 <p><em>flags</em>: <code>--genomic_range</code>, <code>-r</code></p>
 <p><em>arguments</em>: Specify genomic range within a single chromosome in format <code>chr4:20000000-30000000</code></p>
 <p><em>Note</em>: To visualize genomic ranges within multiple chromosomes, you may create a batch script to run VIVA multiple times using different genomic ranges.</p>
-<div class="codehilite"><pre><span></span>julia VIVA -f example.vcf -r chr1:20000-30000000
+<div class="codehilite"><pre><span></span><span class="n">julia</span> <span class="n">VIVA</span> <span class="o">-</span><span class="n">f</span> <span class="n">example</span><span class="p">.</span><span class="n">vcf</span> <span class="o">-</span><span class="n">r</span> <span class="n">chr1</span><span class="p">:</span><span class="mi">20000</span><span class="o">-</span><span class="mi">30000000</span>
 </pre></div>
 
 
@@ -668,7 +668,7 @@
 <p>Select variants matching list of chromosomal positions.</p>
 <p><em>flags</em>: <code>--positions_list</code>, <code>-l</code></p>
 <p><em>arguments</em>: Provide filename of text file formatted with two columns in .csv format as an argument. There should be a header row with "chr" and "start" in row 1 of column 1 and 2 respectively. Column 1 should contain chromosome number in the format "chr1" or "1" and should match the syntax of the VCF file (that is, if the VCF file lists chromosome numbers in the form "chrX", use "chrX" in your positions list, not "X") You can find an example of this file <a href="" title="[here](&quot;https://github.com/compbiocore/VariantVisualization.jl/tree/master/test/test_files/positions_list.csv">here</a>")</p>
-<div class="codehilite"><pre><span></span>julia VIVA -f example.vcf -l &quot;example_positions_list.txt&quot;
+<div class="codehilite"><pre><span></span><span class="n">julia</span> <span class="n">VIVA</span> <span class="o">-</span><span class="n">f</span> <span class="n">example</span><span class="p">.</span><span class="n">vcf</span> <span class="o">-</span><span class="n">l</span> <span class="ss">&quot;example_positions_list.txt&quot;</span>
 </pre></div>
 
 
@@ -676,7 +676,7 @@
 <p>Select rows that passed filters originally set during variant calling and VCF file generation. Selects records with "PASS" in the FILTER column of the VCF file. This filter alone is often not stringent enough to reduce the number of variants for plotting and visual interpretation. For analyzing large VCF files with many "passed" filter records, use genomic range,</p>
 <p><em>flags</em>: <code>--pass_filter</code>, <code>-p</code></p>
 <p><em>arguments</em>: This flag is a positional argument and does not take options.</p>
-<div class="codehilite"><pre><span></span>julia VIVA -f example.vcf -p
+<div class="codehilite"><pre><span></span><span class="n">julia</span> <span class="n">VIVA</span> <span class="o">-</span><span class="n">f</span> <span class="n">example</span><span class="p">.</span><span class="n">vcf</span> <span class="o">-</span><span class="n">p</span>
 </pre></div>
 
 
@@ -695,7 +695,7 @@
 <p>Sample ids must match those found in the VCF file but do not need to be in the same order as they appear in the VCF header. Additionally, if the user would like to use the –select_samples option, sample ids must match the sample selection list.</p>
 <p>Metadata traits are stored as rownames in the first column of the table and should be binary traits seperated by a comma (like "case,control"). For each metadata trait, samples should be labeled with "1" or "2" to correspond with the first and second group of the trait respectively (e.g. 1 = case and 2 = control).</p>
 <p>This matrix should be saved as a comma delimited .csv file. Microsoft Excel is commonly used for this purpose, but sometimes creates extra delimiter characters in the output file that produce an error in VIVA. You can check to make sure the .csv file was saved properly by opening the file with a text editor such as BBEdit to inspect for and delete empty values or extra delimiter characters at the end of each row.</p>
-<div class="codehilite"><pre><span></span>julia VIVA -f example.vcf -g sample_metadata_matrix.csv case,control
+<div class="codehilite"><pre><span></span><span class="n">julia</span> <span class="n">VIVA</span> <span class="o">-</span><span class="n">f</span> <span class="n">example</span><span class="p">.</span><span class="n">vcf</span> <span class="o">-</span><span class="k">g</span> <span class="n">sample_metadata_matrix</span><span class="p">.</span><span class="n">csv</span> <span class="k">case</span><span class="p">,</span><span class="n">control</span>
 </pre></div>
 
 
@@ -704,7 +704,7 @@
 <p><em>flags</em>: <code>--select_samples</code></p>
 <p><em>arguments</em>: Provide filename or filepath to tab delimited list of sample names to include in visualization as an argument. An example of this list can be found <a href="" title="https://github.com/compbiocore/VariantVisualization.jl/tree/master/test/test_files/select_samples_list.txt">here</a>.</p>
 <p><em>Note</em>: To use the sample selection feature in combination with the sample grouping feature, the sample metadata matrix must only contain the sample ids to be selected.</p>
-<div class="codehilite"><pre><span></span>julia VIVA -f example.vcf --select_samples select_samples_list.txt
+<div class="codehilite"><pre><span></span><span class="n">julia</span> <span class="n">VIVA</span> <span class="o">-</span><span class="n">f</span> <span class="n">example</span><span class="p">.</span><span class="n">vcf</span> <span class="c1">--select_samples select_samples_list.txt</span>
 </pre></div>
                 
                   
