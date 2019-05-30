@@ -182,7 +182,6 @@ h_line_index_list = generate_hline_indices(number_rows,input)
 
                       shapes=shapes_definition
 
-
                 #    shapes = [vline(group_dividing_line), hline(h_line_index,line=attr(color="white"))]
                 #    println(shapes)
 

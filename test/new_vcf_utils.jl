@@ -135,7 +135,7 @@ gt_num_array,gt_chromosome_labels=combined_all_genotype_array_functions(sub)
     #println("define_geno_dict is type is $(typeof(geno_dict))")
     #println("define_geno_dict is length is $(length(geno_dict))")
     @test typeof(geno_dict) == Dict{Any,Any}
-    @test length(geno_dict) == 100
+    @test length(geno_dict) == 101
 
     @testset "translate_genotype_to_num_array" begin
     gt_num_array,gt_chromosome_labels=translate_genotype_to_num_array(genotype_array,geno_dict)

@@ -20,9 +20,9 @@ Windows 10, Windows 7.
 ### Command Line Tool
 
 1. Add VariantVisualization.jl using Pkg in the Julia REPL:
-	a. run `using Pkg`
-	b. run `Pkg.clone("https://github.com/compbiocore/VariantVisualization.jl")`
-	c. run `Pkg.instantiate()`
+	run `using Pkg`
+	run `Pkg.clone("https://github.com/compbiocore/VariantVisualization.jl")`
+	run `Pkg.instantiate()`
 2. Download the [VIVA](https://github.com/compbiocore/VariantVisualization.jl/blob/master/viva) tool script and save it to a working directory for your analysis.
 3. Navigate to your working directory and follow the [VIVA manual](https://compbiocore.github.io/VariantVisualization.jl/latest/) to generate your plots.
 

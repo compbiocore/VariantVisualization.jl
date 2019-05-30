@@ -38,7 +38,7 @@ julia viva -f test_4X_191.vcf -t Grouped_by_Sequencing_Site -g sample_metadata_m
 
 ![Grouped Sample Average Read Depth Scatter Plot](assets/Average_Sample_Read_Depth_test_4X_191.vcf.png)
  
-##Genomic Range and Samples Selection - Genotype and Read Depth Heatmaps with Variant Position Labels
+## Genomic Range and Samples Selection - Genotype and Read Depth Heatmaps with Variant Position Labels
 
 Generate heatmaps of genotype and read depth values of variants selected within a genomic range, in this case, chromosome 4, nucleotides 200000-500000, with y-axis variant position labels.
 
