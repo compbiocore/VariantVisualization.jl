@@ -2,32 +2,32 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
      <loc>https://compbiocore.github.io/</loc>
-     <lastmod>2019-05-30</lastmod>
+     <lastmod>2019-05-31</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://compbiocore.github.io/installation/</loc>
-     <lastmod>2019-05-30</lastmod>
+     <lastmod>2019-05-31</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://compbiocore.github.io/filtering_vcf/</loc>
-     <lastmod>2019-05-30</lastmod>
+     <lastmod>2019-05-31</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://compbiocore.github.io/plotting/</loc>
-     <lastmod>2019-05-30</lastmod>
+     <lastmod>2019-05-31</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://compbiocore.github.io/examples/</loc>
-     <lastmod>2019-05-30</lastmod>
+     <lastmod>2019-05-31</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://compbiocore.github.io/api/</loc>
-     <lastmod>2019-05-30</lastmod>
+     <lastmod>2019-05-31</lastmod>
      <changefreq>daily</changefreq>
     </url>
 </urlset>
