@@ -30,20 +30,36 @@ matrix:
       os: linux
       julia: 1.1
       script:
-        - julia -e 'import Pkg; Pkg.instantiate(); Pkg.add("Documenter"); include(joinpath("docs", "make.jl"))'
-
-    - stage: semantic release
-      if: branch = master AND type != pull_request
-      language: python
-      os: linux
-      python: 3.6
-      before_script: skip
-      install:
-        - pip install typing
-        - pip install python-semantic-release
-      script:
-        - git config --global user.name "semantic-release (via TravisCI)"
-        - git config --global user.email "semantic-release@travis"
-        - semantic-release publish
-      after_script: skip
-      after_success: skip
+        - julia --project=docs/ -e 'using Pkg; Pkg.develop(PackageSpec(path=pwd())); Pkg.instantiate()'
+        - julia --project=docs/ docs/make.jl
+    # - stage: semantic release
+    #   if: branch = master AND type != pull_request
+    #   language: python
+    #   os: linux
+    #   python: 3.6
+    #   before_script: skip
+    #   install:
+    #     - pip install typing
+    #     - pip install python-semantic-release
+    #   script:
+    #     - git config --global user.name "semantic-release (via TravisCI)"
+    #     - git config --global user.email "semantic-release@travis"
+    #     - semantic-release publish
+    #   after_script: skip
+    #   after_success: skip
+    #
+    # - stage: Pre-release
+    #   if: branch = pre-release
+    #   language: python
+    #   os: linux
+    #   python: 3.6
+    #   before_script: skip
+    #   install:
+    #     - pip install typing
+    #     - pip install python-semantic-release
+    #   script:
+    #     - git config --global user.name "semantic-release (via TravisCI)"
+    #     - git config --global user.email "semantic-release@travis"
+    #     - semantic-release version
+    #   after_script: skip
+    #   after_success: skip
