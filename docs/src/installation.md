@@ -66,7 +66,7 @@ docker run -it --rm -v "$PWD":/data compbiocore/viva-cli arg1 arg2 arg3
 
 #### Using Docker Compose
 
-To run the images with Docker Compose, copy the `docker-compose.yml` file to a local directory. From that same directory, run the commandas below.
+To run the images with Docker Compose, copy the [`docker-compose.yml`](https://github.com/compbiocore/viva-docker/blob/master/docker-compose.yml) file to a local directory. From that same directory, run the commandas below.
 
 !!! Note  
 Your current directory will mount to `/notebook/data` in the notebook image and to `/data` in the CLI image.
