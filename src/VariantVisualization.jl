@@ -10,27 +10,18 @@ using ArgParse
 using DelimitedFiles
 using Test
 
-#using Base.Filesystem
-
-#include("vcf_utils.jl")
-#include("plot_utils.jl")
-
-#end #module
-
 export
+    test_parse_main,
     format_reader,
     load_vcf,
     clean_column1!,
-    genotype_cell_searcher_maf_correction,
-    genotype_cell_searcher,
-    dp_cell_searcher,
     load_siglist,
-    sig_list_vcf_filter,
-    genomic_range_vcf_filter,
-    load_sort_phenotype_matrix,
-    reorder_columns,
+    #sig_list_vcf_filter,
+    #genomic_range_vcf_filter,
+    #load_sort_phenotype_matrix,
+    #reorder_columns,
     select_columns,
-    genotype_heatmap2,
+    #genotype_heatmap2,
     dp_heatmap2,
     avg_sample_dp_scatter,
     avg_variant_dp_line_chart,
@@ -72,14 +63,12 @@ export
     add_pheno_matrix_to_dp_data_for_plotting,
     generate_hover_text_array,
     generate_hover_text_array_grouped,
-    save_graphic
+    save_graphic,
+    build_set_from_list
 
-#include("vcf_utils.jl")
 include("vcf_utils_complete.jl")
 include("plot_utils.jl")
 include("new_notebook_utils.jl")
 include("init.jl")
-#include("v1_VIVA_notebook_utils.jl")
-#include("io_filters.jl")
 
 end # module

@@ -1,3 +1,106 @@
+#functions for ArgParse
+"""
+    test_parse_main(ARGS::Vector{String})
+Defines argument parsing rules for viva script.
+"""
+function test_parse_main(ARGS::Vector{String})
+
+    # initialize the settings (the description prints text when help is called)
+    s = ArgParseSettings(
+
+    description = "VIVA VCF Visualization Tool is a tool for creating publication quality plots of data contained within VCF files. For a complete description of features with examples read the docs here https://github.com/compbiocore/VariantVisualization.jl",
+    suppress_warnings = true,
+    epilog = "Thank you for using VIVA. Please submit any bugs to https://github.com/compbiocore/VariantVisualization.jl/issues "
+    )
+
+    @add_arg_table s begin
+        "--vcf_file", "-f"
+        help = "vcf filename in format: file.vcf"
+        arg_type = String
+        required = true
+
+        "--output_directory", "-o"
+        help =" function checks if directory exists and saves there, if not creates and saves here"
+        arg_type = String
+        default = "output"
+
+        "--save_format", "-s"
+        help = "file format you wish to save graphics as (eg. pdf, html, png). Defaults to html"
+        arg_type = String
+        default = "html"
+
+        "--genomic_range", "-r"
+        help = "select rows within a given chromosome range. Provide chromosome range after this flag in format chr4:20000000-30000000."
+        arg_type = String
+
+        "--pass_filter", "-p"
+        help = "select rows with PASS in the FILTER field."
+        action = :store_true
+
+        "--positions_list", "-l"
+        help = "select variants matching list of chromosomal positions. Provide filename of text file formatted with two columns in csv format: 1,2000345."
+        arg_type = String
+
+        "--group_samples", "-g"
+        help = "group samples by common trait using user generated matrix key of traits and sample names following format guidelines in documentation. Provide file name of .csv file"
+        nargs = 2
+        arg_type = String
+
+        "--select_samples"
+        help = "select samples to include in visualization by providing tab delimited list of sample names (eg. samplenames.txt). Works for heatmap visualizations and numeric array generation only (not average dp plots)"
+        arg_type = String
+
+        "--heatmap", "-m"
+        help = "genotype field to visualize (eg. genotype, read_depth, or 'genotype,read_depth' to visualize each separately)"
+        arg_type = String
+        default = "genotype,read_depth"
+
+        "--y_axis_labels", "-y"
+        help = "specify whether to label y-axis with all chromosome positions (options = positions / chromosome) separators. Defaults to chromosome separators."
+        default = "chromosomes"
+        arg_type = String
+
+        "--x_axis_labels", "-x"
+        help = "flag to specify whether to label x-axis with sample ids from vcf file. Defaults to FALSE."
+        action = :store_true
+
+        "--num_array", "-n"
+        help = "flag to save numeric array of categorical genotype values or read depth values before heatmap plotting. Must be used with --heatmap set."
+        action = :store_true
+
+        "--heatmap_title", "-t"
+        help = "Specify filename for heatmap with underscores for spaces."
+        arg_type = String
+
+        "--avg_dp"
+        help = "visualize average read depths as line chart. Options: average sample read depth, average variant read depth, or both. eg. =sample, =variant, =sample,variant"
+
+        "--save_remotely"
+        help = "Save html support files online rather than locally so files can be shared between systems. Files saved in this way require internet access to open."
+        action = :store_true
+
+        #nargs = 2
+        #metavar = ["avg_option", "markers_or_lines"]
+        #default = ["variant,sample", "markers"]
+        #default = "sample,variant" #turn on when plotly working
+
+    end
+
+    parsed_args = parse_args(s)
+    # can turn off printing parsed args after development"
+    #println("Parsed args:")
+
+#activate block to show all argument keys
+
+#=
+    for (key,val) in parsed_args
+        println("  $key  =>  $(repr(val))")
+    end
+    =#
+
+    return parsed_args
+end
+
 #functions for loading vcf, vcf stats, clean vcf, load siglist
 
 """
@@ -101,6 +204,42 @@ end
 """
     build_set_from_list(sig_list::Array{Any,2})
 build set of tuples of chrom and pos of each record in vcf for use in sig_list_filters.
+Method 1: build list from input variant locations in Int64 and String chromosomes in variant list (chr1-XYM)
+"""
+function build_set_from_list(sig_list::Array{Any,2})
+    position_set = Set{Tuple{Any,Int}}()  # For now, assumes all chr names are Int...
+
+    for row in 1:size(sig_list,1)
+        chr = sig_list[row,1]
+        pos = sig_list[row,2]
+        push!(position_set, (string(chr), Int(pos)))
+    end
+
+    return position_set
+end
+
+"""
+    build_set_from_list(sig_list::Array{Int64,2})
+build set of tuples of chrom and pos of each record in vcf for use in sig_list_filters.
+Method 2: build list from input variant locations in Int64 chromosomes only (chr1-22)
+"""
+function build_set_from_list(sig_list::Array{Any,2})
+    position_set = Set{Tuple{Any,Int}}()  # For now, assumes all chr names are Int...
+
+    for row in 1:size(sig_list,1)
+        chr = sig_list[row,1]
+        pos = sig_list[row,2]
+        push!(position_set, (string(chr), Int(pos)))
+    end
+
+    return position_set
+end
+
+"""
+    build_set_from_list(sig_list::Array{String,2})
+build set of tuples of chrom and pos of each record in vcf for use in sig_list_filters.
+Method 3: build list from input variant locations in String chromosomes only (chrX,Y,M)
+
 """
 function build_set_from_list(sig_list::Array{Any,2})
     position_set = Set{Tuple{Any,Int}}()  # For now, assumes all chr names are Int...
@@ -1209,8 +1348,12 @@ function add_pheno_matrix_to_gt_data_for_plotting(gt_num_array,pheno_matrix,trai
 
     #find multiplyer value
     pheno_row_multiplyer=0.05*(size(gt_num_array,1))
+
     pheno_row_multiplyer=(pheno_row_multiplyer)
+
     pheno_row_multiplyer=round(pheno_row_multiplyer/(size(pheno_matrix,1)))
+
+
     #println(size(pheno_matrix,1))
 
     for i = 1:(size(pheno_matrix, 1))
@@ -1232,7 +1375,8 @@ function add_pheno_matrix_to_gt_data_for_plotting(gt_num_array,pheno_matrix,trai
 
         i=0
 
-        while i <= (pheno_row_multiplyer+1)
+        while i < (pheno_row_multiplyer)
+
             i=i+1
 
             resized_pheno_matrix=vcat(resized_pheno_matrix,trait_row)
@@ -1296,11 +1440,14 @@ function add_pheno_matrix_to_dp_data_for_plotting(dp_num_array,pheno_matrix,trai
 
         i=0
 
-        while i <= (pheno_row_multiplyer+1)
+        while i < (pheno_row_multiplyer)
+
             i=i+1
+
             resized_pheno_matrix=vcat(resized_pheno_matrix,trait_row)
             trait_label_array=vcat(trait_label_array,trait)
         end
+
     end
 
     trait_label_indices = findfirst.(map(a -> (y -> isequal(a, y)),
@@ -1348,7 +1495,7 @@ hover_text_array=Array{Any,1}(undef,0)
             z=z_dict[z]
 
             elseif mode == "DP"
-                if z==-1
+                if z==-20
                     z="No Call"
                 end
             end
@@ -1390,7 +1537,10 @@ hover_text_array=Array{Any,1}(undef,0)
             elseif mode == "DP"
                 if z==-1
                     z="No Call"
+                elseif  z==100
+                    z="100+"
                 end
+
             end
 
             text_cell="ID: $id \n $pos \n $mode: $z"
@@ -1453,7 +1603,5 @@ function save_graphic(graphic,output_directory,save_ext,title,remote_option)
     elseif save_ext != "html"
         PlotlyJS.savefig(graphic, joinpath("$(output_directory)" ,"$title.$(save_ext)"))
     end
-
-    #display(graphic)
 
 end
