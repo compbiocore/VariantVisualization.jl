@@ -60,8 +60,15 @@ Go to `http://0.0.0.0:8888/?token=<enter token here>`
 [Click here](https://jupyter-docker-stacks.readthedocs.io/en/latest/index.html) for more information about Jupyter Docker Images.
 
 To run VIVA Command Line Tool:
+
+On Mac or Linux:
 ```shell
 docker run -it --rm -v "$PWD":/data compbiocore/viva-cli arg1 arg2 arg3
+```
+
+On Windows:
+```shell
+docker run -it --rm -v "${pwd}":/data compbiocore/viva-cli arg1 arg2 arg3
 ```
 
 #### Using Docker Compose
