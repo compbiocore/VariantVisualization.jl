@@ -401,16 +401,43 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#using-docker-and-docker-compose" title="Using Docker and Docker Compose" class="md-nav__link">
+    Using Docker and Docker Compose
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#using-docker" title="Using Docker" class="md-nav__link">
+    Using Docker
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#using-docker-compose" title="Using Docker Compose" class="md-nav__link">
+    Using Docker Compose
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#latest-features" title="Latest Features" class="md-nav__link">
     Latest Features
   </a>
   
 </li>
-      
-        <li class="md-nav__item">
+        
+          <li class="md-nav__item">
   <a href="#for-developers" title="For Developers" class="md-nav__link">
     For Developers
   </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -554,16 +581,43 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#using-docker-and-docker-compose" title="Using Docker and Docker Compose" class="md-nav__link">
+    Using Docker and Docker Compose
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#using-docker" title="Using Docker" class="md-nav__link">
+    Using Docker
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#using-docker-compose" title="Using Docker Compose" class="md-nav__link">
+    Using Docker Compose
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#latest-features" title="Latest Features" class="md-nav__link">
     Latest Features
   </a>
   
 </li>
-      
-        <li class="md-nav__item">
+        
+          <li class="md-nav__item">
   <a href="#for-developers" title="For Developers" class="md-nav__link">
     For Developers
   </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -623,9 +677,60 @@
 <li>Download the <a href="https://github.com/compbiocore/VariantVisualization.jl/blob/master/VIVA.ipynb">VIVA Jupyter Notebook</a>.</li>
 <li>Follow the in-notebook instructions to generate your plots.</li>
 </ol>
+<hr />
+<p><a id='Using-Docker-and-Docker-Compose-1'></a></p>
+<h2 id="using-docker-and-docker-compose">Using Docker and Docker Compose</h2>
+<p>If you don't want to install Julia and VariantVisualization, you can use the Docker images provided. For that, first <a href="https://docs.docker.com/install/">install Docker</a>.</p>
+<p><a id='Using-Docker-1'></a></p>
+<h4 id="using-docker">Using Docker</h4>
+<p>We provide two images, one with a Jupyter Notebook and one with a command line script for VIVA.</p>
+<p>Create a project folder and navigate to it:</p>
+<div class="codehilite"><pre><span></span>mkdir project_x
+<span class="nb">cd</span> project_x
+</pre></div>
+
+
+<p>Make sure to add your project VCF files to that folder. That directory will be mapped to <code>/notebook/data</code> inside of the container.</p>
+<p>Then, to run the Jupyter Notebook, from the terminal or Windows PowerShell:</p>
+<div class="codehilite"><pre><span></span>docker run --rm -p <span class="m">8888</span>:8888 -e <span class="nv">JUPYTER_ENABLE_LAB</span><span class="o">=</span>yes -v <span class="s2">&quot;</span><span class="nv">$PWD</span><span class="s2">&quot;</span>:/notebook/data compbiocore/viva-notebook
+</pre></div>
+
+
+<p>Go to <code>http://0.0.0.0:8888/?token=&lt;enter token here&gt;</code></p>
+<p><a href="https://jupyter-docker-stacks.readthedocs.io/en/latest/index.html">Click here</a> for more information about Jupyter Docker Images.</p>
+<p>To run VIVA Command Line Tool:</p>
+<p>On Mac or Linux:</p>
+<div class="codehilite"><pre><span></span>docker run -it --rm -v <span class="s2">&quot;</span><span class="nv">$PWD</span><span class="s2">&quot;</span>:/data compbiocore/viva-cli arg1 arg2 arg3
+</pre></div>
+
+
+<p>On Windows:</p>
+<div class="codehilite"><pre><span></span>docker run -it --rm -v <span class="s2">&quot;</span><span class="si">${</span><span class="nv">pwd</span><span class="si">}</span><span class="s2">&quot;</span>:/data compbiocore/viva-cli arg1 arg2 arg3
+</pre></div>
+
+
+<p><a id='Using-Docker-Compose-1'></a></p>
+<h4 id="using-docker-compose">Using Docker Compose</h4>
+<p>To run the images with Docker Compose, copy the <a href="https://github.com/compbiocore/viva-docker/blob/master/docker-compose.yml"><code>docker-compose.yml</code></a> file to a local directory. From that same directory, run the commandas below.</p>
+<p>!!! Note   Your current directory will mount to <code>/notebook/data</code> in the notebook image and to <code>/data</code> in the CLI image.</p>
+<ul>
+<li>Notebook</li>
+</ul>
+<div class="codehilite"><pre><span></span>docker-compose up viva-notebook
+</pre></div>
+
+
+<ul>
+<li>Command Line Tool</li>
+</ul>
+<div class="codehilite"><pre><span></span>docker-compose run viva -f /data/file.vcf arg2 arg3 ...
+</pre></div>
+
+
+<hr />
 <p><a id='Latest-Features-1'></a></p>
 <h3 id="latest-features">Latest Features</h3>
-<p>To stay up to date with cutting edge development features install VariantVisualization.jl from the Master branch. </p>
+<p>To stay up to date with cutting edge development features install VariantVisualization.jl from the Master branch.</p>
 <p>Using git from the command line:</p>
 <div class="codehilite"><pre><span></span><span class="n">git</span> <span class="n">clone</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="p">.</span><span class="n">com</span><span class="o">/</span><span class="n">compbiocore</span><span class="o">/</span><span class="n">VariantVisualization</span><span class="p">.</span><span class="n">jl</span>
 </pre></div>
