@@ -1,4 +1,6 @@
 #!/usr/bin/env julia
+
+start = time()
 println()
 println("Welcome to VIVA.")
 println()
@@ -22,11 +24,11 @@ using GeneticVariation
 println("5/5 DelimitedFiles")
 using DelimitedFiles
 
-
 println()
 println("Finished loading packages!")
 println()
 
+#=
 function test_parse_main(ARGS::Vector{String})
 
     # initialize the settings (the description prints text when help is called)
@@ -116,15 +118,14 @@ function test_parse_main(ARGS::Vector{String})
 
 #activate block to show all argument keys
 
-#=
+
     for (key,val) in parsed_args
         println("  $key  =>  $(repr(val))")
     end
-    =#
 
-    return parsed_args
+        return parsed_args
 end
-
+=#
 parsed_args = test_parse_main(ARGS)
 
 #filter vcf and load matrix of filtered vcf records
@@ -133,7 +134,7 @@ vcf_filename = (parsed_args["vcf_file"])
 println("Reading $vcf_filename ...")
 println()
 
-reader = VCF.Reader(open(vcf_filename, "r"))
+reader = GeneticVariation.VCF.Reader(open(vcf_filename, "r"))
 sample_names = get_sample_names(reader)
 
 save_ext = parsed_args["save_format"]
@@ -244,6 +245,8 @@ if parsed_args["pass_filter"] == false && parsed_args["genomic_range"] == nothin
 
 end
 
+elapsed_time = time() - start
+println("time to load viva, read vcf and filter is $elapsed_time")
 y_axis_label_option = parsed_args["y_axis_labels"]
 
 number_rows = size(sub,1)
@@ -276,7 +279,8 @@ if parsed_args["heatmap"] == "genotype"
 
 
         elseif parsed_args["select_samples"] != nothing && length(parsed_args["group_samples"]) == 2
-            println("Can not select samples with phenotype matrix provided. Please include same sample ids in phenotype matrix as in list of sample names to select.")
+
+            # println("Can not select samples with phenotype matrix provided. Please include same sample ids in phenotype matrix as in list of sample names to select.")
 
         end
 
@@ -305,7 +309,34 @@ if parsed_args["heatmap"] == "genotype"
             sample_names=col_selectedcolumns
 
         elseif parsed_args["select_samples"] != nothing && length(parsed_args["group_samples"]) == 2
-            println("Can not select samples with phenotype matrix provided. Please include same sample ids in phenotype matrix as in list of sample names to select.")
+            #=
+#add select samples
+
+println("testing select and group samples")
+            println("Selecting samples listed in $(parsed_args["select_samples"])")
+
+            gt_num_array,col_selectedcolumns = select_columns(parsed_args["select_samples"], gt_num_array, sample_names)
+            sample_names=col_selectedcolumns
+
+            group_trait_matrix_filename=((parsed_args["group_samples"])[1])
+            trait_to_group_by = ((parsed_args["group_samples"])[2])
+            println()
+            println("Grouping samples by $trait_to_group_by")
+            println()
+
+            ordered_num_array,group_label_pack,pheno,id_list,trait_labels = sortcols_by_phenotype_matrix(group_trait_matrix_filename, trait_to_group_by, gt_num_array, sample_names)
+
+            if parsed_args["num_array"] == true
+            save_numerical_array(ordered_num_array,sample_names,chr_pos_tuple_list,title,output_directory)
+            end
+
+            pheno_num_array,trait_label_array,chrom_label_info=add_pheno_matrix_to_gt_data_for_plotting(ordered_num_array,pheno,trait_labels,chrom_label_info,number_rows)
+
+            graphic = VariantVisualization.genotype_heatmap_with_groups(pheno_num_array,title,chrom_label_info,group_label_pack,id_list,chr_pos_tuple_list,y_axis_label_option,trait_label_array,x_axis_label_option,number_rows)
+#finished adding
+
+=#
+            # println("Can not select samples with phenotype matrix provided. Please include same sample ids in phenotype matrix as in list of sample names to select.")
 
         end
 
@@ -313,7 +344,7 @@ if parsed_args["heatmap"] == "genotype"
         save_numerical_array(gt_num_array,sample_names,chr_pos_tuple_list,title,output_directory)
         end
 
-        graphic = VariantVisualization.genotype_heatmap2(gt_num_array,title,chrom_label_info,sample_names,chr_pos_tuple_list,y_axis_label_option,x_axis_label_option)
+        graphic = VariantVisualization.genotype_heatmap2_new_legend(gt_num_array,title,chrom_label_info,sample_names,chr_pos_tuple_list,y_axis_label_option,x_axis_label_option)
 
     end
 
@@ -347,7 +378,7 @@ if parsed_args["heatmap"] == "read_depth"
 
 
         elseif parsed_args["select_samples"] != nothing && length(parsed_args["group_samples"]) == 2
-            println("Can not select samples with phenotype matrix provided. Please include same sample ids in phenotype matrix as in list of sample names to select.")
+            # println("Can not select samples with phenotype matrix provided. Please include same sample ids in phenotype matrix as in list of sample names to select.")
         end
 
         group_trait_matrix_filename=((parsed_args["group_samples"])[1])
@@ -367,6 +398,7 @@ if parsed_args["heatmap"] == "read_depth"
 
         graphic = VariantVisualization.dp_heatmap2_with_groups(pheno_num_array,title,chrom_label_info,group_label_pack,id_list,chr_pos_tuple_list,y_axis_label_option,trait_label_array,x_axis_label_option,number_rows)
 
+
     else
 
         if parsed_args["select_samples"] != nothing && length(parsed_args["group_samples"]) != 2
@@ -377,7 +409,7 @@ if parsed_args["heatmap"] == "read_depth"
 
 
         elseif parsed_args["select_samples"] != nothing && length(parsed_args["group_samples"]) == 2
-            println("Can not select samples with phenotype matrix provided. Please include same sample ids in phenotype matrix as in list of sample names to select.")
+            # println("Can not select samples with phenotype matrix provided. Please include same sample ids in phenotype matrix as in list of sample names to select.")
 
         end
 
@@ -386,12 +418,18 @@ if parsed_args["heatmap"] == "read_depth"
         end
 
         dp_num_array_limited=read_depth_threshhold(dp_num_array)
+
+        start_plotting = time()#remove
         graphic = VariantVisualization.dp_heatmap2(dp_num_array, title, chrom_label_info, sample_names,chr_pos_tuple_list,y_axis_label_option,x_axis_label_option)
+        elapsed_plotting = time()-start_plotting#remove
+        println("$time to plot dp data is $elapsed_plotting")#remove
     end
 
     println("Saving read depth heatmap")
 
     save_graphic(graphic,output_directory,save_ext,title,remote_option)
+
+
 end
 
 if parsed_args["heatmap"] == "genotype,read_depth" || parsed_args["heatmap"] == "read_depth,genotype"
@@ -419,7 +457,7 @@ if parsed_args["heatmap"] == "genotype,read_depth" || parsed_args["heatmap"] == 
             sample_names=col_selectedcolumns
 
         elseif parsed_args["select_samples"] != nothing && length(parsed_args["group_samples"]) == 2
-            println("Can not select samples with phenotype matrix provided. Please include same sample ids in phenotype matrix as in list of sample names to select.")
+            # println("Can not select samples with phenotype matrix provided. Please include same sample ids in phenotype matrix as in list of sample names to select.")
         end
 
         group_trait_matrix_filename=((parsed_args["group_samples"])[1])
@@ -447,10 +485,10 @@ if parsed_args["heatmap"] == "genotype,read_depth" || parsed_args["heatmap"] == 
             sample_names=col_selectedcolumns
 
         elseif parsed_args["select_samples"] != nothing && length(parsed_args["group_samples"]) == 2
-            println("Can not select samples with phenotype matrix provided. Please include same sample ids in phenotype matrix as in list of sample names to select.")
+            # println("Can not select samples with phenotype matrix provided. Please include same sample ids in phenotype matrix as in list of sample names to select.")
 
         end
-                graphic = VariantVisualization.genotype_heatmap2(gt_num_array,title,chrom_label_info,sample_names,chr_pos_tuple_list,y_axis_label_option,x_axis_label_option)
+                graphic = VariantVisualization.genotype_heatmap2_new_legend(gt_num_array,title,chrom_label_info,sample_names,chr_pos_tuple_list,y_axis_label_option,x_axis_label_option)
     end
 
     println("Saving genotype heatmap")
@@ -598,5 +636,8 @@ elseif parsed_args["avg_dp"] == "variant,sample" || parsed_args["avg_dp"] == "sa
 elseif parsed_args["avg_dp"] != nothing
     println("--avg_dp flag did not find expected arguments: sample, variant, or sample,variant. Average read depth plot not saved.")
 end
+
+elapsed = time()-start
+println("run took $elapsed seconds")
 
 close(reader)
