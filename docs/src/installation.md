@@ -39,9 +39,17 @@ Alternatively, you can run VIVA using the Docker images we've provided if you do
 
 To run VIVA from a Docker image, first [install Docker](https://docs.docker.com/install/).
 
+Then double-click the Docker.app in the Applications folder to start Docker. You will see a whale icon in the top status bar to indicate that Docker is running and accessible from the terminal. You can quit Docker once you are finished using VIVA by clicking the Docker whale icon in the top status bar and clicking "Quit Docker Desktop."
+
 #### Using Docker
 
-We provide two images, one with a Jupyter Notebook and one with a command line script for VIVA.
+*Note* You must use the flag `--save_remotely` when running VIVA by using Docker.
+
+Once Docker is running, you can run VIVA by running the Docker commands below in the Mac/Linux terminal or Windows PowerShell.
+
+We provide two images, one with a Jupyter Notebook and one with a command line script for VIVA. You can run VIVA in a single command using these images. The command consists of calls to run the Docker image followed by the usual VIVA options.
+
+To run the images, follow these steps:
 
 Create a project folder and navigate to it:
 ```shell
@@ -53,24 +61,26 @@ Make sure to add your project VCF files to that folder. That directory will be m
 
 ##### Run the VIVA Command Line Tool from a Docker image:
 
+*Note* Remember, you must use the flag `--save_remotely` when running VIVA by using Docker.
+
 - On Mac or Linux:
 ```shell
-docker run -it --rm -v "$PWD":/data compbiocore/viva-cli arg1 arg2 arg3
+docker run -it --rm -v "$PWD":/data compbiocore/viva-cli --save_remotely arg1 arg2 arg3
 ```
 
 - Example run:
 ```shell
-docker run -it --rm -v "$PWD":/data compbiocore/viva-cli -f file.vcf -p -s pdf
+docker run -it --rm -v "$PWD":/data compbiocore/viva-cli --save_remotely -f file.vcf -p -s pdf
 ```
 
 - On Windows:
 ```shell
-docker run -it --rm -v "${pwd}":/data compbiocore/viva-cli arg1 arg2 arg3
+docker run -it --rm -v "${pwd}":/data compbiocore/viva-cli --save_remotely arg1 arg2 arg3
 ```
 
 - Example run:
 ```shell
-docker run -it --rm -v "${pwd}":/data compbiocore/viva-cli -f file.vcf -p -s pdf
+docker run -it --rm -v "${pwd}":/data compbiocore/viva-cli --save_remotely -f file.vcf -p -s pdf
 ```
 
 ##### Run the VIVA Jupyter Notebook from a Docker image:
@@ -82,7 +92,6 @@ Copy and run the following line from the terminal or Windows PowerShell:
 docker run --rm -p 8888:8888 -e JUPYTER_ENABLE_LAB=yes -v "$PWD":/notebook/data compbiocore/viva-notebook
 ```
 Go to `http://0.0.0.0:8888/?token=<enter token here>`
-
 
 - On Windows:
 ```shell
@@ -105,7 +114,7 @@ docker-compose up viva-notebook
 
 - Command Line Tool
 ```shell
-docker-compose run viva -f /data/file.vcf arg2 arg3 ...
+docker-compose run viva -f --save_remotely /data/file.vcf arg2 arg3 ...
 ```
 
 -----
