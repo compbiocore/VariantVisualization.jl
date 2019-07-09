@@ -106,7 +106,6 @@ Go to `http://0.0.0.0:8888/?token=<enter token here>`
 
 [Click here](https://jupyter-docker-stacks.readthedocs.io/en/latest/index.html) for more information about Jupyter Docker Images.
 
-
 #### Using Docker Compose
 
 To run the images with Docker Compose, copy the [`docker-compose.yml`](https://github.com/compbiocore/viva-docker/blob/master/docker-compose.yml) file to a local directory. From that same directory, run the command as it appears below.
