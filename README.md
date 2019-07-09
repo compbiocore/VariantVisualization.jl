@@ -11,10 +11,10 @@
 
 VariantVisualization.jl is a package we built specifically to power the genetics visualization tool, *VIVA*.
 
-*VIVA* is a user-friendly command line tool for creating publication quality graphics from Variant Call Format (VCF) files and has been designed for clinicians and bioinformaticians to explore their VCF files visually. Users can quickly extract genotype or read depth information and plot trends in interactive categorical heatmaps and scatter plots of average read depth values. VIVA offers a robust set of filters to select variants and samples of interest for analysis. VIVA is especially useful in early data exploration for identifying batch effect and sources of poor read depth, as well as identifying distribution of disease causing variants in a set of clinical samples.
+*VIVA* is a user-friendly command line tool for creating publication quality graphics from Variant Call Format (VCF) files. It has been designed for clinicians and bioinformaticians to explore their VCF files visually. In a single command, users can extract genotype or read depth information and plot trends in interactive categorical heatmaps and scatter plots of average read depth values. VIVA offers a robust set of filters to select variants and samples of interest for analysis. VIVA is especially useful in early data exploration for identifying batch effect and sources of poor read depth, as well as identifying distribution of disease causing variants in a set of clinical samples.
 
 
-## Getting Started: 
+## Getting Started:
 
 Note: Once you have set up VIVA, you can quickly run the command line tool [EXAMPLES](https://compbiocore.github.io/VariantVisualization.jl/latest/examples/) found in the documentation.
 
@@ -25,17 +25,33 @@ Note: Once you have set up VIVA, you can quickly run the command line tool [EXAM
 
 macOS ( Sierra, High Sierra, and Mojave ), Windows, and Linux.
 
-To use VIVA, you must download the Julia programming language version >=1.0 and install the VariantVisualization.jl Julia package as well as the VIVA script. 
+To use VIVA, you must download the Julia programming language version >=1.0 and install the VariantVisualization.jl Julia package as well as the VIVA script.
 
-Expected Time for Installation: Installation time depends on your network bandwidth, but should take less than 10 minutes for VIVA installation to install all dependency packages. Installing and using Julia packages for the first time takes longer than when using them in subsequent sessions. 
+Expected Time for Installation: Installation time depends on your network bandwidth, but should take less than 10 minutes for VIVA installation to install all dependency packages. Installing and using Julia packages for the first time takes longer than when using them in subsequent sessions.
 
 *Note*: When installing VariantVisualization.jl and running VIVA remote compute clusters, you may need to load the OpenGl module in addition to loading the Julia module.
 
+### Command Line Tool
 
-### Using Docker and Docker Compose
+1. Add VariantVisualization.jl using Pkg in the Julia REPL:
+	a. Open the Julia REPL by typing `julia` into the command line
+	b. Enter the Pkg manager by entering ']' into the REPL
+	c. Enter `add VariantVisualization` in the Pkg manager. This will install all of VIVA's dependencies.
+2. Download the [VIVA](https://github.com/compbiocore/VariantVisualization.jl/blob/master/viva) tool script and save it to a working directory for your analysis.
+3. Navigate to your working directory and follow the [VIVA manual](https://compbiocore.github.io/VariantVisualization.jl/stable/) to generate your plots.
 
-If you don't want to install Julia and the VariantVisualization.jl Julia package, you can use the Docker images we've provided.
-Do run VIVA from a Docker image, first [install Docker](https://docs.docker.com/install/).
+### Jupyter Notebook
+
+1. [Install Jupyter](https://jupyter.org/install)
+2. Install the VariantVisualization.jl Julia package following the Command Line Tool installation instructions above.
+3. Download the [VIVA Jupyter Notebook](https://github.com/compbiocore/VariantVisualization.jl/blob/master/VIVA.ipynb).
+4. Follow the in-notebook instructions to generate your plots.
+
+### Running VIVA with Docker or Docker Compose
+
+Alternatively, you can run VIVA using the Docker images we've provided if you don't want to install Julia and the VariantVisualization.jl Julia package.
+
+To run VIVA from a Docker image, first [install Docker](https://docs.docker.com/install/).
 
 #### Using Docker
 
@@ -56,9 +72,19 @@ Make sure to add your project VCF files to that folder. That directory will be m
 docker run -it --rm -v "$PWD":/data compbiocore/viva-cli arg1 arg2 arg3
 ```
 
+- Example run:
+```shell
+docker run -it --rm -v "$PWD":/data compbiocore/viva-cli -f file.vcf -p -s pdf
+```
+
 - On Windows:
 ```shell
 docker run -it --rm -v "${pwd}":/data compbiocore/viva-cli arg1 arg2 arg3
+```
+
+- Example run:
+```shell
+docker run -it --rm -v "${pwd}":/data compbiocore/viva-cli -f file.vcf -p -s pdf
 ```
 
 ##### Run the VIVA Jupyter Notebook from a Docker image:
@@ -97,25 +123,10 @@ docker-compose up viva-notebook
 docker-compose run viva -f /data/file.vcf arg2 arg3 ...
 ```
 
-### Command Line Tool
-
-1. Add VariantVisualization.jl using Pkg in the Julia REPL:
-	a. Open the Julia REPL by typing `julia` into the command line
-	b. Enter the Pkg manager by entering ']' into the REPL
-	c. Enter `add VariantVisualization` in the Pkg manager. This will install all of VIVA's dependencies. 
-2. Download the [VIVA](https://github.com/compbiocore/VariantVisualization.jl/blob/master/viva) tool script and save it to a working directory for your analysis.
-3. Navigate to your working directory and follow the [VIVA manual](https://compbiocore.github.io/VariantVisualization.jl/stable/) to generate your plots.
-
-### Jupyter Notebook
-
-1. [Install Jupyter](https://jupyter.org/install)
-2. Install the VariantVisualization.jl Julia package following the Command Line Tool installation instructions above.
-3. Download the [VIVA Jupyter Notebook](https://github.com/compbiocore/VariantVisualization.jl/blob/master/VIVA.ipynb).
-4. Follow the in-notebook instructions to generate your plots.
 
 ### Latest Features
 
-To stay up to date with cutting edge development features install VariantVisualization.jl from the Master branch. 
+To stay up to date with cutting edge development features install VariantVisualization.jl from the Master branch.
 
 Using git from the command line:
 
