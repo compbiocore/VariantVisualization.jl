@@ -700,9 +700,9 @@
 <ol>
 <li>Add VariantVisualization.jl using Pkg in the Julia REPL:</li>
 </ol>
-<div class="codehilite"><pre><span></span><span class="n">run</span> <span class="o">`</span><span class="k">using</span> <span class="n">Pkg</span><span class="o">`</span>
-<span class="n">run</span> <span class="o">`</span><span class="n">Pkg</span><span class="p">.</span><span class="n">clone</span><span class="p">(</span><span class="ss">&quot;https://github.com/compbiocore/VariantVisualization.jl&quot;</span><span class="p">)</span><span class="o">`</span>
-<span class="n">run</span> <span class="o">`</span><span class="n">Pkg</span><span class="p">.</span><span class="n">instantiate</span><span class="p">()</span><span class="o">`</span>
+<div class="codehilite"><pre><span></span><span class="o">*</span> <span class="n">run</span> <span class="o">`</span><span class="k">using</span> <span class="n">Pkg</span><span class="o">`</span>
+<span class="o">*</span> <span class="n">run</span> <span class="o">`</span><span class="n">Pkg</span><span class="p">.</span><span class="n">clone</span><span class="p">(</span><span class="ss">&quot;https://github.com/compbiocore/VariantVisualization.jl&quot;</span><span class="p">)</span><span class="o">`</span>
+<span class="o">*</span> <span class="n">run</span> <span class="o">`</span><span class="n">Pkg</span><span class="p">.</span><span class="n">instantiate</span><span class="p">()</span><span class="o">`</span>
 </pre></div>
 
 
@@ -789,7 +789,7 @@
 <p><a href="https://jupyter-docker-stacks.readthedocs.io/en/latest/index.html">Click here</a> for more information about Jupyter Docker Images.</p>
 <p><a id='Using-Docker-Compose-1'></a></p>
 <h4 id="using-docker-compose">Using Docker Compose</h4>
-<p>To run the images with Docker Compose, copy the <a href="https://github.com/compbiocore/viva-docker/blob/master/docker-compose.yml"><code>docker-compose.yml</code></a> file to a local directory. From that same directory, run the command as it appears below.</p>
+<p>To run the images with Docker Compose, install Docker following the steps above and then install [Docker Compose[(https://docs.docker.com/compose/). Then copy the <a href="https://github.com/compbiocore/viva-docker/blob/master/docker-compose.yml">docker-compose.yml</a> file to a local directory. From that same directory, run the command as it appears below.</p>
 <p><em>Note</em>: Your current directory will mount to <code>/notebook/data</code> in the notebook image and to <code>/data</code> in the CLI image.</p>
 <ul>
 <li>Notebook</li>
