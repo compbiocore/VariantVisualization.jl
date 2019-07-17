@@ -10,8 +10,8 @@ println("1/5 ArgParse")
 using ArgParse
 
 println("2/5 VariantVisualization")
-using Pkg #remove after VariantVisualization is deployed
-Pkg.activate(@__DIR__) #remove after VariantVisualization is deployed
+#using Pkg #remove after VariantVisualization is deployed
+#Pkg.activate(@__DIR__) #remove after VariantVisualization is deployed
 using VariantVisualization
 
 println("3/5 PlotlyJS")
