@@ -1,13 +1,15 @@
-#functions for ArgParse
+#function for ArgParse
+
 """
     test_parse_main(ARGS::Vector{String})
 Defines argument parsing rules for viva script.
 """
 function test_parse_main(ARGS::Vector{String})
 
-    # initialize the settings (the description prints text when help is called)
+    # initialize the settings
     s = ArgParseSettings(
 
+    # text in the description is printed to screen when help is called with help flag (--help, -h)
     description = "VIVA VCF Visualization Tool is a tool for creating publication quality plots of data contained within VCF files. For a complete description of features with examples read the docs here https://github.com/compbiocore/VariantVisualization.jl",
     suppress_warnings = true,
     epilog = "Thank you for using VIVA. Please submit any bugs to https://github.com/compbiocore/VariantVisualization.jl/issues "
@@ -79,15 +81,11 @@ function test_parse_main(ARGS::Vector{String})
         help = "Save html support files online rather than locally so files can be shared between systems. Files saved in this way require internet access to open."
         action = :store_true
 
-        #nargs = 2
-        #metavar = ["avg_option", "markers_or_lines"]
-        #default = ["variant,sample", "markers"]
-        #default = "sample,variant" #turn on when plotly working
-
     end
 
     parsed_args = parse_args(s)
-    # can turn off printing parsed args after development"
+
+    #Developers can display parsed args during new feature development:
     #println("Parsed args:")
 
 #activate block to show all argument keys
@@ -101,7 +99,7 @@ function test_parse_main(ARGS::Vector{String})
     return parsed_args
 end
 
-#functions for loading vcf, vcf stats, clean vcf, load siglist
+#functions for loading VCF file, vcf stats, clean vcf, load siglist
 
 """
     clean_column1!(matrix_with_chr_column)
@@ -165,20 +163,6 @@ function returnXY_column1_siglist!(siglist_sorted)
 end
 
 """
-    sort_genotype_array(genotype_array)
-sorts genotype array for GT or DP by chromosomal location
-"""
-function sort_genotype_array(genotype_array)
-
-    data=genotype_array[:,3:size(genotype_array,2)]
-    chrom_positions = [parse(Int, i) for i in genotype_array[:,1:2]]
-    genotype_array = hcat(chrom_positions,data)
-    genotype_array = sortslices(genotype_array, dims=1, by=x->(x[1],x[2]))
-
-return genotype_array
-end
-
-"""
     load_siglist(filename::AbstractString)
 where x = filename of significant SNP variant location list in comma delimited format (saved as .csv)
 """
@@ -187,7 +171,7 @@ function load_siglist(filename::AbstractString)
 siglist_unsorted = readdlm(filename, ',', skipstart=1)
 
 VariantVisualization.clean_column1_siglist!(siglist_unsorted)
-#siglist = sortrows(siglist_unsorted, by=x->(x[1],x[2]))#version
+
 siglist = sortslices(siglist_unsorted, dims=1, by=x->(x[1],x[2]))
 
 returnXY_column1_siglist!(siglist)
@@ -202,47 +186,12 @@ return siglist
 end
 
 """
-    build_set_from_list(sig_list::Array{Any,2})
+    build_set_from_list(sig_list)
 build set of tuples of chrom and pos of each record in vcf for use in sig_list_filters.
 Method 1: build list from input variant locations in Int64 and String chromosomes in variant list (chr1-XYM)
 """
-function build_set_from_list(sig_list::Array{Any,2})
-    position_set = Set{Tuple{Any,Int}}()  # For now, assumes all chr names are Int...
-
-    for row in 1:size(sig_list,1)
-        chr = sig_list[row,1]
-        pos = sig_list[row,2]
-        push!(position_set, (string(chr), Int(pos)))
-    end
-
-    return position_set
-end
-
-"""
-    build_set_from_list(sig_list::Array{Int64,2})
-build set of tuples of chrom and pos of each record in vcf for use in sig_list_filters.
-Method 2: build list from input variant locations in Int64 chromosomes only (chr1-22)
-"""
-function build_set_from_list(sig_list::Array{Any,2})
-    position_set = Set{Tuple{Any,Int}}()  # For now, assumes all chr names are Int...
-
-    for row in 1:size(sig_list,1)
-        chr = sig_list[row,1]
-        pos = sig_list[row,2]
-        push!(position_set, (string(chr), Int(pos)))
-    end
-
-    return position_set
-end
-
-"""
-    build_set_from_list(sig_list::Array{String,2})
-build set of tuples of chrom and pos of each record in vcf for use in sig_list_filters.
-Method 3: build list from input variant locations in String chromosomes only (chrX,Y,M)
-
-"""
-function build_set_from_list(sig_list::Array{Any,2})
-    position_set = Set{Tuple{Any,Int}}()  # For now, assumes all chr names are Int...
+function build_set_from_list(sig_list) #did not define type because throws errors. Tried defining sig_list::Array(Any,2), ::Array(Int,2), and ::Array(String,2) and only stored one
+    position_set = Set{Tuple{Any,Int}}()
 
     for row in 1:size(sig_list,1)
         chr = sig_list[row,1]
@@ -254,95 +203,59 @@ function build_set_from_list(sig_list::Array{Any,2})
 end
 
 #functions for variant filters
+
 """
 io_genomic_range_vcf_filter(chr_range::String, vcf_filename::AbstractString)
 create subarray of vcf variant records matching user specified chromosome range in format: (e.g. chr1:0-30000000)
 """
 function io_genomic_range_vcf_filter(chr_range::String,vcf_filename::AbstractString)
-    a=split(chr_range,":")
-    chrwhole=a[1]
-    chrnumber=split(chrwhole,"r")
-    string_chr=chrnumber[2]
-    chr=String(string_chr)
-    range=a[2]
-    splitrange=split(range, "-")
-    lower_limit=splitrange[1]
-    chr_range_low=Meta.parse(lower_limit)
-    upper_limit=splitrange[2]
-    chr_range_high=Meta.parse(upper_limit)
 
-    reader = VCF.Reader(open(vcf_filename, "r"))
-    record1=VCF.read(reader)
+        a=split(chr_range,":")
+        chrwhole=a[1]
+        chrnumber=split(chrwhole,"r")
+        string_chr=chrnumber[2]
+        chr=String(string_chr)
+        range=a[2]
+        splitrange=split(range, "-")
+        lower_limit=splitrange[1]
+        chr_range_low=Meta.parse(lower_limit)
+        upper_limit=splitrange[2]
+        chr_range_high=Meta.parse(upper_limit)
 
-    open(VCF.Reader, vcf_filename) do reader
+        reader = VCF.Reader(open(vcf_filename, "r"))
+        record1=VCF.read(reader)
 
-    vcf_record = VCF.Record()
-    vcf_subarray = Array{Any}(undef,0)
+        open(VCF.Reader, vcf_filename) do reader
 
-    if occursin("chr",VCF.chrom(record1))
+        vcf_record = VCF.Record()
+        vcf_subarray = Array{Any}(undef,0)
 
-        while !eof(reader)
-            read!(reader, vcf_record)
+        if occursin("chr",VCF.chrom(record1))
 
-               if (VCF.chrom(vcf_record) == chrwhole) && (chr_range_high >= VCF.pos(vcf_record) >= chr_range_low)
-                      push!(vcf_subarray,copy(vcf_record))
-               end
+            while !eof(reader)
+                read!(reader, vcf_record)
+
+                   if (VCF.chrom(vcf_record) == chrwhole) && (chr_range_high >= VCF.pos(vcf_record) >= chr_range_low)
+                          push!(vcf_subarray,copy(vcf_record))
+                   end
+            end
+
+        else
+
+            while !eof(reader)
+                read!(reader, vcf_record)
+
+                   if (VCF.chrom(vcf_record) == chr) && (chr_range_high >= VCF.pos(vcf_record) >= chr_range_low)
+                          push!(vcf_subarray,copy(vcf_record))
+                   end
+            end
         end
 
-    else
-        while !eof(reader)
-            read!(reader, vcf_record)
+        return vcf_subarray
 
-               if (VCF.chrom(vcf_record) == chr) && (chr_range_high >= VCF.pos(vcf_record) >= chr_range_low)
-                      push!(vcf_subarray,copy(vcf_record))
-               end
-        end
     end
-    return vcf_subarray
+
 end
-end
-
-#=
-function io_genomic_range_vcf_filter(chr_range::String,vcf_filename::AbstractString)
-
-       a=split(chr_range,":")
-       chrwhole=a[1]
-       chrnumber=split(chrwhole,"r")
-       string_chr=chrnumber[2]
-       chr=String(string_chr)
-       range=a[2]
-       splitrange=split(range, "-")
-       lower_limit=splitrange[1]
-       chr_range_low=parse(lower_limit)
-       upper_limit=splitrange[2]
-       chr_range_high=parse(upper_limit)
-
-       vcf_subarray = Array{Any}(undef,0)
-
-       reader = VCF.Reader(open(vcf_filename, "r"))
-       record1=VCF.read(reader)
-
-       #if occursin("chr",VCF.chrom(record1))#version
-       if occursin("chr",VCF.chrom(record1))
-           for record in reader
-
-                  if (VCF.chrom(record) == chrwhole) && (chr_range_high > VCF.pos(record) > chr_range_low)
-                         push!(vcf_subarray,record)
-                  end
-           end
-
-       else
-           for record in reader
-
-                  if (VCF.chrom(record) == chr) && (chr_range_high > VCF.pos(record) > chr_range_low)
-                         push!(vcf_subarray,record)
-                  end
-           end
-       end
-
-       return vcf_subarray
-end
-=#
 
 """
     io_sig_list_vcf_filter(sig_list,vcf_filename)
@@ -439,7 +352,6 @@ function pass_genomic_range_siglist_filter(vcf_filename,sig_list,chr_range::Abst
 
                       chr_sig = string(chr_sig)
 
-                         #if occursin("chr",VCF.chrom(record1))#version
                          if occursin("chr",VCF.chrom(record1))
 
                              if (VCF.chrom(vcf_record) == chr_sig) && (VCF.pos(vcf_record) == pos_sig) && (VCF.hasfilter(vcf_record)) && (VCF.filter(vcf_record) == String["PASS"]) && ((VCF.chrom(vcf_record) == chrwhole)) && ((chr_range_high >= VCF.pos(vcf_record) >= chr_range_low))
@@ -682,7 +594,7 @@ function genomic_range_siglist_filter(vcf_filename,sig_list,chr_range::AbstractS
     return vcf_subarray
 end
 
-#functions for converting vcf record array to numerical array
+#functions for converting vcf record array to numerical array, manipulating numerical array for plotting, and generating data structures for plotting
 
 """
     create_chr_dict()
@@ -691,8 +603,6 @@ creates dict for use in combined_all_genotype_array_functions() for removing 'ch
 function create_chr_dict()
 
     chr_dict = Dict()
-
-    #labels_with_chr = []
 
     chr_dict = Dict("chr1"=> 1,"chr2"=> 2,"chr3"=> 3,"chr4"=> 4,"chr5"=> 5,"chr6"=> 6,"chr7"=> 7,"chr8"=> 8,"chr9"=> 9,"chr10"=> 10,"chr11"=> 11,"chr12"=> 12,"chr13"=> 13,"chr14"=> 14,"chr15"=> 15,"chr16"=> 16,"chr17"=> 17,"chr18"=> 18,"chr19"=> 19,"chr20"=> 20,"chr21"=> 21,"chr22"=> 22,"chrX"=> X,"chrY"=> Y,"chrM"=> M)
 
@@ -766,6 +676,20 @@ function generate_genotype_array(record_sub::Array{Any,1},y)
        pre_num_array = Matrix(df)
 
        return pre_num_array
+end
+
+"""
+    sort_genotype_array(genotype_array)
+sorts genotype data array (which can contain genotype or read depth values) for GT or DP by chromosomal location
+"""
+function sort_genotype_array(genotype_array)
+
+    data=genotype_array[:,3:size(genotype_array,2)]
+    chrom_positions = [parse(Int, i) for i in genotype_array[:,1:2]]
+    genotype_array = hcat(chrom_positions,data)
+    genotype_array = sortslices(genotype_array, dims=1, by=x->(x[1],x[2]))
+
+return genotype_array
 end
 
 """
@@ -873,7 +797,6 @@ function get_sample_names(reader)
 
     sample_names=reshape(sample_names,1,length(sample_names))
 
-    #sample_names=convert(Array{Symbol}, sample_names)#version
     sample_names = [Symbol(i) for i in sample_names]
 
     return sample_names
@@ -897,10 +820,6 @@ function find_group_label_indices(pheno,trait_to_group_by,row_to_sort_by)
 
     group_dividing_line = something(findfirst(isequal(2),pheno[row_to_sort_by,:]),0) - 0.5
 
-    #group1_index = ((findlast(pheno[row_to_sort_by,:],1)) - (findfirst(pheno[row_to_sort_by,:],1)))/2 #version
-    #group2_index = ((findlast(pheno[row_to_sort_by,:],2) - (findfirst(pheno[row_to_sort_by,:],2)))/2) + (findlast(pheno[row_to_sort_by,:],1)) + 0.5#version
-    #group_dividing_line = findfirst(pheno[row_to_sort_by,:],2) - (0.5)#version
-
     group_label_pack = [group1_index, group2_index, group_dividing_line, group1_label, group2_label]
 
     return group_label_pack
@@ -922,11 +841,9 @@ function sortcols_by_phenotype_matrix(pheno_matrix_filename::String,trait_to_gro
     pheno_no_trait_labels = pheno[:,2:size(pheno,2)]
     trait_labels=pheno[2:size(pheno,1),1]
 
-    #pheno_no_trait_labels = sortcols(pheno_no_trait_labels, by = x -> x[row_to_sort_by], rev = false)#version
     pheno_no_trait_labels = sortslices(pheno_no_trait_labels, dims=2, by = x -> x[row_to_sort_by], rev = false)
 
     id_list = pheno_no_trait_labels[1,:]
-    #pheno_data=pheno_no_trait_labels[]#reshape
 
     sample_ids=vec(sample_names)
 
@@ -936,7 +853,6 @@ function sortcols_by_phenotype_matrix(pheno_matrix_filename::String,trait_to_gro
 
     df1_vcf = DataFrame(num_array)
 
-    #rename!(df1_vcf, f => t for (f, t) = zip(names(df1_vcf), sample_ids))#version
     names!(df1_vcf, sample_ids)
 
     ordered_num_array = df1_vcf[:, col_new_order]
@@ -967,7 +883,6 @@ function select_columns(filename_sample_list::AbstractString, num_array::Array{I
 
     col_selectedcolumns=vec(selectedcolumns)
 
-    #selectedcolumns=convert(Array{Symbol}, col_selectedcolumns) #version
     selectedcolumns=Symbol(col_selectedcolumns)
 
     df_num_array = DataFrame(num_array)
@@ -1027,14 +942,14 @@ end
 
 """
     list_sample_names_low_dp(sample_avg_list::Array{Float64,2},sample_names)
-returns list of sample ids that have an average read depth of under 15 across all variant positions
+returns list of sample ids that have an average read depth less than 15 across all variant positions. Developers can implement this in the VIVA script - search script for function name and read notes.
 """
 function list_sample_names_low_dp(sample_avg_list::Array{Float64,1},sample_names)
 
     low_dp_index_list = Array{Int64}(undef,0)
 
         for item = 1:length(sample_avg_list)
-            if sample_avg_list[item] < 15
+            if sample_avg_list[item] < 15 #developers can adjust this read depth threshold value to list positions with dp below threshold
                 push!(low_dp_index_list,item)
             end
         end
@@ -1052,14 +967,14 @@ end
 
 """
     list_variant_positions_low_dp(variant_avg_list::Array{Float64,2},chrom_labels)
-finds variant positions that have an average read depth of under 15 across all patients
+finds variant positions that have an average read depth less than 15 across all patients. Developers can implement this in the VIVA script - search script for function name and read notes.
 """
 function list_variant_positions_low_dp(variant_avg_list::Array{Float64,1},chrom_labels)
 
     low_dp_index_list = Array{Int64}(undef,0)
 
         for item = 1:length(variant_avg_list)
-            if variant_avg_list[item] < 15
+            if variant_avg_list[item] < 15 #developers can adjust this read depth threshold value to list positions with dp below threshold
                 push!(low_dp_index_list,item)
             end
         end
@@ -1072,9 +987,6 @@ function list_variant_positions_low_dp(variant_avg_list::Array{Float64,1},chrom_
         end
 
         return low_dp_positions
-
-
-
 end
 
 #functions for producing objects for plot functions
@@ -1148,55 +1060,6 @@ function chromosome_label_generator(chromosome_labels::Array{Any,1})
     end
 end
 
-#=
-"""
-    chromosome_label_generator_for_chrom_bar(chromosome_labels::Array{String,2},number_rows)
-Returns vector of chr labels and indices to build chromosome bar in heatmaply r
-Specifically, saves indexes and chrom labels in vectors to pass into heatmap function to build array for row side colorbar
-Input is either gt_chromosome_labels or dp_chromosome_labels from translate_gt/dp_to_num_array()
-"""
-function chromosome_label_generator_for_chrom_bar(chromosome_labels::Array{Any,1},number_rows)
-    chrom_label_indices = findfirst.(map(a -> (y -> isequal(a, y)), unique(chromosome_labels)), [chromosome_labels])
-    chrom_labels = unique(chromosome_labels)
-    chrom_labels = [string(i) for i in chrom_labels]
-
-    if chrom_label_indices[length(chrom_label_indices)] == number_rows
-        duplicate_last_label="true"
-    else
-        duplicate_last_label="false"
-    end
-
-    push!(chrom_label_indices,number_rows)
-
-    if length(chrom_labels) > 1
-        for item=2:(length(chrom_labels))
-
-            ratio=((chrom_label_indices[item])-(chrom_label_indices[item-1]))/(length(chromosome_labels))
-
-            if ratio < 0.2
-                font_size = "8"
-                #println("font size is $font_size")
-                return chrom_labels,chrom_label_indices,font_size,duplicate_last_label
-
-            else
-                font_size = "10"
-                #println("font size is $font_size")
-                return chrom_labels,chrom_label_indices,font_size,duplicate_last_label
-
-            end
-        end
-
-    else
-
-        font_size = "10"
-
-        return chrom_labels,chrom_label_indices,font_size,duplicate_last_label
-    end
-
-end
-
-=#
-
 """
     checkfor_outputdirectory(path::String)
 Checks to see if output directory exists already. If it doesn't, it creates the
@@ -1226,30 +1089,11 @@ chr_pos_tuple_list=Array{String}(undef,0)
         pos=chr_labels[row,2]
         chr_pos_tuple="chr$chr,$pos"
         push!(chr_pos_tuple_list,chr_pos_tuple)
+
     end
 
     return chr_pos_tuple_list
 end
-
-#=function generate_chromosome_positions_for_hover_labels(chr_labels::Array{Any,2})
-
-returnXY_column1!(chr_labels)
-
-chr_pos_tuple_list=Array{Tuple}(undef,0)
-
-    for row = 1:size(chr_labels,1)
-
-        chr=chr_labels[row,1]
-        pos=chr_labels[row,2]
-        println(pos)
-        chr_pos_tuple=chr,pos
-        push!(chr_pos_tuple_list,chr_pos_tuple)
-        println(chr_pos_tuple)
-    end
-
-    return chr_pos_tuple_list
-end
-=#
 
 """
     index_vcf(vcf_filename)
@@ -1344,8 +1188,6 @@ function add_pheno_matrix_to_gt_data_for_plotting(gt_num_array,pheno_matrix,trai
 
     pheno_matrix=pheno_matrix[2:size(pheno_matrix,1),:]
 
-    #consider options when have few variants. no multiplyer when can't find even multiple?
-
     #find multiplyer value
     pheno_row_multiplyer=0.05*(size(gt_num_array,1))
 
@@ -1353,8 +1195,9 @@ function add_pheno_matrix_to_gt_data_for_plotting(gt_num_array,pheno_matrix,trai
 
     pheno_row_multiplyer=round(pheno_row_multiplyer/(size(pheno_matrix,1)))
 
-
-    #println(size(pheno_matrix,1))
+    if pheno_row_multiplyer < 1
+        pheno_row_multiplyer = 1
+    end
 
     for i = 1:(size(pheno_matrix, 1))
         for n=1:(size(pheno_matrix, 2))
@@ -1364,6 +1207,7 @@ function add_pheno_matrix_to_gt_data_for_plotting(gt_num_array,pheno_matrix,trai
     end
 
     #resize pheno matrix and create trait_label_array for labeling
+
     resized_pheno_matrix=pheno_matrix[1:1, :]
 
     trait_label_array=trait_labels[1]
@@ -1372,7 +1216,6 @@ function add_pheno_matrix_to_gt_data_for_plotting(gt_num_array,pheno_matrix,trai
 
         trait_row=pheno_matrix[row:row, :]
         trait = trait_labels[row]
-
         i=0
 
         while i < (pheno_row_multiplyer)
@@ -1385,9 +1228,23 @@ function add_pheno_matrix_to_gt_data_for_plotting(gt_num_array,pheno_matrix,trai
 
     end
 
+    resized_pheno_matrix = resized_pheno_matrix[2:end,:]
+
+    #if too few variants are selected for visualization, there is only 1 row of trait labels, so trait label must be stored in array for unique() below
+
+    if typeof(trait_label_array) == SubString{String}
+
+    trait_label_array=[trait_label_array]
+
+    end
+
+    trait_label_array = trait_label_array[2:end]
+
     trait_label_indices = findfirst.(map(a -> (y -> isequal(a, y)),
     unique(trait_label_array)), [trait_label_array])
+
     pheno_trait_labels = unique(trait_label_array)
+
     pheno_trait_labels = [String(i) for i in pheno_trait_labels]
     trait_label_indices = [i+number_rows for i in trait_label_indices]
 
@@ -1404,6 +1261,7 @@ function add_pheno_matrix_to_gt_data_for_plotting(gt_num_array,pheno_matrix,trai
     data_and_pheno_matrix=convert(Array{Int64,2},data_and_pheno_matrix)
 
     return data_and_pheno_matrix,trait_label_array,chrom_label_info
+
 end
 
 """
@@ -1414,12 +1272,14 @@ function add_pheno_matrix_to_dp_data_for_plotting(dp_num_array,pheno_matrix,trai
 
     pheno_matrix=pheno_matrix[2:size(pheno_matrix,1),:]
 
-    #consider options when have few variants. no multiplyer when can't find even multiple?
-
     #find multiplyer value
     pheno_row_multiplyer=0.05*(size(dp_num_array,1))
     pheno_row_multiplyer=round(pheno_row_multiplyer)
     pheno_row_multiplyer=pheno_row_multiplyer/(size(pheno_matrix,1))
+
+    if pheno_row_multiplyer < 1
+        pheno_row_multiplyer = 1
+    end
 
     for i = 1:(size(pheno_matrix, 1))
         for n=1:(size(pheno_matrix, 2))
@@ -1450,8 +1310,22 @@ function add_pheno_matrix_to_dp_data_for_plotting(dp_num_array,pheno_matrix,trai
 
     end
 
+
+        #if too few variants are selected for visualization, there is only 1 row of trait labels, so trait label must be stored in array for unique() below
+        resized_pheno_matrix = resized_pheno_matrix[2:end,:]
+
+        if typeof(trait_label_array) == SubString{String}
+
+        trait_label_array=[trait_label_array]
+
+        end
+
+        trait_label_array = trait_label_array[2:end]
+
     trait_label_indices = findfirst.(map(a -> (y -> isequal(a, y)),
     unique(trait_label_array)), [trait_label_array])
+
+
     pheno_trait_labels = unique(trait_label_array)
     pheno_trait_labels = [String(i) for i in pheno_trait_labels]
     trait_label_indices = [i+number_rows for i in trait_label_indices]
@@ -1518,7 +1392,7 @@ Generate array of data for hovertext to use as custom hover text for grouped hea
 """
 function generate_hover_text_array_grouped(chr_pos_tuple_list,sample_names,input,mode,number_rows)
 
-hover_text_array=Array{Any,1}(undef,0)
+    hover_text_array=Array{Any,1}(undef,0)
 
     for n=1:number_rows
         pos=chr_pos_tuple_list[n]
@@ -1552,6 +1426,7 @@ hover_text_array=Array{Any,1}(undef,0)
     end
 
     for n=number_rows+1:length(chr_pos_tuple_list)
+
         trait=chr_pos_tuple_list[n]
 
         split_trait=split(trait,',')
@@ -1604,4 +1479,5 @@ function save_graphic(graphic,output_directory,save_ext,title,remote_option)
         PlotlyJS.savefig(graphic, joinpath("$(output_directory)" ,"$title.$(save_ext)"))
     end
 
+    display(graphic)
 end

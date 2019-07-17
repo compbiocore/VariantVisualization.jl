@@ -20,9 +20,9 @@ Windows 10, Windows 7.
 ### Command Line Tool
 
 1. Add VariantVisualization.jl using Pkg in the Julia REPL:
-	run `using Pkg`
-	run `Pkg.clone("https://github.com/compbiocore/VariantVisualization.jl")`
-	run `Pkg.instantiate()`
+	* run `using Pkg`
+	* run `Pkg.clone("https://github.com/compbiocore/VariantVisualization.jl")`
+	* run `Pkg.instantiate()`
 2. Download the [VIVA](https://github.com/compbiocore/VariantVisualization.jl/blob/master/viva) tool script and save it to a working directory for your analysis.
 3. Navigate to your working directory and follow the [VIVA manual](https://compbiocore.github.io/VariantVisualization.jl/latest/) to generate your plots.
 
@@ -103,7 +103,7 @@ Go to `http://0.0.0.0:8888/?token=<enter token here>`
 
 #### Using Docker Compose
 
-To run the images with Docker Compose, copy the [`docker-compose.yml`](https://github.com/compbiocore/viva-docker/blob/master/docker-compose.yml) file to a local directory. From that same directory, run the command as it appears below.
+To run the images with Docker Compose, install Docker following the steps above and then install [Docker Compose[(https://docs.docker.com/compose/). Then copy the [docker-compose.yml](https://github.com/compbiocore/viva-docker/blob/master/docker-compose.yml) file to a local directory. From that same directory, run the command as it appears below.
 
 *Note*: Your current directory will mount to `/notebook/data` in the notebook image and to `/data` in the CLI image.
 

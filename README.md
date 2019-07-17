@@ -18,7 +18,6 @@ VariantVisualization.jl is a package we built specifically to power the genetics
 
 Note: Once you have set up VIVA, you can quickly run the command line tool [EXAMPLES](https://compbiocore.github.io/VariantVisualization.jl/latest/examples/) found in the documentation.
 
-
 ## Installation
 
 ### Supported Operating Systems:
@@ -33,11 +32,14 @@ Expected Time for Installation: Installation time depends on your network bandwi
 
 ### Command Line Tool
 
-1. Add VariantVisualization.jl using Pkg in the Julia REPL:
-	a. Open the Julia REPL by typing `julia` into the command line
-	b. Enter the Pkg manager by entering ']' into the REPL
-	c. Enter `add VariantVisualization` in the Pkg manager. This will install all of VIVA's dependencies.
+1. Add VariantVisualization.jl using Pkg in the Julia REPL
+
+	* Open the Julia REPL by typing `julia` into the command line
+	* Enter the Pkg manager by entering `]` into the REPL             
+  * Enter `add VariantVisualization` in the Pkg manager. This will install all of VIVA's dependencies.
+
 2. Download the [VIVA](https://github.com/compbiocore/VariantVisualization.jl/blob/master/viva) tool script and save it to a working directory for your analysis.
+
 3. Navigate to your working directory and follow the [VIVA manual](https://compbiocore.github.io/VariantVisualization.jl/stable/) to generate your plots.
 
 ### Jupyter Notebook
@@ -45,6 +47,7 @@ Expected Time for Installation: Installation time depends on your network bandwi
 1. [Install Jupyter](https://jupyter.org/install)
 2. Install the VariantVisualization.jl Julia package following the Command Line Tool installation instructions above.
 3. Download the [VIVA Jupyter Notebook](https://github.com/compbiocore/VariantVisualization.jl/blob/master/VIVA.ipynb).
+4. Open the VIVA Jupyter Notebook following the instructions in the [manual](https://compbiocore.github.io/VariantVisualization.jl/latest/).
 4. Follow the in-notebook instructions to generate your plots.
 
 ### Running VIVA with Docker or Docker Compose
