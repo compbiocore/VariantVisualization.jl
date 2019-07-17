@@ -19,7 +19,7 @@ Specify filename of VCF file.
 *Note*: This is the *only required argument* for VIVA. If you run with none of the other options, default options will be used. These default options are described in detail below.
 
 ```
-julia VIVA -f example.vcf [OPTIONS]
+julia viva -f example.vcf [OPTIONS]
 ```
 
 ##Selecting Variant Records
@@ -39,7 +39,7 @@ Select rows within a given genomic range.
 *Note*: To visualize genomic ranges within multiple chromosomes, you may create a batch script to run VIVA multiple times using different genomic ranges.
 
 ```
-julia VIVA -f example.vcf -r chr1:20000-30000000
+julia viva -f example.vcf -r chr1:20000-30000000
 ```
 
 ###Variant list
@@ -51,7 +51,7 @@ Select variants matching list of chromosomal positions.
 *arguments*: Provide filename of text file formatted with two columns in .csv format as an argument. There should be a header row with "chr" and "start" in row 1 of column 1 and 2 respectively. Column 1 should contain chromosome number in the format "chr1" or "1" and should match the syntax of the VCF file (that is, if the VCF file lists chromosome numbers in the form "chrX", use "chrX" in your positions list, not "X") You can find an example of this file [here]("[here]("https://github.com/compbiocore/VariantVisualization.jl/tree/master/test/test_files/positions_list.csv")")
 
 ```
-julia VIVA -f example.vcf -l "example_positions_list.txt"
+julia viva -f example.vcf -l "example_positions_list.txt"
 ```
 
 ###Pass filter
@@ -63,7 +63,7 @@ Select rows that passed filters originally set during variant calling and VCF fi
 *arguments*: This flag is a positional argument and does not take options.
 
 ```
-julia VIVA -f example.vcf -p
+julia viva -f example.vcf -p
 ```
 
 ##Selecting and Grouping Samples
@@ -85,7 +85,7 @@ This is broadly useful for purposes such as exploring and presenting **phenotypi
 ##### Input file formatting
 
 Sample metadata matrix is a user generated input file and should be formatted in a table of sample ids and binary metadata traits (such as case,control or treatment1,treatment2 or seq_site_1,seq_site_2). An example of formatting for this table can be found [here]
-("https://github.com/compbiocore/VariantVisualization.jl/tree/master/test/test_files/sample_metadata_matrix.csv"). 
+("https://github.com/compbiocore/VariantVisualization.jl/tree/master/test/test_files/sample_metadata_matrix.csv").
 
 Sample ids must match those found in the VCF file but do not need to be in the same order as they appear in the VCF header. Additionally, if the user would like to use the --select_samples option, sample ids must match the sample selection list.
 
@@ -94,7 +94,7 @@ Metadata traits are stored as rownames in the first column of the table and shou
 This matrix should be saved as a comma delimited .csv file. Microsoft Excel is commonly used for this purpose, but sometimes creates extra delimiter characters in the output file that produce an error in VIVA. You can check to make sure the .csv file was saved properly by opening the file with a text editor such as BBEdit to inspect for and delete empty values or extra delimiter characters at the end of each row.
 
 ```
-julia VIVA -f example.vcf -g sample_metadata_matrix.csv case,control
+julia viva -f example.vcf -g sample_metadata_matrix.csv case,control
 ```
 
 ###Select samples to include in visualization
@@ -108,5 +108,5 @@ Select specific samples to be extracted from the VCF for visualization.
 *Note*: To use the sample selection feature in combination with the sample grouping feature, the sample metadata matrix must only contain the sample ids to be selected.
 
 ```
-julia VIVA -f example.vcf --select_samples select_samples_list.txt
+julia viva -f example.vcf --select_samples select_samples_list.txt
 ```

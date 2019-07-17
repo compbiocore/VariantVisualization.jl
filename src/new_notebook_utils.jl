@@ -23,6 +23,7 @@ function jupyter_main(vcf_filename,saving_options,variant_filters,sample_selecti
 
     #create vcf reader object
     println("Reading $vcf_filename")
+    println()
     reader = VCF.Reader(open(vcf_filename, "r"))
 
     #make sample names object
@@ -57,6 +58,8 @@ function jupyter_main(vcf_filename,saving_options,variant_filters,sample_selecti
         for record in reader
             push!(sub,record)
         end
+
+        number_rows=size(sub,1)
     end
 
     #all filter combos
@@ -64,20 +67,20 @@ function jupyter_main(vcf_filename,saving_options,variant_filters,sample_selecti
     #pass_filter and genomic_range and list
     if occursin("true",pass_filter) && occursin("chr",genomic_range) && occursin(".csv",positions_list)
         sig_list =  load_siglist(positions_list)
-        sub = VariantVisualization.pass_chrrange_siglist_filter(vcf_filename, sig_list, genomic_range)
+        sub = VariantVisualization.pass_genomic_range_siglist_filter(vcf_filename, sig_list, genomic_range)
         number_rows = size(sub,1)
         println("Selected $number_rows variants with Filter status: PASS, that match list of chromosome positions of interest, and are within chromosome range: $genomic_range")
     end
 
     #pass_filter and genomic_range
-    if occursin("true",pass_filter) && occursin("chr",genomic_range)
-        sub = VariantVisualization.pass_chrrange_filter(reader, genomic_range,vcf_filename)
+    if occursin("true",pass_filter) && occursin("chr",genomic_range) && !occursin(".csv",positions_list) && !occursin("true",pass_filter)
+        sub = VariantVisualization.pass_genomic_range_filter(reader, genomic_range,vcf_filename)
         number_rows = size(sub,1)
         println("Selected $number_rows variants with Filter status: PASS and are within chromosome range: $genomic_range")
     end
 
     #pass_filter and list
-    if occursin("true",pass_filter) && occursin(".csv",positions_list)
+    if occursin("true",pass_filter) && occursin(".csv",positions_list) && !occursin("chr",genomic_range)
         sig_list =  load_siglist(positions_list)
         sub = VariantVisualization.pass_siglist_filter(vcf_filename, sig_list)
         number_rows = size(sub,1)
@@ -85,9 +88,9 @@ function jupyter_main(vcf_filename,saving_options,variant_filters,sample_selecti
     end
 
     #genomic_range and list
-    if occursin("chr",genomic_range) && occursin(".csv",positions_list)
+    if occursin("chr",genomic_range) && occursin(".csv",positions_list) && !occursin("true",pass_filter)
         sig_list =  load_siglist(positions_list)
-        sub = VariantVisualization.chrrange_siglist_filter(vcf_filename, sig_list, genomic_range)
+        sub = VariantVisualization.genomic_range_siglist_filter(vcf_filename, sig_list, genomic_range)
         number_rows = size(sub,1)
         println("Selected $number_rows variants that are within chromosome range: $genomic_range and that match list of chromosome positions of interest")
     end
@@ -120,7 +123,7 @@ function jupyter_main(vcf_filename,saving_options,variant_filters,sample_selecti
     end
 
     println()
-    println("Finished Filtering. Total time to filter:")
+    println("Finished Filtering.")
     println("_______________________________________________")
 
     if occursin("genotype",heatmap_options) && !occursin("read_depth",heatmap_options)
@@ -137,7 +140,7 @@ function jupyter_main(vcf_filename,saving_options,variant_filters,sample_selecti
 
         chrom_label_info = VariantVisualization.chromosome_label_generator(gt_chromosome_labels[:,1])
 
-        if length(split(group_samples,",")) == 2
+        if length(group_samples) == 2
 
             if select_samples != ""
 
@@ -151,8 +154,8 @@ function jupyter_main(vcf_filename,saving_options,variant_filters,sample_selecti
                 sample_names = col_selectedcolumns
             end
 
-            group_trait_matrix_filename=(split(group_samples,",")[1])
-            trait_to_group_by = (split(group_samples,",")[2])
+            group_trait_matrix_filename=group_samples[1]
+            trait_to_group_by = group_samples[2]
             println()
             println("Grouping samples by $trait_to_group_by")
             println()
@@ -167,6 +170,7 @@ function jupyter_main(vcf_filename,saving_options,variant_filters,sample_selecti
 
             graphic = VariantVisualization.genotype_heatmap_with_groups(pheno_num_array,title,chrom_label_info,group_label_pack,id_list,chr_pos_tuple_list,y_axis_label_option,trait_label_array,x_axis_label_option,number_rows)
             graphic
+
         else
 
             if select_samples != ""
@@ -184,7 +188,8 @@ function jupyter_main(vcf_filename,saving_options,variant_filters,sample_selecti
             save_numerical_array(gt_num_array,sample_names,chr_pos_tuple_list,title,output_directory)
             end
 
-            graphic = VariantVisualization.genotype_heatmap2(gt_num_array,title,chrom_label_info,sample_names,chr_pos_tuple_list,y_axis_label_option,x_axis_label_option)
+            #graphic = VariantVisualization.genotype_heatmap2(gt_num_array,title,chrom_label_info,sample_names,chr_pos_tuple_list,y_axis_label_option,x_axis_label_option)
+            graphic = VariantVisualization.genotype_heatmap2_new_legend(gt_num_array,title,chrom_label_info,sample_names,chr_pos_tuple_list,y_axis_label_option,x_axis_label_option)
             graphic
 
         end
@@ -210,7 +215,7 @@ function jupyter_main(vcf_filename,saving_options,variant_filters,sample_selecti
 
         chrom_label_info = VariantVisualization.chromosome_label_generator(dp_chromosome_labels[:,1])
 
-        if length(split(group_samples,",")) == 2
+        if length(group_samples) == 2
 
             if select_samples != ""
 
@@ -225,8 +230,8 @@ function jupyter_main(vcf_filename,saving_options,variant_filters,sample_selecti
             end
 
 
-            group_trait_matrix_filename=(split(group_samples,",")[1])
-            trait_to_group_by = (split(group_samples,",")[2])
+            group_trait_matrix_filename=group_samples[1]
+            trait_to_group_by = group_samples[2]
             println()
             println("Grouping samples by $trait_to_group_by")
             println()
@@ -287,7 +292,7 @@ function jupyter_main(vcf_filename,saving_options,variant_filters,sample_selecti
 
         chrom_label_info = VariantVisualization.chromosome_label_generator(gt_chromosome_labels[:,1])
 
-        if length(split(group_samples,",")) == 2
+        if length(group_samples) == 2
 
             if select_samples != ""
 
@@ -301,8 +306,8 @@ function jupyter_main(vcf_filename,saving_options,variant_filters,sample_selecti
                 sample_names = col_selectedcolumns
             end
 
-            group_trait_matrix_filename=(split(group_samples,",")[1])
-            trait_to_group_by = (split(group_samples,",")[2])
+            group_trait_matrix_filename=group_samples[1]
+            trait_to_group_by = group_samples[2]
             println()
             println("Grouping samples by $trait_to_group_by")
             println()
@@ -315,6 +320,7 @@ function jupyter_main(vcf_filename,saving_options,variant_filters,sample_selecti
 
             pheno_num_array,trait_label_array,chrom_label_info=add_pheno_matrix_to_gt_data_for_plotting(ordered_num_array,pheno,trait_labels,chrom_label_info,number_rows)
 
+            #graphic = VariantVisualization.genotype_heatmap_with_groups(pheno_num_array,title,chrom_label_info,group_label_pack,id_list,chr_pos_tuple_list,y_axis_label_option,trait_label_array,x_axis_label_option,number_rows)
             graphic = VariantVisualization.genotype_heatmap_with_groups(pheno_num_array,title,chrom_label_info,group_label_pack,id_list,chr_pos_tuple_list,y_axis_label_option,trait_label_array,x_axis_label_option,number_rows)
             graphic
 
@@ -335,8 +341,8 @@ function jupyter_main(vcf_filename,saving_options,variant_filters,sample_selecti
             save_numerical_array(gt_num_array,sample_names,chr_pos_tuple_list,title,output_directory)
             end
 
-            graphic = VariantVisualization.genotype_heatmap2(gt_num_array,title,chrom_label_info,sample_names,chr_pos_tuple_list,y_axis_label_option,x_axis_label_option)
-            graphic
+            #graphic = VariantVisualization.genotype_heatmap2(gt_num_array,title,chrom_label_info,sample_names,chr_pos_tuple_list,y_axis_label_option,x_axis_label_option)
+            graphic = VariantVisualization.genotype_heatmap2_new_legend(gt_num_array,title,chrom_label_info,sample_names,chr_pos_tuple_list,y_axis_label_option,x_axis_label_option)
 
         end
 
@@ -357,7 +363,7 @@ function jupyter_main(vcf_filename,saving_options,variant_filters,sample_selecti
 
         chrom_label_info = VariantVisualization.chromosome_label_generator(dp_chromosome_labels[:,1])
 
-        if length(split(group_samples,",")) == 2
+        if length(group_samples) == 2
 
             if select_samples != ""
 
@@ -371,8 +377,8 @@ function jupyter_main(vcf_filename,saving_options,variant_filters,sample_selecti
                 sample_names = col_selectedcolumns
             end
 
-            group_trait_matrix_filename=(split(group_samples,",")[1])
-            trait_to_group_by = (split(group_samples,",")[2])
+            group_trait_matrix_filename=group_samples[1]
+            trait_to_group_by = group_samples[2]
             println()
             println("Grouping samples by $trait_to_group_by")
             println()
@@ -410,8 +416,9 @@ function jupyter_main(vcf_filename,saving_options,variant_filters,sample_selecti
             dp_num_array_limited=read_depth_threshhold(dp_num_array)
 
             graphic = VariantVisualization.dp_heatmap2(dp_num_array, title, chrom_label_info, sample_names,chr_pos_tuple_list,y_axis_label_option,x_axis_label_option)
+            graphic
 
-        end
+            end
 
         println("Saving read depth heatmap")
 

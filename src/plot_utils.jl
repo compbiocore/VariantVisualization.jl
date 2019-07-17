@@ -1,127 +1,17 @@
 #heatmap plots for grouped and ungrouped genotype and read depth viz
-#=
-"""
-    genotype_heatmap2(input::Array{Any,2},title::AbstractString,filename,sample_names,gt_chromosome_labels,y_axis_label_option,x_axis_label_option)
-generate heatmap of genotype data.
-"""
-function genotype_heatmap2(input,title,chrom_label_info,sample_names,chr_pos_tuple_list_rev,y_axis_label_option,x_axis_label_option)
-
-            chr_pos_tuple_indices,chr_pos_tuple_list,sample_name_indices,sample_names,chrom_labels,chrom_label_indices,font_size = process_plot_inputs(chrom_label_info,sample_names,chr_pos_tuple_list_rev)
-            title_no_underscores=replace(title, "_"=>' ')
-
-            writedlm("chr_pos_tuple_list.csv",chr_pos_tuple_list,',')
-
-            hover_text_array=generate_hover_text_array(chr_pos_tuple_list,sample_names,input,"GT")
-
-               trace=heatmap(
-                   z = input, x = 1:size(input, 2),y = 1:size(input, 1),
-
-                   hoverinfo="text",
-                   text=hover_text_array,
-
-                   zauto=false,zmax=3,zmin=0,
-
-                   transpose=true,
-                   colorscale =    [[0, "rgb(255,255,255)"],
-                                   [0.33, "rgb(51,106,145)"],
-                                   [0.66, "rgb(65,165,137)"],
-                                   [1, "rgb(251,231,65)"]],
-
-                   gridcolor = "#E2E2E2",
-                   showscale = true,
-                   colorbar = attr(tickvals = [0, 1, 2, 3],
-                   ticktext = ["No Call (0)", "Homozygous Reference", "Heterozygous Variant", "Homozygous Variant"])
-                   );
-
-            if y_axis_label_option == "chromosomes"
-
-                   layout = Layout(
-
-                                   title = "$title_no_underscores",
-                                   xaxis=attr(title="Sample ID", showgrid=false, zeroline=false, tickvals=sample_name_indices,
-                                   ticktext=sample_names, tickangle=45,showticklabels=true),
-                                   yaxis=attr(title="Genomic Location", zeroline=false, tickvals=chrom_label_indices,
-                                   ticktext=chrom_labels,tickfont_size=font_size,hovermode=true,automargin=true,showgrid=false)
-                   )
-
-                  data = (trace)
-                      plot(data,layout)
-
-               elseif y_axis_label_option == "positions"
-
-                   layout = Layout(
-                                   title = "$title_no_underscores",
-                                   xaxis=attr(title="Sample ID", showgrid=false, zeroline=false, tickvals=sample_name_indices,
-                                   ticktext=sample_names, tickangle=45, showticklabels=x_axis_label_option),
-                                   yaxis=attr(title="Genomic Location", zeroline=false, tickvals=chr_pos_tuple_indices,
-                                   ticktext=chr_pos_tuple_list,tickfont_size=font_size,hovermode=true,automargin=true,showgrid=false)
-                   )
-
-               data = (trace)
-                   plot(data,layout)
-
-               elseif y_axis_label_option == "hover_positions"
-
-                   layout = Layout(
-                                   title = "$title_no_underscores",
-                                   xaxis=attr(title="Sample ID", showgrid=false, zeroline=false, tickvals=sample_name_indices,
-                                   ticktext=sample_names, tickangle=45,showticklabels=x_axis_label_option),
-                                   yaxis=attr(title="Genomic Location", zeroline=false, tickvals=chr_pos_tuple_indices,
-                                   ticktext=chr_pos_tuple_list,tickfont_size=font_size,hovermode=true,automargin=true,showticklabels=false)
-                   )
-
-               data = (trace)
-                   plot(data,layout)
-
-                else
-                    println("--y_axis_labels is not a valid option. Choose positions or chromosomes")
-                end
-end
-
-=#
 
 """
-    genotype_heatmap2_new_legend(input::Array{Any,2},title::AbstractString,filename,sample_names,gt_chromosome_labels,y_axis_label_option,x_axis_label_option)
+    genotype_heatmap2_new_legend(input::Array{Any,2},title::AbstractString,chrom_label_info,sample_names,chr_pos_tuple_list_rev,y_axis_label_option,x_axis_label_option)
 generate heatmap of genotype data.
 """
 function genotype_heatmap2_new_legend(input,title,chrom_label_info,sample_names,chr_pos_tuple_list_rev,y_axis_label_option,x_axis_label_option) #chr_pos_tuple_list_rev is rev because heatmap in plotly mirrors list for some reason.
 
-
-#=changes to make:
-
-add following to all plot functions
-
-#in trace = heatmap()
- showscale = false, #new_edit
-
-trace2 = scatter(
-;x=[230,230,230,230], y=[450,650,850,1050],
-  mode="text", name="legend label",
-  textposition="middle right",
-  text=["No Call", "Homozygous Reference", "Heterozygous Variant", "Homozygous Variant"],
-  marker_size=300, textfont_family="Raleway, sans-serif")
-
-data = [trace, trace2]
-
-shapes = [
-rect(x0=210, y0=1000, x1=215, y1=1050, opacity=1.0, fillcolor="rgb(251,231,65)", line_color="black"),
-rect(x0=210, y0=800, x1=215, y1=850, opacity=1.0, fillcolor="rgb(65,165,137)", line_color="black"),
-rect(x0=210, y0= 600, x1=215, y1=650, opacity=1.0, fillcolor="rgb(51,106,145)", line_color="black"),
-rect(x0=210, y0= 400, x1=215, y1=450, opacity=1.0, fillcolor="rgb(255,255,255)", line_color="black")]
-
-
-#layout = Layout(    shapes=shapes,)
-=#
-
             chr_pos_tuple_indices,chr_pos_tuple_list,sample_name_indices,sample_names,chrom_labels,chrom_label_indices,font_size = process_plot_inputs(chrom_label_info,sample_names,chr_pos_tuple_list_rev)
             title_no_underscores=replace(title, "_"=>' ')
 
-             #start_array_gen = time()
              hover_text_array=generate_hover_text_array(chr_pos_tuple_list,sample_names,input,"GT")
-            # elapsed_generation = time() - start_array_gen
-            # println("hover_text_array takes $elapsed_generation seconds to generate")
 
-             position_1,position_2,position_3,position_4,position_5,position_6,position_7,position_8,position_9,position_10,text_point_increment,legend_xaxis_anchor,legend_xaxis_anchor_2,x_axis_text_anchor,extra_right_margin_space = generate_legend_increments_ungrouped(input)
+             position_1,position_2,position_3,position_4,position_5,position_6,position_7,position_8,position_9,position_10,text_point_increment,legend_xaxis_anchor,legend_xaxis_anchor_2,x_axis_text_anchor,extra_right_margin_space,extra_right_margin_space_dp = generate_legend_increments_ungrouped(input)
 
                trace=heatmap(
                    z = input, x = 1:size(input, 2),y = 1:size(input, 1),
@@ -138,11 +28,12 @@ rect(x0=210, y0= 400, x1=215, y1=450, opacity=1.0, fillcolor="rgb(255,255,255)",
                                    [1, "rgb(251,231,65)"]],
 
                    gridcolor = "#E2E2E2",
-                   showscale = false, #new_edit
+                   showscale = false, #we define a custom legend using shapes and a text scatter trace
                    colorbar = attr(tickvals = [0, 1, 2, 3],
                    ticktext = ["No Call (0)", "Homozygous Reference", "Heterozygous Variant", "Homozygous Variant"])
                    );
 
+                   #we define a custom legend using shapes and a text scatter trace
                    trace2 = scatter(
                    ;x=[x_axis_text_anchor,x_axis_text_anchor,x_axis_text_anchor,x_axis_text_anchor,x_axis_text_anchor+extra_right_margin_space], y=y=[position_1+text_point_increment,position_3+text_point_increment,position_5+text_point_increment,position_7+text_point_increment,position_9+text_point_increment],
                      mode="text", name="legend label",
@@ -218,47 +109,6 @@ function genotype_heatmap_with_groups(input::Array{Int64,2},title::String,chrom_
 
     hover_text_array=generate_hover_text_array_grouped(chr_pos_tuple_list,id_list,input,"GT",number_rows)
 
-    #h_line_index_list = [number_rows + 0.5]
-#=
-function generate_hline_indices(number_rows,input)
-
-    h_line_index_list = [number_rows + 0.5]
-
-    traits=unique(trait_label_array)
-    pheno_row_multiplyer=0.05*(number_rows)
-    pheno_row_multiplyer=(pheno_row_multiplyer)
-    pheno_matrix_size=size(input,1)-number_rows
-    number_trait_rows=round(pheno_row_multiplyer/length(traits))+1
-    println(number_trait_rows)
-
-    #pheno_row_multiplyer=(0.05*(number_rows))
-    #println(pheno_row_multiplyer)
-
-    #pheno_row_multiplyer=(pheno_row_multiplyer/(size(input,1)-number_rows))
-    #println(pheno_row_multiplyer)
-
-    #number_trait_rows=((size(input,1)-number_rows)/pheno_row_multiplyer)
-    #println(number_trait_rows)
-
-    #number_trait_rows=round(number_trait_rows/(length(traits)))-1
-    #println(number_trait_rows)
-
-    for n=1:length(traits)
-    println(number_trait_rows)
-        trait_line_index = h_line_index_list[n]+number_trait_rows
-         push!(h_line_index_list,trait_line_index)
-    end
-
-    println(h_line_index_list)
-
-    #h_line_index_list = [1484,1570]
-
-return h_line_index_list
-end
-
-h_line_index_list = generate_hline_indices(number_rows,input)
-=#
-
                   trace = heatmap(
                        z = input, x=1:size(input, 2),y=1:size(input, 1),
 
@@ -280,11 +130,12 @@ h_line_index_list = generate_hline_indices(number_rows,input)
                                                   ],
 
                       gridcolor = "#E2E2E2",
-                      showscale = false,
+                      showscale = false, #we define a custom legend using shapes and a text scatter trace
                       colorbar = attr(tickvals = [-2, -1, 0, 1, 2, 3],
                       ticktext = ["Trait 2", "Trait 1", "No Call", "Homozygous Reference", "Heterozygous Variant", "Homozygous Variant"])
                       );
 
+                    #we define a custom legend using shapes and a text scatter trace
                     trace2 = scatter(
                     ;x=[x_axis_text_anchor,x_axis_text_anchor,x_axis_text_anchor,x_axis_text_anchor,x_axis_text_anchor+extra_right_margin_space,x_axis_text_anchor,x_axis_text_anchor], y=y=[position_1+text_point_increment,position_2+text_point_increment,position_3+text_point_increment,position_4+text_point_increment,position_5+text_point_increment,position_7+text_point_increment,position_8+text_point_increment],
                       mode="text", name="legend label",
@@ -375,20 +226,14 @@ h_line_index_list = generate_hline_indices(number_rows,input)
 generate heatmap of read depth data.
 """
 function dp_heatmap2(input, title, chrom_label_info, sample_names,chr_pos_tuple_list_rev,y_axis_label_option,x_axis_label_option)
-#rename chrom labels to y_labels and y_label indices
+
     chr_pos_tuple_indices,chr_pos_tuple_list,sample_name_indices,sample_names,chrom_labels,chrom_label_indices,font_size = process_plot_inputs(chrom_label_info,sample_names,chr_pos_tuple_list_rev)
 
     title_no_underscores=replace(title, "_"=>' ')
 
-    start_array_gen = time()
-
     hover_text_array=generate_hover_text_array(chr_pos_tuple_list,sample_names,input,"DP")
 
-    elapsed_generation = time() - start_array_gen
-    println("hover_text_array takes $elapsed_generation seconds to generate")
-
-
-    position_1,position_2,position_3,position_4,position_5,position_6,position_7,position_8,position_9,position_10,text_point_increment,legend_xaxis_anchor,legend_xaxis_anchor_2,x_axis_text_anchor,extra_right_margin_space = generate_legend_increments_ungrouped(input)
+    position_1,position_2,position_3,position_4,position_5,position_6,position_7,position_8,position_9,position_10,text_point_increment,legend_xaxis_anchor,legend_xaxis_anchor_2,x_axis_text_anchor,extra_right_margin_space,extra_right_margin_space_dp = generate_legend_increments_ungrouped(input)
 
     trace=heatmap(
         z = input, x=1:size(input, 2),y=1:size(input, 1),
@@ -412,11 +257,12 @@ function dp_heatmap2(input, title, chrom_label_info, sample_names,chr_pos_tuple_
         ticktext = ["No Call","0","20","40","60","80","100+"]),
 
         gridcolor = "#E2E2E2",
-        showscale = false,
+        showscale = false, #we define a custom legend using shapes and a text scatter trace
         );
 
+        #we define a custom legend using shapes and a text scatter trace
         trace2 = scatter(
-        ;x=[x_axis_text_anchor,x_axis_text_anchor,x_axis_text_anchor,x_axis_text_anchor,x_axis_text_anchor+extra_right_margin_space],
+        ;x=[x_axis_text_anchor,x_axis_text_anchor,x_axis_text_anchor,x_axis_text_anchor,x_axis_text_anchor,x_axis_text_anchor+extra_right_margin_space_dp],
         y=[position_1+text_point_increment,position_2+text_point_increment,position_3+text_point_increment,position_4+text_point_increment,position_5+text_point_increment,position_6+text_point_increment],
           mode="text", name="legend label",
           textposition="middle right",
@@ -442,7 +288,7 @@ function dp_heatmap2(input, title, chrom_label_info, sample_names,chr_pos_tuple_
                            ticktext=chrom_labels,tickfont_size=font_size,hovermode=true,automargin=true,showgrid=false)
            )
 
-          data = (trace)
+          data = [trace, trace2]
               plot(data,layout)
 
        elseif y_axis_label_option == "positions"
@@ -456,7 +302,7 @@ function dp_heatmap2(input, title, chrom_label_info, sample_names,chr_pos_tuple_
                            ticktext=chr_pos_tuple_list,tickfont_size=font_size,hovermode=true,automargin=true,showgrid=false)
            )
 
-       data = (trace)
+      data = [trace, trace2]
            plot(data,layout)
 
        elseif y_axis_label_option == "hover_positions"
@@ -469,7 +315,7 @@ function dp_heatmap2(input, title, chrom_label_info, sample_names,chr_pos_tuple_
                            yaxis=attr(title="Genomic Location", zeroline=false, tickvals=chr_pos_tuple_indices,
                            ticktext=chr_pos_tuple_list,tickfont_size=font_size,hovermode=true,automargin=true,showticklabels=false)
            )
-           data = (trace)
+          data = [trace, trace2]
                plot(data,layout)
 
         else
@@ -489,13 +335,12 @@ function dp_heatmap2_with_groups(input::Array{Int64,2},title::String,chrom_label
 
     hover_text_array=generate_hover_text_array_grouped(chr_pos_tuple_list,id_list,input,"DP",number_rows)
 
-    #h_line_index = (number_rows + 0.5)
-
     position_1,position_2,position_3,position_4,position_5,position_6,position_7,position_8,position_9,text_point_increment,trait_positions,legend_xaxis_anchor,legend_xaxis_anchor_2,x_axis_text_anchor,extra_right_margin_space = generate_legend_increments_grouped(input)
 
     position_1_trait_1,position_2_trait_1,position_1_trait_2,position_2_trait_2 = trait_positions
 
     trace=heatmap(
+
         z = input, x=1:size(input, 2),y=1:size(input, 1),
 
         hoverinfo="text",
@@ -520,11 +365,13 @@ function dp_heatmap2_with_groups(input::Array{Int64,2},title::String,chrom_label
                      title="Depth / Trait",
                      ticktext = ["Trait 2","Trait 1","No Call","0","20","40","60","80","100+"]),
                      gridcolor = "#E2E2E2",
-                     showscale = false,
+                     showscale = false, #we define a custom legend using shapes and a text scatter trace
                      );
 
+         #we define a custom legend using shapes and a text scatter trace
          trace2 = scatter(
-         ;x=[x_axis_text_anchor,x_axis_text_anchor,x_axis_text_anchor,x_axis_text_anchor,x_axis_text_anchor,x_axis_text_anchor+extra_right_margin_space,x_axis_text_anchor,x_axis_text_anchor], y=[position_1+text_point_increment,position_2+text_point_increment,position_3+text_point_increment,position_4+text_point_increment,position_5+text_point_increment,position_6 + text_point_increment, position_7+text_point_increment,position_8+text_point_increment],
+         ;x=[x_axis_text_anchor,x_axis_text_anchor,x_axis_text_anchor,x_axis_text_anchor,x_axis_text_anchor,x_axis_text_anchor+extra_right_margin_space,x_axis_text_anchor,x_axis_text_anchor],
+         y=[position_1+text_point_increment,position_2+text_point_increment,position_3+text_point_increment,position_4+text_point_increment,position_5+text_point_increment,position_6 + text_point_increment, position_7+text_point_increment,position_8+text_point_increment],
            mode="text", name="legend label",
            textposition="middle right",
            text=["No Call", "0", "10", "20","100+","","Trait 2","Trait 1"],
@@ -541,22 +388,6 @@ function dp_heatmap2_with_groups(input::Array{Int64,2},title::String,chrom_label
          rect(x0=legend_xaxis_anchor, y0= position_2, x1=legend_xaxis_anchor_2, y1=position_3, opacity=1.0, fillcolor="rgb(153,231,255)", line_color="black"),
          rect(x0=legend_xaxis_anchor, y0= position_1, x1=legend_xaxis_anchor_2, y1=position_2, opacity=1.0, fillcolor="rgb(255,255,255)", line_color="black")
          ]
-
-         #=
-
-         #original colors for grouped dp legend
-         shapes = [
-         rect(x0=legend_xaxis_anchor, y0=position_5, x1=205, y1=position_6, opacity=1.0, fillcolor="rgb(0,64,168)", line_color="black"),
-         rect(x0=legend_xaxis_anchor, y0=position_4, x1=205, y1=position_5, opacity=1.0, fillcolor="rgb(43,124,255)", line_color="black"),
-         rect(x0=legend_xaxis_anchor, y0=position_3, x1=205, y1=position_4, opacity=1.0, fillcolor="rgb(79,146,255)", line_color="black"),
-         rect(x0=legend_xaxis_anchor, y0= position_2, x1=205, y1=position_3, opacity=1.0, fillcolor="rgb(153,231,255)", line_color="black"),
-         rect(x0=legend_xaxis_anchor, y0= position_1, x1=205, y1=position_2, opacity=1.0, fillcolor="rgb(255,255,255)", line_color="black"),
-         rect(x0=legend_xaxis_anchor, y0= position_7, x1=205, y1=position_8, opacity=1.0, fillcolor="rgb(255, 220, 145)", line_color="black"),
-         rect(x0=legend_xaxis_anchor, y0= position_8, x1=205, y1=position_9, opacity=1.0, fillcolor="rgb(174, 145, 255)", line_color="black")]
-
-=#
-
-        #shapes = [vline(group_dividing_line), hline(h_line_index,line=attr(color="white"))]
 
 if y_axis_label_option == "chromosomes"
 
@@ -579,6 +410,7 @@ if y_axis_label_option == "chromosomes"
       plot(data,layout)
 
 elseif y_axis_label_option == "positions"
+
     layout = Layout(
                     shapes=shapes,
                     title = "$title_no_underscores",
@@ -593,7 +425,7 @@ elseif y_axis_label_option == "positions"
                     hovermode=true,automargin=true,showgrid=false),
 
                     yaxis_range = [1:size(input,1)],
-                    xaxis_range = [1:size(input,2)] #line bright white
+                    xaxis_range = [1:size(input,2)]
                   )
 
       plot(data,layout)
@@ -620,6 +452,7 @@ end
 end
 
 #Scatter plots for average read depth viz
+
 """
     avg_sample_dp_scatter(sample_avg_list::Array{Float64,1},sample_names,x_axis_label_option)
 generate line chart of average read depths of each sample.
@@ -747,6 +580,7 @@ function generate_legend_increments_ungrouped(input)
     legend_xaxis_anchor_2 = legend_xaxis_anchor + width_of_color_box
     x_axis_text_anchor = legend_xaxis_anchor_2 + number_samples/40
     extra_right_margin_space=number_samples/5
+    extra_right_margin_space_dp = number_samples/10
 
     position_1 = number_rows/2
     position_2 = position_1 + increment
@@ -761,7 +595,7 @@ function generate_legend_increments_ungrouped(input)
     text_point_increment = increment/2
     #trait_positions = position_1_trait_1,position_2_trait_1,position_1_trait_2,position_1_trait_2
 
-    return position_1,position_2,position_3,position_4,position_5,position_6,position_7,position_8,position_9,position_10,text_point_increment,legend_xaxis_anchor,legend_xaxis_anchor_2,x_axis_text_anchor,extra_right_margin_space
+    return position_1,position_2,position_3,position_4,position_5,position_6,position_7,position_8,position_9,position_10,text_point_increment,legend_xaxis_anchor,legend_xaxis_anchor_2,x_axis_text_anchor,extra_right_margin_space,extra_right_margin_space_dp
 end
 
 """
@@ -780,6 +614,7 @@ function generate_legend_increments_grouped(input)
     legend_xaxis_anchor_2 = legend_xaxis_anchor + width_of_color_box
     x_axis_text_anchor = legend_xaxis_anchor_2 + number_samples/40
     extra_right_margin_space = number_samples/5
+
 
     position_1 = number_rows/3
     position_2 = position_1 + increment

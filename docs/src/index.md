@@ -24,7 +24,7 @@ To use VIVA, we recommend creating a new directory for storing your VCF file to 
 VIVA's general command line argument structure is as follows:
 
 ```
-    julia VIVA -f file.vcf [OPTIONS]
+    julia viva -f file.vcf [OPTIONS]
 ```
 
 From the command line or powershell, run the VIVA command line tool script which takes arguments from the command line and parses them with ArgParse.jl.
@@ -32,13 +32,13 @@ From the command line or powershell, run the VIVA command line tool script which
 Example:
 
 ```
-    julia VIVA -f example.vcf -r chr1:20000-30000000 -s pdf -m genotype,read_depth --avg_dp samples
+    julia viva -f example.vcf -r chr1:20000-30000000 -s pdf -m genotype,read_depth --avg_dp samples
 ```
 
 To display a complete set of help instructions while using the tool, run VIVA with the help flag (`--help`, `-h`).
 
 ```
-    julia VIVA -h
+    julia viva -h
 ```
 
 ### Default Options:
@@ -46,7 +46,7 @@ To display a complete set of help instructions while using the tool, run VIVA wi
 By running VIVA with only a VCF filename:
 
 ```
-    julia VIVA -f file.vcf
+    julia viva -f file.vcf
 ```
 
 Default options will be used:
@@ -85,5 +85,3 @@ Use the following steps to use the VIVA Jupyter Notebook utility:
 * [Variant and Sample Selection](https://compbiocore.github.io/VariantVisualization.jl/stable/filtering_vcf/)
 
 * [Plotting Options](https://compbiocore.github.io/VariantVisualization.jl/stable/plotting/)
-
-

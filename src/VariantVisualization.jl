@@ -22,6 +22,7 @@ export
     #reorder_columns,
     select_columns,
     #genotype_heatmap2,
+    genotype_heatmap2_new_legend,
     dp_heatmap2,
     avg_sample_dp_scatter,
     avg_variant_dp_line_chart,
@@ -40,6 +41,7 @@ export
     translate_genotype_to_num_array,
     translate_readdepth_strings_to_num_array,
     genotype_heatmap_with_groups,
+    dp_heatmap2_with_groups,
     returnXY_column1!,
     pass_genomic_range_siglist_filter,
     pass_genomic_range_filter,
@@ -64,7 +66,10 @@ export
     generate_hover_text_array,
     generate_hover_text_array_grouped,
     save_graphic,
-    build_set_from_list
+    build_set_from_list,
+    generate_legend_increments_ungrouped,
+    generate_legend_increments_grouped
+
 
 include("vcf_utils_complete.jl")
 include("plot_utils.jl")
