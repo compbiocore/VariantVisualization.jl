@@ -477,16 +477,22 @@ if parsed_args["heatmap"] == "genotype,read_depth" || parsed_args["heatmap"] == 
     println("Saving genotype heatmap")
 
     if parsed_args["num_array"] == true
+
     save_numerical_array(gt_num_array,sample_names,chr_pos_tuple_list,title,output_directory)
+
     end
 
     save_graphic(graphic,output_directory,save_ext,title,remote_option)
 
     if parsed_args["heatmap_title"] != nothing
+
         title = "Read_Depth_$(parsed_args["heatmap_title"])"
+
     else
+
         bn = Base.Filesystem.basename(parsed_args["vcf_file"])
         title = "Read_Depth_$bn"
+
     end
 
     dp_num_array,dp_chromosome_labels = combined_all_read_depth_array_functions(sub)
@@ -498,14 +504,17 @@ if parsed_args["heatmap"] == "genotype,read_depth" || parsed_args["heatmap"] == 
     if length(parsed_args["group_samples"]) == 2
 
         if parsed_args["select_samples"] != nothing && length(parsed_args["group_samples"]) != 2
+
             println("Selecting samples listed in $(parsed_args["select_samples"])")
             dp_num_array,col_selectedcolumns = select_columns(parsed_args["select_samples"], dp_num_array, sample_names)
             sample_names=col_selectedcolumns
 
         elseif parsed_args["select_samples"] != nothing && length(parsed_args["group_samples"]) == 2
+
             #sample selection occurs in this case during sample grouping step.
             #when using sample grouping and selection options, sample metadata matric should have the same sample names as the selection list.
             #improvement note for developers: make function to check that sample ids in metadata matrix and sample selection list match. If not, print error and choose to go with metadata matrix sample ids.
+
         end
 
         group_trait_matrix_filename=((parsed_args["group_samples"])[1])
@@ -515,7 +524,9 @@ if parsed_args["heatmap"] == "genotype,read_depth" || parsed_args["heatmap"] == 
         dp_num_array_limited=read_depth_threshhold(ordered_dp_num_array)
 
         if parsed_args["num_array"] == true
-        save_numerical_array(ordered_dp_num_array,sample_names,chr_pos_tuple_list,title,output_directory)
+
+            save_numerical_array(ordered_dp_num_array,sample_names,chr_pos_tuple_list,title,output_directory)
+
         end
 
         pheno_num_array,trait_label_array,chrom_label_info = add_pheno_matrix_to_dp_data_for_plotting(dp_num_array_limited,pheno,trait_labels,chrom_label_info,number_rows)
@@ -525,19 +536,23 @@ if parsed_args["heatmap"] == "genotype,read_depth" || parsed_args["heatmap"] == 
     else
 
         if parsed_args["select_samples"] != nothing && length(parsed_args["group_samples"]) != 2
+
             println("Selecting samples listed in $(parsed_args["select_samples"])")
 
             dp_num_array,col_selectedcolumns = select_columns(parsed_args["select_samples"], dp_num_array, sample_names)
             sample_names=col_selectedcolumns
 
         elseif parsed_args["select_samples"] != nothing && length(parsed_args["group_samples"]) == 2
+
             #sample selection occurs in this case during sample grouping step.
             #when using sample grouping and selection options, sample metadata matric should have the same sample names as the selection list.
             #improvement note for developers: make function to check that sample ids in metadata matrix and sample selection list match. If not, print error and choose to go with metadata matrix sample ids.
         end
 
         if parsed_args["num_array"] == true
-        save_numerical_array(dp_num_array,sample_names,chr_pos_tuple_list,title,output_directory)
+
+            save_numerical_array(dp_num_array,sample_names,chr_pos_tuple_list,title,output_directory)
+
         end
 
         dp_num_array_limited=read_depth_threshhold(dp_num_array)
