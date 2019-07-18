@@ -1,0 +1,909 @@
+
+
+
+
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      <meta http-equiv="x-ua-compatible" content="ie=edge">
+      
+        <meta name="description" content="Visualization of Variants">
+      
+      
+        <link rel="canonical" href="https://compbiocore.github.io/installation/">
+      
+      
+        <meta name="author" content="compbiocore">
+      
+      
+        <meta name="lang:clipboard.copy" content="Copy to clipboard">
+      
+        <meta name="lang:clipboard.copied" content="Copied to clipboard">
+      
+        <meta name="lang:search.language" content="en">
+      
+        <meta name="lang:search.pipeline.stopwords" content="True">
+      
+        <meta name="lang:search.pipeline.trimmer" content="True">
+      
+        <meta name="lang:search.result.none" content="No matching documents">
+      
+        <meta name="lang:search.result.one" content="1 matching document">
+      
+        <meta name="lang:search.result.other" content="# matching documents">
+      
+        <meta name="lang:search.tokenizer" content="[\s\-]+">
+      
+      <link rel="shortcut icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-0.17.5, mkdocs-material-2.9.4">
+    
+    
+      
+        <title>Installation and Setup - VariantVisualization.jl</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/application.451f80e5.css">
+      
+        <link rel="stylesheet" href="../assets/stylesheets/application-palette.22915126.css">
+      
+      
+        
+        
+        <meta name="theme-color" content="#546e7a">
+      
+    
+    
+      <script src="../assets/javascripts/modernizr.1aa3b519.js"></script>
+    
+    
+      <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+      
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700|Roboto+Mono">
+        <style>body,input{font-family:"Roboto","Helvetica Neue",Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono","Courier New",Courier,monospace}</style>
+      
+    
+    <link rel="stylesheet" href="../assets/fonts/material-icons.css">
+    
+      <link rel="stylesheet" href="../dark_mode.css">
+    
+    
+  </head>
+  
+    
+    
+    <body dir="ltr" data-md-color-primary="blue-grey" data-md-color-accent="indigo">
+  
+    <svg class="md-svg">
+      <defs>
+        
+        
+          <svg xmlns="http://www.w3.org/2000/svg" width="416" height="448"
+    viewBox="0 0 416 448" id="__github">
+  <path fill="currentColor" d="M160 304q0 10-3.125 20.5t-10.75 19-18.125
+        8.5-18.125-8.5-10.75-19-3.125-20.5 3.125-20.5 10.75-19 18.125-8.5
+        18.125 8.5 10.75 19 3.125 20.5zM320 304q0 10-3.125 20.5t-10.75
+        19-18.125 8.5-18.125-8.5-10.75-19-3.125-20.5 3.125-20.5 10.75-19
+        18.125-8.5 18.125 8.5 10.75 19 3.125 20.5zM360
+        304q0-30-17.25-51t-46.75-21q-10.25 0-48.75 5.25-17.75 2.75-39.25
+        2.75t-39.25-2.75q-38-5.25-48.75-5.25-29.5 0-46.75 21t-17.25 51q0 22 8
+        38.375t20.25 25.75 30.5 15 35 7.375 37.25 1.75h42q20.5 0
+        37.25-1.75t35-7.375 30.5-15 20.25-25.75 8-38.375zM416 260q0 51.75-15.25
+        82.75-9.5 19.25-26.375 33.25t-35.25 21.5-42.5 11.875-42.875 5.5-41.75
+        1.125q-19.5 0-35.5-0.75t-36.875-3.125-38.125-7.5-34.25-12.875-30.25-20.25-21.5-28.75q-15.5-30.75-15.5-82.75
+        0-59.25 34-99-6.75-20.5-6.75-42.5 0-29 12.75-54.5 27 0 47.5 9.875t47.25
+        30.875q36.75-8.75 77.25-8.75 37 0 70 8 26.25-20.5
+        46.75-30.25t47.25-9.75q12.75 25.5 12.75 54.5 0 21.75-6.75 42 34 40 34
+        99.5z" />
+</svg>
+        
+      </defs>
+    </svg>
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" data-md-component="overlay" for="__drawer"></label>
+    
+      <a href="#installation" tabindex="1" class="md-skip">
+        Skip to content
+      </a>
+    
+    
+      <header class="md-header" data-md-component="header">
+  <nav class="md-header-nav md-grid">
+    <div class="md-flex">
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <a href="https://compbiocore.github.io/" title="VariantVisualization.jl" class="md-header-nav__button md-logo">
+          
+            <img src="../cbc-logo.svg" width="24" height="24">
+          
+        </a>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <label class="md-icon md-icon--menu md-header-nav__button" for="__drawer"></label>
+      </div>
+      <div class="md-flex__cell md-flex__cell--stretch">
+        <div class="md-flex__ellipsis md-header-nav__title" data-md-component="title">
+          
+            
+              <span class="md-header-nav__topic">
+                VariantVisualization.jl
+              </span>
+              <span class="md-header-nav__topic">
+                Installation and Setup
+              </span>
+            
+          
+        </div>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        
+          
+            <label class="md-icon md-icon--search md-header-nav__button" for="__search"></label>
+            
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="query" data-md-state="active">
+      <label class="md-icon md-search__icon" for="__search"></label>
+      <button type="reset" class="md-icon md-search__icon" data-md-component="reset" tabindex="-1">
+        &#xE5CD;
+      </button>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="result">
+          <div class="md-search-result__meta">
+            Type to start searching
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+          
+        
+      </div>
+      
+        <div class="md-flex__cell md-flex__cell--shrink">
+          <div class="md-header-nav__source">
+            
+
+
+  
+
+
+  <a href="https://github.com/compbiocore/VariantVisualization.jl/" title="Go to repository" class="md-source" data-md-source="github">
+    
+      <div class="md-source__icon">
+        <svg viewBox="0 0 24 24" width="24" height="24">
+          <use xlink:href="#__github" width="24" height="24"></use>
+        </svg>
+      </div>
+    
+    <div class="md-source__repository">
+      GitHub
+    </div>
+  </a>
+
+          </div>
+        </div>
+      
+    </div>
+  </nav>
+</header>
+    
+    <div class="md-container">
+      
+        
+      
+      
+        
+
+  
+
+<nav class="md-tabs md-tabs--active" data-md-component="tabs">
+  <div class="md-tabs__inner md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  <li class="md-tabs__item">
+    
+      <a href=".." title="Home" class="md-tabs__link">
+        Home
+      </a>
+    
+  </li>
+
+      
+        
+  
+  
+    <li class="md-tabs__item">
+      
+        <a href="./" title="VIVA Manual" class="md-tabs__link md-tabs__link--active">
+          VIVA Manual
+        </a>
+      
+    </li>
+  
+
+      
+        
+      
+    </ul>
+  </div>
+</nav>
+      
+      <main class="md-main">
+        <div class="md-main__inner md-grid" data-md-component="container">
+          
+            
+              <div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    <nav class="md-nav md-nav--primary" data-md-level="0">
+  <label class="md-nav__title md-nav__title--site" for="__drawer">
+    <a href="https://compbiocore.github.io/" title="VariantVisualization.jl" class="md-nav__button md-logo">
+      
+        <img src="../cbc-logo.svg" width="48" height="48">
+      
+    </a>
+    VariantVisualization.jl
+  </label>
+  
+    <div class="md-nav__source">
+      
+
+
+  
+
+
+  <a href="https://github.com/compbiocore/VariantVisualization.jl/" title="Go to repository" class="md-source" data-md-source="github">
+    
+      <div class="md-source__icon">
+        <svg viewBox="0 0 24 24" width="24" height="24">
+          <use xlink:href="#__github" width="24" height="24"></use>
+        </svg>
+      </div>
+    
+    <div class="md-source__repository">
+      GitHub
+    </div>
+  </a>
+
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href=".." title="Home" class="md-nav__link">
+      Home
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-2" type="checkbox" id="nav-2" checked>
+    
+    <label class="md-nav__link" for="nav-2">
+      VIVA Manual
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-2">
+        VIVA Manual
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active">
+    
+    <input class="md-toggle md-nav__toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+    
+      
+    
+    
+      <label class="md-nav__link md-nav__link--active" for="__toc">
+        Installation and Setup
+      </label>
+    
+    <a href="./" title="Installation and Setup" class="md-nav__link md-nav__link--active">
+      Installation and Setup
+    </a>
+    
+      
+<nav class="md-nav md-nav--secondary">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">Table of contents</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#install-julia-v110" title="Install Julia v1.1.0" class="md-nav__link">
+    Install Julia v1.1.0
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#supported-operating-systems" title="Supported Operating Systems:" class="md-nav__link">
+    Supported Operating Systems:
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#macos" title="macOS" class="md-nav__link">
+    macOS
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#windows" title="Windows" class="md-nav__link">
+    Windows
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#linux" title="Linux" class="md-nav__link">
+    Linux
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#command-line-tool" title="Command Line Tool" class="md-nav__link">
+    Command Line Tool
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#jupyter-notebook" title="Jupyter Notebook" class="md-nav__link">
+    Jupyter Notebook
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#running-viva-with-docker-or-docker-compose" title="Running VIVA with Docker or Docker Compose" class="md-nav__link">
+    Running VIVA with Docker or Docker Compose
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#using-docker" title="Using Docker" class="md-nav__link">
+    Using Docker
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#run-the-viva-command-line-tool-from-a-docker-image" title="Run the VIVA Command Line Tool from a Docker image:" class="md-nav__link">
+    Run the VIVA Command Line Tool from a Docker image:
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#run-the-viva-jupyter-notebook-from-a-docker-image" title="Run the VIVA Jupyter Notebook from a Docker image:" class="md-nav__link">
+    Run the VIVA Jupyter Notebook from a Docker image:
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#using-docker-compose" title="Using Docker Compose" class="md-nav__link">
+    Using Docker Compose
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#latest-features" title="Latest Features" class="md-nav__link">
+    Latest Features
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#for-developers" title="For Developers" class="md-nav__link">
+    For Developers
+  </a>
+  
+</li>
+      
+      
+      
+      
+      
+    </ul>
+  
+</nav>
+    
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../filtering_vcf/" title="Filtering Your VCF File" class="md-nav__link">
+      Filtering Your VCF File
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../plotting/" title="Making Plots" class="md-nav__link">
+      Making Plots
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../examples/" title="Examples" class="md-nav__link">
+      Examples
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../api/" title="API" class="md-nav__link">
+      API
+    </a>
+  </li>
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">Table of contents</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#install-julia-v110" title="Install Julia v1.1.0" class="md-nav__link">
+    Install Julia v1.1.0
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#supported-operating-systems" title="Supported Operating Systems:" class="md-nav__link">
+    Supported Operating Systems:
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#macos" title="macOS" class="md-nav__link">
+    macOS
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#windows" title="Windows" class="md-nav__link">
+    Windows
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#linux" title="Linux" class="md-nav__link">
+    Linux
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#command-line-tool" title="Command Line Tool" class="md-nav__link">
+    Command Line Tool
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#jupyter-notebook" title="Jupyter Notebook" class="md-nav__link">
+    Jupyter Notebook
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#running-viva-with-docker-or-docker-compose" title="Running VIVA with Docker or Docker Compose" class="md-nav__link">
+    Running VIVA with Docker or Docker Compose
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#using-docker" title="Using Docker" class="md-nav__link">
+    Using Docker
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#run-the-viva-command-line-tool-from-a-docker-image" title="Run the VIVA Command Line Tool from a Docker image:" class="md-nav__link">
+    Run the VIVA Command Line Tool from a Docker image:
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#run-the-viva-jupyter-notebook-from-a-docker-image" title="Run the VIVA Jupyter Notebook from a Docker image:" class="md-nav__link">
+    Run the VIVA Jupyter Notebook from a Docker image:
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#using-docker-compose" title="Using Docker Compose" class="md-nav__link">
+    Using Docker Compose
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#latest-features" title="Latest Features" class="md-nav__link">
+    Latest Features
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#for-developers" title="For Developers" class="md-nav__link">
+    For Developers
+  </a>
+  
+</li>
+      
+      
+      
+      
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                  <a href="https://github.com/compbiocore/VariantVisualization.jl/edit/master/docs/installation.md" title="Edit this page" class="md-icon md-content__icon">&#xE3C9;</a>
+                
+                
+                <h1 id="installation">Installation</h1>
+<p><a id='Install-Julia-v1.1.0-1'></a></p>
+<h3 id="install-julia-v110">Install Julia v1.1.0</h3>
+<p>Download <a href="" title="https://julialang.org/downloads/">Julia</a></p>
+<p><a id='Supported-Operating-Systems:-1'></a></p>
+<h3 id="supported-operating-systems">Supported Operating Systems:</h3>
+<p><a id='macOS-1'></a></p>
+<h4 id="macos">macOS</h4>
+<p>Sierra, High Sierra, and Mojave.</p>
+<p><a id='Windows-1'></a></p>
+<h4 id="windows">Windows</h4>
+<p>Windows 10, Windows 7.</p>
+<p><a id='Linux-1'></a></p>
+<h4 id="linux">Linux</h4>
+<p><em>Note</em>: To run on remote compute clusters, you may need to load opengl module along with julia/1.1.0.</p>
+<p><a id='Command-Line-Tool-1'></a></p>
+<h3 id="command-line-tool">Command Line Tool</h3>
+<ol>
+<li>Add VariantVisualization.jl using Pkg in the Julia REPL:</li>
+</ol>
+<div class="codehilite"><pre><span></span><span class="o">*</span> <span class="n">run</span> <span class="o">`</span><span class="k">using</span> <span class="n">Pkg</span><span class="o">`</span>
+<span class="o">*</span> <span class="n">run</span> <span class="o">`</span><span class="n">Pkg</span><span class="p">.</span><span class="n">clone</span><span class="p">(</span><span class="ss">&quot;https://github.com/compbiocore/VariantVisualization.jl&quot;</span><span class="p">)</span><span class="o">`</span>
+<span class="o">*</span> <span class="n">run</span> <span class="o">`</span><span class="n">Pkg</span><span class="p">.</span><span class="n">instantiate</span><span class="p">()</span><span class="o">`</span>
+</pre></div>
+
+
+<ol>
+<li>Download the <a href="https://github.com/compbiocore/VariantVisualization.jl/blob/master/viva">VIVA</a> tool script and save it to a working directory for your analysis.</li>
+<li>Navigate to your working directory and follow the <a href="https://compbiocore.github.io/VariantVisualization.jl/latest/">VIVA manual</a> to generate your plots.</li>
+</ol>
+<p><a id='Jupyter-Notebook-1'></a></p>
+<h3 id="jupyter-notebook">Jupyter Notebook</h3>
+<ol>
+<li><a href="https://jupyter.org/install">Install Jupyter</a></li>
+<li>Install the VariantVisualization.jl Julia package following the Command Line Tool installation instructions above.</li>
+<li>Download the <a href="https://github.com/compbiocore/VariantVisualization.jl/blob/master/VIVA.ipynb">VIVA Jupyter Notebook</a>.</li>
+<li>Follow the in-notebook instructions to generate your plots.</li>
+</ol>
+<p><a id='Running-VIVA-with-Docker-or-Docker-Compose-1'></a></p>
+<h3 id="running-viva-with-docker-or-docker-compose">Running VIVA with Docker or Docker Compose</h3>
+<p>Alternatively, you can run VIVA using the Docker images we've provided if you don't want to install Julia and the VariantVisualization.jl Julia package.</p>
+<p>To run VIVA from a Docker image, first <a href="https://docs.docker.com/install/">install Docker</a>.</p>
+<p>Then double-click the Docker.app in the Applications folder to start Docker. You will see a whale icon in the top status bar to indicate that Docker is running and accessible from the terminal. You can quit Docker once you are finished using VIVA by clicking the Docker whale icon in the top status bar and clicking "Quit Docker Desktop."</p>
+<p><a id='Using-Docker-1'></a></p>
+<h4 id="using-docker">Using Docker</h4>
+<p><em>Note</em> You must use the flag <code>--save_remotely</code> when running VIVA by using Docker.</p>
+<p>Once Docker is running, you can run VIVA by running the Docker commands below in the Mac/Linux terminal or Windows PowerShell.</p>
+<p>We provide two images, one with a Jupyter Notebook and one with a command line script for VIVA. You can run VIVA in a single command using these images. The command consists of calls to run the Docker image followed by the usual VIVA options.</p>
+<p>To run the images, follow these steps:</p>
+<p>Create a project folder and navigate to it:</p>
+<div class="codehilite"><pre><span></span>mkdir project_x
+<span class="nb">cd</span> project_x
+</pre></div>
+
+
+<p>Make sure to add your project VCF files to that folder. That directory will be mapped to <code>/notebook/data</code> inside of the container.</p>
+<p><a id='Run-the-VIVA-Command-Line-Tool-from-a-Docker-image:-1'></a></p>
+<h5 id="run-the-viva-command-line-tool-from-a-docker-image">Run the VIVA Command Line Tool from a Docker image:</h5>
+<p><em>Note</em> Remember, you must use the flag <code>--save_remotely</code> when running VIVA by using Docker.</p>
+<ul>
+<li>On Mac or Linux:</li>
+</ul>
+<div class="codehilite"><pre><span></span>docker run -it --rm -v <span class="s2">&quot;</span><span class="nv">$PWD</span><span class="s2">&quot;</span>:/data compbiocore/viva-cli --save_remotely arg1 arg2 arg3
+</pre></div>
+
+
+<ul>
+<li>Example run:</li>
+</ul>
+<div class="codehilite"><pre><span></span>docker run -it --rm -v <span class="s2">&quot;</span><span class="nv">$PWD</span><span class="s2">&quot;</span>:/data compbiocore/viva-cli --save_remotely -f file.vcf -p -s pdf
+</pre></div>
+
+
+<ul>
+<li>On Windows:</li>
+</ul>
+<div class="codehilite"><pre><span></span>docker run -it --rm -v <span class="s2">&quot;</span><span class="si">${</span><span class="nv">pwd</span><span class="si">}</span><span class="s2">&quot;</span>:/data compbiocore/viva-cli --save_remotely arg1 arg2 arg3
+</pre></div>
+
+
+<ul>
+<li>Example run:</li>
+</ul>
+<div class="codehilite"><pre><span></span>docker run -it --rm -v <span class="s2">&quot;</span><span class="si">${</span><span class="nv">pwd</span><span class="si">}</span><span class="s2">&quot;</span>:/data compbiocore/viva-cli --save_remotely -f file.vcf -p -s pdf
+</pre></div>
+
+
+<p><a id='Run-the-VIVA-Jupyter-Notebook-from-a-Docker-image:-1'></a></p>
+<h5 id="run-the-viva-jupyter-notebook-from-a-docker-image">Run the VIVA Jupyter Notebook from a Docker image:</h5>
+<p>Copy and run the following line from the terminal or Windows PowerShell:</p>
+<ul>
+<li>On Mac or Linux:</li>
+</ul>
+<div class="codehilite"><pre><span></span>docker run --rm -p <span class="m">8888</span>:8888 -e <span class="nv">JUPYTER_ENABLE_LAB</span><span class="o">=</span>yes -v <span class="s2">&quot;</span><span class="nv">$PWD</span><span class="s2">&quot;</span>:/notebook/data compbiocore/viva-notebook
+</pre></div>
+
+
+<p>Go to <code>http://0.0.0.0:8888/?token=&lt;enter token here&gt;</code></p>
+<ul>
+<li>On Windows:</li>
+</ul>
+<div class="codehilite"><pre><span></span>docker run --rm -p <span class="m">8888</span>:8888 -e <span class="nv">JUPYTER_ENABLE_LAB</span><span class="o">=</span>yes -v <span class="s2">&quot;</span><span class="si">${</span><span class="nv">pwd</span><span class="si">}</span><span class="s2">&quot;</span>:/notebook/data compbiocore/viva-notebook
+</pre></div>
+
+
+<p>Go to <code>http://0.0.0.0:8888/?token=&lt;enter token here&gt;</code></p>
+<p><a href="https://jupyter-docker-stacks.readthedocs.io/en/latest/index.html">Click here</a> for more information about Jupyter Docker Images.</p>
+<p><a id='Using-Docker-Compose-1'></a></p>
+<h4 id="using-docker-compose">Using Docker Compose</h4>
+<p>To run the images with Docker Compose, install Docker following the steps above and then install [Docker Compose[(https://docs.docker.com/compose/). Then copy the <a href="https://github.com/compbiocore/viva-docker/blob/master/docker-compose.yml">docker-compose.yml</a> file to a local directory. From that same directory, run the command as it appears below.</p>
+<p><em>Note</em>: Your current directory will mount to <code>/notebook/data</code> in the notebook image and to <code>/data</code> in the CLI image.</p>
+<ul>
+<li>Notebook</li>
+</ul>
+<div class="codehilite"><pre><span></span>docker-compose up viva-notebook
+</pre></div>
+
+
+<ul>
+<li>Command Line Tool</li>
+</ul>
+<div class="codehilite"><pre><span></span>docker-compose run viva -f --save_remotely /data/file.vcf arg2 arg3 ...
+</pre></div>
+
+
+<hr />
+<p><a id='Latest-Features-1'></a></p>
+<h3 id="latest-features">Latest Features</h3>
+<p>To stay up to date with cutting edge development features install VariantVisualization.jl from the Master branch.</p>
+<p>Using git from the command line:</p>
+<div class="codehilite"><pre><span></span><span class="n">git</span> <span class="n">clone</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="p">.</span><span class="n">com</span><span class="o">/</span><span class="n">compbiocore</span><span class="o">/</span><span class="n">VariantVisualization</span><span class="p">.</span><span class="n">jl</span>
+</pre></div>
+
+
+<p>or from the Julia REPL (useful if using the PowerShell and don't have git installed):</p>
+<div class="codehilite"><pre><span></span><span class="k">using</span> <span class="n">Pkg</span>
+<span class="n">Pkg</span><span class="o">.</span><span class="n">clone</span><span class="p">(</span><span class="s">&quot;https://github.com/compbiocore/VariantVisualization.jl&quot;</span><span class="p">)</span>
+</pre></div>
+
+
+<p><a id='*For-Developers*-1'></a></p>
+<h3 id="for-developers"><em>For Developers</em></h3>
+<p>VIVA Jupyter notebook and the VIVA the command line tool are built with functions contained in our VariantVisualization.jl package.</p>
+<p>Developers may contribute to these open source tools by using <a href="https://github.com/compbiocore/VariantVisualization.jl/tree/master/src/">functions contained within VariantVisualization.jl</a> which are carefully documented with docstrings.</p>
+<p>We have included in-line comments within the code for the <a href="https://github.com/compbiocore/VariantVisualization.jl/tree/master/viva">VIVA command line tool</a>.</p>
+<p>The <strong><em>VIVA Jupyter notebook</em></strong> is powered by a <a href="https://github.com/compbiocore/VariantVisualization.jl/tree/master/src/new_notebook_utils.jl">main function</a> which takes arguments defined by the user in the notebook. We welcome users to post in issues to request a new feature or bug fix.</p>
+                
+                  
+                
+              
+              
+                
+
+
+              
+            </article>
+          </div>
+        </div>
+      </main>
+      
+        
+<footer class="md-footer">
+  
+    <div class="md-footer-nav">
+      <nav class="md-footer-nav__inner md-grid">
+        
+          <a href=".." title="Home" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+            <div class="md-flex__cell md-flex__cell--shrink">
+              <i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
+            </div>
+            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+              <span class="md-flex__ellipsis">
+                <span class="md-footer-nav__direction">
+                  Previous
+                </span>
+                Home
+              </span>
+            </div>
+          </a>
+        
+        
+          <a href="../filtering_vcf/" title="Filtering Your VCF File" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
+            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+              <span class="md-flex__ellipsis">
+                <span class="md-footer-nav__direction">
+                  Next
+                </span>
+                Filtering Your VCF File
+              </span>
+            </div>
+            <div class="md-flex__cell md-flex__cell--shrink">
+              <i class="md-icon md-icon--arrow-forward md-footer-nav__button"></i>
+            </div>
+          </a>
+        
+      </nav>
+    </div>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+        powered by
+        <a href="https://www.mkdocs.org">MkDocs</a>
+        and
+        <a href="https://squidfunk.github.io/mkdocs-material/">
+          Material for MkDocs</a>
+      </div>
+      
+        
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    
+      <script src="../assets/javascripts/application.30f6b8b1.js"></script>
+      
+      <script>app.initialize({version:"0.17.5",url:{base:".."}})</script>
+      
+    
+    
+      
+    
+  </body>
+</html>
