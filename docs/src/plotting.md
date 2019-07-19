@@ -30,7 +30,6 @@ julia viva -f example.vcf -m genotype
 
 Generate scatter plots of average read depths across either samples or variants. Caps outlier read depth values at 100 to optimize resolution of visualization of values under 50.
 
-
 *flags*: `--avg_dp`
 
 *arguments*: `samples`, `variants`, or `samples,variants`
@@ -99,7 +98,7 @@ Choose an option for displaying y-axis ticklabels showing the genomic position o
 
 default: `chromosomes`
 
-*Note*: We don't recommend using the `positions` option when visualizing samples grouped with a metadata matrix. This will show labels that are meant to be hidden that exist as an artifact of constructing the metadata trait colorbars which are sized dynamically to make up 1/20th of the plot height. If you must use the `positions` option in this scenario, we recommend editing the final plot in a program like Powerpoint to "cover up" the multitude of tick labels that will appear beside metadata trait rows. 
+*Note*: We don't recommend using the `positions` option when visualizing samples grouped with a metadata matrix. This will show labels that are meant to be hidden that exist as an artifact of constructing the metadata trait colorbars which are sized dynamically to make up 1/20th of the plot height. If you must use the `positions` option in this scenario, we recommend editing the final plot in a program like Powerpoint to "cover up" the multitude of tick labels that will appear beside metadata trait rows.
 
 ```
 julia viva -f example.vcf `-y` `hoverlabels_only`

@@ -1,4 +1,4 @@
-# VariantVisualization.jl
+# VIVA: A VCF File Visualization Tool and VariantVisualization.jl
 ## Visualization of Variants
 
 
@@ -11,7 +11,7 @@
 
 VariantVisualization.jl is a package we built specifically to power the genetics visualization tool, *VIVA*.
 
-*VIVA* is a user-friendly command line tool for creating publication quality graphics from Variant Call Format (VCF) files. It has been designed for clinicians and bioinformaticians to explore their VCF files visually. In a single command, users can extract genotype or read depth information and plot trends in interactive categorical heatmaps and scatter plots of average read depth values. VIVA offers a robust set of filters to select variants and samples of interest for analysis. VIVA is especially useful in early data exploration for identifying batch effect and sources of poor read depth, as well as identifying distribution of disease causing variants in a set of clinical samples.
+*VIVA* is a user-friendly command line tool for creating publication quality graphics from Variant Call Format (VCF) files. It has been designed for clinicians and bioinformaticians to explore their VCF files visually. In a single command, users can extract genotype or read depth information and plot trends in interactive categorical heatmaps and scatter plots of average read depth values. VIVA offers a robust set of filters to select variants and samples of interest for analysis. VIVA is especially useful in early data exploration for identifying batch effect and sources of poor read depth in sequencing experiments, as well as identifying distribution of disease causing variants in a set of clinical samples.
 
 
 ## Getting Started:
@@ -19,6 +19,8 @@ VariantVisualization.jl is a package we built specifically to power the genetics
 Note: Once you have set up VIVA, you can quickly run the command line tool [EXAMPLES](https://compbiocore.github.io/VariantVisualization.jl/latest/examples/) found in the documentation.
 
 ## Installation
+
+Read the [installation documentation](https://compbiocore.github.io/VariantVisualization.jl/latest/installation/) for complete installation details.
 
 ### Supported Operating Systems:
 
@@ -60,7 +62,7 @@ Then double-click the Docker.app in the Applications folder to start Docker. You
 
 #### Using Docker
 
-*Note* You must use the flag `--save_remotely` when running VIVA by using Docker.
+*Note*: You must use the flag `--save_remotely` when running VIVA by using Docker.
 
 Once Docker is running, you can run VIVA by running the Docker commands below in the Mac/Linux terminal or Windows PowerShell.
 
@@ -78,7 +80,7 @@ Make sure to add your project VCF files to that folder. That directory will be m
 
 ##### Run the VIVA Command Line Tool from a Docker image:
 
-*Note* Remember, you must use the flag `--save_remotely` when running VIVA by using Docker.
+*Note*: Remember, you must use the flag `--save_remotely` when running VIVA by using Docker.
 
 - On Mac or Linux:
 ```shell
@@ -87,7 +89,7 @@ docker run -it --rm -v "$PWD":/data compbiocore/viva-cli --save_remotely arg1 ar
 
 - Example run:
 ```shell
-docker run -it --rm -v "$PWD":/data compbiocore/viva-cli --save_remotely -f file.vcf -p -s pdf
+docker run -it --rm -v "$PWD":/data compbiocore/viva-cli --save_remotely -f file.vcf -p
 ```
 
 - On Windows:
@@ -97,7 +99,7 @@ docker run -it --rm -v "${pwd}":/data compbiocore/viva-cli --save_remotely arg1 
 
 - Example run:
 ```shell
-docker run -it --rm -v "${pwd}":/data compbiocore/viva-cli --save_remotely -f file.vcf -p -s pdf
+docker run -it --rm -v "${pwd}":/data compbiocore/viva-cli --save_remotely -f file.vcf -p
 ```
 
 ##### Run the VIVA Jupyter Notebook from a Docker image:
@@ -106,14 +108,20 @@ Copy and run the following line from the terminal or Windows PowerShell:
 
 - On Mac or Linux:
 ```shell
-docker run --rm -p 8888:8888 -e JUPYTER_ENABLE_LAB=yes -v "$PWD":/notebook/data compbiocore/viva-notebook
+docker run --rm -p 8888:8888 -e JUPYTER_ENABLE_LAB=yes -v "$PWD":/home/jovyan/notebook/data compbiocore/viva-notebook
 ```
+
+Go to the following url in your internet browser. You'll receive a token to enter into the url.
+
 Go to `http://0.0.0.0:8888/?token=<enter token here>`
 
 - On Windows:
 ```shell
-docker run --rm -p 8888:8888 -e JUPYTER_ENABLE_LAB=yes -v "${pwd}":/notebook/data compbiocore/viva-notebook
+docker run --rm -p 8888:8888 -e JUPYTER_ENABLE_LAB=yes -v "${pwd}":/home/jovyan/notebook/data compbiocore/viva-notebook
 ```
+
+Go to the following url in your internet browser. You'll receive a token to enter into the url.
+
 Go to `http://0.0.0.0:8888/?token=<enter token here>`
 
 [Click here](https://jupyter-docker-stacks.readthedocs.io/en/latest/index.html) for more information about Jupyter Docker Images.
@@ -131,7 +139,7 @@ docker-compose up viva-notebook
 
 - Command Line Tool
 ```shell
-docker-compose run viva -f --save_remotely /data/file.vcf arg2 arg3 ...
+docker-compose run viva -f file.vcf --save_remotely arg3 arg4 ...
 ```
 
 ### Latest Features

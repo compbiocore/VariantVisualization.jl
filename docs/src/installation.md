@@ -13,6 +13,8 @@ Sierra, High Sierra, and Mojave.
 
 Windows 10, Windows 7.
 
+To install Julia on Windows, you can follow the [platform specific instructions](https://julialang.org/downloads/platform.html).
+
 #### Linux
 
 *Note*: To run on remote compute clusters, you may need to load opengl module along with julia/1.1.0.
@@ -70,7 +72,7 @@ docker run -it --rm -v "$PWD":/data compbiocore/viva-cli --save_remotely arg1 ar
 
 - Example run:
 ```shell
-docker run -it --rm -v "$PWD":/data compbiocore/viva-cli --save_remotely -f file.vcf -p -s pdf
+docker run -it --rm -v "$PWD":/data compbiocore/viva-cli --save_remotely -f file.vcf -p
 ```
 
 - On Windows:
@@ -80,7 +82,7 @@ docker run -it --rm -v "${pwd}":/data compbiocore/viva-cli --save_remotely arg1 
 
 - Example run:
 ```shell
-docker run -it --rm -v "${pwd}":/data compbiocore/viva-cli --save_remotely -f file.vcf -p -s pdf
+docker run -it --rm -v "${pwd}":/data compbiocore/viva-cli --save_remotely -f file.vcf -p
 ```
 
 ##### Run the VIVA Jupyter Notebook from a Docker image:
@@ -89,14 +91,20 @@ Copy and run the following line from the terminal or Windows PowerShell:
 
 - On Mac or Linux:
 ```shell
-docker run --rm -p 8888:8888 -e JUPYTER_ENABLE_LAB=yes -v "$PWD":/notebook/data compbiocore/viva-notebook
+docker run --rm -p 8888:8888 -e JUPYTER_ENABLE_LAB=yes -v "$PWD":/home/jovyan/notebook/data compbiocore/viva-notebook
 ```
+
+Go to the following url in your internet browser. You'll receive a token to enter into the url.
+
 Go to `http://0.0.0.0:8888/?token=<enter token here>`
 
 - On Windows:
 ```shell
-docker run --rm -p 8888:8888 -e JUPYTER_ENABLE_LAB=yes -v "${pwd}":/notebook/data compbiocore/viva-notebook
+docker run --rm -p 8888:8888 -e JUPYTER_ENABLE_LAB=yes -v "${pwd}":/home/jovyan/notebook/data compbiocore/viva-notebook
 ```
+
+Go to the following url in your internet browser. You'll receive a token to enter into the url.
+
 Go to `http://0.0.0.0:8888/?token=<enter token here>`
 
 [Click here](https://jupyter-docker-stacks.readthedocs.io/en/latest/index.html) for more information about Jupyter Docker Images.
@@ -114,7 +122,7 @@ docker-compose up viva-notebook
 
 - Command Line Tool
 ```shell
-docker-compose run viva -f --save_remotely /data/file.vcf arg2 arg3 ...
+docker-compose run viva -f file.vcf --save_remotely arg3 arg4 ...
 ```
 
 -----
