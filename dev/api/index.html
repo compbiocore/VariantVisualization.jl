@@ -556,7 +556,7 @@
 
 
 <p>add the pheno matrix used to group samples to the data array for input into plotting functions. Resizes the pheno matrix to maintain correct dimensions for heatmap viz by finding value=0.05<em>number</em>rows*data to multiply each pheno row by before vcat.</p>
-<p><a target='_blank' href='https://github.com/compbiocore/VariantVisualization.jl/blob/1e705b74d904a700fcebc7961b8845edd2ce3708/src/vcf_utils_complete.jl#L1267-L1270' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/compbiocore/VariantVisualization.jl/blob/88de611476a7d48e705a36dc5c227f274850ec10/src/vcf_utils_complete.jl#L1267-L1270' class='documenter-source'>source</a><br></p>
 <p><a id='VariantVisualization.add_pheno_matrix_to_gt_data_for_plotting-NTuple{5,Any}' href='#VariantVisualization.add_pheno_matrix_to_gt_data_for_plotting-NTuple{5,Any}'>#</a>
 <strong><code>VariantVisualization.add_pheno_matrix_to_gt_data_for_plotting</code></strong> &mdash; <em>Method</em>.</p>
 <div class="codehilite"><pre><span></span><span class="n">add_pheno_matrix_to_gt_data_for_plotting</span><span class="p">(</span><span class="n">pheno_matrix</span><span class="p">,</span><span class="n">gt_num_array</span><span class="p">,</span><span class="n">trait_labels</span><span class="p">,</span><span class="n">chrom_label_info</span><span class="p">,</span><span class="n">number_rows</span><span class="p">)</span>
@@ -564,7 +564,7 @@
 
 
 <p>add the pheno matrix used to group samples to the data array for input into plotting functions. Resizes the pheno matrix to maintain correct dimensions for heatmap viz by finding value=0.05<em>number</em>rows*data to multiply each pheno row by before vcat.</p>
-<p><a target='_blank' href='https://github.com/compbiocore/VariantVisualization.jl/blob/1e705b74d904a700fcebc7961b8845edd2ce3708/src/vcf_utils_complete.jl#L1183-L1186' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/compbiocore/VariantVisualization.jl/blob/88de611476a7d48e705a36dc5c227f274850ec10/src/vcf_utils_complete.jl#L1183-L1186' class='documenter-source'>source</a><br></p>
 <p><a id='VariantVisualization.avg_dp_samples-Tuple{Array{Int64,2}}' href='#VariantVisualization.avg_dp_samples-Tuple{Array{Int64,2}}'>#</a>
 <strong><code>VariantVisualization.avg_dp_samples</code></strong> &mdash; <em>Method</em>.</p>
 <div class="codehilite"><pre><span></span><span class="n">avg_dp_samples</span><span class="p">(</span><span class="n">dp_num_array</span><span class="o">::</span><span class="kt">Array</span><span class="p">{</span><span class="kt">Int64</span><span class="p">,</span><span class="mi">2</span><span class="p">})</span>
@@ -572,7 +572,7 @@
 
 
 <p>create sample<em>avg</em>list vector that lists averages of read depth for each sample for input into avg<em>sample</em>dp<em>line</em>chart(sample<em>avg</em>list) dp<em>num</em>array must contain dp values as Int64 and be without chromosome position columns</p>
-<p><a target='_blank' href='https://github.com/compbiocore/VariantVisualization.jl/blob/1e705b74d904a700fcebc7961b8845edd2ce3708/src/vcf_utils_complete.jl#L903-L907' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/compbiocore/VariantVisualization.jl/blob/88de611476a7d48e705a36dc5c227f274850ec10/src/vcf_utils_complete.jl#L903-L907' class='documenter-source'>source</a><br></p>
 <p><a id='VariantVisualization.avg_dp_variant-Tuple{Array{Int64,2}}' href='#VariantVisualization.avg_dp_variant-Tuple{Array{Int64,2}}'>#</a>
 <strong><code>VariantVisualization.avg_dp_variant</code></strong> &mdash; <em>Method</em>.</p>
 <div class="codehilite"><pre><span></span><span class="n">avg_dp_variant</span><span class="p">(</span><span class="n">dp_num_array</span><span class="o">::</span><span class="kt">Array</span><span class="p">{</span><span class="kt">Int64</span><span class="p">,</span><span class="mi">2</span><span class="p">})</span>
@@ -580,7 +580,7 @@
 
 
 <p>create variant<em>avg</em>list vector that lists averages of read depth for each variant for input into avg<em>variant</em>dp<em>line</em>chart(variant<em>avg</em>list)</p>
-<p><a target='_blank' href='https://github.com/compbiocore/VariantVisualization.jl/blob/1e705b74d904a700fcebc7961b8845edd2ce3708/src/vcf_utils_complete.jl#L924-L927' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/compbiocore/VariantVisualization.jl/blob/88de611476a7d48e705a36dc5c227f274850ec10/src/vcf_utils_complete.jl#L924-L927' class='documenter-source'>source</a><br></p>
 <p><a id='VariantVisualization.avg_sample_dp_scatter-Tuple{Array{Float64,1},Any,Any}' href='#VariantVisualization.avg_sample_dp_scatter-Tuple{Array{Float64,1},Any,Any}'>#</a>
 <strong><code>VariantVisualization.avg_sample_dp_scatter</code></strong> &mdash; <em>Method</em>.</p>
 <div class="codehilite"><pre><span></span><span class="n">avg_sample_dp_scatter</span><span class="p">(</span><span class="n">sample_avg_list</span><span class="o">::</span><span class="kt">Array</span><span class="p">{</span><span class="kt">Float64</span><span class="p">,</span><span class="mi">1</span><span class="p">},</span><span class="n">sample_names</span><span class="p">,</span><span class="n">x_axis_label_option</span><span class="p">)</span>
@@ -588,7 +588,7 @@
 
 
 <p>generate line chart of average read depths of each sample.</p>
-<p><a target='_blank' href='https://github.com/compbiocore/VariantVisualization.jl/blob/1e705b74d904a700fcebc7961b8845edd2ce3708/src/plot_utils.jl#L456-L459' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/compbiocore/VariantVisualization.jl/blob/88de611476a7d48e705a36dc5c227f274850ec10/src/plot_utils.jl#L456-L459' class='documenter-source'>source</a><br></p>
 <p><a id='VariantVisualization.avg_variant_dp_line_chart-Tuple{Array{Float64,1},Any,Any,Any}' href='#VariantVisualization.avg_variant_dp_line_chart-Tuple{Array{Float64,1},Any,Any,Any}'>#</a>
 <strong><code>VariantVisualization.avg_variant_dp_line_chart</code></strong> &mdash; <em>Method</em>.</p>
 <div class="codehilite"><pre><span></span><span class="n">avg_variant_dp_line_chart</span><span class="p">(</span><span class="n">variant_avg_list</span><span class="o">::</span><span class="kt">Array</span><span class="p">{</span><span class="kt">Float64</span><span class="p">,</span><span class="mi">1</span><span class="p">},</span><span class="n">chr_pos_tuple_list</span><span class="p">,</span><span class="n">y_axis_label_option</span><span class="p">,</span><span class="n">chrom_label_info</span><span class="p">)</span>
@@ -596,7 +596,7 @@
 
 
 <p>generate line chart of average read depths of each variant.</p>
-<p><a target='_blank' href='https://github.com/compbiocore/VariantVisualization.jl/blob/1e705b74d904a700fcebc7961b8845edd2ce3708/src/plot_utils.jl#L474-L477' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/compbiocore/VariantVisualization.jl/blob/88de611476a7d48e705a36dc5c227f274850ec10/src/plot_utils.jl#L474-L477' class='documenter-source'>source</a><br></p>
 <p><a id='VariantVisualization.build_set_from_list-Tuple{Any}' href='#VariantVisualization.build_set_from_list-Tuple{Any}'>#</a>
 <strong><code>VariantVisualization.build_set_from_list</code></strong> &mdash; <em>Method</em>.</p>
 <div class="codehilite"><pre><span></span><span class="n">build_set_from_list</span><span class="p">(</span><span class="n">sig_list</span><span class="p">)</span>
@@ -604,7 +604,7 @@
 
 
 <p>build set of tuples of chrom and pos of each record in vcf for use in sig<em>list</em>filters. Method 1: build list from input variant locations in Int64 and String chromosomes in variant list (chr1-XYM)</p>
-<p><a target='_blank' href='https://github.com/compbiocore/VariantVisualization.jl/blob/1e705b74d904a700fcebc7961b8845edd2ce3708/src/vcf_utils_complete.jl#L188-L192' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/compbiocore/VariantVisualization.jl/blob/88de611476a7d48e705a36dc5c227f274850ec10/src/vcf_utils_complete.jl#L188-L192' class='documenter-source'>source</a><br></p>
 <p><a id='VariantVisualization.checkfor_outputdirectory-Tuple{String}' href='#VariantVisualization.checkfor_outputdirectory-Tuple{String}'>#</a>
 <strong><code>VariantVisualization.checkfor_outputdirectory</code></strong> &mdash; <em>Method</em>.</p>
 <div class="codehilite"><pre><span></span><span class="n">checkfor_outputdirectory</span><span class="p">(</span><span class="n">path</span><span class="o">::</span><span class="n">String</span><span class="p">)</span>
@@ -612,7 +612,7 @@
 
 
 <p>Checks to see if output directory exists already. If it doesn't, it creates the new directory to write output files to.</p>
-<p><a target='_blank' href='https://github.com/compbiocore/VariantVisualization.jl/blob/1e705b74d904a700fcebc7961b8845edd2ce3708/src/vcf_utils_complete.jl#L1063-L1067' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/compbiocore/VariantVisualization.jl/blob/88de611476a7d48e705a36dc5c227f274850ec10/src/vcf_utils_complete.jl#L1063-L1067' class='documenter-source'>source</a><br></p>
 <p><a id='VariantVisualization.chromosome_label_generator-Tuple{Array{Any,1}}' href='#VariantVisualization.chromosome_label_generator-Tuple{Array{Any,1}}'>#</a>
 <strong><code>VariantVisualization.chromosome_label_generator</code></strong> &mdash; <em>Method</em>.</p>
 <div class="codehilite"><pre><span></span><span class="n">chromosome_label_generator</span><span class="p">(</span><span class="n">chromosome_labels</span><span class="o">::</span><span class="kt">Array</span><span class="p">{</span><span class="kt">Any</span><span class="p">,</span><span class="mi">1</span><span class="p">})</span>
@@ -620,7 +620,7 @@
 
 
 <p>Returns vector of chr labels and indices to mark chromosomes in plotly heatmap Specifically, saves indexes and chrom labels in vectors to pass into heatmap function to ticvals and tictext respectively. Input is either gt<em>chromosome</em>labels or dp<em>chromosome</em>labels from translate<em>gt/dp</em>to<em>num</em>array()</p>
-<p><a target='_blank' href='https://github.com/compbiocore/VariantVisualization.jl/blob/1e705b74d904a700fcebc7961b8845edd2ce3708/src/vcf_utils_complete.jl#L1025-L1032' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/compbiocore/VariantVisualization.jl/blob/88de611476a7d48e705a36dc5c227f274850ec10/src/vcf_utils_complete.jl#L1025-L1032' class='documenter-source'>source</a><br></p>
 <p><a id='VariantVisualization.clean_column1!-Tuple{Any}' href='#VariantVisualization.clean_column1!-Tuple{Any}'>#</a>
 <strong><code>VariantVisualization.clean_column1!</code></strong> &mdash; <em>Method</em>.</p>
 <div class="codehilite"><pre><span></span><span class="n">clean_column1!</span><span class="p">(</span><span class="n">matrix_with_chr_column</span><span class="p">)</span>
@@ -628,7 +628,7 @@
 
 
 <p>Replace String "X","Y","M" from chromosome column with 23,24,25 respectively so variants can be sorted by descending chr position for plotting</p>
-<p><a target='_blank' href='https://github.com/compbiocore/VariantVisualization.jl/blob/1e705b74d904a700fcebc7961b8845edd2ce3708/src/vcf_utils_complete.jl#L104-L107' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/compbiocore/VariantVisualization.jl/blob/88de611476a7d48e705a36dc5c227f274850ec10/src/vcf_utils_complete.jl#L104-L107' class='documenter-source'>source</a><br></p>
 <p><a id='VariantVisualization.clean_column1_siglist!-Tuple{Any}' href='#VariantVisualization.clean_column1_siglist!-Tuple{Any}'>#</a>
 <strong><code>VariantVisualization.clean_column1_siglist!</code></strong> &mdash; <em>Method</em>.</p>
 <div class="codehilite"><pre><span></span><span class="n">clean_column1_siglist!</span><span class="p">(</span><span class="n">siglist</span><span class="p">)</span>
@@ -636,7 +636,7 @@
 
 
 <p>Replaces strings "X","Y","M" with 23,24,25 {Int} in array generated in load<em>siglist() use in load</em>siglist() because X and Y need to be replaced with Int</p>
-<p><a target='_blank' href='https://github.com/compbiocore/VariantVisualization.jl/blob/1e705b74d904a700fcebc7961b8845edd2ce3708/src/vcf_utils_complete.jl#L119-L123' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/compbiocore/VariantVisualization.jl/blob/88de611476a7d48e705a36dc5c227f274850ec10/src/vcf_utils_complete.jl#L119-L123' class='documenter-source'>source</a><br></p>
 <p><a id='VariantVisualization.combined_all_genotype_array_functions-Tuple{Any}' href='#VariantVisualization.combined_all_genotype_array_functions-Tuple{Any}'>#</a>
 <strong><code>VariantVisualization.combined_all_genotype_array_functions</code></strong> &mdash; <em>Method</em>.</p>
 <div class="codehilite"><pre><span></span><span class="n">combined_all_genotype_array_functions</span><span class="p">(</span><span class="n">sub</span><span class="p">)</span>
@@ -644,7 +644,7 @@
 
 
 <p>convert sub from variant filters to gt<em>num</em>array and gt<em>chromosome</em>labels for plot functions.</p>
-<p><a target='_blank' href='https://github.com/compbiocore/VariantVisualization.jl/blob/1e705b74d904a700fcebc7961b8845edd2ce3708/src/vcf_utils_complete.jl#L612-L615' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/compbiocore/VariantVisualization.jl/blob/88de611476a7d48e705a36dc5c227f274850ec10/src/vcf_utils_complete.jl#L612-L615' class='documenter-source'>source</a><br></p>
 <p><a id='VariantVisualization.combined_all_read_depth_array_functions-Tuple{Any}' href='#VariantVisualization.combined_all_read_depth_array_functions-Tuple{Any}'>#</a>
 <strong><code>VariantVisualization.combined_all_read_depth_array_functions</code></strong> &mdash; <em>Method</em>.</p>
 <div class="codehilite"><pre><span></span><span class="n">combined_all_read_depth_array_functions</span><span class="p">(</span><span class="n">sub</span><span class="p">)</span>
@@ -652,7 +652,7 @@
 
 
 <p>convert sub from variant filters to dp<em>num</em>array and dp<em>chromosome</em>labels for plot functions.</p>
-<p><a target='_blank' href='https://github.com/compbiocore/VariantVisualization.jl/blob/1e705b74d904a700fcebc7961b8845edd2ce3708/src/vcf_utils_complete.jl#L627-L630' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/compbiocore/VariantVisualization.jl/blob/88de611476a7d48e705a36dc5c227f274850ec10/src/vcf_utils_complete.jl#L627-L630' class='documenter-source'>source</a><br></p>
 <p><a id='VariantVisualization.combined_all_read_depth_array_functions_for_avg_dp-Tuple{Any}' href='#VariantVisualization.combined_all_read_depth_array_functions_for_avg_dp-Tuple{Any}'>#</a>
 <strong><code>VariantVisualization.combined_all_read_depth_array_functions_for_avg_dp</code></strong> &mdash; <em>Method</em>.</p>
 <div class="codehilite"><pre><span></span><span class="n">combined_all_read_depth_array_functions_for_avg_dp</span><span class="p">(</span><span class="n">sub</span><span class="p">)</span>
@@ -660,7 +660,7 @@
 
 
 <p>convert sub from variant filters to dp<em>num</em>array and dp<em>chromosome</em>labels for plot functions.</p>
-<p><a target='_blank' href='https://github.com/compbiocore/VariantVisualization.jl/blob/1e705b74d904a700fcebc7961b8845edd2ce3708/src/vcf_utils_complete.jl#L641-L644' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/compbiocore/VariantVisualization.jl/blob/88de611476a7d48e705a36dc5c227f274850ec10/src/vcf_utils_complete.jl#L641-L644' class='documenter-source'>source</a><br></p>
 <p><a id='VariantVisualization.define_geno_dict-Tuple{}' href='#VariantVisualization.define_geno_dict-Tuple{}'>#</a>
 <strong><code>VariantVisualization.define_geno_dict</code></strong> &mdash; <em>Method</em>.</p>
 <div class="codehilite"><pre><span></span><span class="n">define_geno_dict</span><span class="p">()</span>
@@ -668,7 +668,7 @@
 
 
 <p>returns dictionary of values for use in replace<em>genotype</em>with_vals()</p>
-<p><a target='_blank' href='https://github.com/compbiocore/VariantVisualization.jl/blob/1e705b74d904a700fcebc7961b8845edd2ce3708/src/vcf_utils_complete.jl#L695-L698' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/compbiocore/VariantVisualization.jl/blob/88de611476a7d48e705a36dc5c227f274850ec10/src/vcf_utils_complete.jl#L695-L698' class='documenter-source'>source</a><br></p>
 <p><a id='VariantVisualization.dp_heatmap2-NTuple{7,Any}' href='#VariantVisualization.dp_heatmap2-NTuple{7,Any}'>#</a>
 <strong><code>VariantVisualization.dp_heatmap2</code></strong> &mdash; <em>Method</em>.</p>
 <div class="codehilite"><pre><span></span><span class="n">dp_heatmap2</span><span class="p">(</span><span class="n">input</span><span class="o">::</span><span class="kt">Array</span><span class="p">{</span><span class="kt">Int64</span><span class="p">,</span><span class="mi">2</span><span class="p">},</span><span class="n">title</span><span class="o">::</span><span class="n">String</span><span class="p">,</span><span class="n">chrom_label_info</span><span class="o">::</span><span class="kt">Tuple</span><span class="p">{</span><span class="kt">Array</span><span class="p">{</span><span class="n">String</span><span class="p">,</span><span class="mi">1</span><span class="p">},</span><span class="kt">Array</span><span class="p">{</span><span class="kt">Int64</span><span class="p">,</span><span class="mi">1</span><span class="p">},</span><span class="n">String</span><span class="p">},</span> <span class="n">sample_names</span><span class="p">,</span><span class="n">chr_pos_tuple_list_rev</span><span class="p">,</span><span class="n">y_axis_label_option</span><span class="p">,</span><span class="n">x_axis_label_option</span><span class="p">)</span>
@@ -676,7 +676,7 @@
 
 
 <p>generate heatmap of read depth data.</p>
-<p><a target='_blank' href='https://github.com/compbiocore/VariantVisualization.jl/blob/1e705b74d904a700fcebc7961b8845edd2ce3708/src/plot_utils.jl#L224-L227' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/compbiocore/VariantVisualization.jl/blob/88de611476a7d48e705a36dc5c227f274850ec10/src/plot_utils.jl#L224-L227' class='documenter-source'>source</a><br></p>
 <p><a id='VariantVisualization.dp_heatmap2_with_groups-Tuple{Array{Int64,2},String,Tuple{Array{String,1},Array{Int64,1},String},Array{Any,1},Any,Any,Any,Any,Any,Any}' href='#VariantVisualization.dp_heatmap2_with_groups-Tuple{Array{Int64,2},String,Tuple{Array{String,1},Array{Int64,1},String},Array{Any,1},Any,Any,Any,Any,Any,Any}'>#</a>
 <strong><code>VariantVisualization.dp_heatmap2_with_groups</code></strong> &mdash; <em>Method</em>.</p>
 <div class="codehilite"><pre><span></span><span class="n">dp_heatmap2_with_groups</span><span class="p">(</span><span class="n">input</span><span class="o">::</span><span class="kt">Array</span><span class="p">{</span><span class="kt">Int64</span><span class="p">,</span><span class="mi">2</span><span class="p">},</span><span class="n">title</span><span class="o">::</span><span class="n">String</span><span class="p">,</span><span class="n">chrom_label_info</span><span class="o">::</span><span class="kt">Tuple</span><span class="p">{</span><span class="kt">Array</span><span class="p">{</span><span class="n">String</span><span class="p">,</span><span class="mi">1</span><span class="p">},</span><span class="kt">Array</span><span class="p">{</span><span class="kt">Int64</span><span class="p">,</span><span class="mi">1</span><span class="p">},</span><span class="n">String</span><span class="p">},</span><span class="n">group_label_pack</span><span class="o">::</span><span class="kt">Array</span><span class="p">{</span><span class="kt">Any</span><span class="p">,</span><span class="mi">1</span><span class="p">},</span><span class="n">id_list</span><span class="p">,</span><span class="n">chr_pos_tuple_list_rev</span><span class="p">,</span><span class="n">y_axis_label_option</span><span class="p">,</span><span class="n">trait_label_array</span><span class="p">,</span><span class="n">x_axis_label_option</span><span class="p">,</span><span class="n">number_rows</span><span class="p">)</span>
@@ -684,7 +684,7 @@
 
 
 <p>generate heatmap of read depth data with grouped samples.</p>
-<p><a target='_blank' href='https://github.com/compbiocore/VariantVisualization.jl/blob/1e705b74d904a700fcebc7961b8845edd2ce3708/src/plot_utils.jl#L326-L329' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/compbiocore/VariantVisualization.jl/blob/88de611476a7d48e705a36dc5c227f274850ec10/src/plot_utils.jl#L326-L329' class='documenter-source'>source</a><br></p>
 <p><a id='VariantVisualization.find_group_label_indices-Tuple{Any,Any,Any}' href='#VariantVisualization.find_group_label_indices-Tuple{Any,Any,Any}'>#</a>
 <strong><code>VariantVisualization.find_group_label_indices</code></strong> &mdash; <em>Method</em>.</p>
 <div class="codehilite"><pre><span></span><span class="n">find_group_label_indices</span><span class="p">(</span><span class="n">pheno</span><span class="p">,</span><span class="n">trait_to_group_by</span><span class="p">,</span><span class="n">row_to_sort_by</span><span class="p">)</span>
@@ -692,7 +692,7 @@
 
 
 <p>find indices and determines names for group 1 and group 2 labels on plots. finds index of center of each sample group to place tick mark and label.</p>
-<p><a target='_blank' href='https://github.com/compbiocore/VariantVisualization.jl/blob/1e705b74d904a700fcebc7961b8845edd2ce3708/src/vcf_utils_complete.jl#L805-L808' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/compbiocore/VariantVisualization.jl/blob/88de611476a7d48e705a36dc5c227f274850ec10/src/vcf_utils_complete.jl#L805-L808' class='documenter-source'>source</a><br></p>
 <p><a id='VariantVisualization.generate_chromosome_positions_for_hover_labels-Tuple{Array{Any,2}}' href='#VariantVisualization.generate_chromosome_positions_for_hover_labels-Tuple{Array{Any,2}}'>#</a>
 <strong><code>VariantVisualization.generate_chromosome_positions_for_hover_labels</code></strong> &mdash; <em>Method</em>.</p>
 <div class="codehilite"><pre><span></span><span class="n">generate_chromosome_positions_for_hover_labels</span><span class="p">(</span><span class="n">chr_labels</span><span class="o">::</span><span class="kt">Array</span><span class="p">{</span><span class="kt">Any</span><span class="p">,</span><span class="mi">2</span><span class="p">})</span>
@@ -700,7 +700,7 @@
 
 
 <p>creates tuple of genomic locations to set as tick labels. This is automatically store chromosome positions in hover labels. However tick labels are set to hidden with showticklabels=false so they will not crowd the y axis.</p>
-<p><a target='_blank' href='https://github.com/compbiocore/VariantVisualization.jl/blob/1e705b74d904a700fcebc7961b8845edd2ce3708/src/vcf_utils_complete.jl#L1075-L1079' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/compbiocore/VariantVisualization.jl/blob/88de611476a7d48e705a36dc5c227f274850ec10/src/vcf_utils_complete.jl#L1075-L1079' class='documenter-source'>source</a><br></p>
 <p><a id='VariantVisualization.generate_genotype_array-Tuple{Array{Any,1},Any}' href='#VariantVisualization.generate_genotype_array-Tuple{Array{Any,1},Any}'>#</a>
 <strong><code>VariantVisualization.generate_genotype_array</code></strong> &mdash; <em>Method</em>.</p>
 <div class="codehilite"><pre><span></span><span class="n">generate_genotype_array</span><span class="p">(</span><span class="n">record_sub</span><span class="o">::</span><span class="kt">Array</span><span class="p">{</span><span class="kt">Any</span><span class="p">,</span><span class="mi">1</span><span class="p">},</span><span class="n">genotype_field</span><span class="o">::</span><span class="n">String</span><span class="p">)</span>
@@ -708,7 +708,7 @@
 
 
 <p>Returns numerical array of genotype values (either genotype or read<em>depth values) which are translated by another function into num</em>array Where genotype<em>field is either GT or DP to visualize genotype or read</em>depth</p>
-<p><a target='_blank' href='https://github.com/compbiocore/VariantVisualization.jl/blob/1e705b74d904a700fcebc7961b8845edd2ce3708/src/vcf_utils_complete.jl#L655-L659' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/compbiocore/VariantVisualization.jl/blob/88de611476a7d48e705a36dc5c227f274850ec10/src/vcf_utils_complete.jl#L655-L659' class='documenter-source'>source</a><br></p>
 <p><a id='VariantVisualization.generate_hover_text_array-NTuple{4,Any}' href='#VariantVisualization.generate_hover_text_array-NTuple{4,Any}'>#</a>
 <strong><code>VariantVisualization.generate_hover_text_array</code></strong> &mdash; <em>Method</em>.</p>
 <div class="codehilite"><pre><span></span><span class="n">generate_hover_text_array</span><span class="p">(</span><span class="n">chr_pos_tuple_list</span><span class="p">,</span><span class="n">sample_names</span><span class="p">,</span><span class="n">input</span><span class="p">,</span><span class="n">mode</span><span class="p">)</span>
@@ -716,7 +716,7 @@
 
 
 <p>Generate array of data for hovertext to use as custom hover text for ungrouped heatmaps. Where mode is GT or DP.</p>
-<p><a target='_blank' href='https://github.com/compbiocore/VariantVisualization.jl/blob/1e705b74d904a700fcebc7961b8845edd2ce3708/src/vcf_utils_complete.jl#L1349-L1352' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/compbiocore/VariantVisualization.jl/blob/88de611476a7d48e705a36dc5c227f274850ec10/src/vcf_utils_complete.jl#L1349-L1352' class='documenter-source'>source</a><br></p>
 <p><a id='VariantVisualization.generate_hover_text_array_grouped-NTuple{5,Any}' href='#VariantVisualization.generate_hover_text_array_grouped-NTuple{5,Any}'>#</a>
 <strong><code>VariantVisualization.generate_hover_text_array_grouped</code></strong> &mdash; <em>Method</em>.</p>
 <div class="codehilite"><pre><span></span><span class="n">generate_hover_text_array_grouped</span><span class="p">(</span><span class="n">chr_pos_tuple_list</span><span class="p">,</span><span class="n">sample_names</span><span class="p">,</span><span class="n">input</span><span class="p">,</span><span class="n">mode</span><span class="p">)</span>
@@ -724,7 +724,7 @@
 
 
 <p>Generate array of data for hovertext to use as custom hover text for grouped heatmaps. Where mode is GT or DP.</p>
-<p><a target='_blank' href='https://github.com/compbiocore/VariantVisualization.jl/blob/1e705b74d904a700fcebc7961b8845edd2ce3708/src/vcf_utils_complete.jl#L1389-L1392' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/compbiocore/VariantVisualization.jl/blob/88de611476a7d48e705a36dc5c227f274850ec10/src/vcf_utils_complete.jl#L1389-L1392' class='documenter-source'>source</a><br></p>
 <p><a id='VariantVisualization.generate_legend_increments_grouped-Tuple{Any}' href='#VariantVisualization.generate_legend_increments_grouped-Tuple{Any}'>#</a>
 <strong><code>VariantVisualization.generate_legend_increments_grouped</code></strong> &mdash; <em>Method</em>.</p>
 <div class="codehilite"><pre><span></span> <span class="n">generate_legend_increments_grouped</span><span class="p">(</span><span class="n">input</span><span class="p">)</span>
@@ -732,7 +732,7 @@
 
 
 <p>Dynamically generates positons for shapes that build categorical colorscale including two color boxes for traits 1 and 2</p>
-<p><a target='_blank' href='https://github.com/compbiocore/VariantVisualization.jl/blob/1e705b74d904a700fcebc7961b8845edd2ce3708/src/plot_utils.jl#L601-L604' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/compbiocore/VariantVisualization.jl/blob/88de611476a7d48e705a36dc5c227f274850ec10/src/plot_utils.jl#L601-L604' class='documenter-source'>source</a><br></p>
 <p><a id='VariantVisualization.generate_legend_increments_ungrouped-Tuple{Any}' href='#VariantVisualization.generate_legend_increments_ungrouped-Tuple{Any}'>#</a>
 <strong><code>VariantVisualization.generate_legend_increments_ungrouped</code></strong> &mdash; <em>Method</em>.</p>
 <div class="codehilite"><pre><span></span> <span class="n">generate_legend_increments_ungrouped</span><span class="p">(</span><span class="n">input</span><span class="p">)</span>
@@ -740,7 +740,7 @@
 
 
 <p>Dynamically generates positons for shapes that build categorical colorscale.</p>
-<p><a target='_blank' href='https://github.com/compbiocore/VariantVisualization.jl/blob/1e705b74d904a700fcebc7961b8845edd2ce3708/src/plot_utils.jl#L567-L570' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/compbiocore/VariantVisualization.jl/blob/88de611476a7d48e705a36dc5c227f274850ec10/src/plot_utils.jl#L567-L570' class='documenter-source'>source</a><br></p>
 <p><a id='VariantVisualization.genomic_range_siglist_filter-Tuple{Any,Any,AbstractString}' href='#VariantVisualization.genomic_range_siglist_filter-Tuple{Any,Any,AbstractString}'>#</a>
 <strong><code>VariantVisualization.genomic_range_siglist_filter</code></strong> &mdash; <em>Method</em>.</p>
 <div class="codehilite"><pre><span></span><span class="n">genomic_range_siglist_filter</span><span class="p">(</span><span class="n">vcf_filename</span><span class="p">,</span><span class="n">sig_list</span><span class="p">,</span><span class="n">chr_range</span><span class="o">::</span><span class="kt">AbstractString</span><span class="p">)</span>
@@ -748,7 +748,7 @@
 
 
 <p>returns subarray of vcf records with io<em>pass</em>filter, io<em>sig</em>list<em>vcf</em>filter, and io<em>genomic</em>range<em>vcf</em>filter applied.</p>
-<p><a target='_blank' href='https://github.com/compbiocore/VariantVisualization.jl/blob/1e705b74d904a700fcebc7961b8845edd2ce3708/src/vcf_utils_complete.jl#L514-L517' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/compbiocore/VariantVisualization.jl/blob/88de611476a7d48e705a36dc5c227f274850ec10/src/vcf_utils_complete.jl#L514-L517' class='documenter-source'>source</a><br></p>
 <p><a id='VariantVisualization.genotype_heatmap2_new_legend-NTuple{7,Any}' href='#VariantVisualization.genotype_heatmap2_new_legend-NTuple{7,Any}'>#</a>
 <strong><code>VariantVisualization.genotype_heatmap2_new_legend</code></strong> &mdash; <em>Method</em>.</p>
 <div class="codehilite"><pre><span></span><span class="n">genotype_heatmap2_new_legend</span><span class="p">(</span><span class="n">input</span><span class="o">::</span><span class="kt">Array</span><span class="p">{</span><span class="kt">Any</span><span class="p">,</span><span class="mi">2</span><span class="p">},</span><span class="n">title</span><span class="o">::</span><span class="kt">AbstractString</span><span class="p">,</span><span class="n">chrom_label_info</span><span class="p">,</span><span class="n">sample_names</span><span class="p">,</span><span class="n">chr_pos_tuple_list_rev</span><span class="p">,</span><span class="n">y_axis_label_option</span><span class="p">,</span><span class="n">x_axis_label_option</span><span class="p">)</span>
@@ -756,11 +756,11 @@
 
 
 <p>generate heatmap of genotype data.</p>
-<p><a target='_blank' href='https://github.com/compbiocore/VariantVisualization.jl/blob/1e705b74d904a700fcebc7961b8845edd2ce3708/src/plot_utils.jl#L3-L6' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/compbiocore/VariantVisualization.jl/blob/88de611476a7d48e705a36dc5c227f274850ec10/src/plot_utils.jl#L3-L6' class='documenter-source'>source</a><br></p>
 <p><a id='VariantVisualization.genotype_heatmap_with_groups-Tuple{Array{Int64,2},String,Tuple{Array{String,1},Array{Int64,1},String},Array{Any,1},Any,Any,Any,Any,Any,Any}' href='#VariantVisualization.genotype_heatmap_with_groups-Tuple{Array{Int64,2},String,Tuple{Array{String,1},Array{Int64,1},String},Array{Any,1},Any,Any,Any,Any,Any,Any}'>#</a>
 <strong><code>VariantVisualization.genotype_heatmap_with_groups</code></strong> &mdash; <em>Method</em>.</p>
 <p>genotype<em>heatmap</em>with<em>groups(input::Array{Int64,2},title::String,chrom</em>label<em>info::Tuple{Array{String,1},Array{Int64,1},String},group</em>label<em>pack::Array{Any,1},id</em>list,chr<em>pos</em>tuple<em>list</em>rev,y<em>axis</em>label<em>option,trait</em>label<em>array,x</em>axis<em>label</em>option,number_rows) generate heatmap of genotype data.</p>
-<p><a target='_blank' href='https://github.com/compbiocore/VariantVisualization.jl/blob/1e705b74d904a700fcebc7961b8845edd2ce3708/src/plot_utils.jl#L96-L99' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/compbiocore/VariantVisualization.jl/blob/88de611476a7d48e705a36dc5c227f274850ec10/src/plot_utils.jl#L96-L99' class='documenter-source'>source</a><br></p>
 <p><a id='VariantVisualization.get_sample_names-Tuple{Any}' href='#VariantVisualization.get_sample_names-Tuple{Any}'>#</a>
 <strong><code>VariantVisualization.get_sample_names</code></strong> &mdash; <em>Method</em>.</p>
 <div class="codehilite"><pre><span></span><span class="n">get_sample_names</span><span class="p">(</span><span class="n">reader</span><span class="p">)</span>
@@ -768,11 +768,11 @@
 
 
 <p>returns sample ids of vcf file as a vector of symbols for naming columns of num_array dataframe object for column filter functions</p>
-<p><a target='_blank' href='https://github.com/compbiocore/VariantVisualization.jl/blob/1e705b74d904a700fcebc7961b8845edd2ce3708/src/vcf_utils_complete.jl#L789-L792' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/compbiocore/VariantVisualization.jl/blob/88de611476a7d48e705a36dc5c227f274850ec10/src/vcf_utils_complete.jl#L789-L792' class='documenter-source'>source</a><br></p>
 <p><a id='VariantVisualization.io_genomic_range_vcf_filter-Tuple{String,AbstractString}' href='#VariantVisualization.io_genomic_range_vcf_filter-Tuple{String,AbstractString}'>#</a>
 <strong><code>VariantVisualization.io_genomic_range_vcf_filter</code></strong> &mdash; <em>Method</em>.</p>
 <p>io<em>genomic</em>range<em>vcf</em>filter(chr<em>range::String, vcf</em>filename::AbstractString) create subarray of vcf variant records matching user specified chromosome range in format: (e.g. chr1:0-30000000)</p>
-<p><a target='_blank' href='https://github.com/compbiocore/VariantVisualization.jl/blob/1e705b74d904a700fcebc7961b8845edd2ce3708/src/vcf_utils_complete.jl#L207-L210' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/compbiocore/VariantVisualization.jl/blob/88de611476a7d48e705a36dc5c227f274850ec10/src/vcf_utils_complete.jl#L207-L210' class='documenter-source'>source</a><br></p>
 <p><a id='VariantVisualization.io_pass_filter-Tuple{Any}' href='#VariantVisualization.io_pass_filter-Tuple{Any}'>#</a>
 <strong><code>VariantVisualization.io_pass_filter</code></strong> &mdash; <em>Method</em>.</p>
 <div class="codehilite"><pre><span></span><span class="n">io_pass_filter</span><span class="p">(</span><span class="n">vcf_filename</span><span class="p">)</span>
@@ -780,7 +780,7 @@
 
 
 <p>returns subarray of vcf records including only records with FILTER status = PASS</p>
-<p><a target='_blank' href='https://github.com/compbiocore/VariantVisualization.jl/blob/1e705b74d904a700fcebc7961b8845edd2ce3708/src/vcf_utils_complete.jl#L286-L289' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/compbiocore/VariantVisualization.jl/blob/88de611476a7d48e705a36dc5c227f274850ec10/src/vcf_utils_complete.jl#L286-L289' class='documenter-source'>source</a><br></p>
 <p><a id='VariantVisualization.io_sig_list_vcf_filter-Tuple{Any,Any}' href='#VariantVisualization.io_sig_list_vcf_filter-Tuple{Any,Any}'>#</a>
 <strong><code>VariantVisualization.io_sig_list_vcf_filter</code></strong> &mdash; <em>Method</em>.</p>
 <div class="codehilite"><pre><span></span><span class="n">io_sig_list_vcf_filter</span><span class="p">(</span><span class="n">sig_list</span><span class="p">,</span><span class="n">vcf_filename</span><span class="p">)</span>
@@ -788,12 +788,12 @@
 
 
 <p>returns subarray of variant records matching a list of variant positions returned from load_siglist()</p>
-<p><a target='_blank' href='https://github.com/compbiocore/VariantVisualization.jl/blob/1e705b74d904a700fcebc7961b8845edd2ce3708/src/vcf_utils_complete.jl#L260-L263' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/compbiocore/VariantVisualization.jl/blob/88de611476a7d48e705a36dc5c227f274850ec10/src/vcf_utils_complete.jl#L260-L263' class='documenter-source'>source</a><br></p>
 <p><a id='VariantVisualization.jupyter_main-NTuple{5,Any}' href='#VariantVisualization.jupyter_main-NTuple{5,Any}'>#</a>
 <strong><code>VariantVisualization.jupyter_main</code></strong> &mdash; <em>Method</em>.</p>
 <p>jupyter<em>main(vcf</em>filename,saving<em>options,variant</em>filters,sample<em>selection,plotting</em>options)</p>
 <p>filters, plots visualization, and saves as figure. utilizes all global variables set in first cell of jupyter notebook</p>
-<p><a target='_blank' href='https://github.com/compbiocore/VariantVisualization.jl/blob/1e705b74d904a700fcebc7961b8845edd2ce3708/src/new_notebook_utils.jl#L1-L6' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/compbiocore/VariantVisualization.jl/blob/88de611476a7d48e705a36dc5c227f274850ec10/src/new_notebook_utils.jl#L1-L6' class='documenter-source'>source</a><br></p>
 <p><a id='VariantVisualization.list_sample_names_low_dp-Tuple{Array{Float64,1},Any}' href='#VariantVisualization.list_sample_names_low_dp-Tuple{Array{Float64,1},Any}'>#</a>
 <strong><code>VariantVisualization.list_sample_names_low_dp</code></strong> &mdash; <em>Method</em>.</p>
 <div class="codehilite"><pre><span></span><span class="n">list_sample_names_low_dp</span><span class="p">(</span><span class="n">sample_avg_list</span><span class="o">::</span><span class="kt">Array</span><span class="p">{</span><span class="kt">Float64</span><span class="p">,</span><span class="mi">2</span><span class="p">},</span><span class="n">sample_names</span><span class="p">)</span>
@@ -801,7 +801,7 @@
 
 
 <p>returns list of sample ids that have an average read depth less than 15 across all variant positions. Developers can implement this in the VIVA script - search script for function name and read notes.</p>
-<p><a target='_blank' href='https://github.com/compbiocore/VariantVisualization.jl/blob/1e705b74d904a700fcebc7961b8845edd2ce3708/src/vcf_utils_complete.jl#L943-L946' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/compbiocore/VariantVisualization.jl/blob/88de611476a7d48e705a36dc5c227f274850ec10/src/vcf_utils_complete.jl#L943-L946' class='documenter-source'>source</a><br></p>
 <p><a id='VariantVisualization.list_variant_positions_low_dp-Tuple{Array{Float64,1},Any}' href='#VariantVisualization.list_variant_positions_low_dp-Tuple{Array{Float64,1},Any}'>#</a>
 <strong><code>VariantVisualization.list_variant_positions_low_dp</code></strong> &mdash; <em>Method</em>.</p>
 <div class="codehilite"><pre><span></span><span class="n">list_variant_positions_low_dp</span><span class="p">(</span><span class="n">variant_avg_list</span><span class="o">::</span><span class="kt">Array</span><span class="p">{</span><span class="kt">Float64</span><span class="p">,</span><span class="mi">2</span><span class="p">},</span><span class="n">chrom_labels</span><span class="p">)</span>
@@ -809,7 +809,7 @@
 
 
 <p>finds variant positions that have an average read depth less than 15 across all patients. Developers can implement this in the VIVA script - search script for function name and read notes.</p>
-<p><a target='_blank' href='https://github.com/compbiocore/VariantVisualization.jl/blob/1e705b74d904a700fcebc7961b8845edd2ce3708/src/vcf_utils_complete.jl#L968-L971' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/compbiocore/VariantVisualization.jl/blob/88de611476a7d48e705a36dc5c227f274850ec10/src/vcf_utils_complete.jl#L968-L971' class='documenter-source'>source</a><br></p>
 <p><a id='VariantVisualization.load_siglist-Tuple{AbstractString}' href='#VariantVisualization.load_siglist-Tuple{AbstractString}'>#</a>
 <strong><code>VariantVisualization.load_siglist</code></strong> &mdash; <em>Method</em>.</p>
 <div class="codehilite"><pre><span></span><span class="n">load_siglist</span><span class="p">(</span><span class="n">filename</span><span class="o">::</span><span class="kt">AbstractString</span><span class="p">)</span>
@@ -817,7 +817,7 @@
 
 
 <p>where x = filename of significant SNP variant location list in comma delimited format (saved as .csv)</p>
-<p><a target='_blank' href='https://github.com/compbiocore/VariantVisualization.jl/blob/1e705b74d904a700fcebc7961b8845edd2ce3708/src/vcf_utils_complete.jl#L165-L168' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/compbiocore/VariantVisualization.jl/blob/88de611476a7d48e705a36dc5c227f274850ec10/src/vcf_utils_complete.jl#L165-L168' class='documenter-source'>source</a><br></p>
 <p><a id='VariantVisualization.pass_genomic_range_filter-Tuple{GeneticVariation.VCF.Reader,AbstractString,Any}' href='#VariantVisualization.pass_genomic_range_filter-Tuple{GeneticVariation.VCF.Reader,AbstractString,Any}'>#</a>
 <strong><code>VariantVisualization.pass_genomic_range_filter</code></strong> &mdash; <em>Method</em>.</p>
 <div class="codehilite"><pre><span></span><span class="n">pass_genomic_range_filter</span><span class="p">(</span><span class="n">reader</span><span class="o">::</span><span class="n">GeneticVariation</span><span class="o">.</span><span class="n">VCF</span><span class="o">.</span><span class="n">Reader</span><span class="p">,</span><span class="n">chr_range</span><span class="o">::</span><span class="kt">AbstractString</span><span class="p">,</span><span class="n">vcf_filename</span><span class="p">)</span>
@@ -825,7 +825,7 @@
 
 
 <p>returns subarray of vcf records with io<em>pass</em>filter and io<em>genomic</em>range<em>vcf</em>filter applied.</p>
-<p><a target='_blank' href='https://github.com/compbiocore/VariantVisualization.jl/blob/1e705b74d904a700fcebc7961b8845edd2ce3708/src/vcf_utils_complete.jl#L394-L397' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/compbiocore/VariantVisualization.jl/blob/88de611476a7d48e705a36dc5c227f274850ec10/src/vcf_utils_complete.jl#L394-L397' class='documenter-source'>source</a><br></p>
 <p><a id='VariantVisualization.pass_genomic_range_siglist_filter-Tuple{Any,Any,AbstractString}' href='#VariantVisualization.pass_genomic_range_siglist_filter-Tuple{Any,Any,AbstractString}'>#</a>
 <strong><code>VariantVisualization.pass_genomic_range_siglist_filter</code></strong> &mdash; <em>Method</em>.</p>
 <div class="codehilite"><pre><span></span><span class="n">pass_genomic_range_siglist_filter</span><span class="p">(</span><span class="n">vcf_filename</span><span class="p">,</span><span class="n">sig_list</span><span class="p">,</span><span class="n">chr_range</span><span class="o">::</span><span class="kt">AbstractString</span><span class="p">)</span>
@@ -833,7 +833,7 @@
 
 
 <p>returns subarray of vcf records with io<em>pass</em>filter, io<em>sig</em>list<em>vcf</em>filter, and io<em>genomic</em>range<em>vcf</em>filter applied.</p>
-<p><a target='_blank' href='https://github.com/compbiocore/VariantVisualization.jl/blob/1e705b74d904a700fcebc7961b8845edd2ce3708/src/vcf_utils_complete.jl#L310-L313' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/compbiocore/VariantVisualization.jl/blob/88de611476a7d48e705a36dc5c227f274850ec10/src/vcf_utils_complete.jl#L310-L313' class='documenter-source'>source</a><br></p>
 <p><a id='VariantVisualization.pass_siglist_filter-Tuple{Any,Any}' href='#VariantVisualization.pass_siglist_filter-Tuple{Any,Any}'>#</a>
 <strong><code>VariantVisualization.pass_siglist_filter</code></strong> &mdash; <em>Method</em>.</p>
 <div class="codehilite"><pre><span></span><span class="n">pass_siglist_filter</span><span class="p">(</span><span class="n">vcf_filename</span><span class="p">,</span><span class="n">sig_list</span><span class="p">,</span><span class="n">chr_range</span><span class="o">::</span><span class="kt">AbstractString</span><span class="p">)</span>
@@ -841,7 +841,7 @@
 
 
 <p>returns subarray of vcf records with io<em>pass</em>filter, io<em>sig</em>list<em>vcf</em>filter, and io<em>genomic</em>range<em>vcf</em>filter applied.</p>
-<p><a target='_blank' href='https://github.com/compbiocore/VariantVisualization.jl/blob/1e705b74d904a700fcebc7961b8845edd2ce3708/src/vcf_utils_complete.jl#L467-L470' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/compbiocore/VariantVisualization.jl/blob/88de611476a7d48e705a36dc5c227f274850ec10/src/vcf_utils_complete.jl#L467-L470' class='documenter-source'>source</a><br></p>
 <p><a id='VariantVisualization.process_plot_inputs-Tuple{Any,Any,Any}' href='#VariantVisualization.process_plot_inputs-Tuple{Any,Any,Any}'>#</a>
 <strong><code>VariantVisualization.process_plot_inputs</code></strong> &mdash; <em>Method</em>.</p>
 <div class="codehilite"><pre><span></span><span class="n">process_plot_inputs</span><span class="p">(</span><span class="n">chrom_label_info</span><span class="p">,</span><span class="n">sample_names</span><span class="p">,</span><span class="n">chr_pos_tuple_list_rev</span><span class="p">)</span>
@@ -849,7 +849,7 @@
 
 
 <p>Prepares input for heatmap plot function for both genotype and read depth plots without –group_samples flag.</p>
-<p><a target='_blank' href='https://github.com/compbiocore/VariantVisualization.jl/blob/1e705b74d904a700fcebc7961b8845edd2ce3708/src/plot_utils.jl#L511-L514' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/compbiocore/VariantVisualization.jl/blob/88de611476a7d48e705a36dc5c227f274850ec10/src/plot_utils.jl#L511-L514' class='documenter-source'>source</a><br></p>
 <p><a id='VariantVisualization.process_plot_inputs_for_grouped_data-Tuple{Tuple{Array{String,1},Array{Int64,1},String},Array{Any,1},Any,Any,Any}' href='#VariantVisualization.process_plot_inputs_for_grouped_data-Tuple{Tuple{Array{String,1},Array{Int64,1},String},Array{Any,1},Any,Any,Any}'>#</a>
 <strong><code>VariantVisualization.process_plot_inputs_for_grouped_data</code></strong> &mdash; <em>Method</em>.</p>
 <div class="codehilite"><pre><span></span><span class="n">process_plot_inputs_for_grouped_data</span><span class="p">(</span><span class="n">chrom_label_info</span><span class="o">::</span><span class="kt">Tuple</span><span class="p">{</span><span class="kt">Array</span><span class="p">{</span><span class="n">String</span><span class="p">,</span><span class="mi">1</span><span class="p">},</span><span class="kt">Array</span><span class="p">{</span><span class="kt">Int64</span><span class="p">,</span><span class="mi">1</span><span class="p">},</span><span class="n">String</span><span class="p">},</span><span class="n">group_label_pack</span><span class="o">::</span><span class="kt">Array</span><span class="p">{</span><span class="kt">Any</span><span class="p">,</span><span class="mi">1</span><span class="p">},</span><span class="n">id_list</span><span class="p">,</span><span class="n">chr_pos_tuple_list_rev</span><span class="p">,</span><span class="n">trait_label_array</span><span class="p">)</span>
@@ -857,7 +857,7 @@
 
 
 <p>Prepares input for heatmap plot function for both genotype and read depth plots with –group_samples flag.</p>
-<p><a target='_blank' href='https://github.com/compbiocore/VariantVisualization.jl/blob/1e705b74d904a700fcebc7961b8845edd2ce3708/src/plot_utils.jl#L536-L539' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/compbiocore/VariantVisualization.jl/blob/88de611476a7d48e705a36dc5c227f274850ec10/src/plot_utils.jl#L536-L539' class='documenter-source'>source</a><br></p>
 <p><a id='VariantVisualization.read_depth_threshhold-Tuple{Array{Int64,2}}' href='#VariantVisualization.read_depth_threshhold-Tuple{Array{Int64,2}}'>#</a>
 <strong><code>VariantVisualization.read_depth_threshhold</code></strong> &mdash; <em>Method</em>.</p>
 <div class="codehilite"><pre><span></span><span class="n">read_depth_threshhold</span><span class="p">(</span><span class="n">dp_array</span><span class="o">::</span><span class="kt">Array</span><span class="p">{</span><span class="kt">Int64</span><span class="p">,</span><span class="mi">2</span><span class="p">})</span>
@@ -865,7 +865,7 @@
 
 
 <p>Caps read depth outlier values at user defined threshhold. threshhold defaults to dp = 100. All dp over 100 are set to 100 to visualize read depth values between 0 &lt; dp &gt; 100 in better definition.</p>
-<p><a target='_blank' href='https://github.com/compbiocore/VariantVisualization.jl/blob/1e705b74d904a700fcebc7961b8845edd2ce3708/src/vcf_utils_complete.jl#L994-L999' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/compbiocore/VariantVisualization.jl/blob/88de611476a7d48e705a36dc5c227f274850ec10/src/vcf_utils_complete.jl#L994-L999' class='documenter-source'>source</a><br></p>
 <p><a id='VariantVisualization.returnXY_column1!-Tuple{Any}' href='#VariantVisualization.returnXY_column1!-Tuple{Any}'>#</a>
 <strong><code>VariantVisualization.returnXY_column1!</code></strong> &mdash; <em>Method</em>.</p>
 <div class="codehilite"><pre><span></span><span class="n">returnXY_column1!</span><span class="p">(</span><span class="n">chr_label_vector</span><span class="p">)</span>
@@ -873,7 +873,7 @@
 
 
 <p>Replace String "23","24","25" with "X","Y","M" in chromosome label vector used for plot labels</p>
-<p><a target='_blank' href='https://github.com/compbiocore/VariantVisualization.jl/blob/1e705b74d904a700fcebc7961b8845edd2ce3708/src/vcf_utils_complete.jl#L135-L138' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/compbiocore/VariantVisualization.jl/blob/88de611476a7d48e705a36dc5c227f274850ec10/src/vcf_utils_complete.jl#L135-L138' class='documenter-source'>source</a><br></p>
 <p><a id='VariantVisualization.returnXY_column1_siglist!-Tuple{Any}' href='#VariantVisualization.returnXY_column1_siglist!-Tuple{Any}'>#</a>
 <strong><code>VariantVisualization.returnXY_column1_siglist!</code></strong> &mdash; <em>Method</em>.</p>
 <div class="codehilite"><pre><span></span><span class="n">returnXY_column1_siglist!</span><span class="p">(</span><span class="n">siglist_sorted</span><span class="p">)</span>
@@ -881,7 +881,7 @@
 
 
 <p>Replace String "23","24","25" with "X","Y","M" in siglist for filtering</p>
-<p><a target='_blank' href='https://github.com/compbiocore/VariantVisualization.jl/blob/1e705b74d904a700fcebc7961b8845edd2ce3708/src/vcf_utils_complete.jl#L150-L153' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/compbiocore/VariantVisualization.jl/blob/88de611476a7d48e705a36dc5c227f274850ec10/src/vcf_utils_complete.jl#L150-L153' class='documenter-source'>source</a><br></p>
 <p><a id='VariantVisualization.save_graphic-NTuple{5,Any}' href='#VariantVisualization.save_graphic-NTuple{5,Any}'>#</a>
 <strong><code>VariantVisualization.save_graphic</code></strong> &mdash; <em>Method</em>.</p>
 <div class="codehilite"><pre><span></span><span class="n">save_graphic</span><span class="p">(</span><span class="n">graphic</span><span class="p">,</span><span class="n">output_directory</span><span class="p">,</span><span class="n">save_ext</span><span class="p">,</span><span class="n">title</span><span class="p">,</span><span class="n">remote_option</span><span class="p">)</span>
@@ -889,7 +889,7 @@
 
 
 <p>Save plot in either html or static image formats incuding eps, png, svg, and pdf</p>
-<p><a target='_blank' href='https://github.com/compbiocore/VariantVisualization.jl/blob/1e705b74d904a700fcebc7961b8845edd2ce3708/src/vcf_utils_complete.jl#L1468-L1471' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/compbiocore/VariantVisualization.jl/blob/88de611476a7d48e705a36dc5c227f274850ec10/src/vcf_utils_complete.jl#L1468-L1471' class='documenter-source'>source</a><br></p>
 <p><a id='VariantVisualization.save_numerical_array-NTuple{5,Any}' href='#VariantVisualization.save_numerical_array-NTuple{5,Any}'>#</a>
 <strong><code>VariantVisualization.save_numerical_array</code></strong> &mdash; <em>Method</em>.</p>
 <div class="codehilite"><pre><span></span><span class="n">save_numerical_array</span><span class="p">(</span><span class="n">num_array</span><span class="o">::</span><span class="kt">Matrix</span><span class="p">{</span><span class="kt">Any</span><span class="p">},</span><span class="n">sample_names</span><span class="p">,</span><span class="n">chr_labels</span><span class="p">,</span><span class="n">title</span><span class="p">,</span><span class="n">output_directory</span><span class="p">)</span>
@@ -897,7 +897,7 @@
 
 
 <p>save numerical array with chr labels and sample ids to working directory</p>
-<p><a target='_blank' href='https://github.com/compbiocore/VariantVisualization.jl/blob/1e705b74d904a700fcebc7961b8845edd2ce3708/src/vcf_utils_complete.jl#L1008-L1011' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/compbiocore/VariantVisualization.jl/blob/88de611476a7d48e705a36dc5c227f274850ec10/src/vcf_utils_complete.jl#L1008-L1011' class='documenter-source'>source</a><br></p>
 <p><a id='VariantVisualization.select_columns-Tuple{AbstractString,Array{Int64,2},Any}' href='#VariantVisualization.select_columns-Tuple{AbstractString,Array{Int64,2},Any}'>#</a>
 <strong><code>VariantVisualization.select_columns</code></strong> &mdash; <em>Method</em>.</p>
 <div class="codehilite"><pre><span></span><span class="n">select_columns</span><span class="p">(</span><span class="n">filename_sample_list</span><span class="o">::</span><span class="kt">AbstractString</span><span class="p">,</span> <span class="n">num_array</span><span class="o">::</span><span class="kt">Array</span><span class="p">{</span><span class="kt">Int64</span><span class="p">,</span><span class="mi">2</span><span class="p">},</span> <span class="n">sample_names</span><span class="p">)</span>
@@ -905,7 +905,7 @@
 
 
 <p>returns num<em>array with columns matching user generated list of sample ids to select for analysis. num</em>array now has sample ids in first row.</p>
-<p><a target='_blank' href='https://github.com/compbiocore/VariantVisualization.jl/blob/1e705b74d904a700fcebc7961b8845edd2ce3708/src/vcf_utils_complete.jl#L870-L873' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/compbiocore/VariantVisualization.jl/blob/88de611476a7d48e705a36dc5c227f274850ec10/src/vcf_utils_complete.jl#L870-L873' class='documenter-source'>source</a><br></p>
 <p><a id='VariantVisualization.sortcols_by_phenotype_matrix-Tuple{String,String,Array{Int64,2},Any}' href='#VariantVisualization.sortcols_by_phenotype_matrix-Tuple{String,String,Array{Int64,2},Any}'>#</a>
 <strong><code>VariantVisualization.sortcols_by_phenotype_matrix</code></strong> &mdash; <em>Method</em>.</p>
 <div class="codehilite"><pre><span></span><span class="n">sortcols_by_phenotype_matrix</span><span class="p">(</span><span class="n">pheno_matrix_filename</span><span class="o">::</span><span class="n">String</span><span class="p">,</span><span class="n">trait_to_group_by</span><span class="o">::</span><span class="n">String</span><span class="p">,</span><span class="n">num_array</span><span class="o">::</span><span class="kt">Array</span><span class="p">{</span><span class="kt">Int64</span><span class="p">,</span><span class="mi">2</span><span class="p">},</span> <span class="n">sample_names</span><span class="o">::</span><span class="kt">Array</span><span class="p">{</span><span class="kt">Symbol</span><span class="p">,</span><span class="mi">2</span><span class="p">})</span>
@@ -913,7 +913,7 @@
 
 
 <p>group samples by a common trait using a user generated key matrix ("phenotype matrix") returns num<em>array,group</em>label_pack,</p>
-<p><a target='_blank' href='https://github.com/compbiocore/VariantVisualization.jl/blob/1e705b74d904a700fcebc7961b8845edd2ce3708/src/vcf_utils_complete.jl#L828-L831' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/compbiocore/VariantVisualization.jl/blob/88de611476a7d48e705a36dc5c227f274850ec10/src/vcf_utils_complete.jl#L828-L831' class='documenter-source'>source</a><br></p>
 <p><a id='VariantVisualization.test_parse_main-Tuple{Array{String,1}}' href='#VariantVisualization.test_parse_main-Tuple{Array{String,1}}'>#</a>
 <strong><code>VariantVisualization.test_parse_main</code></strong> &mdash; <em>Method</em>.</p>
 <div class="codehilite"><pre><span></span><span class="n">test_parse_main</span><span class="p">(</span><span class="nb">ARGS</span><span class="o">::</span><span class="kt">Vector</span><span class="p">{</span><span class="n">String</span><span class="p">})</span>
@@ -921,7 +921,7 @@
 
 
 <p>Defines argument parsing rules for viva script.</p>
-<p><a target='_blank' href='https://github.com/compbiocore/VariantVisualization.jl/blob/1e705b74d904a700fcebc7961b8845edd2ce3708/src/vcf_utils_complete.jl#L3-L6' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/compbiocore/VariantVisualization.jl/blob/88de611476a7d48e705a36dc5c227f274850ec10/src/vcf_utils_complete.jl#L3-L6' class='documenter-source'>source</a><br></p>
 <p><a id='VariantVisualization.translate_genotype_to_num_array-Tuple{Any,Any}' href='#VariantVisualization.translate_genotype_to_num_array-Tuple{Any,Any}'>#</a>
 <strong><code>VariantVisualization.translate_genotype_to_num_array</code></strong> &mdash; <em>Method</em>.</p>
 <div class="codehilite"><pre><span></span><span class="n">translate_genotype_to_num_array</span><span class="p">(</span><span class="n">genotype_array</span><span class="p">,</span><span class="n">geno_dict</span><span class="p">)</span>
@@ -929,7 +929,7 @@
 
 
 <p>returns a tuple of num<em>array for plotting, and chromosome labels for plotting as label bar. Translates array of genotype values to numerical array of categorical values. Genotype values are converted to categorical values. No</em>call=0, 0/0=1, heterozygous<em>variant=2, homozygous</em>variant=3</p>
-<p><a target='_blank' href='https://github.com/compbiocore/VariantVisualization.jl/blob/1e705b74d904a700fcebc7961b8845edd2ce3708/src/vcf_utils_complete.jl#L726-L731' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/compbiocore/VariantVisualization.jl/blob/88de611476a7d48e705a36dc5c227f274850ec10/src/vcf_utils_complete.jl#L726-L731' class='documenter-source'>source</a><br></p>
 <p><a id='VariantVisualization.translate_readdepth_strings_to_num_array-Tuple{Array{Any,2}}' href='#VariantVisualization.translate_readdepth_strings_to_num_array-Tuple{Array{Any,2}}'>#</a>
 <strong><code>VariantVisualization.translate_readdepth_strings_to_num_array</code></strong> &mdash; <em>Method</em>.</p>
 <div class="codehilite"><pre><span></span><span class="n">translate_readdepth_strings_to_num_array</span><span class="p">(</span><span class="n">read_depth_array</span><span class="o">::</span><span class="kt">Array</span><span class="p">{</span><span class="kt">Any</span><span class="p">,</span><span class="mi">2</span><span class="p">})</span>
@@ -937,7 +937,7 @@
 
 
 <p>Returns array of read<em>depth as int for plotting and average calculation. Ceiling of dp=100 is set to prevent high dp value from hiding (or "blowing out") low dp values. (see read</em>depth<em>threshhold() ). Where read</em>depth<em>array is output of generate</em>genotype<em>array() for DP option returns a tuple of num</em>array type Int for average calculation and plotting, and chromosome labels for plotting as label bar</p>
-<p><a target='_blank' href='https://github.com/compbiocore/VariantVisualization.jl/blob/1e705b74d904a700fcebc7961b8845edd2ce3708/src/vcf_utils_complete.jl#L746-L752' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/compbiocore/VariantVisualization.jl/blob/88de611476a7d48e705a36dc5c227f274850ec10/src/vcf_utils_complete.jl#L746-L752' class='documenter-source'>source</a><br></p>
 <p><a id='VariantVisualization.create_chr_dict-Tuple{}' href='#VariantVisualization.create_chr_dict-Tuple{}'>#</a>
 <strong><code>VariantVisualization.create_chr_dict</code></strong> &mdash; <em>Method</em>.</p>
 <div class="codehilite"><pre><span></span><span class="n">create_chr_dict</span><span class="p">()</span>
@@ -945,7 +945,7 @@
 
 
 <p>creates dict for use in combined<em>all</em>genotype<em>array</em>functions() for removing 'chr' from chromosome labels to allow sorting variant records by chromosome position.</p>
-<p><a target='_blank' href='https://github.com/compbiocore/VariantVisualization.jl/blob/1e705b74d904a700fcebc7961b8845edd2ce3708/src/vcf_utils_complete.jl#L599-L602' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/compbiocore/VariantVisualization.jl/blob/88de611476a7d48e705a36dc5c227f274850ec10/src/vcf_utils_complete.jl#L599-L602' class='documenter-source'>source</a><br></p>
 <p><a id='VariantVisualization.index_vcf-Tuple{Any}' href='#VariantVisualization.index_vcf-Tuple{Any}'>#</a>
 <strong><code>VariantVisualization.index_vcf</code></strong> &mdash; <em>Method</em>.</p>
 <div class="codehilite"><pre><span></span><span class="n">index_vcf</span><span class="p">(</span><span class="n">vcf_filename</span><span class="p">)</span>
@@ -953,7 +953,7 @@
 
 
 <p>Creates and saves index file with three column array of vcf chrom, position, and row number to be used by significant list filter functions.</p>
-<p><a target='_blank' href='https://github.com/compbiocore/VariantVisualization.jl/blob/1e705b74d904a700fcebc7961b8845edd2ce3708/src/vcf_utils_complete.jl#L1098-L1101' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/compbiocore/VariantVisualization.jl/blob/88de611476a7d48e705a36dc5c227f274850ec10/src/vcf_utils_complete.jl#L1098-L1101' class='documenter-source'>source</a><br></p>
 <p><a id='VariantVisualization.make_chromosome_labels-Tuple{Any}' href='#VariantVisualization.make_chromosome_labels-Tuple{Any}'>#</a>
 <strong><code>VariantVisualization.make_chromosome_labels</code></strong> &mdash; <em>Method</em>.</p>
 <div class="codehilite"><pre><span></span><span class="n">make_chromosome_labels</span><span class="p">(</span><span class="n">chrom_label_info</span><span class="p">)</span>
@@ -961,7 +961,7 @@
 
 
 <p>Returns vector of values to use as tick vals to show first chromosome label per chromosome with blank spaces between each first chromosome position for use with –y<em>axis</em>labels=chromosomes. duplicate<em>last</em>label tells if last chrom label is single or mutiple which affects number<em>to</em>fill value.</p>
-<p><a target='_blank' href='https://github.com/compbiocore/VariantVisualization.jl/blob/1e705b74d904a700fcebc7961b8845edd2ce3708/src/vcf_utils_complete.jl#L1151-L1154' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/compbiocore/VariantVisualization.jl/blob/88de611476a7d48e705a36dc5c227f274850ec10/src/vcf_utils_complete.jl#L1151-L1154' class='documenter-source'>source</a><br></p>
 <p><a id='VariantVisualization.match_siglist_to_index-Tuple{Any,Any}' href='#VariantVisualization.match_siglist_to_index-Tuple{Any,Any}'>#</a>
 <strong><code>VariantVisualization.match_siglist_to_index</code></strong> &mdash; <em>Method</em>.</p>
 <div class="codehilite"><pre><span></span><span class="n">match_siglist_to_index</span><span class="p">(</span><span class="n">sig_list</span><span class="p">,</span><span class="n">vcf_index</span><span class="p">)</span>
@@ -969,7 +969,7 @@
 
 
 <p>Returns vcf row indices of each variant position in sig_list for reader function to allow fast filtering in significant list filter funcitons.</p>
-<p><a target='_blank' href='https://github.com/compbiocore/VariantVisualization.jl/blob/1e705b74d904a700fcebc7961b8845edd2ce3708/src/vcf_utils_complete.jl#L1128-L1131' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/compbiocore/VariantVisualization.jl/blob/88de611476a7d48e705a36dc5c227f274850ec10/src/vcf_utils_complete.jl#L1128-L1131' class='documenter-source'>source</a><br></p>
 <p><a id='VariantVisualization.sort_genotype_array-Tuple{Any}' href='#VariantVisualization.sort_genotype_array-Tuple{Any}'>#</a>
 <strong><code>VariantVisualization.sort_genotype_array</code></strong> &mdash; <em>Method</em>.</p>
 <div class="codehilite"><pre><span></span><span class="n">sort_genotype_array</span><span class="p">(</span><span class="n">genotype_array</span><span class="p">)</span>
@@ -977,7 +977,7 @@
 
 
 <p>sorts genotype data array (which can contain genotype or read depth values) for GT or DP by chromosomal location</p>
-<p><a target='_blank' href='https://github.com/compbiocore/VariantVisualization.jl/blob/1e705b74d904a700fcebc7961b8845edd2ce3708/src/vcf_utils_complete.jl#L681-L684' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/compbiocore/VariantVisualization.jl/blob/88de611476a7d48e705a36dc5c227f274850ec10/src/vcf_utils_complete.jl#L681-L684' class='documenter-source'>source</a><br></p>
 <p><a id='VariantVisualization.translate_readdepth_strings_to_num_array_for_avg_dp-Tuple{Array{Any,2}}' href='#VariantVisualization.translate_readdepth_strings_to_num_array_for_avg_dp-Tuple{Array{Any,2}}'>#</a>
 <strong><code>VariantVisualization.translate_readdepth_strings_to_num_array_for_avg_dp</code></strong> &mdash; <em>Method</em>.</p>
 <div class="codehilite"><pre><span></span><span class="n">translate_readdepth_strings_to_num_array_for_avg_dp</span><span class="p">(</span><span class="n">read_depth_array</span><span class="o">::</span><span class="kt">Array</span><span class="p">{</span><span class="kt">Any</span><span class="p">,</span><span class="mi">2</span><span class="p">})</span>
@@ -985,7 +985,7 @@
 
 
 <p>Returns array of read<em>depth as int for plotting and average calculation. 'read</em>depth<em>array' is output of generate</em>genotype<em>array() for DP option returns a tuple of num</em>array type Int for average calculation and plotting, and chromosome labels for plotting as label bar No call is replaced with 0 for avg_calculation. Ceiling of dp=100 is set to prevent high dp value from hiding (or "blowing out") low dp values.</p>
-<p><a target='_blank' href='https://github.com/compbiocore/VariantVisualization.jl/blob/1e705b74d904a700fcebc7961b8845edd2ce3708/src/vcf_utils_complete.jl#L766-L772' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/compbiocore/VariantVisualization.jl/blob/88de611476a7d48e705a36dc5c227f274850ec10/src/vcf_utils_complete.jl#L766-L772' class='documenter-source'>source</a><br></p>
                 
                   
                 
