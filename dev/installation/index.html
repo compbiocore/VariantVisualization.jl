@@ -721,12 +721,12 @@
 </ol>
 <p><a id='Running-VIVA-with-Docker-or-Docker-Compose-1'></a></p>
 <h3 id="running-viva-with-docker-or-docker-compose">Running VIVA with Docker or Docker Compose</h3>
-<p>Alternatively, you can run VIVA using the Docker images we've provided if you don't want to install Julia and the VariantVisualization.jl Julia package.</p>
+<p>Alternatively, you can run VIVA using the Docker images we've provided if you don't want to install Julia and the VariantVisualization.jl Julia package. You may only save images to HTML format using the Docker, for now, due to technical limitations of dependency packages. We've actively developing a feature to save to all formats using Docker.</p>
 <p>To run VIVA from a Docker image, first <a href="https://docs.docker.com/install/">install Docker</a>.</p>
 <p>Then double-click the Docker.app in the Applications folder to start Docker. You will see a whale icon in the top status bar to indicate that Docker is running and accessible from the terminal. You can quit Docker once you are finished using VIVA by clicking the Docker whale icon in the top status bar and clicking "Quit Docker Desktop."</p>
 <p><a id='Using-Docker-1'></a></p>
 <h4 id="using-docker">Using Docker</h4>
-<p><em>Note</em> You must use the flag <code>--save_remotely</code> when running VIVA by using Docker.</p>
+<p><em>Note</em>: You must use the flag <code>--save_remotely</code> when running VIVA by using Docker.</p>
 <p>Once Docker is running, you can run VIVA by running the Docker commands below in the Mac/Linux terminal or Windows PowerShell.</p>
 <p>We provide two images, one with a Jupyter Notebook and one with a command line script for VIVA. You can run VIVA in a single command using these images. The command consists of calls to run the Docker image followed by the usual VIVA options.</p>
 <p>To run the images, follow these steps:</p>
@@ -737,34 +737,35 @@
 
 
 <p>Make sure to add your project VCF files to that folder. That directory will be mapped to <code>/notebook/data</code> inside of the container.</p>
+<p>When entering the filename of the VCF file and files to support filtering options, you should include <code>/data/...</code> in the path to your files.</p>
 <p><a id='Run-the-VIVA-Command-Line-Tool-from-a-Docker-image:-1'></a></p>
 <h5 id="run-the-viva-command-line-tool-from-a-docker-image">Run the VIVA Command Line Tool from a Docker image:</h5>
-<p><em>Note</em> Remember, you must use the flag <code>--save_remotely</code> when running VIVA by using Docker.</p>
+<p><em>Note</em>: Remember, you must use the flag <code>--save_remotely</code> when running VIVA by using Docker.</p>
 <ul>
 <li>On Mac or Linux:</li>
 </ul>
-<div class="codehilite"><pre><span></span>docker run -it --rm -v <span class="s2">&quot;</span><span class="nv">$PWD</span><span class="s2">&quot;</span>:/data compbiocore/viva-cli --save_remotely arg1 arg2 arg3
+<div class="codehilite"><pre><span></span>docker run -it --rm -v <span class="s2">&quot;</span><span class="nv">$PWD</span><span class="s2">&quot;</span>:/data compbiocore/viva-cli:v0.3.8 --save_remotely arg1 arg2 arg3
 </pre></div>
 
 
 <ul>
 <li>Example run:</li>
 </ul>
-<div class="codehilite"><pre><span></span>docker run -it --rm -v <span class="s2">&quot;</span><span class="nv">$PWD</span><span class="s2">&quot;</span>:/data compbiocore/viva-cli --save_remotely -f file.vcf -p
+<div class="codehilite"><pre><span></span>docker run -it --rm -v <span class="s2">&quot;</span><span class="nv">$PWD</span><span class="s2">&quot;</span>:/data compbiocore/viva-cli:v0.3.8 --save_remotely -f file.vcf -p
 </pre></div>
 
 
 <ul>
 <li>On Windows:</li>
 </ul>
-<div class="codehilite"><pre><span></span>docker run -it --rm -v <span class="s2">&quot;</span><span class="si">${</span><span class="nv">pwd</span><span class="si">}</span><span class="s2">&quot;</span>:/data compbiocore/viva-cli --save_remotely arg1 arg2 arg3
+<div class="codehilite"><pre><span></span>docker run -it --rm -v <span class="s2">&quot;</span><span class="si">${</span><span class="nv">pwd</span><span class="si">}</span><span class="s2">&quot;</span>:/data compbiocore/viva-cli:v0.3.8 --save_remotely arg1 arg2 arg3
 </pre></div>
 
 
 <ul>
 <li>Example run:</li>
 </ul>
-<div class="codehilite"><pre><span></span>docker run -it --rm -v <span class="s2">&quot;</span><span class="si">${</span><span class="nv">pwd</span><span class="si">}</span><span class="s2">&quot;</span>:/data compbiocore/viva-cli --save_remotely -f file.vcf -p
+<div class="codehilite"><pre><span></span>docker run -it --rm -v <span class="s2">&quot;</span><span class="si">${</span><span class="nv">pwd</span><span class="si">}</span><span class="s2">&quot;</span>:/data compbiocore/viva-cli:v0.3.8 --save_remotely -f file.vcf -p
 </pre></div>
 
 
