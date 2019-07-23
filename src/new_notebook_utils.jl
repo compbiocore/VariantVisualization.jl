@@ -30,14 +30,13 @@ function jupyter_main(vcf_filename,saving_options,variant_filters,sample_selecti
     sample_names = get_sample_names(reader)
 
     #store save format and create output directory if it doesn't exist yet
-#=
-    save_ext = save_format
+
+    #save_ext = save_format
     VariantVisualization.checkfor_outputdirectory(output_directory)
     output_directory=output_directory
-=#
 
     save_ext = save_format
-    output_directory=output_directory
+    #output_directory=output_directory
 
     #store plot label options
     if occursin("true",x_axis_labels)
@@ -107,7 +106,7 @@ function jupyter_main(vcf_filename,saving_options,variant_filters,sample_selecti
 
     #genomic_range
     if occursin("chr",genomic_range) && !occursin("true",pass_filter) && !occursin(".csv",positions_list)
-        sub = VariantVisualization.io_chromosome_range_vcf_filter(genomic_range,vcf_filename)
+        sub = VariantVisualization.io_genomic_range_vcf_filter(genomic_range,vcf_filename)
         number_rows = size(sub,1)
         println("Selected $number_rows variants within chromosome range: $genomic_range")
         heatmap_input = "range_filtered"

@@ -54,7 +54,7 @@ Expected Time for Installation: Installation time depends on your network bandwi
 
 ### Running VIVA with Docker or Docker Compose
 
-Alternatively, you can run VIVA using the Docker images we've provided if you don't want to install Julia and the VariantVisualization.jl Julia package.
+Alternatively, you can run VIVA using the Docker images we've provided if you don't want to install Julia and the VariantVisualization.jl Julia package. You may only save images to HTML format using the Docker, for now, due to technical limitations of dependency packages. We've actively developing a feature to save to all formats using Docker.
 
 To run VIVA from a Docker image, first [install Docker](https://docs.docker.com/install/).
 
@@ -77,6 +77,8 @@ cd project_x
 ```
 
 Make sure to add your project VCF files to that folder. That directory will be mapped to `/notebook/data` inside of the container.
+
+When entering the filename of the VCF file and files to support filtering options, you should include `/data/...` in the path to your files.
 
 ##### Run the VIVA Command Line Tool from a Docker image:
 
