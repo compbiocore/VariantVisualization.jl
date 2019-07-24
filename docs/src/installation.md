@@ -41,7 +41,9 @@ Add the path to the Julia binaries (C:\Program Files\Julia\bin) to the PATH foll
 3. Download the [VIVA Jupyter Notebook](https://github.com/compbiocore/VariantVisualization.jl/blob/master/VIVA.ipynb).
 4. Follow the in-notebook instructions to generate your plots.
 
-### Running VIVA with Docker or Docker Compose
+### Running VIVA with Docker or Docker Compose (Under Active Development)
+
+Soon, you will be able to run VIVA using Docker images. This is not yet a supported feature. The instructions below will be helpful once this is supported.
 
 Alternatively, you can run VIVA using the Docker images we've provided if you don't want to install Julia and the VariantVisualization.jl Julia package. You may only save images to HTML format using the Docker, for now, due to technical limitations of dependency packages. We've actively developing a feature to save to all formats using Docker.
 
