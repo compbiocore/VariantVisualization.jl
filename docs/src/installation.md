@@ -15,6 +15,12 @@ Windows 10, Windows 7.
 
 To install Julia on Windows, you can follow the [platform specific instructions](https://julialang.org/downloads/platform.html).
 
+To run VIVA using Julia from the command prompt or PowerShell, *you will need to add Julia to the Windows path variable*. This should be a quick step (est. time to complete: 1 minute)
+
+To add Julia to the PATH on Windows 7 or Windows 10:
+
+Add the path to the Julia binaries (C:\Program Files\Julia\bin) to the PATH following the concise instructions [found here](https://www.java.com/en/download/help/path.xml)
+
 #### Linux
 
 *Note*: To run on remote compute clusters, you may need to load opengl module along with julia/1.1.0.
