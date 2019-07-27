@@ -3,8 +3,6 @@ module VariantVisualization
 using DataFrames
 using PlotlyJS
 using ORCA
-using Rsvg
-using Blink
 using GeneticVariation
 using ArgParse
 using DelimitedFiles
