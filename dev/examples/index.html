@@ -479,13 +479,23 @@
                 <p><a id='Examples-1'></a></p>
 <h1 id="examples">Examples</h1>
 <p>To run examples:</p>
+<p>One you've installed Julia, VariantVisualization.jl package, and the VIVA script, you can run these examples.</p>
+<p>To run the examples:</p>
 <ol>
-<li>Install Julia and the VariantVisualization.jl package</li>
-<li>Download the five test files found <a href="https://github.com/compbiocore/VariantVisualization.jl/tree/master/test/test_files">here</a> and put them into a working directory with the viva script.</li>
-<li>Open the command line (Terminal or Powershell), copy the provided commands into the command line prompt, and press enter.</li>
-<li>Your first viva run will take longer than usual (several minutes) because of the way Julia compiles packages. All subsequent runs will be much faster. Each example should take 30-50 seconds to run and you should see the same outputs as those below each demo.</li>
+<li>Download the four test files and save them in a working directory with the viva script by copying and pasting the following block of code into the command line.</li>
 </ol>
-<p>We encourage you to also run these examples without the flag <code>-s png</code> to save and view interactive HTML graphics with cursor hovertext, zooming, panning, and screen capture features. View HTML graphics in your browser by opening the HTML file.</p>
+<blockquote>
+<p>cd new_folder/</p>
+<p>curl -L https://raw.githubusercontent.com/compbiocore/VariantVisualization.jl/master/test/test_files/positions_list.csv &gt; positions_list.csv</p>
+<p>curl -L https://raw.githubusercontent.com/compbiocore/VariantVisualization.jl/master/test/test_files/sample_metadata_matrix.csv &gt; sample_metadata_matrix.csv</p>
+<p>curl -L https://raw.githubusercontent.com/compbiocore/VariantVisualization.jl/master/test/test_files/select_samples_list.txt &gt; select_samples_list.txt</p>
+<p>curl -L https://raw.githubusercontent.com/compbiocore/VariantVisualization.jl/master/test/test_files/test_4X_191.vcf &gt; test_4X_191.vcf</p>
+</blockquote>
+<ol>
+<li>Copy the example commands found below from the working directory containing the VIVA script, VCF file, and four test files.</li>
+<li>Your first viva run may take a little longer than usual (several minutes) because of the way Julia compiles packages. All subsequent runs will be much faster. Each example should take 30-50 seconds to run and you should see the same outputs as those below each demo.</li>
+</ol>
+<p><em>Note:</em> We encourage you to also run these examples without the flag <code>-s png</code> to save and view interactive HTML graphics with cursor hovertext, zooming, panning, and screen capture features. View HTML graphics in your browser by opening the HTML file.</p>
 <p><a id='Default-Options-1'></a></p>
 <h2 id="default-options">Default Options</h2>
 <p>Running viva with no options produces heatmaps of genotype and read depth values for all samples and variant positions in the VCF file with default options. You can read about viva's default settings <a href="https://compbiocore.github.io/VariantVisualization.jl/stable/#default-options">here</a></p>
