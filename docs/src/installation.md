@@ -1,4 +1,4 @@
-#Installation
+# Installation
 
 ### Supported Operating Systems:
 
@@ -33,13 +33,13 @@ To install VariantVisualization.jl:
 1. Open the command line or PowerShell
 2. Run the following block of code
 
->`julia`
+```julia
+julia
+]
+add VariantVisualization
+exit()
+```
 
->`]`
-
->`add VariantVisualization`
-
->`exit()`
 
 ### Step 3: Install the VIVA command line script
 
