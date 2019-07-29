@@ -718,19 +718,20 @@
 <p><a id='Latest-Features-1'></a></p>
 <h3 id="latest-features">Latest Features</h3>
 <p>To stay up to date with cutting edge development features install VariantVisualization.jl from the Master branch.</p>
-<p>Using git from the command line:</p>
-<div class="codehilite"><pre><span></span><span class="n">git</span> <span class="n">clone</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="p">.</span><span class="n">com</span><span class="o">/</span><span class="n">compbiocore</span><span class="o">/</span><span class="n">VariantVisualization</span><span class="p">.</span><span class="n">jl</span>
-</pre></div>
-
-
-<p>or from the Julia REPL (useful if using the PowerShell and don't have git installed):</p>
-<div class="codehilite"><pre><span></span><span class="k">using</span> <span class="n">Pkg</span>
-<span class="n">Pkg</span><span class="o">.</span><span class="n">clone</span><span class="p">(</span><span class="s">&quot;https://github.com/compbiocore/VariantVisualization.jl&quot;</span><span class="p">)</span>
+<p>from the Julia REPL (useful if using the PowerShell and don't have git installed):</p>
+<div class="codehilite"><pre><span></span><span class="p">]</span>
+<span class="n">add</span> <span class="n">VariantVisualization</span><span class="c">#master</span>
 </pre></div>
 
 
 <p><a id='For-Developers-1'></a></p>
 <h3 id="for-developers">For Developers</h3>
+<p>To add VariantVisualization in develop mode:</p>
+<div class="codehilite"><pre><span></span><span class="p">]</span>
+<span class="n">dev</span> <span class="n">VariantVisualization</span>
+</pre></div>
+
+
 <p>VIVA Jupyter notebook and the VIVA the command line tool are built with functions contained in our VariantVisualization.jl package.</p>
 <p>Developers may contribute to these open source tools by using <a href="https://github.com/compbiocore/VariantVisualization.jl/tree/master/src/">functions contained within VariantVisualization.jl</a> which are carefully documented with docstrings.</p>
 <p>We have included in-line comments within the code for the <a href="https://github.com/compbiocore/VariantVisualization.jl/tree/master/viva">VIVA command line tool</a>.</p>
@@ -763,28 +764,28 @@
 <ul>
 <li>On Mac or Linux:</li>
 </ul>
-<div class="codehilite"><pre><span></span>docker run -it --rm -v <span class="s2">&quot;</span><span class="nv">$PWD</span><span class="s2">&quot;</span>:/data compbiocore/viva-cli:v0.3.8 --save_remotely arg1 arg2 arg3
+<div class="codehilite"><pre><span></span>docker run -it --rm -v <span class="s2">&quot;</span><span class="nv">$PWD</span><span class="s2">&quot;</span>:/data compbiocore/viva-cli:v0.3.9 /script/viva --save_remotely -f file.vcg -s pdf -o /data <span class="o">[</span>...args<span class="o">]</span>
 </pre></div>
 
 
 <ul>
 <li>Example run:</li>
 </ul>
-<div class="codehilite"><pre><span></span>docker run -it --rm -v <span class="s2">&quot;</span><span class="nv">$PWD</span><span class="s2">&quot;</span>:/data compbiocore/viva-cli:v0.3.8 --save_remotely -f file.vcf -p
+<div class="codehilite"><pre><span></span>docker run -it --rm -v <span class="s2">&quot;</span><span class="nv">$PWD</span><span class="s2">&quot;</span>:/data compbiocore/viva-cli:v0.3.9 /script/viva --save_remotely -f file.vcf -s pdf -o /data <span class="o">[</span>...args<span class="o">]</span>
 </pre></div>
 
 
 <ul>
 <li>On Windows:</li>
 </ul>
-<div class="codehilite"><pre><span></span>docker run -it --rm -v <span class="s2">&quot;</span><span class="si">${</span><span class="nv">pwd</span><span class="si">}</span><span class="s2">&quot;</span>:/data compbiocore/viva-cli:v0.3.8 --save_remotely arg1 arg2 arg3
+<div class="codehilite"><pre><span></span>docker run -it --rm -v <span class="s2">&quot;</span><span class="si">${</span><span class="nv">pwd</span><span class="si">}</span><span class="s2">&quot;</span>:/data compbiocore/viva-cli:v0.3.9 /script/viva --save_remotely -f file.vcf -s pdf -o /data <span class="o">[</span>...args<span class="o">]</span>
 </pre></div>
 
 
 <ul>
 <li>Example run:</li>
 </ul>
-<div class="codehilite"><pre><span></span>docker run -it --rm -v <span class="s2">&quot;</span><span class="si">${</span><span class="nv">pwd</span><span class="si">}</span><span class="s2">&quot;</span>:/data compbiocore/viva-cli:v0.3.8 --save_remotely -f file.vcf -p
+<div class="codehilite"><pre><span></span>docker run -it --rm -v <span class="s2">&quot;</span><span class="si">${</span><span class="nv">pwd</span><span class="si">}</span><span class="s2">&quot;</span>:/data compbiocore/viva-cli:v0.3.9 /script/viva --save_remotely -f file.vcf -s pdf -o /data <span class="o">[</span>...args<span class="o">]</span>
 </pre></div>
 
 
@@ -794,7 +795,7 @@
 <ul>
 <li>On Mac or Linux:</li>
 </ul>
-<div class="codehilite"><pre><span></span>docker run --rm -p <span class="m">8888</span>:8888 -e <span class="nv">JUPYTER_ENABLE_LAB</span><span class="o">=</span>yes -v <span class="s2">&quot;</span><span class="nv">$PWD</span><span class="s2">&quot;</span>:/home/jovyan/notebook/data compbiocore/viva-notebook
+<div class="codehilite"><pre><span></span>docker run --rm -p <span class="m">8888</span>:8888 -e <span class="nv">JUPYTER_ENABLE_LAB</span><span class="o">=</span>yes -v <span class="s2">&quot;</span><span class="nv">$PWD</span><span class="s2">&quot;</span>:/home/jovyan/notebook/data compbiocore/viva-notebook:v0.3.9
 </pre></div>
 
 
@@ -803,7 +804,7 @@
 <ul>
 <li>On Windows:</li>
 </ul>
-<div class="codehilite"><pre><span></span>docker run --rm -p <span class="m">8888</span>:8888 -e <span class="nv">JUPYTER_ENABLE_LAB</span><span class="o">=</span>yes -v <span class="s2">&quot;</span><span class="si">${</span><span class="nv">pwd</span><span class="si">}</span><span class="s2">&quot;</span>:/home/jovyan/notebook/data compbiocore/viva-notebook
+<div class="codehilite"><pre><span></span>docker run --rm -p <span class="m">8888</span>:8888 -e <span class="nv">JUPYTER_ENABLE_LAB</span><span class="o">=</span>yes -v <span class="s2">&quot;</span><span class="si">${</span><span class="nv">pwd</span><span class="si">}</span><span class="s2">&quot;</span>:/home/jovyan/notebook/data compbiocore/viva-notebook:v0.3.9
 </pre></div>
 
 
