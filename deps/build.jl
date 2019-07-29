@@ -7,8 +7,8 @@ function get_executable_path(package::AbstractString, exec::AbstractString)
 end
 
 function symlink_user_bin(path_::AbstractString)
+    exec = splitdir(path_)[end]
     if Sys.iswindows()
-        exec = split(path_, "\\")[end]
         try
           bin_path = split(path_, "\\$exec")[1]
           @warn bin_path
@@ -17,7 +17,6 @@ function symlink_user_bin(path_::AbstractString)
           @warn bin_path
         end
     else
-        exec = split(path_, "/")[end]
         symlink(path_, "/usr/local/bin/$exec")
         @warn "Created symlink: /usr/local/bin/viva -> $path_"
     end
