@@ -1,5 +1,7 @@
 ![VIVA Logo](assets/VIVA_logo.png)
 
+Read the [VIVA Manual](https://compbiocore.github.io/VariantVisualization.jl/latest/installation/) here.
+
 # Getting Started
 
 # *VIVA Command Line Tool and Jupyter Notebook*

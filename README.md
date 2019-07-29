@@ -1,5 +1,6 @@
 # VIVA: A VCF File Visualization Tool and VariantVisualization.jl
-## Visualization of Variants
+
+## Visualization of Genomic Variants from VCF Files
 
 
 | MacOS / Linux | Windows | License | Test Coverage | Documentation | Lifecycle |
@@ -16,69 +17,75 @@ VariantVisualization.jl is a package we built specifically to power the genetics
 
 ## Getting Started:
 
-Note: Once you have set up VIVA, you can quickly run the command line tool [EXAMPLES](https://compbiocore.github.io/VariantVisualization.jl/latest/examples/) found in the documentation.
-
 ## Installation
-
-Read the [installation documentation](https://compbiocore.github.io/VariantVisualization.jl/latest/installation/) for complete installation details.
 
 ### Supported Operating Systems:
 
-macOS ( Sierra, High Sierra, and Mojave ), Windows, and Linux.
+macOS ( Sierra, High Sierra, and Mojave ), Windows (7 and 10), and Linux.
 
-To use VIVA, you must download the Julia programming language version >=1.0 and install the VariantVisualization.jl Julia package as well as the VIVA script.
+### Step 1: Install Julia
 
-Expected Time for Installation: Installation time depends on your network bandwidth, but should take less than 10 minutes for VIVA installation to install all dependency packages. Installing and using Julia packages for the first time takes longer than when using them in subsequent sessions.
+Download [Julia]("https://julialang.org/downloads/") and install the language following the [platform specific instructions](https://julialang.org/downloads/platform.html).
 
-*Note*: When installing Julia and running VIVA on Windows, you will need to add Julia to the Windows path variable. This takes ~ 1 minute following the instructions found [here](https://compbiocore.github.io/VariantVisualization.jl/latest/installation/)
+Then, follow our [installation notes]("https://compbiocore.github.io/VariantVisualization.jl/latest/installation/") to add Julia to the path variable to run VIVA.
 
-### Command Line Tool
+### Step 2: Install VariantVisualization.jl
 
-1. Add VariantVisualization.jl using Pkg in the Julia REPL
+To run the VIVA command line tool and VIVA Jupyter Notebook, you'll need to install our VariantVisualization.jl Julia package which powers VIVA.
 
-	* Open the Julia REPL by typing `julia` into the command line
-	* Enter the Pkg manager by entering `]` into the REPL             
-  * Enter `add VariantVisualization` in the Pkg manager. This will install all of VIVA's dependencies.
+To install VariantVisualization.jl:
 
-2. Download the [VIVA](https://github.com/compbiocore/VariantVisualization.jl/blob/master/viva) tool script and save it to a working directory for your analysis.
+1. Open the command line or PowerShell
+2. Run the following block of code
 
-3. Navigate to your working directory and follow the [VIVA manual](https://compbiocore.github.io/VariantVisualization.jl/stable/) to generate your plots.
+>`julia`
 
-### Jupyter Notebook
+>`]`
+
+>`add VariantVisualization`
+
+>`exit()`
+
+### Step 3: Install the VIVA command line script
+
+Download the VIVA tool script and save it to a working directory for your analysis. Save your VCF file in the working directory.
+
+Copy and paste the following block of code into the command line or PowerShell:
+
+>mkdir new_folder/
+
+>cd new_folder/
+
+>curl -L https://raw.githubusercontent.com/compbiocore/VariantVisualization.jl/master/viva > viva
+
+### Optional Step: Install VIVA Jupyter Notebook
+
+To install the VIVA Jupyer Notebook:
 
 1. [Install Jupyter](https://jupyter.org/install)
-2. Install the VariantVisualization.jl Julia package following the Command Line Tool installation instructions above.
-3. Download the [VIVA Jupyter Notebook](https://github.com/compbiocore/VariantVisualization.jl/blob/master/VIVA.ipynb).
-4. Open the VIVA Jupyter Notebook following the instructions in the [manual](https://compbiocore.github.io/VariantVisualization.jl/latest/).
-4. Follow the in-notebook instructions to generate your plots.
+2. Download the [VIVA Jupyter Notebook](https://github.com/compbiocore/VariantVisualization.jl/blob/master/VIVA.ipynb).
 
-### Latest Features
+Then, follow the in-notebook instructions to generate your plots.
 
-To stay up to date with cutting edge development features install VariantVisualization.jl from the Master branch.
+## Run VIVA
 
-Using git from the command line:
+Navigate in the Terminal or PowerShell to the directory containing the viva script run the VIVA command.
 
-```
-git clone https://github.com/compbiocore/VariantVisualization.jl
-```
+>cd new_folder/
 
-or from the Julia REPL (useful if using the PowerShell and don't have git installed):
+>julia viva -f vcf.file arg1 arg2 arg3
 
-```julia
-using Pkg
-Pkg.clone("https://github.com/compbiocore/VariantVisualization.jl")
-```
+We provide test files to run [EXAMPLES](https://compbiocore.github.io/VariantVisualization.jl/latest/examples/) after installation.
 
-
-### For Developers
+## For Developers
 
 VIVA Jupyter notebook and the VIVA the command line tool are built with functions contained in our VariantVisualization.jl package.
 
-Developers may contribute to these open source tools by using [functions contained within VariantVisualization.jl](https://github.com/compbiocore/VariantVisualization.jl/tree/master/src/) which are carefully documented with docstrings.
+Developers may contribute to these open source tools by using [functions contained within VariantVisualization.jl](https://github.com/compbiocore/VariantVisualization.jl/tree/master/src/) which are documented with docstrings.
 
 We have included in-line comments within the code for the [VIVA command line tool](https://github.com/compbiocore/VariantVisualization.jl/tree/master/viva).
 
-The ***VIVA Jupyter notebook*** is powered by a [main function](https://github.com/compbiocore/VariantVisualization.jl/tree/master/src/new_notebook_utils.jl) which takes arguments defined by the user in the notebook. We welcome users to post in issues to request a new feature or bug fix.
+The VIVA Jupyter notebook is powered by a [main function](https://github.com/compbiocore/VariantVisualization.jl/tree/master/src/new_notebook_utils.jl) which takes arguments defined by the user in the notebook.
 
 
 ## Contributing and Questions

@@ -3,25 +3,27 @@
 println()
 println("Welcome to VIVA.")
 println()
-println("Loading packages:")
+println("Loading dependency packages:")
 println()
 
-println("1/5 ArgParse")
-using ArgParse
+#println("1/5 ArgParse")
+#import ArgParse
 
-println("2/5 VariantVisualization")
-using Pkg #remove after VariantVisualization is deployed
-Pkg.activate(@__DIR__) #remove after VariantVisualization is deployed
+#using Pkg #remove after VariantVisualization is deployed
+#Pkg.activate(@__DIR__) #remove after VariantVisualization is deployed
 using VariantVisualization
+println("...")
 
-println("3/5 PlotlyJS")
+println("1/4 PlotlyJS")
 using PlotlyJS
 
-println("4/5 GeneticVariation")
+println("2/4 GeneticVariation")
 using GeneticVariation
 
-println("5/5 DelimitedFiles")
+println("3/4 DelimitedFiles")
 using DelimitedFiles
+
+println("4/4 VariantVisualization")
 
 println()
 println("Finished loading packages!")
