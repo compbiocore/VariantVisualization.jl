@@ -66,20 +66,21 @@ Then, follow the in-notebook instructions to generate your plots.
 
 To stay up to date with cutting edge development features install VariantVisualization.jl from the Master branch.
 
-Using git from the command line:
-
-```
-git clone https://github.com/compbiocore/VariantVisualization.jl
-```
-
-or from the Julia REPL (useful if using the PowerShell and don't have git installed):
+from the Julia REPL (useful if using the PowerShell and don't have git installed):
 
 ```julia
-using Pkg
-Pkg.clone("https://github.com/compbiocore/VariantVisualization.jl")
+]
+add VariantVisualization#master
 ```
 
 ### For Developers
+
+To add VariantVisualization in develop mode:
+
+```julia
+]
+dev VariantVisualization
+```
 
 VIVA Jupyter notebook and the VIVA the command line tool are built with functions contained in our VariantVisualization.jl package.
 
@@ -127,22 +128,22 @@ When entering the filename of the VCF file and files to support filtering option
 
 - On Mac or Linux:
 ```shell
-docker run -it --rm -v "$PWD":/data compbiocore/viva-cli:v0.3.8 --save_remotely arg1 arg2 arg3
+docker run -it --rm -v "$PWD":/data compbiocore/viva-cli:v0.3.9 /script/viva --save_remotely -f file.vcg -s pdf -o /data [...args]
 ```
 
 - Example run:
 ```shell
-docker run -it --rm -v "$PWD":/data compbiocore/viva-cli:v0.3.8 --save_remotely -f file.vcf -p
+docker run -it --rm -v "$PWD":/data compbiocore/viva-cli:v0.3.9 /script/viva --save_remotely -f file.vcf -s pdf -o /data [...args]
 ```
 
 - On Windows:
 ```shell
-docker run -it --rm -v "${pwd}":/data compbiocore/viva-cli:v0.3.8 --save_remotely arg1 arg2 arg3
+docker run -it --rm -v "${pwd}":/data compbiocore/viva-cli:v0.3.9 /script/viva --save_remotely -f file.vcf -s pdf -o /data [...args]
 ```
 
 - Example run:
 ```shell
-docker run -it --rm -v "${pwd}":/data compbiocore/viva-cli:v0.3.8 --save_remotely -f file.vcf -p
+docker run -it --rm -v "${pwd}":/data compbiocore/viva-cli:v0.3.9 /script/viva --save_remotely -f file.vcf -s pdf -o /data [...args]
 ```
 
 ##### Run the VIVA Jupyter Notebook from a Docker image:
@@ -151,7 +152,7 @@ Copy and run the following line from the terminal or Windows PowerShell:
 
 - On Mac or Linux:
 ```shell
-docker run --rm -p 8888:8888 -e JUPYTER_ENABLE_LAB=yes -v "$PWD":/home/jovyan/notebook/data compbiocore/viva-notebook
+docker run --rm -p 8888:8888 -e JUPYTER_ENABLE_LAB=yes -v "$PWD":/home/jovyan/notebook/data compbiocore/viva-notebook:v0.3.9
 ```
 
 Go to the following url in your internet browser. You'll receive a token to enter into the url.
@@ -160,7 +161,7 @@ Go to `http://0.0.0.0:8888/?token=<enter token here>`
 
 - On Windows:
 ```shell
-docker run --rm -p 8888:8888 -e JUPYTER_ENABLE_LAB=yes -v "${pwd}":/home/jovyan/notebook/data compbiocore/viva-notebook
+docker run --rm -p 8888:8888 -e JUPYTER_ENABLE_LAB=yes -v "${pwd}":/home/jovyan/notebook/data compbiocore/viva-notebook:v0.3.9
 ```
 
 Go to the following url in your internet browser. You'll receive a token to enter into the url.
