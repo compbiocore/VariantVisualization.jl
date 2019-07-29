@@ -33,25 +33,12 @@ To install VariantVisualization.jl:
 1. Open the command line or PowerShell
 2. Run the following block of code
 
->`julia`
+```julia
+julia
+]add VarianatVisualization
+exit()
+```
 
->`]`
-
->`add VariantVisualization`
-
->`exit()`
-
-### Step 3: Install the VIVA command line script
-
-Download the VIVA tool script and save it to a working directory for your analysis. Save your VCF file in the working directory.
-
-Copy and paste the following block of code into the command line or PowerShell:
-
->mkdir new_folder/
-
->cd new_folder/
-
->curl -L https://raw.githubusercontent.com/compbiocore/VariantVisualization.jl/master/viva > viva
 
 ### Optional Step: Install VIVA Jupyter Notebook
 
@@ -75,11 +62,17 @@ git clone https://github.com/compbiocore/VariantVisualization.jl
 or from the Julia REPL (useful if using the PowerShell and don't have git installed):
 
 ```julia
-using Pkg
-Pkg.clone("https://github.com/compbiocore/VariantVisualization.jl")
+julia
+]add VariantVisualization#master
 ```
 
 ### For Developers
+
+Install VariantVisualization in development mode:
+```julia
+julia
+]dev VariantVisualization
+```
 
 VIVA Jupyter notebook and the VIVA the command line tool are built with functions contained in our VariantVisualization.jl package.
 
