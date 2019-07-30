@@ -1,4 +1,4 @@
-#Installation
+# Installation
 
 ### Supported Operating Systems:
 
@@ -160,7 +160,7 @@ Copy and run the following line from the terminal or Windows PowerShell:
 
 - On Mac or Linux:
 ```shell
-docker run --rm -p 8888:8888 -e JUPYTER_ENABLE_LAB=yes -v "$PWD":/home/jovyan/notebook/data compbiocore/viva-notebook
+docker run --rm -p 8888:8888 -e JUPYTER_ENABLE_LAB=yes -v "$PWD":/home/jovyan/notebook/data compbiocore/viva-notebook:v0.3.9
 ```
 
 Go to the following url in your internet browser. You'll receive a token to enter into the url.
@@ -169,7 +169,7 @@ Go to `http://127.0.0.1:8888/?token=<enter token here>`
 
 - On Windows:
 ```shell
-docker run --rm -p 8888:8888 -e JUPYTER_ENABLE_LAB=yes -v "${pwd}":/home/jovyan/notebook/data compbiocore/viva-notebook
+docker run --rm -p 8888:8888 -e JUPYTER_ENABLE_LAB=yes -v "${pwd}":/home/jovyan/notebook/data compbiocore/viva-notebook:v0.3.9
 ```
 
 Go to the following url in your internet browser. You'll receive a token to enter into the url.
