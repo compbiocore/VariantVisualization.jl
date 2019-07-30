@@ -367,9 +367,29 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#step-3-install-the-viva-command-line-script" title="Step 3: Install the VIVA command line script" class="md-nav__link">
-    Step 3: Install the VIVA command line script
+  <a href="#step-3-run-viva" title="Step 3: Run viva" class="md-nav__link">
+    Step 3: Run viva
   </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mac-and-linux" title="Mac and Linux" class="md-nav__link">
+    Mac and Linux
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#windows" title="Windows" class="md-nav__link">
+    Windows
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -434,13 +454,6 @@
         
       </ul>
     </nav>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#using-docker-compose" title="Using Docker Compose" class="md-nav__link">
-    Using Docker Compose
-  </a>
   
 </li>
         
@@ -560,9 +573,29 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#step-3-install-the-viva-command-line-script" title="Step 3: Install the VIVA command line script" class="md-nav__link">
-    Step 3: Install the VIVA command line script
+  <a href="#step-3-run-viva" title="Step 3: Run viva" class="md-nav__link">
+    Step 3: Run viva
   </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mac-and-linux" title="Mac and Linux" class="md-nav__link">
+    Mac and Linux
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#windows" title="Windows" class="md-nav__link">
+    Windows
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -630,13 +663,6 @@
   
 </li>
         
-          <li class="md-nav__item">
-  <a href="#using-docker-compose" title="Using Docker Compose" class="md-nav__link">
-    Using Docker Compose
-  </a>
-  
-</li>
-        
       </ul>
     </nav>
   
@@ -694,21 +720,29 @@
 <li>Run the following block of code</li>
 </ol>
 <div class="codehilite"><pre><span></span><span class="n">julia</span>
-<span class="p">]</span>
-<span class="n">add</span> <span class="n">VariantVisualization</span>
+<span class="p">]</span><span class="n">add</span> <span class="n">VarianatVisualization</span>
 <span class="n">exit</span><span class="p">()</span>
 </pre></div>
 
 
-<p><a id='Step-3:-Install-the-VIVA-command-line-script-1'></a></p>
-<h3 id="step-3-install-the-viva-command-line-script">Step 3: Install the VIVA command line script</h3>
-<p>Download the VIVA tool script and save it to a working directory for your analysis. Save your VCF file in the working directory.</p>
-<p>Copy and paste the following block of code into the command line or PowerShell:</p>
-<blockquote>
-<p>mkdir new_folder/</p>
-<p>cd new_folder/</p>
-<p>curl -L https://raw.githubusercontent.com/compbiocore/VariantVisualization.jl/master/viva &gt; viva</p>
-</blockquote>
+<p><a id='Step-3:-Run-viva-1'></a></p>
+<h3 id="step-3-run-viva">Step 3: Run <code>viva</code></h3>
+<p><a id='Mac-and-Linux-1'></a></p>
+<h4 id="mac-and-linux">Mac and Linux</h4>
+<p>On Mac and Linux, open another terminal window, navigate to your project folder and run:</p>
+<div class="codehilite"><pre><span></span>viva -f filename.vcf -s &lt;format&gt; -o output/directory/
+</pre></div>
+
+
+<p><a id='Windows-1'></a></p>
+<h4 id="windows">Windows</h4>
+<p>!!! Warning     Viva will not work with Win32.</p>
+<p>On windows, after installing VariantVisualization, open a new PowerShell and run:</p>
+<div class="codehilite"><pre><span></span>viva -f filename.vcf -s &lt;format&gt; -o output/directory/
+</pre></div>
+
+
+<p>You'll then be prompted to select an application to open the script. Select the Julia executable, that is normally located at <code>C:\Users\&lt;username&gt;\AppData\Local\Julia-&lt;version&gt;\bin\</code>.</p>
 <p><a id='Optional-Step:-Install-VIVA-Jupyter-Notebook-1'></a></p>
 <h3 id="optional-step-install-viva-jupyter-notebook">Optional Step: Install VIVA Jupyter Notebook</h3>
 <p>To install the VIVA Jupyer Notebook:</p>
@@ -720,17 +754,17 @@
 <p><a id='Latest-Features-1'></a></p>
 <h3 id="latest-features">Latest Features</h3>
 <p>To stay up to date with cutting edge development features install VariantVisualization.jl from the Master branch.</p>
-<p>from the Julia REPL (useful if using the PowerShell and don't have git installed):</p>
-<div class="codehilite"><pre><span></span><span class="p">]</span>
-<span class="n">add</span> <span class="n">VariantVisualization</span><span class="c">#master</span>
+<p>From the Julia REPL:</p>
+<div class="codehilite"><pre><span></span>julia
+<span class="o">]</span>add VariantVisualization#master
 </pre></div>
 
 
 <p><a id='For-Developers-1'></a></p>
 <h3 id="for-developers">For Developers</h3>
-<p>To add VariantVisualization in develop mode:</p>
-<div class="codehilite"><pre><span></span><span class="p">]</span>
-<span class="n">dev</span> <span class="n">VariantVisualization</span>
+<p>Install VariantVisualization in development mode:</p>
+<div class="codehilite"><pre><span></span>julia
+<span class="o">]</span>dev VariantVisualization
 </pre></div>
 
 
@@ -758,36 +792,35 @@
 </pre></div>
 
 
-<p>Make sure to add your project VCF files to that folder. That directory will be mapped to <code>/notebook/data</code> inside of the container.</p>
-<p>When entering the filename of the VCF file and files to support filtering options, you should include <code>/data/...</code> in the path to your files.</p>
+<p>Make sure to add your project VCF files to that folder.</p>
 <p><a id='Run-the-VIVA-Command-Line-Tool-from-a-Docker-image:-1'></a></p>
 <h5 id="run-the-viva-command-line-tool-from-a-docker-image">Run the VIVA Command Line Tool from a Docker image:</h5>
 <p><em>Note</em>: Remember, you must use the flag <code>--save_remotely</code> when running VIVA by using Docker.</p>
 <ul>
 <li>On Mac or Linux:</li>
 </ul>
-<div class="codehilite"><pre><span></span>docker run -it --rm -v <span class="s2">&quot;</span><span class="nv">$PWD</span><span class="s2">&quot;</span>:/data compbiocore/viva-cli:v0.3.9 /script/viva --save_remotely -f file.vcg -s pdf -o /data <span class="o">[</span>...args<span class="o">]</span>
+<div class="codehilite"><pre><span></span>docker run -it --rm -v <span class="s2">&quot;</span><span class="nv">$PWD</span><span class="s2">&quot;</span>:/data compbiocore/viva-cli viva --save_remotely -f file.vcf -s pdf -o output
 </pre></div>
 
 
 <ul>
 <li>Example run:</li>
 </ul>
-<div class="codehilite"><pre><span></span>docker run -it --rm -v <span class="s2">&quot;</span><span class="nv">$PWD</span><span class="s2">&quot;</span>:/data compbiocore/viva-cli:v0.3.9 /script/viva --save_remotely -f file.vcf -s pdf -o /data <span class="o">[</span>...args<span class="o">]</span>
+<div class="codehilite"><pre><span></span>docker run -it --rm -v <span class="s2">&quot;</span><span class="nv">$PWD</span><span class="s2">&quot;</span>:/data compbiocore/viva-cli viva --save_remotely -f file.vcf -s pdf -o output
 </pre></div>
 
 
 <ul>
 <li>On Windows:</li>
 </ul>
-<div class="codehilite"><pre><span></span>docker run -it --rm -v <span class="s2">&quot;</span><span class="si">${</span><span class="nv">pwd</span><span class="si">}</span><span class="s2">&quot;</span>:/data compbiocore/viva-cli:v0.3.9 /script/viva --save_remotely -f file.vcf -s pdf -o /data <span class="o">[</span>...args<span class="o">]</span>
+<div class="codehilite"><pre><span></span>docker run -it --rm -v <span class="s2">&quot;</span><span class="si">${</span><span class="nv">pwd</span><span class="si">}</span><span class="s2">&quot;</span>:/data compbiocore/viva-cli viva --save_remotely -f file.vcf -s pdf -o output
 </pre></div>
 
 
 <ul>
 <li>Example run:</li>
 </ul>
-<div class="codehilite"><pre><span></span>docker run -it --rm -v <span class="s2">&quot;</span><span class="si">${</span><span class="nv">pwd</span><span class="si">}</span><span class="s2">&quot;</span>:/data compbiocore/viva-cli:v0.3.9 /script/viva --save_remotely -f file.vcf -s pdf -o /data <span class="o">[</span>...args<span class="o">]</span>
+<div class="codehilite"><pre><span></span>docker run -it --rm -v <span class="s2">&quot;</span><span class="si">${</span><span class="nv">pwd</span><span class="si">}</span><span class="s2">&quot;</span>:/data compbiocore/viva-cli viva --save_remotely -f file.vcf -s pdf -o output
 </pre></div>
 
 
@@ -802,7 +835,7 @@
 
 
 <p>Go to the following url in your internet browser. You'll receive a token to enter into the url.</p>
-<p>Go to <code>http://0.0.0.0:8888/?token=&lt;enter token here&gt;</code></p>
+<p>Go to <code>http://127.0.0.1:8888/?token=&lt;enter token here&gt;</code></p>
 <ul>
 <li>On Windows:</li>
 </ul>
@@ -811,26 +844,8 @@
 
 
 <p>Go to the following url in your internet browser. You'll receive a token to enter into the url.</p>
-<p>Go to <code>http://0.0.0.0:8888/?token=&lt;enter token here&gt;</code></p>
+<p>Go to <code>http://127.0.0.1:8888/?token=&lt;enter token here&gt;</code></p>
 <p><a href="https://jupyter-docker-stacks.readthedocs.io/en/latest/index.html">Click here</a> for more information about Jupyter Docker Images.</p>
-<p><a id='Using-Docker-Compose-1'></a></p>
-<h4 id="using-docker-compose">Using Docker Compose</h4>
-<p>To run the images with Docker Compose, install Docker following the steps above and then install [Docker Compose[(https://docs.docker.com/compose/). Then copy the <a href="https://github.com/compbiocore/viva-docker/blob/master/docker-compose.yml">docker-compose.yml</a> file to a local directory. From that same directory, run the command as it appears below.</p>
-<p><em>Note</em>: Your current directory will mount to <code>/notebook/data</code> in the notebook image and to <code>/data</code> in the CLI image.</p>
-<ul>
-<li>Notebook</li>
-</ul>
-<div class="codehilite"><pre><span></span>docker-compose up viva-notebook
-</pre></div>
-
-
-<ul>
-<li>Command Line Tool</li>
-</ul>
-<div class="codehilite"><pre><span></span>docker-compose run viva -f file.vcf --save_remotely arg3 arg4 ...
-</pre></div>
-
-
 <hr />
                 
                   
