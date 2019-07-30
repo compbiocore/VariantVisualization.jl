@@ -38,6 +38,24 @@ julia
 ]add VarianatVisualization
 exit()
 ```
+### Step 3: Run `viva`
+
+#### Mac and Linux
+
+On Mac and Linux, open another terminal window, navigate to your project folder and run:
+`viva -f filename.vcf -s <format> -o output/directory/`
+
+#### Windows
+
+!!! Warning
+    Viva will not work with Win32.
+
+On windows, after installing VariantVisualization, open a new PowerShell and run:
+`viva -f filename.vcf -s <format> -o output/directory/`
+
+You'll then be prompted to select an application to open the script. Select the Julia executable, that is located normally
+at `C:\Users\<username>\AppData\Local\Julia-<version>\bin\`.
+
 
 
 ### Optional Step: Install VIVA Jupyter Notebook
@@ -120,22 +138,22 @@ When entering the filename of the VCF file and files to support filtering option
 
 - On Mac or Linux:
 ```shell
-docker run -it --rm -v "$PWD":/data compbiocore/viva-cli:v0.3.8 --save_remotely arg1 arg2 arg3
+docker run -it --rm -v "$PWD":/data compbiocore/viva-cli viva --save_remotely -f file.vcf -s pdf -o /output
 ```
 
 - Example run:
 ```shell
-docker run -it --rm -v "$PWD":/data compbiocore/viva-cli:v0.3.8 --save_remotely -f file.vcf -p
+docker run -it --rm -v "$PWD":/data compbiocore/viva-cli viva --save_remotely -f file.vcf -s pdf -o /output
 ```
 
 - On Windows:
 ```shell
-docker run -it --rm -v "${pwd}":/data compbiocore/viva-cli:v0.3.8 --save_remotely arg1 arg2 arg3
+docker run -it --rm -v "${pwd}":/data compbiocore/viva-cli viva --save_remotely -f file.vcf -s pdf -o /output
 ```
 
 - Example run:
 ```shell
-docker run -it --rm -v "${pwd}":/data compbiocore/viva-cli:v0.3.8 --save_remotely -f file.vcf -p
+docker run -it --rm -v "${pwd}":/data compbiocore/viva-cli viva --save_remotely -f file.vcf -s pdf -o /output
 ```
 
 ##### Run the VIVA Jupyter Notebook from a Docker image:
@@ -149,7 +167,7 @@ docker run --rm -p 8888:8888 -e JUPYTER_ENABLE_LAB=yes -v "$PWD":/home/jovyan/no
 
 Go to the following url in your internet browser. You'll receive a token to enter into the url.
 
-Go to `http://0.0.0.0:8888/?token=<enter token here>`
+Go to `http://127.0.0.1:8888/?token=<enter token here>`
 
 - On Windows:
 ```shell
@@ -158,7 +176,7 @@ docker run --rm -p 8888:8888 -e JUPYTER_ENABLE_LAB=yes -v "${pwd}":/home/jovyan/
 
 Go to the following url in your internet browser. You'll receive a token to enter into the url.
 
-Go to `http://0.0.0.0:8888/?token=<enter token here>`
+Go to `http://127.0.0.1:8888/?token=<enter token here>`
 
 [Click here](https://jupyter-docker-stacks.readthedocs.io/en/latest/index.html) for more information about Jupyter Docker Images.
 
