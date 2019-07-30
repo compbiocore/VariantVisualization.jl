@@ -9,13 +9,9 @@ end
 function symlink_user_bin(path_::AbstractString)
     exec = splitdir(path_)[end]
     if Sys.iswindows()
-        try
-          bin_path = split(path_, "\\$exec")[1]
-          @warn bin_path
-          run(`setx path "%path%;$bin_path"`)
-        catch
-          @warn bin_path
-        end
+        bin_path = split(path_, "\\$exec")[1]
+        @warn bin_path
+        run(`setx path "%path%;$bin_path"`)
     else
         symlink(path_, "/usr/local/bin/$exec")
         @warn "Created symlink: /usr/local/bin/viva -> $path_"
