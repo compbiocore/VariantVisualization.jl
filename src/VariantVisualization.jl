@@ -72,6 +72,5 @@ export
 include("vcf_utils_complete.jl")
 include("plot_utils.jl")
 include("new_notebook_utils.jl")
-include("init.jl")
 
 end # module
