@@ -13,7 +13,9 @@ function symlink_user_bin(path_::AbstractString)
         @warn bin_path
         run(`setx path "%path%;$bin_path"`)
     else
-        symlink(path_, "/usr/local/bin/$exec")
+        bin_exec_path = "/usr/local/bin/$exec"
+        rm(bin_exec_path, force=true)
+        symlink(path_, bin_exec_path)
         @warn "Created symlink: /usr/local/bin/viva -> $path_"
     end
 end
