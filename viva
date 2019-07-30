@@ -6,24 +6,16 @@ println()
 println("Loading dependency packages:")
 println()
 
-#println("1/5 ArgParse")
-#import ArgParse
-
-#using Pkg #remove after VariantVisualization is deployed
-#Pkg.activate(@__DIR__) #remove after VariantVisualization is deployed
 using VariantVisualization
 println("...")
 
-println("1/4 PlotlyJS")
-using PlotlyJS
-
-println("2/4 GeneticVariation")
-using GeneticVariation
-
-println("3/4 DelimitedFiles")
-using DelimitedFiles
-
-println("4/4 VariantVisualization")
+using Pkg
+try
+    using GeneticVariation
+catch
+    Pkg.add("GeneticVariation")
+    using GeneticVariation
+end
 
 println()
 println("Finished loading packages!")
