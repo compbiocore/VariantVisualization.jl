@@ -1,6 +1,6 @@
 ![VIVA Logo](assets/VIVA_logo.png)
 
-Read the [VIVA Manual](https://compbiocore.github.io/VariantVisualization.jl/latest/installation/) here.
+
 
 # Getting Started
 
@@ -18,6 +18,9 @@ VIVA is available as a Jupyter Notebook utility [here](https://github.com/compbi
 
 Formatting requirements for VIVA's input files are described in the Manual and clearly named examples of all user-generated input files can be found in the `/test/test_files` directory of the `VariantVisualization.jl` repository.
 
+## Installation
+For detailed installation instructions, read the [VIVA Manual](https://compbiocore.github.io/VariantVisualization.jl/latest/installation/) here.
+
 ## General Use
 
 To use VIVA, we recommend creating a new directory for storing your VCF file to analyze where output files will be saved. Alternatively, users may also provide paths to the VCF file and to preferred output file locations as command line arguments.
@@ -26,7 +29,7 @@ To use VIVA, we recommend creating a new directory for storing your VCF file to 
 VIVA's general command line argument structure is as follows:
 
 ```
-    julia viva -f file.vcf [OPTIONS]
+    viva -f file.vcf [OPTIONS]
 ```
 
 From the command line or powershell, run the VIVA command line tool script which takes arguments from the command line and parses them with ArgParse.jl.
@@ -34,13 +37,13 @@ From the command line or powershell, run the VIVA command line tool script which
 Example:
 
 ```
-    julia viva -f example.vcf -r chr1:20000-30000000 -s pdf -m genotype,read_depth --avg_dp samples
+    viva -f example.vcf -r chr1:20000-30000000 -s pdf -m genotype,read_depth --avg_dp samples
 ```
 
 To display a complete set of help instructions while using the tool, run VIVA with the help flag (`--help`, `-h`).
 
 ```
-    julia viva -h
+    viva -h
 ```
 
 ### Default Options:
@@ -48,7 +51,7 @@ To display a complete set of help instructions while using the tool, run VIVA wi
 By running VIVA with only a VCF filename:
 
 ```
-    julia viva -f file.vcf
+    viva -f file.vcf
 ```
 
 Default options will be used:
