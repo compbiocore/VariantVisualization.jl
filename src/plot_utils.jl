@@ -33,7 +33,7 @@ function genotype_heatmap2_new_legend(input,title,chrom_label_info,sample_names,
                    ticktext = ["No Call (0)", "Homozygous Reference", "Heterozygous Variant", "Homozygous Variant"])
                    );
 
-                   #we define a custom legend using shapes and a text scatter trace
+                   #we define a custom legend using shapes and a text scatter trace #x_axis_text_anchor+extra_right_margin_space
                    trace2 = scatter(
                    ;x=[x_axis_text_anchor,x_axis_text_anchor,x_axis_text_anchor,x_axis_text_anchor,x_axis_text_anchor+extra_right_margin_space], y=y=[position_1+text_point_increment,position_3+text_point_increment,position_5+text_point_increment,position_7+text_point_increment,position_9+text_point_increment],
                      mode="text", name="legend label",
@@ -120,8 +120,8 @@ function genotype_heatmap_with_groups(input::Array{Int64,2},title::String,chrom_
                        transpose=true,
 
                                     colorscale = [
-                                                  [0, "rgb(208, 211, 212)"], #light grey
-                                                  [0.2, "rgb(151, 154, 154)"], #dark grey
+                                                  [0, "rgb(151, 154, 154)"], #dark grey
+                                                  [0.2, "rgb(208, 211, 212)"], #light grey
                                                   [0.4, "rgb(255,255,255)"], #white
                                                   #[0.4, "rgb(56,25,90)"], #dark blue
                                                   [0.6, "rgb(51,106,145)"], #blue
@@ -136,11 +136,12 @@ function genotype_heatmap_with_groups(input::Array{Int64,2},title::String,chrom_
                       );
 
                     #we define a custom legend using shapes and a text scatter trace
+
                     trace2 = scatter(
                     ;x=[x_axis_text_anchor,x_axis_text_anchor,x_axis_text_anchor,x_axis_text_anchor,x_axis_text_anchor+extra_right_margin_space,x_axis_text_anchor,x_axis_text_anchor], y=y=[position_1+text_point_increment,position_2+text_point_increment,position_3+text_point_increment,position_4+text_point_increment,position_5+text_point_increment,position_7+text_point_increment,position_8+text_point_increment],
                       mode="text", name="legend label",
                       textposition="middle right",
-                      text=["No Call", "Homozygous Reference", "Heterozygous Variant", "Homozygous Variant","", "Trait 2","Trait 1"],
+                      text=["No Call", "Homozygous Reference", "Heterozygous Variant", "Homozygous Variant"," ", "Trait 2","Trait 1"],
                       marker_size=300, textfont_family="Raleway, sans-serif")
 
                     shapes = [
@@ -148,8 +149,8 @@ function genotype_heatmap_with_groups(input::Array{Int64,2},title::String,chrom_
                     rect(x0=legend_xaxis_anchor, y0=position_3, x1=legend_xaxis_anchor_2, y1=position_4, opacity=1.0, fillcolor="rgb(65,165,137)", line_color="black"),
                     rect(x0=legend_xaxis_anchor, y0= position_2, x1=legend_xaxis_anchor_2, y1=position_3, opacity=1.0, fillcolor="rgb(51,106,145)", line_color="black"),
                     rect(x0=legend_xaxis_anchor, y0= position_1, x1=legend_xaxis_anchor_2, y1=position_2, opacity=1.0, fillcolor="rgb(255,255,255)", line_color="black"),
-                    rect(x0=legend_xaxis_anchor, y0= position_7, x1=legend_xaxis_anchor_2, y1=position_8, opacity=1.0, fillcolor="rgb(151, 154, 154)", line_color="black"),
-                    rect(x0=legend_xaxis_anchor, y0= position_8, x1=legend_xaxis_anchor_2, y1=position_9, opacity=1.0, fillcolor="rgb(208, 211, 212)", line_color="black")
+                    rect(x0=legend_xaxis_anchor, y0= position_7, x1=legend_xaxis_anchor_2, y1=position_8, opacity=1.0, fillcolor="rgb(208, 211, 212)", line_color="black"),
+                    rect(x0=legend_xaxis_anchor, y0= position_8, x1=legend_xaxis_anchor_2, y1=position_9, opacity=1.0, fillcolor="rgb(151, 154, 154)", line_color="black")
                     ]
 
                      data = [trace, trace2]
@@ -351,8 +352,8 @@ function dp_heatmap2_with_groups(input::Array{Int64,2},title::String,chrom_label
         transpose=true,
 
                      colorscale = [
-                                      [0, "rgb(208, 211, 212)"], #light grey
-                                      [0.125, "rgb(151, 154, 154)"], #dark grey
+                                      [0, "rgb(151, 154, 154)"], #dark grey
+                                      [0.125, "rgb(208, 211, 212)"], #light grey
                                       [0.25, "rgb(255, 255, 255)"],
                                       [0.4, "rgb(153,231,255)"],
                                       [0.5, "rgb(79,146,255)"],
@@ -380,8 +381,8 @@ function dp_heatmap2_with_groups(input::Array{Int64,2},title::String,chrom_label
          data = [trace, trace2]
 
          shapes = [
-         rect(x0=legend_xaxis_anchor, y0= position_7, x1=legend_xaxis_anchor_2, y1=position_8, opacity=1.0, fillcolor="rgb(151, 154, 154)", line_color="black"),
-         rect(x0=legend_xaxis_anchor, y0= position_8, x1=legend_xaxis_anchor_2, y1=position_9, opacity=1.0, fillcolor="rgb(208, 211, 212)", line_color="black"),
+         rect(x0=legend_xaxis_anchor, y0= position_7, x1=legend_xaxis_anchor_2, y1=position_8, opacity=1.0, fillcolor="rgb(208, 211, 212)", line_color="black"),
+         rect(x0=legend_xaxis_anchor, y0= position_8, x1=legend_xaxis_anchor_2, y1=position_9, opacity=1.0, fillcolor="rgb(151, 154, 154)", line_color="black"),
          rect(x0=legend_xaxis_anchor, y0=position_5, x1=legend_xaxis_anchor_2, y1=position_6, opacity=1.0, fillcolor="rgb(37,114,242)", line_color="black"),
          rect(x0=legend_xaxis_anchor, y0=position_4, x1=legend_xaxis_anchor_2, y1=position_5, opacity=1.0, fillcolor="rgb(67,138,254)", line_color="black"),
          rect(x0=legend_xaxis_anchor, y0=position_3, x1=legend_xaxis_anchor_2, y1=position_4, opacity=1.0, fillcolor="rgb(110,182,255)", line_color="black"),
@@ -579,7 +580,7 @@ function generate_legend_increments_ungrouped(input)
     legend_xaxis_anchor = number_samples + distance_from_plot_edge
     legend_xaxis_anchor_2 = legend_xaxis_anchor + width_of_color_box
     x_axis_text_anchor = legend_xaxis_anchor_2 + number_samples/40
-    extra_right_margin_space=number_samples/5
+    extra_right_margin_space=number_samples/4
     extra_right_margin_space_dp = number_samples/10
 
     position_1 = number_rows/2
@@ -613,7 +614,7 @@ function generate_legend_increments_grouped(input)
     legend_xaxis_anchor = number_samples + distance_from_plot_edge
     legend_xaxis_anchor_2 = legend_xaxis_anchor + width_of_color_box
     x_axis_text_anchor = legend_xaxis_anchor_2 + number_samples/40
-    extra_right_margin_space = number_samples/5
+    extra_right_margin_space = number_samples/3
 
 
     position_1 = number_rows/3
