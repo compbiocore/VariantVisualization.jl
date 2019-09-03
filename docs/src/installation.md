@@ -6,7 +6,7 @@ macOS ( Sierra, High Sierra, and Mojave ), Windows (7 and 10), and Linux.
 
 ### Step 1: Install Julia
 
-1. Download [Julia]("https://julialang.org/downloads/") and install the language following the [platform specific instructions](https://julialang.org/downloads/platform.html).
+1. Download [Julia v1.0.4]("https://julialang.org/downloads/") and install the language following the [platform specific instructions](https://julialang.org/downloads/platform.html).
 
 2. Then, follow add Julia to the path variable to run VIVA.
 
@@ -16,7 +16,7 @@ Add the path to the Julia binaries (C:\Program Files\Julia\bin) to the PATH foll
 
 To add Julia to the PATH on Mac run the following line in the Terminal:
 
-> sudo ln -s /Applications/Julia-1.1.app/Contents/Resources/julia/bin/julia /usr/local/bin/julia
+> sudo ln -s /Applications/Julia-1.0.app/Contents/Resources/julia/bin/julia /usr/local/bin/julia
 
 Be sure to replace "/Applications/Julia-1.1.app/..." to reflect the version of Julia you've downloaded.
 
@@ -102,7 +102,7 @@ The ***VIVA Jupyter notebook*** is powered by a [main function](https://github.c
 
 ### Running VIVA with Docker or Docker Compose
 
-You can run VIVA using the Docker images we've provided if you don't want to install Julia and the VariantVisualization.jl Julia package. 
+You can run VIVA using the Docker images we've provided if you don't want to install Julia and the VariantVisualization.jl Julia package.
 
 To run VIVA from a Docker image, first [install Docker](https://docs.docker.com/install/).
 
