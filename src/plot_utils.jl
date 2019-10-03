@@ -120,8 +120,8 @@ function genotype_heatmap_with_groups(input::Array{Int64,2},title::String,chrom_
                        transpose=true,
 
                                     colorscale = [
-                                                  [0, "rgb(151, 154, 154)"], #dark grey
-                                                  [0.2, "rgb(208, 211, 212)"], #light grey
+                                                  [0, "rgb(208, 211, 212)"], #light grey
+                                                  [0.2, "rgb(151, 154, 154)"], #dark grey
                                                   [0.4, "rgb(255,255,255)"], #white
                                                   #[0.4, "rgb(56,25,90)"], #dark blue
                                                   [0.6, "rgb(51,106,145)"], #blue
@@ -352,8 +352,8 @@ function dp_heatmap2_with_groups(input::Array{Int64,2},title::String,chrom_label
         transpose=true,
 
                      colorscale = [
-                                      [0, "rgb(151, 154, 154)"], #dark grey
-                                      [0.125, "rgb(208, 211, 212)"], #light grey
+                                      [0, "rgb(208, 211, 212)"], #light grey
+                                      [0.125, "rgb(151, 154, 154)"], #dark grey
                                       [0.25, "rgb(255, 255, 255)"],
                                       [0.4, "rgb(153,231,255)"],
                                       [0.5, "rgb(79,146,255)"],

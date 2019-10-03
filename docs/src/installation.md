@@ -16,9 +16,9 @@ Add the path to the Julia binaries (C:\Program Files\Julia\bin) to the PATH foll
 
 To add Julia to the PATH on Mac run the following line in the Terminal:
 
-> sudo ln -s /Applications/Julia-1.1.app/Contents/Resources/julia/bin/julia /usr/local/bin/julia
+> sudo ln -s /Applications/Julia-1.2.app/Contents/Resources/julia/bin/julia /usr/local/bin/julia
 
-Be sure to replace "/Applications/Julia-1.1.app/..." to reflect the version of Julia you've downloaded.
+Be sure to replace "/Applications/Julia-1.2.app/..." to reflect the version of Julia you've downloaded.
 
 
 *Linux Note*: To run on remote compute clusters, you may need to load the opengl and julia modules.
@@ -102,7 +102,7 @@ The ***VIVA Jupyter notebook*** is powered by a [main function](https://github.c
 
 ### Running VIVA with Docker or Docker Compose
 
-You can run VIVA using the Docker images we've provided if you don't want to install Julia and the VariantVisualization.jl Julia package. 
+You can run VIVA using the Docker images we've provided if you don't want to install Julia and the VariantVisualization.jl Julia package.
 
 To run VIVA from a Docker image, first [install Docker](https://docs.docker.com/install/).
 
