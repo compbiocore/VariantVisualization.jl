@@ -10,6 +10,7 @@ using VariantVisualization
 println("...")
 
 using Pkg
+
 try
     using GeneticVariation
 catch
