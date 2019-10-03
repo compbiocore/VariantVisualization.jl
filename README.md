@@ -54,7 +54,7 @@ To install VariantVisualization.jl:
 
 ```julia
 julia
-]add VarianatVisualization
+]add VariantVisualization
 exit()
 ```
 ### Step 3: Run `viva`
