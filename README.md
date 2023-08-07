@@ -14,6 +14,13 @@ VariantVisualization.jl is a package we built specifically to power the genetics
 
 *VIVA* is a user-friendly command line tool for creating publication quality graphics from Variant Call Format (VCF) files. It has been designed for clinicians and bioinformaticians to explore their VCF files visually. In a single command, users can extract genotype or read depth information and plot trends in interactive categorical heatmaps and scatter plots of average read depth values. VIVA offers a robust set of filters to select variants and samples of interest for analysis. VIVA is especially useful in early data exploration for identifying batch effect and sources of poor read depth in sequencing experiments, as well as identifying distribution of disease causing variants in a set of clinical samples.
 
+## Publication and Citation Information
+
+Read about VIVA in our publication in *Scientific Reports*!
+
+Please cite our publication if you use VIVA in your publications or presentations:
+
+Tollefson, G.A., Schuster, J., Gelin, F. et al. VIVA (VIsualization of VAriants): A VCF File Visualization Tool. Sci Rep 9, 12648 (2019). https://doi.org/10.1038/s41598-019-49114-z
 
 ## Getting Started:
 
